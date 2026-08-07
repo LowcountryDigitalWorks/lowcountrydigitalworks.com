@@ -1,0 +1,32 @@
+name: Bug report
+description: Report a reproducible website or repository problem.
+title: "Bug: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: Do not include credentials, customer data, private infrastructure details, or security exploit information.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What happened, and what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: Provide the smallest reliable reproduction.
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Browser or environment
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impact
+      description: Include accessibility, security, privacy, or deployment impact when applicable.
