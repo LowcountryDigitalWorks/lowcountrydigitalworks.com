@@ -11,11 +11,15 @@ The `LowcountryDigitalWorks` organization is the authoritative GitHub owner for 
 - `lowcountrydigitalworks.com` — public website source and site-specific documentation
 - `.github` — organization profile, public contribution guidance, public security policy, shared issue templates, and approved workflow templates
 - `website-quality-toolkit` — placeholder repository; populate only after reusable testing utilities are proven across multiple sites
+- `document-control` — active Lowcountry Digital Works product repository; product architecture and implementation are governed by its separate authoritative product thread
+- `secure-exchange` — Lowcountry Digital Works product repository currently at its initial bootstrap state; product architecture and implementation are governed by its separate authoritative product thread
 
 ### Private
 
 - `business-operations` — non-public business operations, account inventory, internal continuity, vendor/cost records, approved templates, and private procedures
 - temporary client repositories only when client ownership is not yet available and a documented transfer plan exists
+
+Product repositories remain separate from website/infrastructure implementation even when they share organization-wide governance, ownership, security, and cost standards.
 
 ## Roles
 
