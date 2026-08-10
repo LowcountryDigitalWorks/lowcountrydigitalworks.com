@@ -1,83 +1,83 @@
-# Lowcountry Digital Works
+# Lowcountry Digital Works Website
 
-Public source repository for the Lowcountry Digital Works website at
-[lowcountrydigitalworks.com](https://lowcountrydigitalworks.com).
+Public source repository for the Lowcountry Digital Works website at [lowcountrydigitalworks.com](https://lowcountrydigitalworks.com).
+
+## Status
+
+The repository contains a lightweight static bootstrap configured for Cloudflare Workers Static Assets. A Cloudflare deployment of this repository and the Release 0.2 pull-request commit was previously confirmed successful, but as of 2026-08-10 the expected Worker/application is no longer visible in the Lowcountry Digital Works Cloudflare account and the live platform state requires read-only re-verification before further deployment or DNS work. Zoho Mail remains the email provider and must not be disrupted during website or DNS work.
+
+The permanent visual identity is maintained by a separate brand-design workstream. Until approved production assets are merged, the site uses a temporary text wordmark and centralized placeholder colors.
 
 ## Ownership
 
-This repository is owned by the `LowcountryDigitalWorks` GitHub organization.
+- Business: **Lowcountry Digital Works**
+- GitHub organization: **`LowcountryDigitalWorks`**
+- Primary business GitHub identity: **`Eddie-LowcountryDigitalWorks`**
+- Primary business email: **`eddie@lowcountrydigitalworks.com`**
+- Registrar: **Porkbun**
+- Email provider: **Zoho Mail**
+- Intended website platform: **Cloudflare Workers Static Assets**
 
-Primary business representative:
+Company-owned repositories and infrastructure should remain organization-owned. Individual accounts receive named, role-based access rather than owning company assets.
 
-- Eddie Gugino
-- eddie@lowcountrydigitalworks.com
+## Architecture
 
-Company-owned repositories and infrastructure should remain organization-owned.
-Individual accounts receive named, role-based access rather than owning company assets.
+The launch architecture is intentionally static-first:
 
-## Current status
+- static HTML and CSS;
+- Cloudflare Workers Static Assets;
+- no database, CMS, authentication service, analytics, or server-side rendering;
+- minimal client-side JavaScript only when a specific need justifies it;
+- future Worker endpoints added only for approved dynamic capabilities;
+- planned migration to Astro when reusable layouts and content structure provide a clear maintenance benefit.
 
-The website is in its initial planning and infrastructure phase.
+See [docs/architecture.md](docs/architecture.md) and the [architecture decisions](docs/decisions/).
 
-No production website, Cloudflare deployment, custom-domain connection, contact-form
-processor, payment integration, analytics system, or customer portal has been established
-from this repository yet.
+## Local validation
 
-## Architecture direction
+The current quality baseline has no third-party runtime dependencies.
 
-The initial website is expected to use:
+```bash
+python scripts/validate_repository.py
+```
 
-- Astro with static output;
-- accessible semantic HTML and centralized CSS design tokens;
-- Cloudflare Workers Static Assets for deployment;
-- minimal client-side JavaScript;
-- no database, CMS, server-side rendering, or paid service without a documented requirement;
-- optional Worker endpoints added later only where justified.
+The validator checks repository structure, HTML metadata and landmarks, internal links and anchors, Cloudflare configuration, security headers, sitemap/robots consistency, and obvious secret patterns.
 
-The architecture should support future contact, hosted-payment, webhook, and customer-portal
-integrations without requiring the static website to be replaced.
+## Documentation
 
-## Repository principles
+Start with [docs/README.md](docs/README.md).
 
-- Keep the website fast, accessible, secure, portable, and maintainable.
-- Use branches and pull requests for meaningful changes after this bootstrap commit.
-- Keep business documentation under version control.
-- Do not commit secrets, credentials, tokens, private keys, customer data, or payment data.
-- Do not add unnecessary recurring services or dependencies.
-- Keep claims about the business truthful and appropriately modest.
+Key documents include:
 
-## Infrastructure safeguards
+- [Architecture](docs/architecture.md)
+- [Deployment](docs/deployment.md)
+- [DNS and email preservation](docs/dns-email-preservation.md)
+- [Rollback and recovery](docs/rollback-recovery.md)
+- [Testing](docs/testing.md)
+- [Release process](docs/release-process.md)
+- [Organization operating model](docs/governance/organization-model.md)
+- [Repository standards](docs/governance/repository-standards.md)
 
-Porkbun remains the domain registrar.
+## Change control
 
-Zoho Mail remains the email provider for `eddie@lowcountrydigitalworks.com`.
+Meaningful changes should use a branch and pull request. Pull requests should:
 
-Do not change nameservers, DNS records, email routing, MX, SPF, DKIM, DMARC, domain
-registration, Cloudflare configuration, or billing without:
+1. explain the purpose and scope;
+2. identify user, security, privacy, infrastructure, and cost impact;
+3. include applicable validation results;
+4. document rollback for consequential changes;
+5. avoid combining unrelated work.
 
-1. inspecting and recording the current state;
-2. documenting the proposed state;
-3. documenting rollback;
-4. obtaining Eddie's explicit approval.
+DNS, email, domain, billing, payment, account-access, and destructive changes require a current-state inventory, proposed-state record, rollback plan, and Eddie's explicit approval.
 
-Cloudflare Email Routing must not be enabled.
+## Security and privacy
 
-## Documentation plan
+Do not commit credentials, MFA material, recovery information, private keys, API tokens, payment data, customer data, PHI, or client secrets.
 
-As the project progresses, this repository will document:
+The launch site uses no analytics, nonessential cookies, contact-form processor, payment processor, or server-side customer-data storage.
 
-- website architecture;
-- content and accessibility standards;
-- deployment and preview procedures;
-- testing and quality controls;
-- Cloudflare configuration;
-- DNS and Zoho email preservation;
-- account ownership and access;
-- rollback and recovery;
-- maintenance and releases;
-- approved brand assets.
+See [SECURITY.md](SECURITY.md).
 
 ## License
 
-No license has been selected yet. All rights are reserved unless a license is added
-explicitly in a future approved change.
+No open-source license has been granted. See [LICENSE.md](LICENSE.md).

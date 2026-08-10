@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Private security report
+    url: mailto:eddie@lowcountrydigitalworks.com
+    about: Report sensitive security concerns privately rather than in a public issue.
