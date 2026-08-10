@@ -1,0 +1,11 @@
+:root {
+  --ldw-estuary-navy: #102A3A;
+  --ldw-cypress-teal: #2F766F;
+  --ldw-warm-oyster: #F3EFE6;
+  --ldw-soft-white: #F7F8F6;
+  --ldw-white: #FFFFFF;
+  --ldw-black: #000000;
+
+  --ldw-font-sans: "Manrope", "Source Sans 3", Inter, system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", sans-serif;
+}

@@ -4,9 +4,9 @@ Public source repository for the Lowcountry Digital Works website at [lowcountry
 
 ## Status
 
-The repository contains a lightweight static bootstrap configured for Cloudflare Workers Static Assets. A Cloudflare deployment of this repository and the Release 0.2 pull-request commit was previously confirmed successful, but as of 2026-08-10 the expected Worker/application is no longer visible in the Lowcountry Digital Works Cloudflare account and the live platform state requires read-only re-verification before further deployment or DNS work. Zoho Mail remains the email provider and must not be disrupted during website or DNS work.
+Release 0.3 establishes the permanent site foundation: Astro static output, the authoritative Tidal Framework Production Brand Package v2, and the approved Lowcountry Digital Works UX system. The deployment target remains Cloudflare Workers Static Assets.
 
-The permanent visual identity is maintained by a separate brand-design workstream. Until approved production assets are merged, the site uses a temporary text wordmark and centralized placeholder colors.
+Cloudflare account access and the existing Worker context were re-verified on 2026-08-10 before production launch. No duplicate Worker or replacement DNS infrastructure was created. Zoho Mail remains the email provider and must not be disrupted by website changes.
 
 ## Ownership
 
@@ -16,65 +16,50 @@ The permanent visual identity is maintained by a separate brand-design workstrea
 - Primary business email: **`eddie@lowcountrydigitalworks.com`**
 - Registrar: **Porkbun**
 - Email provider: **Zoho Mail**
-- Intended website platform: **Cloudflare Workers Static Assets**
+- Website platform: **Cloudflare Workers Static Assets**
 
-Company-owned repositories and infrastructure should remain organization-owned. Individual accounts receive named, role-based access rather than owning company assets.
+Company-owned repositories and infrastructure remain organization-owned. Individual accounts receive named, role-based access rather than owning company assets.
 
 ## Architecture
 
-The launch architecture is intentionally static-first:
-
-- static HTML and CSS;
+- Astro static output to `dist/`;
 - Cloudflare Workers Static Assets;
-- no database, CMS, authentication service, analytics, or server-side rendering;
-- minimal client-side JavaScript only when a specific need justifies it;
-- future Worker endpoints added only for approved dynamic capabilities;
-- planned migration to Astro when reusable layouts and content structure provide a clear maintenance benefit.
+- no React or browser application framework;
+- no database, CMS, authentication, analytics, or server-side customer-data processing;
+- no public contact form;
+- minimal client-side JavaScript;
+- production brand assets under `brand/`;
+- approved UX/design guidance under `design/`.
 
-See [docs/architecture.md](docs/architecture.md) and the [architecture decisions](docs/decisions/).
+See [docs/architecture.md](docs/architecture.md).
 
-## Local validation
+## Development
 
-The current quality baseline has no third-party runtime dependencies.
+Requires Node.js 22+ and Python 3.12 for the repository validator.
 
 ```bash
+npm install
+npm run build
 python scripts/validate_repository.py
+npx playwright install chromium
+npm run test:e2e
 ```
 
-The validator checks repository structure, HTML metadata and landmarks, internal links and anchors, Cloudflare configuration, security headers, sitemap/robots consistency, and obvious secret patterns.
+Once the initial Release 0.3 lockfile is committed, normal clean installs should use `npm ci`.
 
-## Documentation
+## Brand and UX authority
 
-Start with [docs/README.md](docs/README.md).
-
-Key documents include:
-
-- [Architecture](docs/architecture.md)
-- [Deployment](docs/deployment.md)
-- [DNS and email preservation](docs/dns-email-preservation.md)
-- [Rollback and recovery](docs/rollback-recovery.md)
-- [Testing](docs/testing.md)
-- [Release process](docs/release-process.md)
-- [Organization operating model](docs/governance/organization-model.md)
-- [Repository standards](docs/governance/repository-standards.md)
+Raw production brand values come from `brand/colors.json` and `brand/css/brand-tokens.css`. Semantic UI tokens, spacing, layout, and application-theme guidance are under `design/`. Production logos are never altered with translucent/watermark opacity treatments.
 
 ## Change control
 
-Meaningful changes should use a branch and pull request. Pull requests should:
+`main` is protected by the `LDW main governance baseline` ruleset. Meaningful changes use pull requests, the required `validate` check, resolved review conversations, and squash merge.
 
-1. explain the purpose and scope;
-2. identify user, security, privacy, infrastructure, and cost impact;
-3. include applicable validation results;
-4. document rollback for consequential changes;
-5. avoid combining unrelated work.
-
-DNS, email, domain, billing, payment, account-access, and destructive changes require a current-state inventory, proposed-state record, rollback plan, and Eddie's explicit approval.
+DNS, email, domain, billing, account-access, production-launch, and destructive changes retain separate approval gates.
 
 ## Security and privacy
 
-Do not commit credentials, MFA material, recovery information, private keys, API tokens, payment data, customer data, PHI, or client secrets.
-
-The launch site uses no analytics, nonessential cookies, contact-form processor, payment processor, or server-side customer-data storage.
+Do not commit credentials, MFA material, recovery information, private keys, API tokens, payment data, customer data, PHI, or client secrets. The public site has no analytics, nonessential cookies, contact-form processor, payment processor, or customer account system.
 
 See [SECURITY.md](SECURITY.md).
 

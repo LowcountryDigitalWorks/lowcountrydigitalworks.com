@@ -1,49 +1,30 @@
 # Testing and Quality Baseline
 
-## Current checks
+## Required CI check
 
-Run:
+The protected-branch status check remains the single stable job named `validate`. Release 0.3 expands that job rather than inventing multiple required check names.
 
-```bash
-python scripts/validate_repository.py
-```
+It runs:
 
-The validator checks:
-
-- required repository and deployment files;
-- HTML language, title, viewport, description, landmarks, and heading structure;
-- duplicate IDs;
-- internal file links and anchor targets;
-- favicon, robots, and sitemap consistency;
-- Cloudflare Worker name and asset directory;
-- required security headers;
-- obvious credential and private-key patterns.
-
-GitHub Actions runs the same validation for pull requests and pushes to `main`.
+1. dependency installation;
+2. Astro production build;
+3. repository/static-output validation;
+4. Chromium installation;
+5. Playwright desktop/mobile smoke tests;
+6. axe-core critical/serious accessibility checks;
+7. internal-link and responsive overflow checks;
+8. high-severity npm audit.
 
 ## Manual release checks
 
+- production header/footer logo proportions;
+- favicon at 16/24/32px;
 - keyboard navigation and visible focus;
-- mobile and desktop layouts;
+- mobile and desktop layout;
 - reduced-motion behavior;
 - email links;
-- internal navigation;
-- custom 404 response;
-- browser console;
-- Cloudflare preview and production deployment status.
+- custom 404;
+- social preview;
+- Cloudflare branch preview and production deployment state.
 
-## Planned checks
-
-When the site moves to Astro and gains multiple pages:
-
-- formatting and framework build checks;
-- HTML validation;
-- Playwright smoke tests;
-- axe-core accessibility tests;
-- responsive screenshots;
-- link checking;
-- dependency review;
-- deployment-preview validation;
-- performance budgets.
-
-Shared test tooling should be extracted to an organization repository only after it proves reusable across more than one site.
+Shared test tooling remains site-specific until reuse across multiple real websites is demonstrated.

@@ -4,12 +4,28 @@ All notable repository and website changes are recorded here.
 
 ## [Unreleased]
 
-### Planned
+## [0.3.0] - 2026-08-10
 
-- Complete Cloudflare DNS activation and custom-domain validation.
-- Integrate approved brand assets.
-- Convert the bootstrap into the maintainable multi-page site structure.
-- Add browser, accessibility, and deployment-preview tests.
+### Added
+
+- Astro static-site foundation with Home, Services, Approach, About, Contact, Privacy / Website Use, and 404 routes.
+- Production Brand Package v2 masters, browser/icon exports, social preview, and brand metadata.
+- Reconciled UX/design documentation and durable production brand validation.
+- Playwright browser, responsive, and axe-core accessibility tests.
+- npm dependency management and expanded repository validation.
+
+### Changed
+
+- Cloudflare asset output from the bootstrap `public/` HTML to Astro `dist/`.
+- Production logo usage replaces the temporary text wordmark and retires the translucent watermark treatment.
+- Raw brand colors now come from the production brand token files.
+- Dependabot covers npm as well as GitHub Actions and no longer requests a nonexistent label.
+- Cloudflare account/Worker access was re-verified before production launch without recreating infrastructure.
+
+### Remaining infrastructure
+
+- Complete any remaining custom-domain/DNS validation separately under the protected infrastructure change process.
+- Recreate/recover the non-Gmail Google services identity separately; Zoho email hosting remains unchanged.
 
 ## [0.2.0] - 2026-08-07
 
