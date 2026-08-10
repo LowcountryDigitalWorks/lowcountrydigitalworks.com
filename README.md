@@ -4,9 +4,9 @@ Public source repository for the Lowcountry Digital Works website at [lowcountry
 
 ## Status
 
-The repository currently contains a lightweight static bootstrap deployed through Cloudflare Workers Static Assets. The custom domain is being migrated from Porkbun DNS to Cloudflare DNS. Zoho Mail remains the email provider and must not be disrupted during website or DNS work.
+The repository contains a lightweight static bootstrap configured for Cloudflare Workers Static Assets. A Cloudflare deployment of this repository and the Release 0.2 pull-request commit was previously confirmed successful, but as of 2026-08-10 the expected Worker/application is no longer visible in the Lowcountry Digital Works Cloudflare account and the live platform state requires read-only re-verification before further deployment or DNS work. Zoho Mail remains the email provider and must not be disrupted during website or DNS work.
 
-The permanent visual identity is maintained by a separate brand-design workstream. Until approved assets are merged, the site uses a temporary text wordmark and centralized placeholder colors.
+The permanent visual identity is maintained by a separate brand-design workstream. Until approved production assets are merged, the site uses a temporary text wordmark and centralized placeholder colors.
 
 ## Ownership
 
@@ -16,7 +16,7 @@ The permanent visual identity is maintained by a separate brand-design workstrea
 - Primary business email: **`eddie@lowcountrydigitalworks.com`**
 - Registrar: **Porkbun**
 - Email provider: **Zoho Mail**
-- Website platform: **Cloudflare Workers Static Assets**
+- Intended website platform: **Cloudflare Workers Static Assets**
 
 Company-owned repositories and infrastructure should remain organization-owned. Individual accounts receive named, role-based access rather than owning company assets.
 
