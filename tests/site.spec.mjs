@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
-const routes = ['/', '/services/', '/approach/', '/about/', '/contact/', '/privacy/'];
+const routes = ['/', '/services/', '/work/', '/approach/', '/about/', '/contact/', '/privacy/'];
 for (const route of routes) {
   test(`${route} renders with landmarks and no serious accessibility violations`, async ({ page }) => {
     const response = await page.goto(route);
@@ -23,10 +23,30 @@ test('editable content layer renders richer home and service content', async ({ 
   await page.goto('/');
   await expect(page.getByText('You do not need to arrive with a technical specification.')).toBeVisible();
   await expect(page.locator('.trust-strip li')).toHaveCount(3);
+  await expect(page.getByRole('link', { name: 'See selected work' })).toBeVisible();
 
   await page.goto('/services/');
   await expect(page.locator('.service-card')).toHaveCount(6);
   await expect(page.locator('.service-card').first().locator('.card__list li')).toHaveCount(4);
+});
+
+test('work page distinguishes live work from active development', async ({ page }) => {
+  await page.goto('/work/');
+  await expect(page.locator('.work-card')).toHaveCount(3);
+  await expect(page.locator('.status-pill--live')).toHaveCount(1);
+  await expect(page.getByText('Active Development', { exact: true })).toHaveCount(2);
+  await expect(page.getByRole('heading', { name: 'Document Control' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Secure Exchange' })).toBeVisible();
+  await expect(page.getByText('production infrastructure is not yet provisioned', { exact: false })).toBeVisible();
+});
+
+test('technology marks are served locally without third-party image requests', async ({ page }) => {
+  await page.goto('/work/');
+  const marks = page.locator('.technology-card img');
+  await expect(marks).toHaveCount(5);
+  const origins = await marks.evaluateAll(images => images.map(image => new URL(image.src).origin));
+  const pageOrigin = new URL(page.url()).origin;
+  expect(origins.every(origin => origin === pageOrigin)).toBeTruthy();
 });
 
 test('contact is email-only and exposes no public form', async ({ page }) => {
