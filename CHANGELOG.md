@@ -4,6 +4,30 @@ All notable repository and website changes are recorded here.
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-08-11
+
+### Added
+
+- New public **Work** page with truthful status labels for the live Lowcountry Digital Works website and LDW products in active development.
+- Document Control and Secure Exchange selected-work summaries, with Secure Exchange explicitly described as active development whose production infrastructure is not yet provisioned.
+- Home-page selected-work and technology sections.
+- Locally hosted monochrome technology marks for GitHub, Cloudflare, Astro, TypeScript, and Python.
+- `docs/technology-marks.md` documenting icon source, trademark limits, same-origin delivery, and the no-endorsement boundary.
+- Browser regression coverage for Work-page status labels and same-origin technology marks.
+
+### Changed
+
+- Primary navigation now includes Work.
+- `src/data/work.json` provides repository-controlled editing for selected work and technology descriptions.
+- Sitemap, repository validator, content-editing documentation, and architecture documentation now include the Work page and technology assets.
+- Website package version advanced to `0.5.0`.
+
+### Security / privacy / cost
+
+- Technology images are served from the LDW origin; no third-party image CDN, analytics, tracker, CMS, database, authentication, or new runtime service is introduced.
+- No production Secure Exchange infrastructure or sensitive-data processing is implied or introduced by the public product description.
+- New recurring cost: **$0**.
+
 ## [0.4.0] - 2026-08-11
 
 ### Added
