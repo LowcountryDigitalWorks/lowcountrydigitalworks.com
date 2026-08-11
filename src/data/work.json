@@ -1,0 +1,64 @@
+{
+  "hero": {
+    "eyebrow": "Selected work",
+    "title": "Useful systems, built in the open where practical.",
+    "lede": "Lowcountry Digital Works is still being established, so this page distinguishes what is live from what is actively being developed. The examples below show the kind of practical website and application work underway without presenting unfinished products as completed client engagements."
+  },
+  "projects": [
+    {
+      "name": "Lowcountry Digital Works website",
+      "type": "Business website",
+      "status": "Live",
+      "description": "The public LDW site is a lightweight, accessibility-tested static website with repository-controlled content, local brand assets, and Cloudflare edge delivery.",
+      "highlights": [
+        "Astro static-site build",
+        "Cloudflare Workers Static Assets deployment",
+        "Repository-controlled editable content",
+        "Automated browser and accessibility regression checks"
+      ],
+      "href": "/"
+    },
+    {
+      "name": "Document Control",
+      "type": "Custom workflow application",
+      "status": "Active Development",
+      "description": "A configurable Lowcountry Digital Works product for structured document workflows, approvals, accountability, audit history, search, export, and administrative configuration.",
+      "highlights": [
+        "Workflow and document lifecycle management",
+        "Role-aware review and approval flows",
+        "Audit and export capabilities",
+        "Portable, repository-controlled product development"
+      ]
+    },
+    {
+      "name": "Secure Exchange",
+      "type": "Secure workflow product",
+      "status": "Active Development",
+      "description": "A provider-neutral product for protected message and document exchange, queue-based staff workflows, lifecycle accountability, retention, and sanitized audit history. Current foundation work uses a customer-owned, isolated deployment model with an AWS-first reference architecture; production infrastructure is not yet provisioned.",
+      "highlights": [
+        "Secure external intake and outbound delivery workflows",
+        "Individual workforce accountability and queue routing",
+        "Configurable retention and disposition",
+        "Provider-neutral core with customer-owned deployment direction"
+      ]
+    }
+  ],
+  "technology": {
+    "eyebrow": "Tools and platforms",
+    "title": "Technology chosen in proportion to the problem.",
+    "lede": "These are examples of tools and platforms currently used in Lowcountry Digital Works website, application, automation, and delivery work. A project does not inherit a platform simply because it appears here.",
+    "items": [
+      { "name": "GitHub", "description": "Source control, review, and delivery workflows", "icon": "/technology/github.svg" },
+      { "name": "Cloudflare", "description": "DNS, edge hosting, security, and deployment", "icon": "/technology/cloudflare.svg" },
+      { "name": "Astro", "description": "Fast, maintainable static websites", "icon": "/technology/astro.svg" },
+      { "name": "TypeScript", "description": "Web applications and maintainable tooling", "icon": "/technology/typescript.svg" },
+      { "name": "Python", "description": "Automation, validation, and scripting", "icon": "/technology/python.svg" }
+    ],
+    "trademarkNote": "Product names and marks are used only to identify technologies used in the work. Their owners do not sponsor or endorse Lowcountry Digital Works."
+  },
+  "principle": {
+    "eyebrow": "The point is the result",
+    "title": "The stack should serve the work, not become the work.",
+    "body": "A small static website, an offline tool, a serverless application, or a more involved workflow system can all be the right answer in different situations. The goal is to choose the simplest maintainable architecture that meets the actual requirements."
+  }
+}
