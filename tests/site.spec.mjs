@@ -43,3 +43,31 @@ test('internal navigation targets resolve', async ({ page }) => {
     expect(response.ok(), `${href} should resolve`).toBeTruthy();
   }
 });
+
+test('Manrope is delivered locally and used as the lead interface font', async ({ page }) => {
+  await page.goto('/');
+  await page.evaluate(() => document.fonts.ready);
+  const fontState = await page.evaluate(() => ({
+    bodyFamily: getComputedStyle(document.body).fontFamily,
+    manropeAvailable: document.fonts.check('16px "Manrope Variable"', 'Lowcountry Digital Works'),
+    fontOrigins: performance.getEntriesByType('resource')
+      .map(entry => entry.name)
+      .filter(name => /\.(woff2?|ttf|otf)(\?|$)/i.test(name))
+      .map(name => new URL(name).origin),
+    pageOrigin: location.origin,
+  }));
+  expect(fontState.bodyFamily).toContain('Manrope Variable');
+  expect(fontState.manropeAvailable).toBeTruthy();
+  expect(fontState.fontOrigins.length).toBeGreaterThan(0);
+  expect(fontState.fontOrigins.every(origin => origin === fontState.pageOrigin)).toBeTruthy();
+});
+
+test('service card headings remain compact at desktop widths', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto('/services/');
+  const heading = page.locator('.card h2').first();
+  await expect(heading).toBeVisible();
+  const fontSize = await heading.evaluate(element => parseFloat(getComputedStyle(element).fontSize));
+  expect(fontSize).toBeGreaterThanOrEqual(23);
+  expect(fontSize).toBeLessThanOrEqual(28.1);
+});
