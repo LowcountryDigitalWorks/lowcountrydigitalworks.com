@@ -1,35 +1,84 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import home from '../data/home.json';
+import services from '../data/services.json';
+
+const featuredServices = services.items.filter((service) => service.featured);
 ---
 <BaseLayout description="Lowcountry Digital Works builds practical websites, applications, automation, and technical systems with maintainability and client ownership in mind.">
   <section class="section hero">
     <div class="container">
-      <p class="eyebrow">Practical. Maintainable. Yours.</p>
-      <h1>Useful technology, built to remain yours.</h1>
-      <p class="lede">Lowcountry Digital Works builds and improves websites, applications, automation, and digital systems with an emphasis on maintainability, named access, clear documentation, and straightforward handoff.</p>
+      <p class="eyebrow">{home.hero.eyebrow}</p>
+      <h1>{home.hero.title}</h1>
+      <p class="lede">{home.hero.lede}</p>
       <div class="actions"><a class="button" href="/services/">Explore services</a><a class="button button--secondary" href="/contact/">Start a conversation</a></div>
+      <ul class="trust-strip" aria-label="Lowcountry Digital Works priorities">
+        {home.trustPoints.map((point) => <li>{point}</li>)}
+      </ul>
     </div>
   </section>
+
   <section class="section section--warm">
     <div class="container">
-      <p class="eyebrow">What I build</p><h2>Practical systems for real business needs.</h2>
+      <div class="section-heading">
+        <p class="eyebrow">{home.services.eyebrow}</p>
+        <h2>{home.services.title}</h2>
+        <p class="lede">{home.services.intro}</p>
+      </div>
       <div class="grid grid--3">
-        <article class="card"><p class="card__kicker">Web</p><h3>Websites</h3><p>Fast, accessible business sites designed to be easy to maintain and portable.</p></article>
-        <article class="card"><p class="card__kicker">Applications</p><h3>Custom applications</h3><p>Focused tools for workflows that off-the-shelf software does not solve cleanly.</p></article>
-        <article class="card"><p class="card__kicker">Automation</p><h3>Workflow automation</h3><p>Reduce repetitive work and connect practical processes without unnecessary platform sprawl.</p></article>
+        {featuredServices.map((service) => (
+          <article class="card card--accent">
+            <p class="card__kicker">{service.kicker}</p>
+            <h3>{service.name}</h3>
+            <p>{service.description}</p>
+          </article>
+        ))}
       </div>
       <div class="actions"><a href="/services/">See all six service areas</a></div>
     </div>
   </section>
-  <section class="section section--navy">
-    <div class="container principle">
-      <div><p class="eyebrow">Ownership principle</p><h2>Your business should own its digital assets.</h2><p class="lede">Company domains, repositories, hosting, and other critical systems should be held in the right owner accounts, with named role-based access for the people who manage them.</p></div>
-      <ul class="principle__list"><li>Client-owned accounts where practical</li><li>Named access instead of shared credentials</li><li>Portable repositories and open standards</li><li>Documented handoff, recovery, and rollback</li></ul>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-heading">
+        <p class="eyebrow">{home.commonNeeds.eyebrow}</p>
+        <h2>{home.commonNeeds.title}</h2>
+      </div>
+      <div class="grid grid--2">
+        {home.commonNeeds.items.map((item) => <article class="card"><h3>{item.title}</h3><p>{item.description}</p></article>)}
+      </div>
     </div>
   </section>
-  <section class="section">
-    <div class="container"><p class="eyebrow">How I work</p><h2>Assess → Build → Handoff</h2><div class="flow"><article class="flow__step"><h3>Assess</h3><p>Understand the real need, current systems, constraints, ownership, and cost before choosing technology.</p></article><article class="flow__step"><h3>Build</h3><p>Use the simplest maintainable architecture that solves the problem, with accessibility and security treated as normal quality requirements.</p></article><article class="flow__step"><h3>Handoff</h3><p>Leave clear documentation, named access, recovery information, and a system that can be maintained without artificial lock-in.</p></article></div></div>
+
+  <section class="section section--navy">
+    <div class="container principle">
+      <div><p class="eyebrow">{home.ownership.eyebrow}</p><h2>{home.ownership.title}</h2><p class="lede">{home.ownership.lede}</p></div>
+      <ul class="principle__list">{home.ownership.items.map((item) => <li>{item}</li>)}</ul>
+    </div>
   </section>
-  <section class="section section--warm"><div class="container"><p class="eyebrow">Lowcountry roots</p><h2>Local perspective, not a geographic limit.</h2><p class="lede">Lowcountry Digital Works is being established in South Carolina's Lowcountry and can support practical digital work beyond the local area.</p><div class="actions"><a class="button button--secondary" href="/about/">About Lowcountry Digital Works</a></div></div></section>
-  <section class="section"><div class="container readable"><p class="eyebrow">Contact</p><h2>Have a system that needs to work better?</h2><p class="lede">Email Eddie with the problem you are trying to solve. A simple description is enough to start.</p><div class="actions"><a class="button" href="mailto:eddie@lowcountrydigitalworks.com">eddie@lowcountrydigitalworks.com</a></div></div></section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-heading"><p class="eyebrow">{home.process.eyebrow}</p><h2>{home.process.title}</h2></div>
+      <div class="flow">{home.process.steps.map((step) => <article class="flow__step"><h3>{step.title}</h3><p>{step.description}</p></article>)}</div>
+    </div>
+  </section>
+
+  <section class="section section--warm">
+    <div class="container principle">
+      <div><p class="eyebrow">{home.expectations.eyebrow}</p><h2>{home.expectations.title}</h2></div>
+      <ul class="check-list">{home.expectations.items.map((item) => <li>{item}</li>)}</ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container split-callout">
+      <div><p class="eyebrow">{home.local.eyebrow}</p><h2>{home.local.title}</h2><p class="lede">{home.local.lede}</p></div>
+      <div class="actions"><a class="button button--secondary" href="/about/">About Lowcountry Digital Works</a></div>
+    </div>
+  </section>
+
+  <section class="section section--warm">
+    <div class="container readable"><p class="eyebrow">{home.contact.eyebrow}</p><h2>{home.contact.title}</h2><p class="lede">{home.contact.lede}</p><div class="actions"><a class="button" href="mailto:eddie@lowcountrydigitalworks.com">eddie@lowcountrydigitalworks.com</a></div></div>
+  </section>
 </BaseLayout>
