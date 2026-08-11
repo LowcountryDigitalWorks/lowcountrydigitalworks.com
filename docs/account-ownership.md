@@ -6,13 +6,13 @@
 - DNS and website platform: Lowcountry Digital Works account at Cloudflare
 - Website source: `LowcountryDigitalWorks` GitHub organization
 - Business email: Zoho Mail for `eddie@lowcountrydigitalworks.com`
-- Google services identity: `eddie@lowcountrydigitalworks.com` without Gmail hosting
+- Google services identity: pending recreation/recovery as of 2026-08-10; it will not host Gmail, and Zoho remains the email provider
 
 ## GitHub identity model
 
 - `Eddie-LowcountryDigitalWorks` is the primary named business GitHub identity.
-- Additional temporary recovery owners may be retained during establishment while recovery and deployment procedures are validated.
-- The exact temporary-owner and recovery-access inventory is maintained in the private `business-operations` repository rather than this public website repository.
+- Additional named recovery access may be retained while recovery procedures are validated.
+- The exact owner/recovery inventory is maintained in the private `business-operations` repository rather than this public repository.
 
 The long-term target is the minimum number of organization owners needed for safe recovery. New company assets should not be owned by personal accounts.
 

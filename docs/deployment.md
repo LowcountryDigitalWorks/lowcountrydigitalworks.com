@@ -1,33 +1,34 @@
 # Deployment
 
-## Production
+## Target
 
-The intended production platform is Cloudflare Workers Static Assets using the Worker project name `lowcountrydigitalworks` and repository production branch `main`.
+Cloudflare Workers Static Assets remains the platform, using Worker project name `lowcountrydigitalworks` and repository production branch `main`. Astro builds static output to `dist/`, which `wrangler.jsonc` deploys.
 
-A deployment of the website bootstrap and a deployment of Release 0.2 commit `4d7d5f5c8844c642217d13f171c90fe2a313b2a3` were previously confirmed successful through the GitHub/Cloudflare integration. As of 2026-08-10, the expected Worker/application is no longer visible in the Lowcountry Digital Works Cloudflare account. Treat the current Cloudflare platform state as unverified until the account and Worker configuration are inspected read-only. Do not recreate or change infrastructure from assumption.
+## Repository-controlled configuration
 
-Repository bootstrap configuration:
-
-- build command: none
+- build: `npm run build`
+- output: `dist/`
 - deploy command: `npx wrangler deploy`
-- asset directory: `./public`
-- last-known Worker preview: `https://lowcountrydigitalworks.eddie-78a.workers.dev/`
-- non-production branch builds: previously enabled
+- Worker name: `lowcountrydigitalworks`
+
+## Cloudflare Workers Builds
+
+Cloudflare Workers Builds runs an optional build command followed by the deploy command. Framework output such as Astro therefore requires the Worker build configuration to run `npm run build` before `npx wrangler deploy`. Cloudflare documents this under Worker **Settings > Build**.
+
+Cloudflare account access and the existing Worker context were re-verified on 2026-08-10 before Release 0.3 production launch. Do not create a duplicate Worker to work around an authentication/session issue.
+
+If a Release 0.3 preview build fails because the build command is not configured, record the existing Build setting, set the Build command to `npm run build`, keep the Deploy command `npx wrangler deploy`, and use the prior Build setting as rollback. This is a Cloudflare configuration change and must remain documented.
 
 ## Deployment workflow
 
 1. Create a focused branch from current `main`.
-2. Make and validate changes.
+2. Validate build, repository rules, browser/accessibility tests, and dependency audit.
 3. Open a pull request.
-4. Review the diff and applicable preview deployment when the Cloudflare integration is verified available.
-5. Resolve failed checks and review conversations.
-6. Merge through the repository's approved merge method.
-7. Confirm Cloudflare's production build succeeded when deployment infrastructure is available.
-8. Validate the production URL and critical links.
-9. Record notable changes in `CHANGELOG.md`.
-
-## Configuration ownership
-
-The repository owns deployable configuration such as `wrangler.jsonc`. Cloudflare dashboard settings should be documented here when they cannot be represented safely in source control.
+4. Review the Cloudflare branch build/preview result.
+5. Resolve check failures and review conversations.
+6. Obtain the production-launch approval checkpoint.
+7. Squash merge through the protected branch ruleset.
+8. Confirm the production build and validate the production URL, 404, navigation, metadata, and critical links.
+9. Record release state.
 
 Do not store Cloudflare account IDs, API tokens, secrets, or recovery data in the public repository.

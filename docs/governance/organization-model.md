@@ -11,8 +11,8 @@ The `LowcountryDigitalWorks` organization is the authoritative GitHub owner for 
 - `lowcountrydigitalworks.com` — public website source and site-specific documentation
 - `.github` — organization profile, public contribution guidance, public security policy, shared issue templates, and approved workflow templates
 - `website-quality-toolkit` — placeholder repository; populate only after reusable testing utilities are proven across multiple sites
-- `document-control` — active Lowcountry Digital Works product repository; product architecture and implementation are governed by its separate authoritative product thread
-- `secure-exchange` — Lowcountry Digital Works product repository currently at its initial bootstrap state; product architecture and implementation are governed by its separate authoritative product thread
+- `document-control` — active product repository governed by its separate authoritative product thread
+- `secure-exchange` — product repository governed by its separate authoritative product thread
 
 ### Private
 
@@ -21,25 +21,18 @@ The `LowcountryDigitalWorks` organization is the authoritative GitHub owner for 
 
 Product repositories remain separate from website/infrastructure implementation even when they share organization-wide governance, ownership, security, and cost standards.
 
+## Applied public-repository baseline
+
+The five public repositories use the `LDW main governance baseline` on `main`: pull requests are required, zero human approvals are required for the current owner-operated model, review conversations must be resolved, linear history is required, force pushes and protected-branch deletion are blocked, squash merge is the normal merge method, and merged branches are deleted automatically. The website additionally requires its stable `validate` status check.
+
+Secret scanning, secret-scanning push protection, and Dependabot vulnerability alerts are enabled on the public repositories. Paid GitHub security products are not required for the current baseline.
+
+`business-operations` remains private on GitHub Free. It uses repository-controlled validation and documented process rather than making the repository public merely to obtain free branch enforcement.
+
 ## Roles
 
-During establishment, multiple named owner accounts may be retained to reduce lockout risk. The target state is:
+- `Eddie-LowcountryDigitalWorks` is the primary business identity.
+- Recovery access is retained only where justified and is inventoried privately.
+- Shared credentials are not used.
 
-- `Eddie-LowcountryDigitalWorks` as primary business owner;
-- one justified recovery owner;
-- other identities as members or outside collaborators with repository-specific access;
-- no shared credentials.
-
-## Settings target
-
-- require two-factor authentication for organization members;
-- restrict repository creation initially to owners;
-- disable repository deletion and visibility changes for non-owners;
-- use branch protection or rulesets for important repositories;
-- block force pushes and protected-branch deletion;
-- require pull requests and passing checks for meaningful changes;
-- grant GitHub Apps access only to required repositories;
-- enable dependency and secret alerts where available;
-- review owners, members, outside collaborators, and installed apps periodically.
-
-A one-person business should not require a second human approval for every ordinary pull request. Passing checks, resolved conversations, documented impact, and explicit approval for consequential changes provide a practical control baseline.
+Organization-wide 2FA enforcement remains a future checkpoint until all retained recovery identities have verified MFA/recovery readiness.

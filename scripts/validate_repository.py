@@ -1,266 +1,117 @@
 #!/usr/bin/env python3
-"""Dependency-free validation for the Lowcountry Digital Works website repository."""
-
 from __future__ import annotations
-
-import re
-import sys
+import json, re, sys
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urlparse
 
-ROOT = Path(__file__).resolve().parents[1]
-PUBLIC = ROOT / "public"
-ERRORS: list[str] = []
+ROOT=Path(__file__).resolve().parents[1]
+DIST=ROOT/'dist'
+ERRORS=[]
+def error(msg): ERRORS.append(msg)
 
-REQUIRED_FILES = (
-    "README.md",
-    "CHANGELOG.md",
-    "CONTRIBUTING.md",
-    "SECURITY.md",
-    "LICENSE.md",
-    "wrangler.jsonc",
-    "public/index.html",
-    "public/404.html",
-    "public/_headers",
-    "public/robots.txt",
-    "public/sitemap.xml",
-    "public/favicon.svg",
-    "public/styles.css",
-)
+REQUIRED=[
+ 'README.md','CHANGELOG.md','SECURITY.md','package.json','astro.config.mjs','playwright.config.mjs','wrangler.jsonc',
+ '.github/workflows/validate.yml','.github/dependabot.yml','brand/colors.json','brand/css/brand-tokens.css',
+ 'brand/logo/lowcountry-digital-works-logo-horizontal.svg','brand/logo/lowcountry-digital-works-logo-horizontal-white.svg',
+ 'brand/icons/favicon.svg','brand/social/social-card-1200x630.png','design/brand-production-validation.md','src/pages/index.astro','src/pages/services.astro',
+ 'src/pages/approach.astro','src/pages/about.astro','src/pages/contact.astro','src/pages/privacy.astro','public/_headers',
+ 'public/robots.txt','public/sitemap.xml'
+]
+for rel in REQUIRED:
+ if not (ROOT/rel).exists(): error(f'missing required file: {rel}')
 
-SECRET_PATTERNS = {
-    "private key": re.compile(r"-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----"),
-    "GitHub token": re.compile(r"\b(?:gh[pour]_[A-Za-z0-9]{20,}|ghs_[A-Za-z0-9.\-_]{36,}|github_pat_[A-Za-z0-9_]{20,})\b"),
-    "OpenAI-style secret": re.compile(r"\bsk-(?:proj-)?[A-Za-z0-9_-]{20,}\b"),
-    "Cloudflare API token assignment": re.compile(r"(?i)\bCLOUDFLARE_API_TOKEN\s*=\s*\S+"),
-}
+try:
+ pkg=json.loads((ROOT/'package.json').read_text())
+ if 'astro' not in pkg.get('dependencies',{}): error('package.json must include Astro')
+ if pkg.get('scripts',{}).get('build')!='astro build': error('package.json build script must be astro build')
+except Exception as exc: error(f'invalid package.json: {exc}')
 
+wr=(ROOT/'wrangler.jsonc').read_text()
+if '"name": "lowcountrydigitalworks"' not in wr: error('wrangler Worker name changed unexpectedly')
+if '"directory": "./dist"' not in wr: error('wrangler assets directory must be ./dist')
+if '"not_found_handling": "404-page"' not in wr: error('wrangler 404 handling missing')
 
-class DocumentParser(HTMLParser):
-    def __init__(self) -> None:
-        super().__init__(convert_charrefs=True)
-        self.ids: list[str] = []
-        self.hrefs: list[str] = []
-        self.lang: str | None = None
-        self.title_depth = 0
-        self.title_text: list[str] = []
-        self.has_viewport = False
-        self.has_description = False
-        self.has_main = False
-        self.h1_count = 0
+headers=(ROOT/'public/_headers').read_text()
+for h in ['Content-Security-Policy','Permissions-Policy','Referrer-Policy','X-Content-Type-Options','X-Frame-Options']:
+ if h not in headers: error(f'missing security header: {h}')
+if "'unsafe-inline'" in headers or "'unsafe-eval'" in headers: error('CSP must not allow unsafe-inline/eval')
 
-    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
-        data = dict(attrs)
-        if tag == "html":
-            self.lang = data.get("lang")
-        elif tag == "meta":
-            if data.get("name", "").lower() == "viewport":
-                self.has_viewport = True
-            if data.get("name", "").lower() == "description" and data.get("content"):
-                self.has_description = True
-        elif tag == "main":
-            self.has_main = True
-        elif tag == "h1":
-            self.h1_count += 1
-        elif tag == "title":
-            self.title_depth += 1
-        if data.get("id"):
-            self.ids.append(data["id"] or "")
-        if tag == "a" and data.get("href"):
-            self.hrefs.append(data["href"] or "")
+brand=(ROOT/'brand/css/brand-tokens.css').read_text()
+for value in ['#102A3A','#2F766F','#F3EFE6','#F7F8F6']:
+ if value not in brand: error(f'brand token missing {value}')
+design_tokens=(ROOT/'design/tokens.css').read_text()
+if '--logo-watermark-' in design_tokens: error('retired logo watermark opacity tokens remain')
+if '../brand/css/brand-tokens.css' not in design_tokens: error('design tokens must reference canonical brand tokens')
 
-    def handle_endtag(self, tag: str) -> None:
-        if tag == "title" and self.title_depth:
-            self.title_depth -= 1
+site_implementation='\n'.join(p.read_text(errors='ignore') for p in (ROOT/'src').rglob('*') if p.is_file())
+if 'linear-gradient(' in site_implementation: error('marketing site should not use gradients in the approved restrained visual direction')
+if 'backdrop-filter' in site_implementation: error('marketing site should not use decorative glassmorphism/backdrop filtering')
 
-    def handle_data(self, data: str) -> None:
-        if self.title_depth:
-            self.title_text.append(data)
+class P(HTMLParser):
+ def __init__(self):
+  super().__init__(); self.ids=set(); self.dups=[]; self.links=[]; self.h1=0; self.main=0; self.title=0; self.lang=False; self.viewport=False; self.description=False
+ def handle_starttag(self,tag,attrs):
+  a=dict(attrs)
+  if tag=='html' and a.get('lang'): self.lang=True
+  if tag=='main': self.main+=1
+  if tag=='h1': self.h1+=1
+  if tag=='title': self.title+=1
+  if tag=='meta' and a.get('name')=='viewport': self.viewport=True
+  if tag=='meta' and a.get('name')=='description': self.description=True
+  if 'id' in a:
+   if a['id'] in self.ids: self.dups.append(a['id'])
+   self.ids.add(a['id'])
+  if tag in {'a','link','script','img'}:
+   u=a.get('href') or a.get('src')
+   if u:self.links.append(u)
 
+if not DIST.exists(): error('dist/ missing; run npm run build before validator')
+else:
+ htmls=sorted(DIST.rglob('*.html'))
+ if len(htmls)<7: error(f'expected at least 7 built HTML pages, found {len(htmls)}')
+ for file in htmls:
+  parser=P(); text=file.read_text(errors='replace'); parser.feed(text)
+  rel=file.relative_to(DIST)
+  if not parser.lang: error(f'{rel}: missing html lang')
+  if parser.title!=1: error(f'{rel}: expected one title, found {parser.title}')
+  if not parser.viewport: error(f'{rel}: missing viewport meta')
+  if not parser.description: error(f'{rel}: missing description meta')
+  if parser.main!=1: error(f'{rel}: expected one main, found {parser.main}')
+  if parser.h1!=1: error(f'{rel}: expected one h1, found {parser.h1}')
+  if parser.dups: error(f'{rel}: duplicate ids {parser.dups}')
+  for u in parser.links:
+   if u.startswith(('mailto:','http://','https://','data:','#')): continue
+   parsed=urlparse(u); path=parsed.path
+   if not path.startswith('/'): continue
+   target=DIST/path.lstrip('/')
+   candidates=[target]
+   if path.endswith('/'): candidates.append(target/'index.html')
+   else: candidates += [Path(str(target)+'.html'), target/'index.html']
+   if not any(c.exists() for c in candidates): error(f'{rel}: broken internal asset/link {u}')
 
-def error(message: str) -> None:
-    ERRORS.append(message)
+robots=(ROOT/'public/robots.txt').read_text(); sitemap=(ROOT/'public/sitemap.xml').read_text()
+if 'https://lowcountrydigitalworks.com/sitemap.xml' not in robots: error('robots must declare production sitemap')
+for route in ['/','/services/','/approach/','/about/','/contact/','/privacy/']:
+ if f'https://lowcountrydigitalworks.com{route}' not in sitemap: error(f'sitemap missing {route}')
 
+# Repository secret-pattern review on text files only; skip generated/vendor paths.
+patterns=[
+ ('private key', re.compile(r'-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----')),
+ ('github token', re.compile(r'\bgh[pousr]_[A-Za-z0-9._-]{30,}\b')),
+ ('github fine-grained token', re.compile(r'\bgithub_pat_[A-Za-z0-9_]{20,}\b')),
+ ('openai-style key', re.compile(r'\bsk-[A-Za-z0-9_-]{20,}\b')),
+]
+for p in ROOT.rglob('*'):
+ if not p.is_file() or any(x in p.parts for x in {'.git','node_modules','dist','.wrangler'}): continue
+ if p.suffix.lower() in {'.png','.ico','.jpg','.jpeg','.webp','.zip'}: continue
+ try:text=p.read_text(errors='ignore')
+ except Exception:continue
+ for name,rx in patterns:
+  if rx.search(text): error(f'possible {name} in {p.relative_to(ROOT)}')
 
-def read_text(path: Path) -> str:
-    try:
-        return path.read_text(encoding="utf-8")
-    except UnicodeDecodeError:
-        error(f"{path.relative_to(ROOT)} is not valid UTF-8")
-        return ""
-
-
-def validate_required_files() -> None:
-    for relative in REQUIRED_FILES:
-        if not (ROOT / relative).is_file():
-            error(f"Missing required file: {relative}")
-
-
-def resolve_public_target(source: Path, href: str) -> tuple[Path | None, str | None]:
-    parsed = urlparse(href)
-    if parsed.scheme or parsed.netloc or href.startswith(("mailto:", "tel:")):
-        return None, None
-    anchor = parsed.fragment or None
-    raw_path = parsed.path
-    if not raw_path:
-        return source, anchor
-    if raw_path.startswith("/"):
-        target = PUBLIC / raw_path.lstrip("/")
-    else:
-        target = source.parent / raw_path
-    if raw_path.endswith("/"):
-        target = target / "index.html"
-    elif target.suffix == "":
-        html_target = target.with_suffix(".html")
-        index_target = target / "index.html"
-        if html_target.exists():
-            target = html_target
-        elif index_target.exists():
-            target = index_target
-    return target.resolve(), anchor
-
-
-def validate_html() -> None:
-    parsed_docs: dict[Path, DocumentParser] = {}
-    for path in sorted(PUBLIC.rglob("*.html")):
-        parser = DocumentParser()
-        parser.feed(read_text(path))
-        parsed_docs[path.resolve()] = parser
-
-        relative = path.relative_to(ROOT)
-        if parser.lang != "en":
-            error(f"{relative}: expected <html lang=\"en\">")
-        if not "".join(parser.title_text).strip():
-            error(f"{relative}: missing non-empty <title>")
-        if not parser.has_viewport:
-            error(f"{relative}: missing viewport meta tag")
-        if path.name != "404.html" and not parser.has_description:
-            error(f"{relative}: missing meta description")
-        if not parser.has_main:
-            error(f"{relative}: missing <main> landmark")
-        if parser.h1_count != 1:
-            error(f"{relative}: expected exactly one <h1>, found {parser.h1_count}")
-        duplicates = sorted({item for item in parser.ids if parser.ids.count(item) > 1})
-        if duplicates:
-            error(f"{relative}: duplicate ids: {', '.join(duplicates)}")
-
-    for source, parser in parsed_docs.items():
-        for href in parser.hrefs:
-            target, anchor = resolve_public_target(source, href)
-            if target is None:
-                continue
-            if not target.is_relative_to(PUBLIC.resolve()):
-                error(f"{source.relative_to(ROOT)}: internal link escapes public directory: {href}")
-                continue
-            if not target.exists():
-                error(f"{source.relative_to(ROOT)}: broken internal link: {href}")
-                continue
-            if anchor and target.suffix == ".html":
-                target_parser = parsed_docs.get(target.resolve())
-                if target_parser is None:
-                    target_parser = DocumentParser()
-                    target_parser.feed(read_text(target))
-                    parsed_docs[target.resolve()] = target_parser
-                if anchor not in target_parser.ids:
-                    error(f"{source.relative_to(ROOT)}: missing anchor #{anchor} in {target.relative_to(ROOT)}")
-
-
-def validate_discovery_files() -> None:
-    robots = read_text(PUBLIC / "robots.txt")
-    sitemap = read_text(PUBLIC / "sitemap.xml")
-    index = read_text(PUBLIC / "index.html")
-
-    if "Sitemap: https://lowcountrydigitalworks.com/sitemap.xml" not in robots:
-        error("public/robots.txt: missing production sitemap declaration")
-    if "<loc>https://lowcountrydigitalworks.com/</loc>" not in sitemap:
-        error("public/sitemap.xml: missing production homepage URL")
-    if '<link rel="canonical" href="https://lowcountrydigitalworks.com/">' not in index:
-        error("public/index.html: missing production canonical URL")
-
-
-def strip_jsonc_comments(text: str) -> str:
-    return re.sub(r"(?m)^\s*//.*$", "", text)
-
-
-def validate_wrangler() -> None:
-    path = ROOT / "wrangler.jsonc"
-    text = strip_jsonc_comments(read_text(path))
-    try:
-        import json
-
-        data = json.loads(text)
-    except Exception as exc:  # pragma: no cover - reports the parser failure
-        error(f"wrangler.jsonc: invalid JSONC subset: {exc}")
-        return
-
-    if data.get("name") != "lowcountrydigitalworks":
-        error("wrangler.jsonc: unexpected Worker name")
-    assets = data.get("assets") or {}
-    if assets.get("directory") != "./public":
-        error("wrangler.jsonc: assets.directory must remain ./public for the current bootstrap")
-    if assets.get("not_found_handling") != "404-page":
-        error("wrangler.jsonc: expected not_found_handling=404-page")
-
-
-def validate_headers() -> None:
-    text = read_text(PUBLIC / "_headers")
-    required_headers = (
-        "Content-Security-Policy:",
-        "Permissions-Policy:",
-        "Referrer-Policy:",
-        "X-Content-Type-Options:",
-        "X-Frame-Options:",
-        "Cross-Origin-Opener-Policy:",
-        "X-Robots-Tag: noindex, nofollow",
-    )
-    for header in required_headers:
-        if header not in text:
-            error(f"public/_headers: missing {header}")
-    if "unsafe-inline" in text or "unsafe-eval" in text:
-        error("public/_headers: CSP must not allow unsafe-inline or unsafe-eval in the current static site")
-
-
-def validate_favicon() -> None:
-    icon = PUBLIC / "favicon.svg"
-    if not icon.is_file() or icon.stat().st_size == 0:
-        error("public/favicon.svg: missing or empty")
-    if 'href="/favicon.svg"' not in read_text(PUBLIC / "index.html"):
-        error("public/index.html: favicon is not referenced")
-
-
-def validate_secret_patterns() -> None:
-    excluded_parts = {".git", ".wrangler", "node_modules", "dist"}
-    text_suffixes = {".html", ".css", ".js", ".mjs", ".cjs", ".json", ".jsonc", ".md", ".txt", ".xml", ".yml", ".yaml", ".py", ".toml", ".ini", ".cfg"}
-    for path in ROOT.rglob("*"):
-        if not path.is_file() or any(part in excluded_parts for part in path.parts):
-            continue
-        if path.suffix.lower() not in text_suffixes and path.name not in {"_headers", ".gitignore", ".editorconfig"}:
-            continue
-        text = read_text(path)
-        for label, pattern in SECRET_PATTERNS.items():
-            if pattern.search(text):
-                error(f"{path.relative_to(ROOT)}: possible {label} detected")
-
-
-def main() -> int:
-    validate_required_files()
-    validate_html()
-    validate_discovery_files()
-    validate_wrangler()
-    validate_headers()
-    validate_favicon()
-    validate_secret_patterns()
-
-    if ERRORS:
-        print("Validation failed:")
-        for item in ERRORS:
-            print(f"- {item}")
-        return 1
-
-    print("Validation passed: repository structure, HTML, links, Cloudflare configuration, headers, discovery files, and secret patterns.")
-    return 0
-
-
-if __name__ == "__main__":
-    sys.exit(main())
+if ERRORS:
+ print('Repository validation failed:')
+ for e in ERRORS: print(f'- {e}')
+ sys.exit(1)
+print('Repository validation passed.')

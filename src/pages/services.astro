@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const services=[
+['Websites','Lightweight, accessible business websites with maintainable source, sensible hosting, and clear ownership.'],
+['Custom Applications','Focused web or offline applications shaped around the workflow instead of forcing the workflow around a product.'],
+['Workflow Automation','Practical automation for repetitive processes, handoffs, document movement, and system-to-system tasks when justified.'],
+['Technical Consulting','Architecture, troubleshooting, technical planning, platform choices, and practical problem-solving without unnecessary product sales.'],
+['Platform & Account Transitions','Organized movement of domains, repositories, hosting, access, and related digital assets toward clear business or client ownership.'],
+['Maintenance & Improvement','Ongoing fixes, accessibility and performance improvements, dependency updates, documentation, and measured modernization.']
+];
+---
+<BaseLayout title="Services" description="Websites, custom applications, workflow automation, technical consulting, platform transitions, and maintenance from Lowcountry Digital Works.">
+<section class="page-hero"><div class="container readable"><p class="eyebrow">Services</p><h1>Digital work sized to the actual problem.</h1><p class="lede">The goal is not to introduce the most technology. It is to build or improve a system that is useful, maintainable, appropriately secure, and clearly owned.</p></div></section>
+<section class="section"><div class="container grid grid--3">{services.map(([name,desc]) => <article class="card"><h2>{name}</h2><p>{desc}</p></article>)}</div></section>
+<section class="section section--warm"><div class="container readable"><h2>Not every project needs a platform.</h2><p>Static hosting, open formats, portable repositories, and low recurring costs are preferred when they meet the requirement. Databases, authentication services, paid SaaS, or other infrastructure should earn their place.</p><div class="actions"><a class="button" href="/contact/">Discuss a need</a></div></div></section>
+</BaseLayout>

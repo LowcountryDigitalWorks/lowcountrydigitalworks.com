@@ -1,0 +1,26 @@
+{
+  "estuary_navy": {
+    "hex": "#102A3A",
+    "usage": "Primary structural logo color; primary text; dark surfaces"
+  },
+  "cypress_teal": {
+    "hex": "#2F766F",
+    "usage": "Tidal Framework W; accents; interactive brand color"
+  },
+  "warm_oyster": {
+    "hex": "#F3EFE6",
+    "usage": "Warm light background"
+  },
+  "soft_white": {
+    "hex": "#F7F8F6",
+    "usage": "Default light UI background"
+  },
+  "white": {
+    "hex": "#FFFFFF",
+    "usage": "Reversed logo and surfaces"
+  },
+  "black": {
+    "hex": "#000000",
+    "usage": "Single-color reproduction"
+  }
+}

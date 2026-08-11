@@ -1,4 +1,4 @@
-# Organization Profile Draft
+# Organization Profile Reference
 
 ## Lowcountry Digital Works
 
@@ -10,4 +10,4 @@ Website: [lowcountrydigitalworks.com](https://lowcountrydigitalworks.com)
 
 Contact: `eddie@lowcountrydigitalworks.com`
 
-This historical draft informed the current public `LowcountryDigitalWorks/.github` organization profile. The permanent website and brand presentation remain subject to the authoritative brand workstream.
+The public organization profile is maintained in the organization-owned `.github` repository. This file remains a website-repository reference and must not independently redefine the organization profile.

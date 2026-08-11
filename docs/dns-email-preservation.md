@@ -3,7 +3,7 @@
 ## Governing rules
 
 - Porkbun remains the registrar.
-- Cloudflare is the intended authoritative DNS provider and website platform.
+- Cloudflare is the authoritative DNS provider and website platform when configured for the domain.
 - Zoho Mail remains the email provider for `eddie@lowcountrydigitalworks.com`.
 - Cloudflare Email Routing must not be enabled.
 - Nameserver and DNS changes require a recorded current state, proposed state, rollback path, and explicit approval.
@@ -17,21 +17,21 @@ The authoritative DNS zone must preserve:
 - the Zoho DKIM selector and public key;
 - DMARC when present or deliberately introduced;
 - Zoho ownership verification;
-- Google verification records;
+- Google verification records when applicable and still required;
 - any still-required certificate-validation records;
 - approved website and redirect records.
 
 Email-related records must remain DNS-only where Cloudflare offers a proxy choice.
 
-## 2026-08-07 migration status
+## Migration record
 
-- Porkbun nameservers were replaced with the Cloudflare nameservers assigned to the zone.
-- DNSSEC was off and the registry showed no DS records before the change.
-- Cloudflare was waiting for nameserver propagation.
-- Imported Zoho MX, SPF, verification, and DKIM records were preserved.
-- Porkbun parking and forwarding records remain temporary until the Cloudflare zone becomes active and the Worker custom domain is attached.
+- Porkbun remains the registrar.
+- Cloudflare nameservers were assigned during the 2026-08-07 migration.
+- Zoho mail-related records were preserved during migration.
+- On 2026-08-10, Cloudflare account access and the existing Worker context were re-verified; no duplicate Worker was created.
+- The non-Gmail Google services identity is pending recreation/recovery separately and must not change Zoho mail routing.
 
-## Validation after activation
+## Validation for consequential DNS changes
 
 Validate:
 
@@ -42,4 +42,4 @@ Validate:
 5. SPF and DKIM authentication results;
 6. DMARC status;
 7. absence of Cloudflare Email Routing;
-8. removal of obsolete Porkbun parking and wildcard records only after replacement paths work.
+8. removal of obsolete parking/forwarding records only after replacement paths work.

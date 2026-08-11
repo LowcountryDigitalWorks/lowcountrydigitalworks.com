@@ -1,0 +1,24 @@
+{
+  "name": "lowcountrydigitalworks.com",
+  "version": "0.3.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "brand:sync": "node scripts/sync-brand.mjs",
+    "predev": "npm run brand:sync",
+    "dev": "astro dev",
+    "prebuild": "npm run brand:sync",
+    "build": "astro build",
+    "preview": "astro preview",
+    "test:e2e": "playwright test",
+    "validate": "npm run build && python scripts/validate_repository.py"
+  },
+  "dependencies": {
+    "astro": "^7.1.6"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.12.1",
+    "@playwright/test": "^1.62.1",
+    "wrangler": "^4.120.1"
+  }
+}
