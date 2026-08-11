@@ -4,7 +4,7 @@
 
 Fast, accessible, secure, low-cost, portable, and straightforward to maintain. Infrastructure is added only for a concrete requirement.
 
-## Release 0.4 architecture
+## Release 0.5 architecture
 
 - Source owner: `LowcountryDigitalWorks` GitHub organization
 - Repository: `LowcountryDigitalWorks/lowcountrydigitalworks.com`
@@ -14,7 +14,9 @@ Fast, accessible, secure, low-cost, portable, and straightforward to maintain. I
 - Worker project name: `lowcountrydigitalworks`
 - Production branch: `main`
 - Public business content: repository-controlled JSON under `src/data/`
+- Selected work and technology content: `src/data/work.json`
 - Page structure/presentation: Astro under `src/pages/`, shared components, and `src/styles/`
+- Technology marks: same-origin static SVG files under `public/technology/`
 - Database: none
 - Server-side application code: none
 - Analytics/nonessential cookies: none
@@ -26,11 +28,17 @@ Astro is used as a maintainability/build layer, not as a browser application fra
 
 Routine copy changes should normally update `src/data/*.json` rather than page markup. The protected-main pull-request, validation, preview, and squash-merge workflow still applies to content changes. See `docs/content-editing.md`.
 
+## Work and technology presentation
+
+Release 0.5 adds a public Work page and a Home-page work/technology summary. It deliberately distinguishes live work from products in active development so the website does not imply completed client engagements that do not exist.
+
+Technology marks are stored locally and have no third-party runtime dependency. They are descriptive identifiers only and do not imply sponsorship, partnership, certification, or endorsement. See `docs/technology-marks.md`.
+
 ## Brand and design
 
 Production Brand Package v2 under `brand/` is authoritative for raw brand colors and logo/icon masters. `design/` holds the reconciled semantic UX system. The production logo must not be altered with opacity/transparency.
 
-Release 0.4 adds content-density and presentation polish within that established system; it does not reopen the Tidal Framework mark, palette, typography direction, or production brand package.
+Release 0.5 extends content density and presentation within the established Tidal Framework system; it does not reopen the mark, palette, typography direction, or production brand package.
 
 ## Optional content editing UI
 

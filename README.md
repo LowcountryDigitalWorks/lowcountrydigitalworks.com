@@ -4,7 +4,7 @@ Public source repository for the Lowcountry Digital Works website at [lowcountry
 
 ## Status
 
-Release 0.4 builds on the permanent Astro/Tidal Framework foundation with richer public content, restrained visual polish, and a repository-controlled content layer for routine copy edits. The deployment target remains Cloudflare Workers Static Assets.
+Release 0.5 builds on the permanent Astro/Tidal Framework foundation with a truthful selected-work showcase, locally hosted technology marks, and continued repository-controlled content editing. The deployment target remains Cloudflare Workers Static Assets.
 
 Cloudflare account access and the existing Worker context were re-verified on 2026-08-10 before production launch. No duplicate Worker or replacement DNS infrastructure was created. Zoho Mail remains the email provider and must not be disrupted by website changes.
 
@@ -25,6 +25,8 @@ Company-owned repositories and infrastructure remain organization-owned. Individ
 - Astro static output to `dist/`;
 - Cloudflare Workers Static Assets;
 - repository-controlled public copy under `src/data/`;
+- selected work/technology content under `src/data/work.json`;
+- local same-origin technology SVG marks under `public/technology/`;
 - no React or browser application framework;
 - no database, CMS, authentication, analytics, or server-side customer-data processing;
 - no public contact form;
@@ -38,7 +40,9 @@ See [docs/architecture.md](docs/architecture.md).
 
 Routine business copy is separated from page structure. Edit the JSON files under `src/data/` through a branch and pull request, then use the normal CI and Cloudflare branch preview before merge.
 
-See [docs/content-editing.md](docs/content-editing.md).
+The selected-work statuses are intentionally explicit: live work is labeled **Live**, while unfinished LDW products are labeled **Active Development** rather than being presented as completed client engagements.
+
+See [docs/content-editing.md](docs/content-editing.md) and [docs/technology-marks.md](docs/technology-marks.md).
 
 Pages CMS is only a future candidate for a friendlier editing UI. It is not currently installed or authorized because its GitHub App permissions and protected-main workflow must be reviewed separately first.
 

@@ -6,11 +6,16 @@ Lowcountry Digital Works keeps public business copy in simple repository-control
 
 - `src/data/home.json` — Home-page hero, priorities, common starting points, ownership, process, expectations, local context, and contact call-to-action.
 - `src/data/services.json` — Service descriptions, examples, featured services, starting points, and the platform/cost note.
+- `src/data/work.json` — selected work/project status, technology names/descriptions, and the Work-page architecture principle.
 - `src/data/approach.json` — Assess/Build/Handoff copy, planning questions, operating principles, and handoff guidance.
 - `src/data/about.json` — About-page positioning, principles, lean-business explanation, and fit statement.
 - `src/data/contact.json` — Contact guidance, helpful first-message details, email address, safety note, and next-step explanation.
 
 The Astro files under `src/pages/` own page structure and presentation. Routine copy edits should normally change the JSON content files rather than the Astro layout files.
+
+For `work.json`, keep project status truthful. A product still being designed or implemented should remain labeled **Active Development** rather than being presented as completed client work. Do not add clients, testimonials, partnerships, certifications, or deployment claims unless they are authoritative and approved for public use.
+
+Technology marks under `public/technology/` are structural assets rather than routine copy. See `docs/technology-marks.md` before adding or replacing one.
 
 ## Simplest safe edit from GitHub
 

@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import home from '../data/home.json';
 import services from '../data/services.json';
+import work from '../data/work.json';
 
 const featuredServices = services.items.filter((service) => service.featured);
 ---
@@ -11,7 +12,7 @@ const featuredServices = services.items.filter((service) => service.featured);
       <p class="eyebrow">{home.hero.eyebrow}</p>
       <h1>{home.hero.title}</h1>
       <p class="lede">{home.hero.lede}</p>
-      <div class="actions"><a class="button" href="/services/">Explore services</a><a class="button button--secondary" href="/contact/">Start a conversation</a></div>
+      <div class="actions"><a class="button" href="/services/">Explore services</a><a class="button button--secondary" href="/work/">See selected work</a></div>
       <ul class="trust-strip" aria-label="Lowcountry Digital Works priorities">
         {home.trustPoints.map((point) => <li>{point}</li>)}
       </ul>
@@ -35,6 +36,44 @@ const featuredServices = services.items.filter((service) => service.featured);
         ))}
       </div>
       <div class="actions"><a href="/services/">See all six service areas</a></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-heading">
+        <p class="eyebrow">Selected work</p>
+        <h2>Live work and products in active development.</h2>
+        <p class="lede">The business is still being established, so project status is shown plainly rather than presenting unfinished products as completed client work.</p>
+      </div>
+      <div class="grid grid--3">
+        {work.projects.map((project) => (
+          <article class="card work-card work-card--compact">
+            <div class="work-card__meta"><span class={`status-pill ${project.status === 'Live' ? 'status-pill--live' : ''}`}>{project.status}</span></div>
+            <h3>{project.name}</h3>
+            <p>{project.description}</p>
+          </article>
+        ))}
+      </div>
+      <div class="actions"><a class="button button--secondary" href="/work/">Explore the work</a></div>
+    </div>
+  </section>
+
+  <section class="section section--warm">
+    <div class="container">
+      <div class="section-heading">
+        <p class="eyebrow">{work.technology.eyebrow}</p>
+        <h2>{work.technology.title}</h2>
+        <p class="lede">{work.technology.lede}</p>
+      </div>
+      <div class="technology-grid technology-grid--compact">
+        {work.technology.items.map((technology) => (
+          <article class="technology-card">
+            <img src={technology.icon} alt="" width="40" height="40" loading="lazy" />
+            <div><h3>{technology.name}</h3><p>{technology.description}</p></div>
+          </article>
+        ))}
+      </div>
     </div>
   </section>
 

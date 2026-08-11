@@ -1,0 +1,60 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import work from '../data/work.json';
+---
+<BaseLayout title="Work" description="Selected Lowcountry Digital Works websites and products, including live work and applications in active development.">
+  <section class="page-hero">
+    <div class="container readable">
+      <p class="eyebrow">{work.hero.eyebrow}</p>
+      <h1>{work.hero.title}</h1>
+      <p class="lede">{work.hero.lede}</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="work-grid">
+        {work.projects.map((project) => (
+          <article class="card work-card">
+            <div class="work-card__meta">
+              <span class={`status-pill ${project.status === 'Live' ? 'status-pill--live' : ''}`}>{project.status}</span>
+              <span>{project.type}</span>
+            </div>
+            <h2>{project.name}</h2>
+            <p>{project.description}</p>
+            <ul class="card__list">{project.highlights.map((highlight) => <li>{highlight}</li>)}</ul>
+            {project.href && <div class="actions"><a href={project.href}>View live website</a></div>}
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--warm">
+    <div class="container">
+      <div class="section-heading">
+        <p class="eyebrow">{work.technology.eyebrow}</p>
+        <h2>{work.technology.title}</h2>
+        <p class="lede">{work.technology.lede}</p>
+      </div>
+      <div class="technology-grid">
+        {work.technology.items.map((technology) => (
+          <article class="technology-card">
+            <img src={technology.icon} alt="" width="40" height="40" loading="lazy" />
+            <div><h3>{technology.name}</h3><p>{technology.description}</p></div>
+          </article>
+        ))}
+      </div>
+      <p class="trademark-note">{work.technology.trademarkNote}</p>
+    </div>
+  </section>
+
+  <section class="section section--navy">
+    <div class="container readable">
+      <p class="eyebrow">{work.principle.eyebrow}</p>
+      <h2>{work.principle.title}</h2>
+      <p class="lede">{work.principle.body}</p>
+      <div class="actions"><a class="button button--secondary" href="/contact/">Discuss a project</a></div>
+    </div>
+  </section>
+</BaseLayout>
