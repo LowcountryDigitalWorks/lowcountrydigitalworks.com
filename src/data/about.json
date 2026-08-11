@@ -1,0 +1,41 @@
+{
+  "hero": {
+    "eyebrow": "About",
+    "title": "Small by design. Practical by default.",
+    "lede": "Lowcountry Digital Works is being established as a small digital services business focused on useful websites, applications, automation, technical problem-solving, and maintainable digital systems."
+  },
+  "principles": [
+    {
+      "title": "Lowcountry roots",
+      "description": "The business is based in South Carolina's Lowcountry. Local context matters, but the work is not restricted to one geography."
+    },
+    {
+      "title": "Clear ownership",
+      "description": "Company and client assets should be held in the right owner accounts with named access, documented handoff, and a practical recovery path."
+    },
+    {
+      "title": "Technology in proportion",
+      "description": "Static hosting and simple architectures are preferred when they solve the problem. More infrastructure is added only when a real requirement justifies it."
+    },
+    {
+      "title": "Work that can be explained",
+      "description": "Documentation, testing, and understandable tradeoffs are part of the deliverable rather than an afterthought."
+    }
+  ],
+  "whySmall": {
+    "eyebrow": "Why this model",
+    "title": "A small business can still use disciplined technical practices.",
+    "body": "Lowcountry Digital Works is intentionally starting lean. That means avoiding invented scale, unnecessary subscriptions, and complicated systems that only make sense for a much larger operation. The aim is to pair practical delivery with the habits that make technology easier to own and maintain.",
+    "items": [
+      "Direct communication about the actual problem",
+      "Cost-conscious architecture and tooling",
+      "Documented decisions instead of hidden knowledge",
+      "A clear path for handoff, maintenance, or future growth"
+    ]
+  },
+  "fit": {
+    "eyebrow": "A good fit",
+    "title": "Work where clarity and maintainability matter.",
+    "body": "The best fit is a business, professional practice, team, or individual with a concrete digital problem to solve and a preference for understandable systems over unnecessary complexity."
+  }
+}
