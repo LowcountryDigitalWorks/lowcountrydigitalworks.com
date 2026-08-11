@@ -15,8 +15,9 @@ REQUIRED=[
  '.github/workflows/validate.yml','.github/dependabot.yml','brand/colors.json','brand/css/brand-tokens.css',
  'brand/logo/lowcountry-digital-works-logo-horizontal.svg','brand/logo/lowcountry-digital-works-logo-horizontal-white.svg',
  'brand/icons/favicon.svg','brand/social/social-card-1200x630.png','design/brand-production-validation.md','src/pages/index.astro','src/pages/services.astro',
- 'src/pages/approach.astro','src/pages/about.astro','src/pages/contact.astro','src/pages/privacy.astro','public/_headers',
- 'public/robots.txt','public/sitemap.xml'
+ 'src/pages/work.astro','src/pages/approach.astro','src/pages/about.astro','src/pages/contact.astro','src/pages/privacy.astro','src/data/work.json',
+ 'public/technology/github.svg','public/technology/cloudflare.svg','public/technology/astro.svg','public/technology/typescript.svg','public/technology/python.svg',
+ 'docs/technology-marks.md','public/_headers','public/robots.txt','public/sitemap.xml'
 ]
 for rel in REQUIRED:
  if not (ROOT/rel).exists(): error(f'missing required file: {rel}')
@@ -69,7 +70,7 @@ class P(HTMLParser):
 if not DIST.exists(): error('dist/ missing; run npm run build before validator')
 else:
  htmls=sorted(DIST.rglob('*.html'))
- if len(htmls)<7: error(f'expected at least 7 built HTML pages, found {len(htmls)}')
+ if len(htmls)<8: error(f'expected at least 8 built HTML pages, found {len(htmls)}')
  for file in htmls:
   parser=P(); text=file.read_text(errors='replace'); parser.feed(text)
   rel=file.relative_to(DIST)
@@ -91,8 +92,10 @@ else:
    if not any(c.exists() for c in candidates): error(f'{rel}: broken internal asset/link {u}')
 
 robots=(ROOT/'public/robots.txt').read_text(); sitemap=(ROOT/'public/sitemap.xml').read_text()
+for icon in ['github.svg','cloudflare.svg','astro.svg','typescript.svg','python.svg']:
+ if not (ROOT/'public'/'technology'/icon).read_text(errors='ignore').lstrip().startswith('<svg'): error(f'invalid technology SVG: {icon}')
 if 'https://lowcountrydigitalworks.com/sitemap.xml' not in robots: error('robots must declare production sitemap')
-for route in ['/','/services/','/approach/','/about/','/contact/','/privacy/']:
+for route in ['/','/services/','/work/','/approach/','/about/','/contact/','/privacy/']:
  if f'https://lowcountrydigitalworks.com{route}' not in sitemap: error(f'sitemap missing {route}')
 
 # Repository secret-pattern review on text files only; skip generated/vendor paths.
