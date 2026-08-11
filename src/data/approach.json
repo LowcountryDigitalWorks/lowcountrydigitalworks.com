@@ -1,0 +1,59 @@
+{
+  "hero": {
+    "eyebrow": "Approach",
+    "title": "Start with the need. Keep the solution understandable.",
+    "lede": "Good technical work should leave a business with clearer ownership and fewer avoidable surprises, not a system that only one person can operate."
+  },
+  "steps": [
+    {
+      "title": "Assess",
+      "description": "Inventory the current state, clarify the outcome, identify constraints, and understand ownership, cost, privacy, security, and maintenance requirements."
+    },
+    {
+      "title": "Build",
+      "description": "Choose a proportionate architecture, work through version-controlled changes, test what matters, and avoid recurring services that exist only for convenience."
+    },
+    {
+      "title": "Handoff",
+      "description": "Document deployment, access, recovery, rollback, and maintenance. Put business assets in the appropriate owner accounts and use named access for administration."
+    }
+  ],
+  "beforeBuild": {
+    "eyebrow": "Before choosing technology",
+    "title": "A few questions usually matter more than the framework.",
+    "items": [
+      {
+        "title": "What outcome actually matters?",
+        "description": "Define the business result first so the implementation does not become the goal."
+      },
+      {
+        "title": "What already works?",
+        "description": "Preserve useful systems and data where practical instead of replacing everything by default."
+      },
+      {
+        "title": "Who should own it?",
+        "description": "Domains, repositories, hosting, data, and administrative access should have a clear owner and recovery path."
+      },
+      {
+        "title": "What will it cost to keep?",
+        "description": "Consider recurring services, maintenance effort, portability, and future change before adding infrastructure."
+      }
+    ]
+  },
+  "principles": {
+    "eyebrow": "Operating principles",
+    "title": "Maintainable by design.",
+    "items": [
+      "Accessible and responsive interfaces",
+      "Secure named access and least practical privilege",
+      "Open standards and portable source",
+      "Low recurring cost where practical",
+      "Clear testing, documentation, and rollback"
+    ]
+  },
+  "handoff": {
+    "eyebrow": "The finish matters",
+    "title": "A project should not become a dependency on the person who built it.",
+    "body": "The final state should make ownership, deployment, access, maintenance, and recovery understandable. When continued support makes sense, it can be provided without turning basic ownership into a subscription requirement."
+  }
+}

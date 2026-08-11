@@ -1,8 +1,20 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import approach from '../data/approach.json';
 ---
 <BaseLayout title="Approach" description="A practical Assess, Build, Handoff approach focused on maintainability, ownership, accessibility, security, and clear documentation.">
-<section class="page-hero"><div class="container readable"><p class="eyebrow">Approach</p><h1>Start with the need. Keep the solution understandable.</h1><p class="lede">Good technical work should leave a business with clearer ownership and fewer avoidable surprises, not a system that only one person can operate.</p></div></section>
-<section class="section"><div class="container"><div class="flow"><article class="flow__step"><h2>Assess</h2><p>Inventory the current state, clarify the outcome, identify constraints, and understand ownership, cost, privacy, security, and maintenance requirements.</p></article><article class="flow__step"><h2>Build</h2><p>Choose a proportionate architecture, work through version-controlled changes, test what matters, and avoid recurring services that exist only for convenience.</p></article><article class="flow__step"><h2>Handoff</h2><p>Document deployment, access, recovery, rollback, and maintenance. Put business assets in the appropriate owner accounts and use named access for administration.</p></article></div></div></section>
-<section class="section section--navy"><div class="container principle"><div><p class="eyebrow">Operating principles</p><h2>Maintainable by design.</h2></div><ul class="principle__list"><li>Accessible and responsive interfaces</li><li>Secure named access and least practical privilege</li><li>Open standards and portable source</li><li>Low recurring cost where practical</li><li>Clear testing, documentation, and rollback</li></ul></div></section>
+  <section class="page-hero"><div class="container readable"><p class="eyebrow">{approach.hero.eyebrow}</p><h1>{approach.hero.title}</h1><p class="lede">{approach.hero.lede}</p></div></section>
+
+  <section class="section"><div class="container"><div class="flow">{approach.steps.map((step) => <article class="flow__step"><h2>{step.title}</h2><p>{step.description}</p></article>)}</div></div></section>
+
+  <section class="section section--warm">
+    <div class="container">
+      <div class="section-heading"><p class="eyebrow">{approach.beforeBuild.eyebrow}</p><h2>{approach.beforeBuild.title}</h2></div>
+      <div class="grid grid--2">{approach.beforeBuild.items.map((item) => <article class="card"><h3>{item.title}</h3><p>{item.description}</p></article>)}</div>
+    </div>
+  </section>
+
+  <section class="section section--navy"><div class="container principle"><div><p class="eyebrow">{approach.principles.eyebrow}</p><h2>{approach.principles.title}</h2></div><ul class="principle__list">{approach.principles.items.map((item) => <li>{item}</li>)}</ul></div></section>
+
+  <section class="section"><div class="container readable"><p class="eyebrow">{approach.handoff.eyebrow}</p><h2>{approach.handoff.title}</h2><p class="lede">{approach.handoff.body}</p><div class="actions"><a class="button" href="/contact/">Discuss a project</a></div></div></section>
 </BaseLayout>

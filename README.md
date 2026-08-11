@@ -4,7 +4,7 @@ Public source repository for the Lowcountry Digital Works website at [lowcountry
 
 ## Status
 
-Release 0.3 establishes the permanent site foundation: Astro static output, the authoritative Tidal Framework Production Brand Package v2, and the approved Lowcountry Digital Works UX system. The deployment target remains Cloudflare Workers Static Assets.
+Release 0.4 builds on the permanent Astro/Tidal Framework foundation with richer public content, restrained visual polish, and a repository-controlled content layer for routine copy edits. The deployment target remains Cloudflare Workers Static Assets.
 
 Cloudflare account access and the existing Worker context were re-verified on 2026-08-10 before production launch. No duplicate Worker or replacement DNS infrastructure was created. Zoho Mail remains the email provider and must not be disrupted by website changes.
 
@@ -24,6 +24,7 @@ Company-owned repositories and infrastructure remain organization-owned. Individ
 
 - Astro static output to `dist/`;
 - Cloudflare Workers Static Assets;
+- repository-controlled public copy under `src/data/`;
 - no React or browser application framework;
 - no database, CMS, authentication, analytics, or server-side customer-data processing;
 - no public contact form;
@@ -32,6 +33,14 @@ Company-owned repositories and infrastructure remain organization-owned. Individ
 - approved UX/design guidance under `design/`.
 
 See [docs/architecture.md](docs/architecture.md).
+
+## Editing website content
+
+Routine business copy is separated from page structure. Edit the JSON files under `src/data/` through a branch and pull request, then use the normal CI and Cloudflare branch preview before merge.
+
+See [docs/content-editing.md](docs/content-editing.md).
+
+Pages CMS is only a future candidate for a friendlier editing UI. It is not currently installed or authorized because its GitHub App permissions and protected-main workflow must be reviewed separately first.
 
 ## Development
 
@@ -45,7 +54,7 @@ npx playwright install chromium
 npm run test:e2e
 ```
 
-Once the initial Release 0.3 lockfile is committed, normal clean installs should use `npm ci`.
+Once the initial lockfile strategy is finalized in the repository, normal clean installs should use the documented authoritative install command.
 
 ## Brand and UX authority
 

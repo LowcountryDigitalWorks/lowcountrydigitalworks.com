@@ -1,0 +1,28 @@
+{
+  "hero": {
+    "eyebrow": "Contact",
+    "title": "Start with the problem you need to solve.",
+    "lede": "You do not need a detailed technical specification. A short description of what is happening now and what you want to improve is enough to start a conversation."
+  },
+  "helpfulDetails": {
+    "eyebrow": "Helpful context",
+    "title": "A few details can make the first conversation more useful.",
+    "items": [
+      "What you are trying to accomplish",
+      "What is happening today",
+      "What feels slow, confusing, manual, expensive, or unreliable",
+      "Any deadline, platform, ownership, or budget constraint that already matters"
+    ]
+  },
+  "email": {
+    "title": "Email Eddie",
+    "address": "eddie@lowcountrydigitalworks.com",
+    "noteTitle": "Please keep ordinary email appropriate for ordinary email.",
+    "noteBody": "Do not send passwords, MFA or recovery codes, private keys, API tokens, payment-card information, PHI, or other sensitive secrets in an initial message."
+  },
+  "whatNext": {
+    "eyebrow": "What happens next",
+    "title": "Clarify the need before prescribing the solution.",
+    "body": "The first step is to understand the current situation, the desired outcome, and any important constraints. From there, the work can be scoped around the smallest practical solution rather than starting with a predetermined product or platform."
+  }
+}

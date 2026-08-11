@@ -19,6 +19,16 @@ test('production brand assets are used in header and footer', async ({ page }) =
   await expect(page.locator('footer img[src*="logo-horizontal-white.svg"]')).toBeVisible();
 });
 
+test('editable content layer renders richer home and service content', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.getByText('You do not need to arrive with a technical specification.')).toBeVisible();
+  await expect(page.locator('.trust-strip li')).toHaveCount(3);
+
+  await page.goto('/services/');
+  await expect(page.locator('.service-card')).toHaveCount(6);
+  await expect(page.locator('.service-card').first().locator('.card__list li')).toHaveCount(4);
+});
+
 test('contact is email-only and exposes no public form', async ({ page }) => {
   await page.goto('/contact/');
   const primaryEmailLink = page.locator('#main-content a[href="mailto:eddie@lowcountrydigitalworks.com"]').first();

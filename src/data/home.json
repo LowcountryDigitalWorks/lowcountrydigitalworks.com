@@ -1,0 +1,88 @@
+{
+  "hero": {
+    "eyebrow": "Practical. Maintainable. Yours.",
+    "title": "Useful technology, built to remain yours.",
+    "lede": "Lowcountry Digital Works builds and improves websites, applications, automation, and digital systems with an emphasis on maintainability, named access, clear documentation, and straightforward handoff."
+  },
+  "trustPoints": [
+    "Client-owned assets where practical",
+    "Low recurring cost by default",
+    "Clear handoff and recovery documentation"
+  ],
+  "services": {
+    "eyebrow": "What I build",
+    "title": "Practical systems for real business needs.",
+    "intro": "Projects can be as focused as a website refresh or as involved as a custom workflow tool. The common thread is choosing technology in proportion to the problem."
+  },
+  "commonNeeds": {
+    "eyebrow": "Common starting points",
+    "title": "You do not need to arrive with a technical specification.",
+    "items": [
+      {
+        "title": "“Our website needs to look and work better.”",
+        "description": "Improve the existing experience, rebuild only what is justified, and leave the source and hosting understandable."
+      },
+      {
+        "title": "“We keep doing this task by hand.”",
+        "description": "Map the repetitive process and decide whether a small application, script, or automation can remove the friction."
+      },
+      {
+        "title": "“Nobody is sure who owns this account.”",
+        "description": "Inventory domains, repositories, hosting, and access so business assets end up under the right owner with named administration."
+      },
+      {
+        "title": "“The tool we have almost works.”",
+        "description": "Troubleshoot what exists, preserve the useful pieces, and make targeted improvements before replacing an entire system."
+      }
+    ]
+  },
+  "ownership": {
+    "eyebrow": "Ownership principle",
+    "title": "Your business should own its digital assets.",
+    "lede": "Company domains, repositories, hosting, and other critical systems should be held in the right owner accounts, with named role-based access for the people who manage them.",
+    "items": [
+      "Client-owned accounts where practical",
+      "Named access instead of shared credentials",
+      "Portable repositories and open standards",
+      "Documented handoff, recovery, and rollback"
+    ]
+  },
+  "process": {
+    "eyebrow": "How I work",
+    "title": "Assess → Build → Handoff",
+    "steps": [
+      {
+        "title": "Assess",
+        "description": "Understand the real need, current systems, constraints, ownership, and cost before choosing technology."
+      },
+      {
+        "title": "Build",
+        "description": "Use the simplest maintainable architecture that solves the problem, with accessibility and security treated as normal quality requirements."
+      },
+      {
+        "title": "Handoff",
+        "description": "Leave clear documentation, named access, recovery information, and a system that can be maintained without artificial lock-in."
+      }
+    ]
+  },
+  "expectations": {
+    "eyebrow": "What to expect",
+    "title": "Straightforward technical work without unnecessary platform sprawl.",
+    "items": [
+      "Requirements and tradeoffs explained in plain language",
+      "Version-controlled work and practical validation",
+      "Accessibility, security, and maintainability treated as baseline quality",
+      "Recurring services proposed only when they have a clear purpose"
+    ]
+  },
+  "local": {
+    "eyebrow": "Lowcountry roots",
+    "title": "Local perspective, not a geographic limit.",
+    "lede": "Lowcountry Digital Works is being established in South Carolina's Lowcountry and can support practical digital work beyond the local area."
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "title": "Have a system that needs to work better?",
+    "lede": "Email Eddie with the problem you are trying to solve. A simple description of what is happening now and what you would like to improve is enough to start."
+  }
+}
