@@ -4,6 +4,28 @@ All notable repository and website changes are recorded here.
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-08-11
+
+### Added
+
+- Repository-controlled editable content files under `src/data/` for Home, Services, Approach, About, and Contact copy.
+- Richer Home-page context covering common project starting points, delivery expectations, and the LDW ownership/cost/handoff model.
+- Concrete examples beneath each service area plus clearer ways a project can begin.
+- Additional About, Approach, and Contact context without inventing clients, staff, history, certifications, or business scale.
+- `docs/content-editing.md` with the protected-branch GitHub web-edit workflow and the future Pages CMS evaluation boundary.
+
+### Changed
+
+- Public pages now separate routine business copy from Astro layout code so ordinary content changes do not require editing page structure.
+- Visual presentation gains a restrained branded hero treatment, trust/principle chips, accent cards, structured lists, stronger section hierarchy, and responsive callout layouts while preserving the approved Tidal Framework direction.
+- Website package version advanced to `0.4.0`.
+
+### Security / cost
+
+- No CMS, database, authentication, analytics, form processor, new runtime service, or paid SaaS is introduced.
+- Pages CMS remains an optional future editing UI pending a separate GitHub App permissions and protected-main workflow review.
+- New recurring cost: **$0**.
+
 ## [0.3.1] - 2026-08-11
 
 ### Changed
