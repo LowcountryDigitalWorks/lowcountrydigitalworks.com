@@ -6,6 +6,6 @@
   --ldw-white: #FFFFFF;
   --ldw-black: #000000;
 
-  --ldw-font-sans: "Manrope", "Source Sans 3", Inter, system-ui, -apple-system,
+  --ldw-font-sans: "Manrope Variable", "Manrope", "Source Sans 3", Inter, system-ui, -apple-system,
     BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
