@@ -21,7 +21,8 @@ test('production brand assets are used in header and footer', async ({ page }) =
 
 test('contact is email-only and exposes no public form', async ({ page }) => {
   await page.goto('/contact/');
-  await expect(page.locator('a[href="mailto:eddie@lowcountrydigitalworks.com"]')).toBeVisible();
+  const primaryEmailLink = page.locator('#main-content a[href="mailto:eddie@lowcountrydigitalworks.com"]').first();
+  await expect(primaryEmailLink).toBeVisible();
   await expect(page.locator('form')).toHaveCount(0);
 });
 
