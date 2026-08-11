@@ -4,6 +4,19 @@ All notable repository and website changes are recorded here.
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-08-11
+
+### Changed
+
+- **UX-01:** reduced service/about card `h2` sizing to a card-specific 23–28px responsive scale so wide desktop card grids remain scannable without changing page/section heading hierarchy.
+- **UX-02:** added privacy-preserving self-hosted Manrope Variable delivery through pinned `@fontsource-variable/manrope` `5.3.0`; no Google Fonts/CDN request or CSP relaxation is introduced.
+- Brand typography tokens now prefer the actually delivered `Manrope Variable` family while retaining the approved Manrope/Source Sans 3/Inter/system fallback stack.
+
+### Validation
+
+- Added browser regression coverage confirming Manrope is available from same-origin resources and used as the lead interface font.
+- Added desktop regression coverage keeping service-card heading scale at or below 28px.
+
 ## [0.3.0] - 2026-08-10
 
 ### Added

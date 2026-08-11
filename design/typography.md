@@ -3,13 +3,15 @@
 ## Primary stack
 
 ```css
-font-family: "Manrope", "Source Sans 3", Inter, system-ui, -apple-system,
+font-family: "Manrope Variable", "Manrope", "Source Sans 3", Inter, system-ui, -apple-system,
   BlinkMacSystemFont, "Segoe UI", sans-serif;
 ```
 
 Manrope is the primary website and interface family. Source Sans 3 is an approved supporting family for text-heavy documents or interfaces if needed.
 
-Use locally bundled font files only when licensing and repository policy explicitly allow it. Otherwise prefer a reliable web-font or system-fallback strategy approved by the implementation owner.
+The website delivers Manrope through the pinned `@fontsource-variable/manrope` package at build time. Astro/Vite bundles the resulting font resources with the site, so production does not require Google Fonts, a CDN, a third-party font request, or a broader Content Security Policy. Preserve the existing fallback stack for resilience.
+
+The fixed outlined logo wordmark remains independent vector geometry and must not be regenerated from the runtime website font.
 
 ## Technical / mono
 
@@ -26,6 +28,7 @@ Use only where technical data benefits from monospace presentation.
 | Display | 56px | 700 | 1.08 | -0.02em |
 | H1 | 44px | 700 | 1.12 | -0.02em |
 | H2 | 34px | 700 | 1.18 | -0.015em |
+| Card H2 | 23–28px responsive | 700 | 1.18 | -0.025em |
 | H3 | 26px | 650 | 1.25 | -0.01em |
 | H4 | 20px | 650 | 1.30 | 0 |
 | Body large | 18px | 400 | 1.60 | 0 |
@@ -36,4 +39,4 @@ Use only where technical data benefits from monospace presentation.
 | Label | 14px | 600 | 1.35 | 0 |
 | Caption | 12px | 500 | 1.45 | 0 |
 
-Use responsive `clamp()` sizing for large website headings. Do not make hero headlines huge merely to fill the viewport.
+Use responsive `clamp()` sizing for large website headings. Do not make hero headlines huge merely to fill the viewport. Card headings intentionally use a smaller scale than page and section headings so multi-column service/about grids remain scannable at wide desktop sizes.
