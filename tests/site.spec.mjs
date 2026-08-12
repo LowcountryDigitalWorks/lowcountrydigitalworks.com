@@ -70,6 +70,16 @@ test('contact exposes aligned email and text-first business phone actions withou
   expect(emailBox).not.toBeNull();
   expect(textBox).not.toBeNull();
   expect(Math.abs((emailBox?.y ?? 0) - (textBox?.y ?? 0))).toBeLessThanOrEqual(2);
+
+  const contactNotes = page.locator('#main-content .contact-card .meta-note');
+  await expect(contactNotes).toHaveCount(2);
+  const noteStyles = await contactNotes.evaluateAll(notes => notes.map(note => ({
+    marginTop: parseFloat(getComputedStyle(note).marginTop),
+    backgroundColor: getComputedStyle(note).backgroundColor,
+  })));
+  expect(noteStyles.every(style => style.marginTop >= 16)).toBeTruthy();
+  expect(noteStyles.every(style => style.backgroundColor !== 'rgb(243, 239, 230)')).toBeTruthy();
+
   await expect(page.locator('form')).toHaveCount(0);
 
   await page.goto('/');
