@@ -13,7 +13,22 @@ import contact from '../data/contact.json';
   </section>
 
   <section class="section">
-    <div class="container readable"><h2>{contact.email.title}</h2><p><a class="button" href={`mailto:${contact.email.address}`}>{contact.email.address}</a></p><div class="meta-note"><strong>{contact.email.noteTitle}</strong><p>{contact.email.noteBody}</p></div></div>
+    <div class="container grid grid--2">
+      <article class="card card--accent">
+        <h2>{contact.email.title}</h2>
+        <p><a class="button" href={`mailto:${contact.email.address}`}>{contact.email.address}</a></p>
+        <div class="meta-note"><strong>{contact.email.noteTitle}</strong><p>{contact.email.noteBody}</p></div>
+      </article>
+      <article class="card card--accent">
+        <h2>{contact.phone.title}</h2>
+        <p class="lede">{contact.phone.display}</p>
+        <div class="actions">
+          <a class="button" href={`tel:${contact.phone.number}`}>Call {contact.phone.display}</a>
+          <a class="button button--secondary" href={`sms:${contact.phone.number}`}>Text {contact.phone.display}</a>
+        </div>
+        <div class="meta-note"><strong>{contact.phone.noteTitle}</strong><p>{contact.phone.noteBody}</p></div>
+      </article>
+    </div>
   </section>
 
   <section class="section section--navy"><div class="container readable"><p class="eyebrow">{contact.whatNext.eyebrow}</p><h2>{contact.whatNext.title}</h2><p class="lede">{contact.whatNext.body}</p></div></section>
