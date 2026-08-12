@@ -16,7 +16,9 @@ import contact from '../data/contact.json';
     <div class="container grid grid--2">
       <article class="card card--accent">
         <h2>{contact.email.title}</h2>
-        <p><a class="button" href={`mailto:${contact.email.address}`}>{contact.email.address}</a></p>
+        <div class="actions">
+          <a class="button" href={`mailto:${contact.email.address}`}>{contact.email.address}</a>
+        </div>
         <div class="meta-note"><strong>{contact.email.noteTitle}</strong><p>{contact.email.noteBody}</p></div>
       </article>
       <article class="card card--accent">
