@@ -20,6 +20,13 @@
     "noteTitle": "Please keep ordinary email appropriate for ordinary email.",
     "noteBody": "Do not send passwords, MFA or recovery codes, private keys, API tokens, payment-card information, PHI, or other sensitive secrets in an initial message."
   },
+  "phone": {
+    "title": "Text or Call Eddie",
+    "display": "843-633-3123",
+    "number": "+18436333123",
+    "noteTitle": "Keep texts appropriate for ordinary text messaging.",
+    "noteBody": "Do not send passwords, MFA or recovery codes, private keys, API tokens, payment-card information, PHI, or other sensitive secrets by text."
+  },
   "whatNext": {
     "eyebrow": "What happens next",
     "title": "Clarify the need before prescribing the solution.",
