@@ -4,6 +4,27 @@ All notable repository and website changes are recorded here.
 
 ## [Unreleased]
 
+## [0.5.1] - 2026-08-11
+
+### Added
+
+- Public Lowcountry Digital Works business phone contact: `843-633-3123`.
+- Separate **Call** and **Text** actions on the Contact page using standard `tel:` and `sms:` links.
+- Business phone display in the site footer.
+- Browser regression coverage confirming the email, phone, call/text links, footer phone, and no-public-form boundary.
+
+### Changed
+
+- `src/data/contact.json` is now the single repository-controlled source for both the public email address and business phone contact data.
+- Website package version advanced to `0.5.1`.
+
+### Security / privacy / cost
+
+- The phone number is intentionally public business contact information; no private personal number is introduced.
+- No contact form, message processor, analytics, tracking, database, authentication, or new runtime service is added.
+- No DNS, email-routing, Cloudflare-account, or billing change is introduced.
+- New recurring cost: **$0**.
+
 ## [0.5.0] - 2026-08-11
 
 ### Added
