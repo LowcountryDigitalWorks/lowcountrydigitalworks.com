@@ -49,11 +49,17 @@ test('technology marks are served locally without third-party image requests', a
   expect(origins.every(origin => origin === pageOrigin)).toBeTruthy();
 });
 
-test('contact is email-only and exposes no public form', async ({ page }) => {
+test('contact exposes email and business phone without a public form', async ({ page }) => {
   await page.goto('/contact/');
   const primaryEmailLink = page.locator('#main-content a[href="mailto:eddie@lowcountrydigitalworks.com"]').first();
   await expect(primaryEmailLink).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Text or Call Eddie' })).toBeVisible();
+  await expect(page.locator('#main-content a[href="tel:+18436333123"]')).toHaveText('Call 843-633-3123');
+  await expect(page.locator('#main-content a[href="sms:+18436333123"]')).toHaveText('Text 843-633-3123');
   await expect(page.locator('form')).toHaveCount(0);
+
+  await page.goto('/');
+  await expect(page.locator('footer a[href="tel:+18436333123"]')).toHaveText('843-633-3123');
 });
 
 test('mobile layout has no horizontal overflow', async ({ page }) => {
