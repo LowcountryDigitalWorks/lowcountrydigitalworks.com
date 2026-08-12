@@ -49,19 +49,27 @@ test('technology marks are served locally without third-party image requests', a
   expect(origins.every(origin => origin === pageOrigin)).toBeTruthy();
 });
 
-test('contact exposes email and text-first business phone actions without a public form', async ({ page }) => {
+test('contact exposes aligned email and text-first business phone actions without a public form', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto('/contact/');
   const primaryEmailLink = page.locator('#main-content a[href="mailto:eddie@lowcountrydigitalworks.com"]').first();
   await expect(primaryEmailLink).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Text or Call Eddie' })).toBeVisible();
 
-  const phoneActions = page.locator('#main-content article').filter({ has: page.getByRole('heading', { name: 'Text or Call Eddie' }) }).locator('.actions a');
+  const phoneCard = page.locator('#main-content article').filter({ has: page.getByRole('heading', { name: 'Text or Call Eddie' }) });
+  const phoneActions = phoneCard.locator('.actions a');
   await expect(phoneActions).toHaveCount(2);
   await expect(phoneActions.nth(0)).toHaveAttribute('href', 'sms:+18436333123');
   await expect(phoneActions.nth(0)).toHaveText('Text 843-633-3123');
   await expect(phoneActions.nth(1)).toHaveAttribute('href', 'tel:+18436333123');
   await expect(phoneActions.nth(1)).toHaveText('Call 843-633-3123');
-  await expect(page.locator('#main-content article').filter({ has: page.getByRole('heading', { name: 'Text or Call Eddie' }) }).locator('p.lede')).toHaveCount(0);
+  await expect(phoneCard.locator('p.lede')).toHaveCount(0);
+
+  const emailBox = await primaryEmailLink.boundingBox();
+  const textBox = await phoneActions.nth(0).boundingBox();
+  expect(emailBox).not.toBeNull();
+  expect(textBox).not.toBeNull();
+  expect(Math.abs((emailBox?.y ?? 0) - (textBox?.y ?? 0))).toBeLessThanOrEqual(2);
   await expect(page.locator('form')).toHaveCount(0);
 
   await page.goto('/');
