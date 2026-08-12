@@ -49,11 +49,41 @@ test('technology marks are served locally without third-party image requests', a
   expect(origins.every(origin => origin === pageOrigin)).toBeTruthy();
 });
 
-test('contact is email-only and exposes no public form', async ({ page }) => {
+test('contact exposes aligned email and text-first business phone actions without a public form', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto('/contact/');
   const primaryEmailLink = page.locator('#main-content a[href="mailto:eddie@lowcountrydigitalworks.com"]').first();
   await expect(primaryEmailLink).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Text or Call Eddie' })).toBeVisible();
+
+  const phoneCard = page.locator('#main-content article').filter({ has: page.getByRole('heading', { name: 'Text or Call Eddie' }) });
+  const phoneActions = phoneCard.locator('.actions a');
+  await expect(phoneActions).toHaveCount(2);
+  await expect(phoneActions.nth(0)).toHaveAttribute('href', 'sms:+18436333123');
+  await expect(phoneActions.nth(0)).toHaveText('Text 843-633-3123');
+  await expect(phoneActions.nth(1)).toHaveAttribute('href', 'tel:+18436333123');
+  await expect(phoneActions.nth(1)).toHaveText('Call 843-633-3123');
+  await expect(phoneCard.locator('p.lede')).toHaveCount(0);
+
+  const emailBox = await primaryEmailLink.boundingBox();
+  const textBox = await phoneActions.nth(0).boundingBox();
+  expect(emailBox).not.toBeNull();
+  expect(textBox).not.toBeNull();
+  expect(Math.abs((emailBox?.y ?? 0) - (textBox?.y ?? 0))).toBeLessThanOrEqual(2);
+
+  const contactNotes = page.locator('#main-content .contact-card .meta-note');
+  await expect(contactNotes).toHaveCount(2);
+  const noteStyles = await contactNotes.evaluateAll(notes => notes.map(note => ({
+    marginTop: parseFloat(getComputedStyle(note).marginTop),
+    backgroundColor: getComputedStyle(note).backgroundColor,
+  })));
+  expect(noteStyles.every(style => style.marginTop >= 16)).toBeTruthy();
+  expect(noteStyles.every(style => style.backgroundColor !== 'rgb(243, 239, 230)')).toBeTruthy();
+
   await expect(page.locator('form')).toHaveCount(0);
+
+  await page.goto('/');
+  await expect(page.locator('footer a[href="tel:+18436333123"]')).toHaveText('843-633-3123');
 });
 
 test('mobile layout has no horizontal overflow', async ({ page }) => {

@@ -1,3 +1,6 @@
+---
+import contact from '../data/contact.json';
+---
 <footer class="site-footer">
   <div class="container footer-grid">
     <div>
@@ -12,7 +15,7 @@
       <a href="/privacy/">Privacy / Website Use</a>
     </nav>
     <div>
-      <p><strong>Contact</strong><br /><a href="mailto:eddie@lowcountrydigitalworks.com">eddie@lowcountrydigitalworks.com</a></p>
+      <p><strong>Contact</strong><br /><a href={`mailto:${contact.email.address}`}>{contact.email.address}</a><br /><a href={`tel:${contact.phone.number}`}>{contact.phone.display}</a></p>
       <p class="small">© {new Date().getFullYear()} Lowcountry Digital Works.</p>
     </div>
   </div>

@@ -103,6 +103,7 @@ p { margin: 0 0 1rem; }
 .page-hero { padding: clamp(3rem,7vw,5rem) 0 clamp(2.5rem,5vw,4rem); border-bottom: 1px solid var(--border); background: var(--surface); }
 .page-hero h1 { font-size: clamp(2.4rem,6vw,4.5rem); }
 .meta-note { border-left: 3px solid var(--interactive); padding: .9rem 1rem; background: var(--surface-warm); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+.contact-card .meta-note { margin-top: 1rem; background: color-mix(in srgb, var(--interactive) 7%, var(--ldw-soft-white)); }
 
 @media (max-width: 1000px) { .technology-grid { grid-template-columns: repeat(3,minmax(0,1fr)); } }
 @media (max-width: 860px) { .grid--3,.work-grid { grid-template-columns: 1fr 1fr; } .principle { grid-template-columns: 1fr; } .split-callout { grid-template-columns: 1fr; align-items: start; } }
