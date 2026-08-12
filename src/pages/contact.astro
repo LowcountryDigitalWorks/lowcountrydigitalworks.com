@@ -14,14 +14,14 @@ import contact from '../data/contact.json';
 
   <section class="section">
     <div class="container grid grid--2">
-      <article class="card card--accent">
+      <article class="card card--accent contact-card">
         <h2>{contact.email.title}</h2>
         <div class="actions">
           <a class="button" href={`mailto:${contact.email.address}`}>{contact.email.address}</a>
         </div>
         <div class="meta-note"><strong>{contact.email.noteTitle}</strong><p>{contact.email.noteBody}</p></div>
       </article>
-      <article class="card card--accent">
+      <article class="card card--accent contact-card">
         <h2>{contact.phone.title}</h2>
         <div class="actions">
           <a class="button" href={`sms:${contact.phone.number}`}>Text {contact.phone.display}</a>
