@@ -4,6 +4,25 @@ All notable repository and website changes are recorded here.
 
 ## [Unreleased]
 
+## [0.5.2] - 2026-08-14
+
+### Changed
+
+- Expanded the existing ownership/transition service into **Digital Asset Ownership & Vendor Transitions** rather than creating a separate product or cybersecurity service page.
+- Home-page problem messaging now explicitly covers uncertain account ownership, obsolete access, business-controlled primary accounts, named/delegated administration, least privilege, MFA/recovery readiness, and documented vendor handoff.
+- Services content now covers digital asset/account inventory, domain/DNS/hosting/repository transitions, vendor/user access cleanup, MFA/recovery posture review, offboarding, handoff documentation, and secure credential-sharing setup when delegated access is unavailable.
+- Services metadata now describes digital asset ownership and vendor transitions as part of the existing consulting/service mix.
+- Content-editing guidance now preserves the boundary that this is consulting/implementation work, not an LDW password vault, access-management dashboard, or Secure Secrets product.
+- Browser regression coverage now verifies the new ownership/vendor-transition messaging and service examples.
+- Website package version advanced to `0.5.2`.
+
+### Security / privacy / cost
+
+- The public copy does not state or imply that Lowcountry Digital Works stores client master passwords or recovery codes, guarantees account recovery, adjudicates legal ownership, or provides compliance certification.
+- No CMS, database, authentication, analytics, tracking, password storage, account portal, form processor, SaaS dependency, or new runtime service is added.
+- No DNS, email-routing, Cloudflare-account, GitHub-App, or billing change is introduced.
+- New recurring cost: **$0**.
+
 ## [0.5.1] - 2026-08-11
 
 ### Added
