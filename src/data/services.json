@@ -35,9 +35,9 @@
     },
     {
       "kicker": "Ownership",
-      "name": "Platform & Account Transitions",
-      "description": "Organized movement of domains, repositories, hosting, access, and related digital assets toward clear business or client ownership.",
-      "examples": ["Domain and hosting handoffs", "Repository ownership cleanup", "Named-access transitions", "Recovery and rollback documentation"],
+      "name": "Digital Asset Ownership & Vendor Transitions",
+      "description": "Inventory and transition domains, DNS, hosting, repositories, cloud accounts, business profiles, and administrator access so critical assets are controlled by the business and outside providers use named, appropriately scoped access.",
+      "examples": ["Digital asset and account inventory", "Domain, DNS, hosting, and repository transitions", "Named or delegated vendor access and least-privilege cleanup", "MFA and recovery posture review", "Vendor offboarding, handoff, and recovery documentation", "Secure credential-sharing setup when delegated access is not available"],
       "featured": false
     },
     {
@@ -58,8 +58,8 @@
       "description": "Keep the useful parts, identify the friction, and modernize only where the change earns its cost."
     },
     {
-      "title": "Untangle ownership or access",
-      "description": "Inventory the current accounts and assets, then move toward named access, clear ownership, and documented recovery."
+      "title": "Untangle ownership, access, or a vendor transition",
+      "description": "Inventory the current assets and administrators, move critical accounts toward business-controlled ownership, remove obsolete access, verify MFA and recovery responsibility, and document the handoff."
     }
   ],
   "platformNote": {

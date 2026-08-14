@@ -17,6 +17,8 @@ For `contact.json`, remember that the email address and phone number are intenti
 
 For `work.json`, keep project status truthful. A product still being designed or implemented should remain labeled **Active Development** rather than being presented as completed client work. Do not add clients, testimonials, partnerships, certifications, or deployment claims unless they are authoritative and approved for public use.
 
+For ownership/access and vendor-transition service copy, describe the work as consulting, implementation, transition, and documentation that Lowcountry Digital Works can perform using existing account-management and secure-access practices. Do not present an LDW password vault, access-management dashboard, or **Secure Secrets** product as existing. Do not imply that Lowcountry Digital Works needs or retains client master passwords or recovery codes, guarantees account recovery, adjudicates legal ownership, or provides compliance certification.
+
 Technology marks under `public/technology/` are structural assets rather than routine copy. See `docs/technology-marks.md` before adding or replacing one.
 
 ## Simplest safe edit from GitHub
