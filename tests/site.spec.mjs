@@ -24,10 +24,16 @@ test('editable content layer renders richer home and service content', async ({ 
   await expect(page.getByText('You do not need to arrive with a technical specification.')).toBeVisible();
   await expect(page.locator('.trust-strip li')).toHaveCount(3);
   await expect(page.getByRole('link', { name: 'See selected work' })).toBeVisible();
+  await expect(page.getByText('Nobody knows who owns this—or who still has access.', { exact: false })).toBeVisible();
+  await expect(page.getByText('Least privilege, MFA, and recovery readiness')).toBeVisible();
 
   await page.goto('/services/');
   await expect(page.locator('.service-card')).toHaveCount(6);
   await expect(page.locator('.service-card').first().locator('.card__list li')).toHaveCount(4);
+  await expect(page.getByRole('heading', { name: 'Digital Asset Ownership & Vendor Transitions' })).toBeVisible();
+  await expect(page.getByText('Vendor offboarding, handoff, and recovery documentation')).toBeVisible();
+  await expect(page.getByText('Secure credential-sharing setup when delegated access is not available')).toBeVisible();
+  await expect(page.getByText('Untangle ownership, access, or a vendor transition')).toBeVisible();
 });
 
 test('work page distinguishes live work from active development', async ({ page }) => {
