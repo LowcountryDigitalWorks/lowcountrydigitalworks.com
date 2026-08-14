@@ -10,9 +10,9 @@
     "Clear handoff and recovery documentation"
   ],
   "services": {
-    "eyebrow": "What I build",
+    "eyebrow": "What I can help with",
     "title": "Practical systems for real business needs.",
-    "intro": "Projects can be as focused as a website refresh or as involved as a custom workflow tool. The common thread is choosing technology in proportion to the problem."
+    "intro": "Projects can be as focused as a website refresh or as involved as a custom workflow tool or a vendor transition. The common thread is choosing technology and access in proportion to the problem."
   },
   "commonNeeds": {
     "eyebrow": "Common starting points",
@@ -27,8 +27,8 @@
         "description": "Map the repetitive process and decide whether a small application, script, or automation can remove the friction."
       },
       {
-        "title": "“Nobody is sure who owns this account.”",
-        "description": "Inventory domains, repositories, hosting, and access so business assets end up under the right owner with named administration."
+        "title": "“Nobody knows who owns this—or who still has access.”",
+        "description": "Inventory domains, DNS, hosting, repositories, cloud accounts, business profiles, and administrators; move critical assets toward business-controlled ownership, remove obsolete access, and document recovery."
       },
       {
         "title": "“The tool we have almost works.”",
@@ -39,12 +39,14 @@
   "ownership": {
     "eyebrow": "Ownership principle",
     "title": "Your business should own its digital assets.",
-    "lede": "Company domains, repositories, hosting, and other critical systems should be held in the right owner accounts, with named role-based access for the people who manage them.",
+    "lede": "Company domains, DNS, website and hosting accounts, repositories, cloud services, business profiles, and other critical systems should be held in business-controlled primary accounts, with named role-based access for the employees and outside providers who manage them.",
     "items": [
-      "Client-owned accounts where practical",
-      "Named access instead of shared credentials",
-      "Portable repositories and open standards",
-      "Documented handoff, recovery, and rollback"
+      "Business-controlled primary accounts where practical",
+      "Named or delegated access instead of shared administrator credentials",
+      "Least privilege, MFA, and recovery readiness",
+      "Obsolete vendor and employee access removed deliberately",
+      "Documented transition, handoff, recovery, and rollback",
+      "Secure credential-sharing methods when delegated access is not available"
     ]
   },
   "process": {
