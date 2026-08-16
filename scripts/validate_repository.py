@@ -37,6 +37,9 @@ headers=(ROOT/'public/_headers').read_text()
 for h in ['Content-Security-Policy','Permissions-Policy','Referrer-Policy','X-Content-Type-Options','X-Frame-Options']:
  if h not in headers: error(f'missing security header: {h}')
 if "'unsafe-inline'" in headers or "'unsafe-eval'" in headers: error('CSP must not allow unsafe-inline/eval')
+expected_astro_cache="/_astro/*\n  Cache-Control: public, max-age=31536000, immutable"
+if expected_astro_cache not in headers: error('fingerprinted Astro assets must use the approved immutable browser-cache policy')
+if headers.count('immutable') != 1: error('immutable browser caching must remain scoped only to /_astro/*')
 
 brand=(ROOT/'brand/css/brand-tokens.css').read_text()
 for value in ['#102A3A','#2F766F','#F3EFE6','#F7F8F6']:
@@ -51,7 +54,7 @@ if 'backdrop-filter' in site_implementation: error('marketing site should not us
 
 class P(HTMLParser):
  def __init__(self):
-  super().__init__(); self.ids=set(); self.dups=[]; self.links=[]; self.h1=0; self.main=0; self.title=0; self.lang=False; self.viewport=False; self.description=False
+  super().__init__(); self.ids=set(); self.dups=[]; self.links=[]; self.h1=0; self.main=0; self.title=0; self.lang=False; self.viewport=False; self.description=False; self.description_content=None
  def handle_starttag(self,tag,attrs):
   a=dict(attrs)
   if tag=='html' and a.get('lang'): self.lang=True
@@ -59,7 +62,7 @@ class P(HTMLParser):
   if tag=='h1': self.h1+=1
   if tag=='title': self.title+=1
   if tag=='meta' and a.get('name')=='viewport': self.viewport=True
-  if tag=='meta' and a.get('name')=='description': self.description=True
+  if tag=='meta' and a.get('name')=='description': self.description=True; self.description_content=a.get('content')
   if 'id' in a:
    if a['id'] in self.ids: self.dups.append(a['id'])
    self.ids.add(a['id'])
@@ -67,8 +70,12 @@ class P(HTMLParser):
    u=a.get('href') or a.get('src')
    if u:self.links.append(u)
 
+services_description='Websites, applications, automation, technical consulting, digital asset ownership, vendor transitions, and maintenance from Lowcountry Digital Works.'
 if not DIST.exists(): error('dist/ missing; run npm run build before validator')
 else:
+ built_headers=DIST/'_headers'
+ if not built_headers.exists(): error('dist/_headers missing; Workers Static Assets header policy would not deploy')
+ elif expected_astro_cache not in built_headers.read_text(): error('dist/_headers missing approved /_astro/* immutable cache policy')
  htmls=sorted(DIST.rglob('*.html'))
  if len(htmls)<8: error(f'expected at least 8 built HTML pages, found {len(htmls)}')
  for file in htmls:
@@ -78,6 +85,7 @@ else:
   if parser.title!=1: error(f'{rel}: expected one title, found {parser.title}')
   if not parser.viewport: error(f'{rel}: missing viewport meta')
   if not parser.description: error(f'{rel}: missing description meta')
+  if rel.as_posix()=='services/index.html' and parser.description_content!=services_description: error(f'{rel}: services meta description drifted from approved concise copy')
   if parser.main!=1: error(f'{rel}: expected one main, found {parser.main}')
   if parser.h1!=1: error(f'{rel}: expected one h1, found {parser.h1}')
   if parser.dups: error(f'{rel}: duplicate ids {parser.dups}')
