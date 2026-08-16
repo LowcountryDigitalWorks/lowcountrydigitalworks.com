@@ -4,6 +4,21 @@ All notable repository and website changes are recorded here.
 
 ## [Unreleased]
 
+## [0.5.3] - 2026-08-16
+
+### Changed
+
+- Added a Workers Static Assets browser-cache override only for content-hashed `/_astro/*` assets: `Cache-Control: public, max-age=31536000, immutable`.
+- Tightened the `/services/` meta description while preserving the current service scope and messaging.
+- Added repository validation proving the immutable cache rule is present in both source and built `_headers`, remains limited to the fingerprinted Astro asset path, and the built Services metadata matches the approved concise copy.
+- Website package version advanced to `0.5.3`.
+
+### Security / privacy / cost
+
+- Existing CSP, script/font restrictions, TLS, HSTS, DNS, Cloudflare bot settings, analytics policy, and stable-name public asset caching remain unchanged.
+- No dependency, runtime service, scanner, database, analytics, tracking, or paid SaaS is added.
+- New recurring cost: **$0**.
+
 ## [0.5.2] - 2026-08-14
 
 ### Changed
