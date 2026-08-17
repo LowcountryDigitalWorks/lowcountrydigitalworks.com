@@ -4,6 +4,20 @@ All notable repository and website changes are recorded here.
 
 ## [Unreleased]
 
+## [0.5.4] - 2026-08-17
+
+### Added
+
+- Added a small, dependency-free Worker middleware that retrieves selected built page responses through the Workers Static Assets `ASSETS` binding and adds a fresh 128-bit CSP nonce to the existing `script-src` directive.
+- Added focused unit coverage for nonce freshness and encoding, exact CSP mutation, fail-closed behavior, response preservation, and non-HTML pass-through.
+- Added selective Worker-first routing for the seven public HTML pages and direct `/404.html` requests while leaving ordinary static assets on the direct Static Assets path.
+
+### Security / privacy / cost
+
+- The repository-owned CSP remains authoritative; the Worker preserves every directive, does not allow `unsafe-inline` or `unsafe-eval`, and returns anomalous HTML responses unchanged if the existing policy cannot be safely updated.
+- Astro remains a static build, with no SSR adapter, database, authentication, CMS, analytics, tracking, form processor, public API, or new dependency.
+- Page requests now consume Workers Free-plan invocations; ordinary static assets remain direct and free. Expected new recurring subscription cost: **$0**.
+
 ## [0.5.3] - 2026-08-16
 
 ### Changed
