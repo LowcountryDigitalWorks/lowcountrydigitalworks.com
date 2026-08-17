@@ -12,19 +12,24 @@ Fast, accessible, secure, low-cost, portable, and straightforward to maintain. I
 - Build output: `dist/`
 - Hosting target: Cloudflare Workers Static Assets
 - Worker project name: `lowcountrydigitalworks`
+- Runtime entrypoint: dependency-free CSP nonce middleware in `worker.js`
 - Production branch: `main`
 - Public business content: repository-controlled JSON under `src/data/`
 - Selected work and technology content: `src/data/work.json`
 - Page structure/presentation: Astro under `src/pages/`, shared components, and `src/styles/`
 - Technology marks: same-origin static SVG files under `public/technology/`
 - Database: none
-- Server-side application code: none
+- Server-side application backend: none; selected HTML responses pass through the bounded nonce middleware
 - Analytics/nonessential cookies: none
 - Contact processing: none; email links only
 - Payment processing: none
 - CMS/authentication/customer portal: none
 
 Astro is used as a maintainability/build layer, not as a browser application framework. Current pages require no client-side application JavaScript.
+
+Workers Static Assets remains the delivery foundation. For the seven public page routes, the Worker first calls `env.ASSETS.fetch(request)`. It changes only an actual HTML response with the expected repository-owned CSP, adding one fresh per-response nonce source to `script-src`. Missing or ambiguous CSP input is returned unchanged. Redirects and non-HTML responses are returned unchanged.
+
+Selective `run_worker_first` patterns cover exactly `/`, `/about/`, `/approach/`, `/contact/`, `/privacy/`, `/services/`, and `/work/`. The custom 404, nested paths, content-hashed `/_astro/*` files, fonts, images, SVGs, favicons, technology marks, `robots.txt`, and `sitemap.xml` do not match these patterns and remain direct Static Assets requests.
 
 Routine copy changes should normally update `src/data/*.json` rather than page markup. The protected-main pull-request, validation, preview, and squash-merge workflow still applies to content changes. See `docs/content-editing.md`.
 
@@ -46,4 +51,4 @@ Pages CMS is being evaluated only as an optional editing layer over the GitHub-b
 
 ## Dynamic capabilities
 
-Any future Worker endpoint for forms, payments, authentication, portals, or other data processing requires a separate architecture decision covering data flow, privacy, security, retention, vendor cost, failure handling, and rollback.
+The nonce middleware is not an application backend and must remain removable and self-contained. Any future Worker endpoint for forms, payments, authentication, portals, or other data processing requires a separate architecture decision covering data flow, privacy, security, retention, vendor cost, failure handling, and rollback.

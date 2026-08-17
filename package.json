@@ -1,6 +1,6 @@
 {
   "name": "lowcountrydigitalworks.com",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "private": true,
   "type": "module",
   "scripts": {
@@ -10,8 +10,9 @@
     "prebuild": "npm run brand:sync",
     "build": "astro build",
     "preview": "astro preview",
+    "test:worker": "node --test tests/worker-unit.mjs",
     "test:e2e": "playwright test",
-    "validate": "npm run build && python scripts/validate_repository.py"
+    "validate": "npm run test:worker && npm run build && python scripts/validate_repository.py"
   },
   "dependencies": {
     "@fontsource-variable/manrope": "5.3.0",

@@ -11,13 +11,13 @@ ERRORS=[]
 def error(msg): ERRORS.append(msg)
 
 REQUIRED=[
- 'README.md','CHANGELOG.md','SECURITY.md','package.json','astro.config.mjs','playwright.config.mjs','wrangler.jsonc',
+ 'README.md','CHANGELOG.md','SECURITY.md','package.json','astro.config.mjs','playwright.config.mjs','wrangler.jsonc','worker.js',
  '.github/workflows/validate.yml','.github/dependabot.yml','brand/colors.json','brand/css/brand-tokens.css',
  'brand/logo/lowcountry-digital-works-logo-horizontal.svg','brand/logo/lowcountry-digital-works-logo-horizontal-white.svg',
  'brand/icons/favicon.svg','brand/social/social-card-1200x630.png','design/brand-production-validation.md','src/pages/index.astro','src/pages/services.astro',
  'src/pages/work.astro','src/pages/approach.astro','src/pages/about.astro','src/pages/contact.astro','src/pages/privacy.astro','src/data/work.json',
  'public/technology/github.svg','public/technology/cloudflare.svg','public/technology/astro.svg','public/technology/typescript.svg','public/technology/python.svg',
- 'docs/technology-marks.md','public/_headers','public/robots.txt','public/sitemap.xml'
+ 'docs/technology-marks.md','public/_headers','public/robots.txt','public/sitemap.xml','tests/worker-unit.mjs'
 ]
 for rel in REQUIRED:
  if not (ROOT/rel).exists(): error(f'missing required file: {rel}')
@@ -29,9 +29,21 @@ try:
 except Exception as exc: error(f'invalid package.json: {exc}')
 
 wr=(ROOT/'wrangler.jsonc').read_text()
-if '"name": "lowcountrydigitalworks"' not in wr: error('wrangler Worker name changed unexpectedly')
-if '"directory": "./dist"' not in wr: error('wrangler assets directory must be ./dist')
-if '"not_found_handling": "404-page"' not in wr: error('wrangler 404 handling missing')
+try:
+ wr_config=json.loads(wr)
+ assets=wr_config.get('assets',{})
+ if wr_config.get('name')!='lowcountrydigitalworks': error('wrangler Worker name changed unexpectedly')
+ if wr_config.get('main')!='./worker.js': error('wrangler must use the bounded CSP nonce Worker entrypoint')
+ if assets.get('directory')!='./dist': error('wrangler assets directory must be ./dist')
+ if assets.get('binding')!='ASSETS': error('wrangler ASSETS binding missing')
+ if assets.get('html_handling')!='auto-trailing-slash': error('wrangler HTML handling changed unexpectedly')
+ if assets.get('not_found_handling')!='404-page': error('wrangler 404 handling missing')
+ expected_worker_routes=['/','/about/','/approach/','/contact/','/privacy/','/services/','/work/']
+ if assets.get('run_worker_first')!=expected_worker_routes: error('wrangler selective Worker-first routes changed unexpectedly')
+except Exception as exc: error(f'invalid wrangler.jsonc: {exc}')
+
+worker=(ROOT/'worker.js').read_text()
+if "'unsafe-inline'" in worker or "'unsafe-eval'" in worker: error('Worker must not weaken CSP with unsafe-inline/eval')
 
 headers=(ROOT/'public/_headers').read_text()
 for h in ['Content-Security-Policy','Permissions-Policy','Referrer-Policy','X-Content-Type-Options','X-Frame-Options']:
