@@ -39,7 +39,7 @@ try:
  if assets.get('binding')!='ASSETS': error('wrangler ASSETS binding missing')
  if assets.get('html_handling')!='auto-trailing-slash': error('wrangler HTML handling changed unexpectedly')
  if assets.get('not_found_handling')!='404-page': error('wrangler 404 handling missing')
- expected_worker_routes=['/','/404.html','/about/*','/approach/*','/contact/*','/privacy/*','/services/*','/work/*']
+ expected_worker_routes=['/','/about/*','/approach/*','/contact/*','/privacy/*','/services/*','/work/*']
  if assets.get('run_worker_first')!=expected_worker_routes: error('wrangler selective Worker-first routes changed unexpectedly')
 except Exception as exc: error(f'invalid wrangler.jsonc: {exc}')
 

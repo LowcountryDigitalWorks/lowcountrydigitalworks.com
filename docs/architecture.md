@@ -27,9 +27,9 @@ Fast, accessible, secure, low-cost, portable, and straightforward to maintain. I
 
 Astro is used as a maintainability/build layer, not as a browser application framework. Current pages require no client-side application JavaScript.
 
-Workers Static Assets remains the delivery foundation. For the seven public page routes and direct `/404.html` requests, the Worker first calls `env.ASSETS.fetch(request)`. It changes only an actual HTML response with the expected repository-owned CSP, adding one fresh per-response nonce source to `script-src`. Missing or ambiguous CSP input is returned unchanged. Redirects and non-HTML responses are returned unchanged.
+Workers Static Assets remains the delivery foundation. For the seven public page routes, the Worker first calls `env.ASSETS.fetch(request)`. It changes only an actual HTML response with the expected repository-owned CSP, adding one fresh per-response nonce source to `script-src`. Missing or ambiguous CSP input is returned unchanged. Redirects and non-HTML responses are returned unchanged.
 
-Selective `run_worker_first` patterns cover `/`, `/404.html`, and the trailing-slash page families under `/about/`, `/approach/`, `/contact/`, `/privacy/`, `/services/`, and `/work/`. Content-hashed `/_astro/*` files, fonts, images, SVGs, favicons, technology marks, `robots.txt`, and `sitemap.xml` do not match these patterns and remain direct Static Assets requests.
+Selective `run_worker_first` patterns cover `/` and the trailing-slash page families under `/about/`, `/approach/`, `/contact/`, `/privacy/`, `/services/`, and `/work/`. The custom 404, content-hashed `/_astro/*` files, fonts, images, SVGs, favicons, technology marks, `robots.txt`, and `sitemap.xml` do not match these patterns and remain direct Static Assets requests.
 
 Routine copy changes should normally update `src/data/*.json` rather than page markup. The protected-main pull-request, validation, preview, and squash-merge workflow still applies to content changes. See `docs/content-editing.md`.
 

@@ -20,7 +20,6 @@ Release 0.5.4 adds a plain JavaScript Worker entrypoint only for CSP nonce compa
 `assets.run_worker_first` is limited to:
 
 - `/`
-- `/404.html`
 - `/about/*`
 - `/approach/*`
 - `/contact/*`
@@ -28,7 +27,7 @@ Release 0.5.4 adds a plain JavaScript Worker entrypoint only for CSP nonce compa
 - `/services/*`
 - `/work/*`
 
-Those page requests consume Worker invocations and make one internal `ASSETS.fetch()` call. Ordinary static files—including `/_astro/*`, font files, images and SVGs, favicons, technology marks, `robots.txt`, and `sitemap.xml`—do not match and remain direct Static Assets requests. For this small marketing site, the expected invocation footprint is page traffic only. The Workers Free plan currently permits 100,000 Worker requests per day; direct static asset requests are free and unlimited. No paid Workers plan or new recurring subscription is required.
+Those page requests consume Worker invocations and make one internal `ASSETS.fetch()` call. The custom 404 and ordinary static files—including `/_astro/*`, font files, images and SVGs, favicons, technology marks, `robots.txt`, and `sitemap.xml`—do not match and remain direct Static Assets requests. For this small marketing site, the expected invocation footprint is page traffic only. The Workers Free plan currently permits 100,000 Worker requests per day; direct static asset requests are free and unlimited. No paid Workers plan or new recurring subscription is required.
 
 ## Cloudflare Workers Builds
 

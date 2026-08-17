@@ -10,7 +10,7 @@ All notable repository and website changes are recorded here.
 
 - Added a small, dependency-free Worker middleware that retrieves selected built page responses through the Workers Static Assets `ASSETS` binding and adds a fresh 128-bit CSP nonce to the existing `script-src` directive.
 - Added focused unit coverage for nonce freshness and encoding, exact CSP mutation, fail-closed behavior, response preservation, and non-HTML pass-through.
-- Added selective Worker-first routing for the seven public HTML pages and direct `/404.html` requests while leaving ordinary static assets on the direct Static Assets path.
+- Added selective Worker-first routing for the seven public HTML pages while leaving 404 handling and ordinary static assets on the direct Static Assets path.
 
 ### Security / privacy / cost
 
