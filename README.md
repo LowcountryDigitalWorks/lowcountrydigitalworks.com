@@ -4,7 +4,9 @@ Public source repository for the Lowcountry Digital Works website at [lowcountry
 
 ## Status
 
-Release 0.5 builds on the permanent Astro/Tidal Framework foundation with a truthful selected-work showcase, locally hosted technology marks, and continued repository-controlled content editing. The deployment target remains Cloudflare Workers Static Assets.
+**Current accepted production release: 0.5.4 — CSP/JSD Nonce Compatibility.**
+
+Release 0.5.4 builds on the permanent Astro/Tidal Framework foundation and Release 0.5 selected-work presentation. Astro remains static output and Cloudflare Workers Static Assets remains the delivery foundation. A small dependency-free Worker runs first only for seven exact public HTML routes to add a fresh per-response CSP nonce; redirects, custom 404s, nested paths, and ordinary static assets remain direct Static Assets responses.
 
 Cloudflare account access and the existing Worker context were re-verified on 2026-08-10 before production launch. No duplicate Worker or replacement DNS infrastructure was created. Zoho Mail remains the email provider and must not be disrupted by website changes.
 
@@ -24,6 +26,7 @@ Company-owned repositories and infrastructure remain organization-owned. Individ
 
 - Astro static output to `dist/`;
 - Cloudflare Workers Static Assets;
+- dependency-free CSP nonce middleware in `worker.js` for exactly `/`, `/about/`, `/approach/`, `/contact/`, `/privacy/`, `/services/`, and `/work/`;
 - repository-controlled public copy under `src/data/`;
 - selected work/technology content under `src/data/work.json`;
 - local same-origin technology SVG marks under `public/technology/`;
