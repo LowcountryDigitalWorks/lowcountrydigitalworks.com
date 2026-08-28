@@ -4,9 +4,9 @@ Public source repository for the Lowcountry Digital Works website at [lowcountry
 
 ## Status
 
-**Current accepted production release: 0.5.4 — CSP/JSD Nonce Compatibility.**
+**Current website release: 0.6.0 — Secure Share Entry Point.**
 
-Release 0.5.4 builds on the permanent Astro/Tidal Framework foundation and Release 0.5 selected-work presentation. Astro remains static output and Cloudflare Workers Static Assets remains the delivery foundation. A small dependency-free Worker runs first only for seven exact public HTML routes to add a fresh per-response CSP nonce; redirects, custom 404s, nested paths, and ordinary static assets remain direct Static Assets responses.
+Release 0.6.0 builds on the permanent Astro/Tidal Framework foundation and Release 0.5.4 CSP/JSD nonce middleware. Astro remains static output and Cloudflare Workers Static Assets remains the delivery foundation. The existing dependency-free Worker now handles the exact public HTML routes plus one fixed `/share/continue` transition whose destination is supplied only by a production Worker Secret.
 
 Cloudflare account access and the existing Worker context were re-verified on 2026-08-10 before production launch. No duplicate Worker or replacement DNS infrastructure was created. Zoho Mail remains the email provider and must not be disrupted by website changes.
 
@@ -26,7 +26,9 @@ Company-owned repositories and infrastructure remain organization-owned. Individ
 
 - Astro static output to `dist/`;
 - Cloudflare Workers Static Assets;
-- dependency-free CSP nonce middleware in `worker.js` for exactly `/`, `/about/`, `/approach/`, `/contact/`, `/privacy/`, `/services/`, and `/work/`;
+- dependency-free Worker middleware in `worker.js` for CSP nonce compatibility on exact public HTML routes;
+- LDW-branded Secure Share page at `/share/`;
+- fixed same-origin Secure Share transition at `/share/continue` using runtime secret binding `SECURE_SHARE_DESTINATION_URL`;
 - repository-controlled public copy under `src/data/`;
 - selected work/technology content under `src/data/work.json`;
 - local same-origin technology SVG marks under `public/technology/`;
@@ -36,6 +38,8 @@ Company-owned repositories and infrastructure remain organization-owned. Individ
 - minimal client-side JavaScript;
 - production brand assets under `brand/`;
 - approved UX/design guidance under `design/`.
+
+The tokenized Secure Share destination is deliberately not stored in Git, generated HTML, browser JavaScript, tests, or public documentation. `/share/continue` accepts no caller-provided redirect destination and fails closed if its approved runtime configuration is absent or invalid.
 
 See [docs/architecture.md](docs/architecture.md).
 
@@ -71,11 +75,11 @@ Raw production brand values come from `brand/colors.json` and `brand/css/brand-t
 
 `main` is protected by the `LDW main governance baseline` ruleset. Meaningful changes use pull requests, the required `validate` check, resolved review conversations, and squash merge.
 
-DNS, email, domain, billing, account-access, production-launch, and destructive changes retain separate approval gates.
+DNS, email, domain, billing, account-access, production-launch, runtime-secret, and destructive changes retain separate approval gates.
 
 ## Security and privacy
 
-Do not commit credentials, MFA material, recovery information, private keys, API tokens, payment data, customer data, PHI, or client secrets. The public site has no analytics, nonessential cookies, contact-form processor, payment processor, or customer account system.
+Do not commit credentials, MFA material, recovery information, private keys, API tokens, tokenized Secure Share destinations, payment data, customer data, PHI, or client secrets. The public site has no analytics, nonessential cookies, contact-form processor, payment processor, or customer account system.
 
 See [SECURITY.md](SECURITY.md).
 

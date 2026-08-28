@@ -15,7 +15,7 @@ REQUIRED=[
  '.github/workflows/validate.yml','.github/dependabot.yml','brand/colors.json','brand/css/brand-tokens.css',
  'brand/logo/lowcountry-digital-works-logo-horizontal.svg','brand/logo/lowcountry-digital-works-logo-horizontal-white.svg',
  'brand/icons/favicon.svg','brand/social/social-card-1200x630.png','design/brand-production-validation.md','src/pages/index.astro','src/pages/services.astro',
- 'src/pages/work.astro','src/pages/approach.astro','src/pages/about.astro','src/pages/contact.astro','src/pages/privacy.astro','src/data/work.json',
+ 'src/pages/work.astro','src/pages/approach.astro','src/pages/about.astro','src/pages/contact.astro','src/pages/privacy.astro','src/pages/share.astro','src/data/work.json',
  'public/technology/github.svg','public/technology/cloudflare.svg','public/technology/astro.svg','public/technology/typescript.svg','public/technology/python.svg',
  'docs/technology-marks.md','public/_headers','public/robots.txt','public/sitemap.xml','tests/worker-unit.mjs'
 ]
@@ -33,13 +33,14 @@ try:
  wr_config=json.loads(wr)
  assets=wr_config.get('assets',{})
  if wr_config.get('name')!='lowcountrydigitalworks': error('wrangler Worker name changed unexpectedly')
- if wr_config.get('main')!='./worker.js': error('wrangler must use the bounded CSP nonce Worker entrypoint')
+ if wr_config.get('main')!='./worker.js': error('wrangler must use the bounded Worker entrypoint')
  if assets.get('directory')!='./dist': error('wrangler assets directory must be ./dist')
  if assets.get('binding')!='ASSETS': error('wrangler ASSETS binding missing')
  if assets.get('html_handling')!='auto-trailing-slash': error('wrangler HTML handling changed unexpectedly')
  if assets.get('not_found_handling')!='404-page': error('wrangler 404 handling missing')
- expected_worker_routes=['/','/about/','/approach/','/contact/','/privacy/','/services/','/work/']
+ expected_worker_routes=['/','/about/','/approach/','/contact/','/privacy/','/services/','/share/','/share/continue','/work/']
  if assets.get('run_worker_first')!=expected_worker_routes: error('wrangler selective Worker-first routes changed unexpectedly')
+ if 'SECURE_SHARE_DESTINATION_URL' in wr: error('Secure Share destination must not be persisted in wrangler.jsonc')
 except Exception as exc: error(f'invalid wrangler.jsonc: {exc}')
 
 worker=(ROOT/'worker.js').read_text()
@@ -66,7 +67,7 @@ if 'backdrop-filter' in site_implementation: error('marketing site should not us
 
 class P(HTMLParser):
  def __init__(self):
-  super().__init__(); self.ids=set(); self.dups=[]; self.links=[]; self.h1=0; self.main=0; self.title=0; self.lang=False; self.viewport=False; self.description=False; self.description_content=None
+  super().__init__(); self.ids=set(); self.dups=[]; self.links=[]; self.anchors=[]; self.h1=0; self.main=0; self.title=0; self.lang=False; self.viewport=False; self.description=False; self.description_content=None; self.robots_content=None
  def handle_starttag(self,tag,attrs):
   a=dict(attrs)
   if tag=='html' and a.get('lang'): self.lang=True
@@ -75,12 +76,14 @@ class P(HTMLParser):
   if tag=='title': self.title+=1
   if tag=='meta' and a.get('name')=='viewport': self.viewport=True
   if tag=='meta' and a.get('name')=='description': self.description=True; self.description_content=a.get('content')
+  if tag=='meta' and a.get('name')=='robots': self.robots_content=a.get('content')
   if 'id' in a:
    if a['id'] in self.ids: self.dups.append(a['id'])
    self.ids.add(a['id'])
   if tag in {'a','link','script','img'}:
    u=a.get('href') or a.get('src')
    if u:self.links.append(u)
+  if tag=='a' and a.get('href'): self.anchors.append(a['href'])
 
 services_description='Websites, applications, automation, technical consulting, digital asset ownership, vendor transitions, and maintenance from Lowcountry Digital Works.'
 if not DIST.exists(): error('dist/ missing; run npm run build before validator')
@@ -89,7 +92,7 @@ else:
  if not built_headers.exists(): error('dist/_headers missing; Workers Static Assets header policy would not deploy')
  elif expected_astro_cache not in built_headers.read_text(): error('dist/_headers missing approved /_astro/* immutable cache policy')
  htmls=sorted(DIST.rglob('*.html'))
- if len(htmls)<8: error(f'expected at least 8 built HTML pages, found {len(htmls)}')
+ if len(htmls)<9: error(f'expected at least 9 built HTML pages, found {len(htmls)}')
  for file in htmls:
   parser=P(); text=file.read_text(errors='replace'); parser.feed(text)
   rel=file.relative_to(DIST)
@@ -98,6 +101,10 @@ else:
   if not parser.viewport: error(f'{rel}: missing viewport meta')
   if not parser.description: error(f'{rel}: missing description meta')
   if rel.as_posix()=='services/index.html' and parser.description_content!=services_description: error(f'{rel}: services meta description drifted from approved concise copy')
+  if rel.as_posix()=='share/index.html':
+   if parser.robots_content!='noindex,noarchive': error(f'{rel}: Secure Share robots metadata must be noindex,noarchive')
+   if '/share/continue' not in parser.anchors: error(f'{rel}: Secure Share CTA must target /share/continue')
+   if any(u.startswith(('http://','https://')) and 'lowcountrydigitalworks.com' not in u for u in parser.anchors): error(f'{rel}: Secure Share page must not expose an external portal destination')
   if parser.main!=1: error(f'{rel}: expected one main, found {parser.main}')
   if parser.h1!=1: error(f'{rel}: expected one h1, found {parser.h1}')
   if parser.dups: error(f'{rel}: duplicate ids {parser.dups}')
@@ -105,18 +112,36 @@ else:
    if u.startswith(('mailto:','http://','https://','data:','#')): continue
    parsed=urlparse(u); path=parsed.path
    if not path.startswith('/'): continue
+   if path=='/share/continue': continue
    target=DIST/path.lstrip('/')
    candidates=[target]
    if path.endswith('/'): candidates.append(target/'index.html')
    else: candidates += [Path(str(target)+'.html'), target/'index.html']
    if not any(c.exists() for c in candidates): error(f'{rel}: broken internal asset/link {u}')
 
+ for p in DIST.rglob('*'):
+  if not p.is_file() or p.suffix.lower() not in {'.html','.js','.mjs','.json','.xml','.txt','.css'}: continue
+  if 'share.lowcountrydigitalworks.com' in p.read_text(errors='ignore'):
+   error(f'{p.relative_to(DIST)}: built public output must not expose the Secure Share destination hostname')
+
 robots=(ROOT/'public/robots.txt').read_text(); sitemap=(ROOT/'public/sitemap.xml').read_text()
 for icon in ['github.svg','cloudflare.svg','astro.svg','typescript.svg','python.svg']:
  if not (ROOT/'public'/'technology'/icon).read_text(errors='ignore').lstrip().startswith('<svg'): error(f'invalid technology SVG: {icon}')
 if 'https://lowcountrydigitalworks.com/sitemap.xml' not in robots: error('robots must declare production sitemap')
+if 'Disallow: /share' in robots: error('Secure Share should rely on page noindex metadata, not robots.txt blocking')
 for route in ['/','/services/','/work/','/approach/','/about/','/contact/','/privacy/']:
  if f'https://lowcountrydigitalworks.com{route}' not in sitemap: error(f'sitemap missing {route}')
+if 'https://lowcountrydigitalworks.com/share' in sitemap: error('Secure Share must remain omitted from the marketing sitemap')
+
+for nav_file in ['src/components/Header.astro','src/components/Footer.astro']:
+ nav=(ROOT/nav_file).read_text()
+ if "'/share/'" in nav or '"/share/"' in nav: error(f'Secure Share must remain omitted from ordinary navigation: {nav_file}')
+share_source=(ROOT/'src/pages/share.astro').read_text()
+if 'share.lowcountrydigitalworks.com' in share_source or 'inprivy' in share_source.lower(): error('Secure Share page source must not expose the vendor destination')
+if 'href="/share/continue"' not in share_source: error('Secure Share source CTA must target /share/continue')
+
+gitignore=(ROOT/'.gitignore').read_text().splitlines()
+if '.dev.vars' not in gitignore or '.dev.vars.*' not in gitignore: error('local Cloudflare secret files must remain ignored')
 
 # Repository secret-pattern review on text files only; skip generated/vendor paths.
 patterns=[

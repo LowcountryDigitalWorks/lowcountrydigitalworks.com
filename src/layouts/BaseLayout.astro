@@ -8,9 +8,11 @@ const {
   description = 'Practical websites, applications, automation, and technical systems built for maintainability and client ownership.',
   image = '/brand/social/social-card-1200x630.png',
   noindex = false,
+  robots,
 } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
 const fullTitle = title === 'Lowcountry Digital Works' ? title : `${title} | Lowcountry Digital Works`;
+const robotsContent = robots ?? (noindex ? 'noindex,nofollow' : undefined);
 ---
 <!doctype html>
 <html lang="en">
@@ -20,7 +22,7 @@ const fullTitle = title === 'Lowcountry Digital Works' ? title : `${title} | Low
   <meta name="description" content={description} />
   <meta name="theme-color" content="#102A3A" />
   <meta name="color-scheme" content="light" />
-  {noindex && <meta name="robots" content="noindex,nofollow" />}
+  {robotsContent && <meta name="robots" content={robotsContent} />}
   <link rel="canonical" href={canonical} />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="icon" href="/favicon.ico" sizes="any" />
