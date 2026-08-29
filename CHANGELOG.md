@@ -4,6 +4,22 @@ All notable repository and website changes are recorded here.
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-08-28
+
+### Added
+
+- Added the LDW-branded `/share/` Secure Share information/warning page for temporary credentials, sensitive values, and specifically requested non-regulated files.
+- Added a same-origin `/share/continue` Worker transition that redirects only to the runtime-configured approved Secure Share destination.
+- Added focused Worker, repository, browser, responsive, accessibility, noindex, sitemap, and open-redirect regression coverage for Secure Share.
+
+### Security / privacy / cost
+
+- The tokenized Secure Share destination is not stored in Astro source, generated HTML, browser JavaScript, Wrangler configuration, tests, or public documentation; production uses the `SECURE_SHARE_DESTINATION_URL` Worker Secret binding.
+- The Worker validates HTTPS and the exact approved `share.lowcountrydigitalworks.com` hostname, rejects credential-bearing or nonstandard-port URLs, ignores caller-supplied redirect parameters, and fails closed when configuration is missing or invalid.
+- `/share/` is `noindex,noarchive`, omitted from ordinary marketing navigation and the sitemap, and explicitly prohibits PHI, CUI, payment-card information, government identifiers, all other regulated data, and unrelated files.
+- Existing CSP nonce behavior remains intact; no CMS, database, analytics, tracking, redirect SaaS, new hostname, new dependency, or DNS/email change is introduced.
+- Expected new recurring subscription cost: **$0**.
+
 ## [0.5.4] - 2026-08-17
 
 ### Added

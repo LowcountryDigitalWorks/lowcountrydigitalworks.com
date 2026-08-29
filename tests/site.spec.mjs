@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
-const routes = ['/', '/services/', '/work/', '/approach/', '/about/', '/contact/', '/privacy/'];
+const routes = ['/', '/services/', '/work/', '/approach/', '/about/', '/contact/', '/privacy/', '/share/'];
 for (const route of routes) {
   test(`${route} renders with landmarks and no serious accessibility violations`, async ({ page }) => {
     const response = await page.goto(route);
@@ -90,6 +90,27 @@ test('contact exposes aligned email and text-first business phone actions withou
 
   await page.goto('/');
   await expect(page.locator('footer a[href="tel:+18436333123"]')).toHaveText('843-633-3123');
+});
+
+test('Secure Share presents the approved operational warnings and fixed same-origin CTA', async ({ page }) => {
+  await page.goto('/share/');
+  await expect(page.getByRole('heading', { level: 1, name: 'Share requested sensitive information.' })).toBeVisible();
+  await expect(page.getByText('Non-regulated files specifically requested by Lowcountry Digital Works.')).toBeVisible();
+  await expect(page.getByText('Medical records or protected health information (PHI).')).toBeVisible();
+  await expect(page.getByText('Controlled Unclassified Information (CUI).')).toBeVisible();
+  await expect(page.getByText('Payment-card information.')).toBeVisible();
+  await expect(page.getByText(/government identifiers/)).toBeVisible();
+  await expect(page.getByText('Any other regulated data.')).toBeVisible();
+  await expect(page.getByText(/unrelated to a Lowcountry Digital Works request/)).toBeVisible();
+  await expect(page.getByText('Maximum 10 files per submission.')).toBeVisible();
+  await expect(page.getByText('Maximum 500 MB per file.')).toBeVisible();
+  await expect(page.getByText("You'll continue to the Secure Share portal.")).toBeVisible();
+
+  const cta = page.getByRole('link', { name: 'Continue to Secure Share' });
+  await expect(cta).toHaveAttribute('href', '/share/continue');
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex,noarchive');
+  await expect(page.locator('header a[href="/share/"]')).toHaveCount(0);
+  await expect(page.locator('main a[href^="http://"], main a[href^="https://"]')).toHaveCount(0);
 });
 
 test('mobile layout has no horizontal overflow', async ({ page }) => {

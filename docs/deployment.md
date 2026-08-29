@@ -4,7 +4,7 @@
 
 Cloudflare Workers Static Assets remains the platform, using Worker project name `lowcountrydigitalworks` and repository production branch `main`. Astro builds static output to `dist/`, which `wrangler.jsonc` deploys.
 
-Release 0.5.4 adds a plain JavaScript Worker entrypoint only for CSP nonce compatibility on selected HTML routes. The Worker retrieves the existing build through the `ASSETS` binding; Astro output remains static and there is no SSR adapter or application framework runtime.
+Release 0.5.4 added a plain JavaScript Worker entrypoint for CSP nonce compatibility on selected HTML routes. Release 0.6.0 keeps that same dependency-free Worker and adds one fixed Secure Share transition at `/share/continue`. Astro output remains static and there is no SSR adapter or application framework runtime.
 
 ## Repository-controlled configuration
 
@@ -14,6 +14,9 @@ Release 0.5.4 adds a plain JavaScript Worker entrypoint only for CSP nonce compa
 - Worker name: `lowcountrydigitalworks`
 - Worker entrypoint: `worker.js`
 - Static Assets binding: `ASSETS`
+- Secure Share destination binding name: `SECURE_SHARE_DESTINATION_URL` as a Cloudflare Worker Secret in production
+
+The Secure Share secret value must never be committed to this repository, placed in Wrangler plaintext vars, exposed in generated HTML/browser JavaScript, or copied into public documentation. Local `.dev.vars` files are ignored and must contain only disposable test values when needed.
 
 ## Selective Worker invocation
 
@@ -25,9 +28,31 @@ Release 0.5.4 adds a plain JavaScript Worker entrypoint only for CSP nonce compa
 - `/contact/`
 - `/privacy/`
 - `/services/`
+- `/share/`
+- `/share/continue`
 - `/work/`
 
-Only those exact page paths consume Worker invocations and make one internal `ASSETS.fetch()` call. No-slash forms use direct Static Assets canonical redirects before the final exact HTML path invokes the Worker. The custom 404, nested paths, and ordinary static files—including `/_astro/*`, font files, images and SVGs, favicons, technology marks, `robots.txt`, and `sitemap.xml`—do not match and remain direct Static Assets requests. For this small marketing site, the expected invocation footprint is page traffic only. The Workers Free plan currently permits 100,000 Worker requests per day; direct static asset requests are free and unlimited. No paid Workers plan or new recurring subscription is required.
+The HTML page routes consume Worker invocations and make one internal `ASSETS.fetch()` call so the existing CSP nonce can be added. `/share/continue` is handled directly by the same Worker and does not fetch a static asset. No-slash page forms use direct Static Assets canonical redirects before the final exact HTML path invokes the Worker.
+
+The custom 404, nested paths, and ordinary static files—including `/_astro/*`, font files, images and SVGs, favicons, technology marks, `robots.txt`, and `sitemap.xml`—do not match and remain direct Static Assets requests. For this small site, the expected invocation footprint remains page traffic plus deliberate Secure Share transitions. No paid Workers plan or new recurring subscription is required.
+
+## Secure Share runtime configuration
+
+The public `/share/` page contains only a same-origin CTA to `/share/continue`. The tokenized vendor destination is supplied at runtime through the Worker Secret named `SECURE_SHARE_DESTINATION_URL`.
+
+The transition validates the configured URL before redirecting:
+
+- protocol must be HTTPS;
+- hostname must be exactly `share.lowcountrydigitalworks.com`;
+- username/password components are rejected;
+- nonstandard ports are rejected;
+- caller-supplied query parameters do not control the destination.
+
+If the secret is absent or invalid, `/share/continue` fails closed with HTTP 503. The redirect response uses temporary HTTP 302 plus `Cache-Control: no-store`, `Referrer-Policy: no-referrer`, and `X-Robots-Tag: noindex, noarchive`.
+
+The production secret must be managed separately from the public Git workflow. Before adding, changing, or deleting it, inspect the current Worker secret-name state and use the normal consequential configuration gate: CURRENT STATE → PROPOSED STATE → VALIDATION → ROLLBACK → Eddie approval. Never print or record the secret value in GitHub, ChatGPT, ordinary tickets, logs, screenshots, or repository files.
+
+A branch preview intentionally does not require the real production destination. `/share/` should render normally in preview; `/share/continue` may return the expected fail-closed 503 when no preview secret is configured. Unit tests use a fake value to validate the successful redirect path.
 
 ## Cloudflare Workers Builds
 
@@ -57,15 +82,17 @@ The site source uses local/system font fallbacks and does not require Google Fon
 ## Deployment workflow
 
 1. Create a focused branch from current `main`.
-2. Validate build, repository rules, browser/accessibility tests, and dependency audit.
+2. Validate build, repository rules, browser/accessibility tests, Worker unit tests, and dependency audit.
 3. Open a pull request.
 4. Review the Cloudflare branch build/preview result.
 5. Resolve check failures and review conversations.
-6. Obtain the production-launch approval checkpoint for consequential releases.
-7. Squash merge through the protected branch ruleset.
-8. Confirm the production build and validate the production URL, 404, navigation, metadata, and critical links.
-9. Record release state.
+6. For Secure Share, independently review the candidate before any production secret mutation.
+7. Inspect production secret-name state and prepare the exact Secure Share CURRENT/PROPOSED/VALIDATION/ROLLBACK gate.
+8. After Eddie approval, set or rotate only `SECURE_SHARE_DESTINATION_URL` using a protected secret-entry path and validate the existing site remains healthy.
+9. Squash merge through the protected branch ruleset.
+10. Confirm the production build and validate `/share/`, `/share/continue`, existing routes, 404, metadata, CSP/JSD behavior, and critical links.
+11. Record release state.
 
-For Release 0.5.4 rollback, revert its squash commit. That removes `worker.js`, the `main` and `ASSETS` binding additions, and selective `run_worker_first` configuration, returning page delivery to the Release 0.5.3 pure Static Assets model and its static CSP. Do not roll back the separately accepted Minimum TLS 1.2, Always Use HTTPS, or HSTS edge settings.
+For Release 0.6.0 code rollback, revert its squash commit. If the Secure Share secret remains configured, the reverted 0.5.4 Worker ignores it. If the release is abandoned, remove only that exact secret through a separately approved Cloudflare secret deletion after code rollback. Preserve all unrelated TLS 1.2, Always Use HTTPS, HSTS, JSD, DNS, and email state.
 
-Do not store Cloudflare account IDs, API tokens, secrets, or recovery data in the public repository.
+Do not store Cloudflare account IDs, API tokens, secrets, tokenized Secure Share destinations, or recovery data in the public repository.

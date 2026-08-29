@@ -1,10 +1,12 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-import worker, { addNonceToCsp, createNonce } from '../worker.js';
+import worker, { addNonceToCsp, createNonce, validateSecureShareDestination } from '../worker.js';
 
 const BASELINE_CSP =
   "default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; img-src 'self' data:; object-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; font-src 'self'; upgrade-insecure-requests";
+const SECURE_SHARE_ORIGIN = 'https://share.lowcountrydigitalworks.com';
+const TEST_SECURE_SHARE_DESTINATION = `${SECURE_SHARE_ORIGIN}/public-sharing/test-only-destination`;
 
 function htmlResponse(headers = {}) {
   return new Response('<!doctype html><title>Test</title>', {
@@ -16,6 +18,24 @@ function htmlResponse(headers = {}) {
       ...headers,
     },
   });
+}
+
+function secureShareEnv(...args) {
+  const env = {
+    ASSETS: {
+      fetch() {
+        throw new Error('Secure Share transition must not fetch a static asset');
+      },
+    },
+  };
+
+  if (args.length === 0) {
+    env.SECURE_SHARE_DESTINATION_URL = TEST_SECURE_SHARE_DESTINATION;
+  } else if (args[0] !== undefined) {
+    env.SECURE_SHARE_DESTINATION_URL = args[0];
+  }
+
+  return env;
 }
 
 test('nonce generation uses 128 bits and is fresh', () => {
@@ -93,4 +113,91 @@ test('non-HTML and anomalous HTML responses are returned unchanged', async () =>
     }),
     noCsp,
   );
+});
+
+test('Secure Share accepts only the approved HTTPS hostname', () => {
+  assert.equal(validateSecureShareDestination(TEST_SECURE_SHARE_DESTINATION), TEST_SECURE_SHARE_DESTINATION);
+  assert.equal(validateSecureShareDestination(undefined), null);
+  assert.equal(validateSecureShareDestination('not a URL'), null);
+  assert.equal(validateSecureShareDestination('http://share.lowcountrydigitalworks.com/test'), null);
+  assert.equal(validateSecureShareDestination('https://example.com/test'), null);
+  assert.equal(validateSecureShareDestination('https://share.lowcountrydigitalworks.com.evil.example/test'), null);
+  assert.equal(validateSecureShareDestination('https://user:pass@share.lowcountrydigitalworks.com/test'), null);
+  assert.equal(validateSecureShareDestination('https://share.lowcountrydigitalworks.com:8443/test'), null);
+});
+
+test('Secure Share transition redirects only to the configured destination', async () => {
+  const response = await worker.fetch(
+    new Request('https://lowcountrydigitalworks.com/share/continue'),
+    secureShareEnv(),
+  );
+
+  assert.equal(response.status, 302);
+  assert.equal(response.headers.get('Location'), TEST_SECURE_SHARE_DESTINATION);
+  assert.equal(response.headers.get('Cache-Control'), 'no-store');
+  assert.equal(response.headers.get('Referrer-Policy'), 'no-referrer');
+  assert.equal(response.headers.get('X-Robots-Tag'), 'noindex, noarchive');
+  assert.equal(response.headers.get('X-Content-Type-Options'), 'nosniff');
+  assert.equal(await response.text(), '');
+});
+
+test('caller-supplied redirect parameters cannot override Secure Share', async () => {
+  const response = await worker.fetch(
+    new Request('https://lowcountrydigitalworks.com/share/continue?url=https://example.com/&next=https://example.org/'),
+    secureShareEnv(),
+  );
+
+  assert.equal(response.status, 302);
+  assert.equal(response.headers.get('Location'), TEST_SECURE_SHARE_DESTINATION);
+  assert.doesNotMatch(response.headers.get('Location'), /example\.(com|org)/);
+});
+
+test('Secure Share fails closed when its configured destination is missing or invalid', async (t) => {
+  const invalidDestinations = [
+    undefined,
+    '',
+    'not a URL',
+    'http://share.lowcountrydigitalworks.com/test',
+    'https://example.com/test',
+    'https://share.lowcountrydigitalworks.com.evil.example/test',
+    'https://user:pass@share.lowcountrydigitalworks.com/test',
+    'https://share.lowcountrydigitalworks.com:8443/test',
+  ];
+
+  for (const destination of invalidDestinations) {
+    await t.test(String(destination), async () => {
+      const response = await worker.fetch(
+        new Request('https://lowcountrydigitalworks.com/share/continue'),
+        secureShareEnv(destination),
+      );
+      assert.equal(response.status, 503);
+      assert.equal(response.headers.get('Location'), null);
+      assert.equal(response.headers.get('Cache-Control'), 'no-store');
+      assert.equal(response.headers.get('Referrer-Policy'), 'no-referrer');
+      assert.equal(response.headers.get('X-Robots-Tag'), 'noindex, noarchive');
+      assert.equal(
+        await response.text(),
+        'Secure Share is temporarily unavailable. Please contact Lowcountry Digital Works.',
+      );
+    });
+  }
+});
+
+test('Secure Share supports HEAD and rejects unsupported methods', async () => {
+  const head = await worker.fetch(
+    new Request('https://lowcountrydigitalworks.com/share/continue', { method: 'HEAD' }),
+    secureShareEnv(),
+  );
+  assert.equal(head.status, 302);
+  assert.equal(head.headers.get('Location'), TEST_SECURE_SHARE_DESTINATION);
+  assert.equal(await head.text(), '');
+
+  const post = await worker.fetch(
+    new Request('https://lowcountrydigitalworks.com/share/continue', { method: 'POST' }),
+    secureShareEnv(),
+  );
+  assert.equal(post.status, 405);
+  assert.equal(post.headers.get('Allow'), 'GET, HEAD');
+  assert.equal(post.headers.get('Location'), null);
+  assert.equal(post.headers.get('Cache-Control'), 'no-store');
 });
