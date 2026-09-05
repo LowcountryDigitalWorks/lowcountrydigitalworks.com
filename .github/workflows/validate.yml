@@ -51,7 +51,7 @@ jobs:
         run: npm audit --audit-level=high
 
       - name: Upload generated lockfile
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: package-lock
           path: package-lock.json
