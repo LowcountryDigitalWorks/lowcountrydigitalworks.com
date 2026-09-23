@@ -51,7 +51,16 @@ for h in ['Content-Security-Policy','Permissions-Policy','Referrer-Policy','X-Co
  if h not in headers: error(f'missing security header: {h}')
 if "'unsafe-inline'" in headers or "'unsafe-eval'" in headers: error('CSP must not allow unsafe-inline/eval')
 expected_astro_cache="/_astro/*\n  Cache-Control: public, max-age=31536000, immutable"
+expected_static_image_caches=[
+ "/brand/logo/*\n  Cache-Control: public, max-age=86400",
+ "/technology/*\n  Cache-Control: public, max-age=86400",
+ "/favicon.svg\n  Cache-Control: public, max-age=86400",
+ "/favicon.ico\n  Cache-Control: public, max-age=86400",
+ "/apple-touch-icon.png\n  Cache-Control: public, max-age=86400",
+]
 if expected_astro_cache not in headers: error('fingerprinted Astro assets must use the approved immutable browser-cache policy')
+for rule in expected_static_image_caches:
+ if rule not in headers: error(f'missing approved 24-hour static-image cache rule: {rule.splitlines()[0]}')
 if headers.count('immutable') != 1: error('immutable browser caching must remain scoped only to /_astro/*')
 
 brand=(ROOT/'brand/css/brand-tokens.css').read_text()
@@ -90,7 +99,11 @@ if not DIST.exists(): error('dist/ missing; run npm run build before validator')
 else:
  built_headers=DIST/'_headers'
  if not built_headers.exists(): error('dist/_headers missing; Workers Static Assets header policy would not deploy')
- elif expected_astro_cache not in built_headers.read_text(): error('dist/_headers missing approved /_astro/* immutable cache policy')
+ else:
+  built_headers_text=built_headers.read_text()
+  if expected_astro_cache not in built_headers_text: error('dist/_headers missing approved /_astro/* immutable cache policy')
+  for rule in expected_static_image_caches:
+   if rule not in built_headers_text: error(f'dist/_headers missing approved 24-hour static-image cache rule: {rule.splitlines()[0]}')
  htmls=sorted(DIST.rglob('*.html'))
  if len(htmls)<9: error(f'expected at least 9 built HTML pages, found {len(htmls)}')
  for file in htmls:
