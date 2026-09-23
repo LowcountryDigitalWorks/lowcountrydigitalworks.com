@@ -4,6 +4,17 @@ All notable repository and website changes are recorded here.
 
 ## [Unreleased]
 
+### Changed
+
+- Added a 24-hour browser-cache policy for LDW-owned unhashed logo, technology-mark, favicon, and Apple touch icon assets while preserving the existing one-year immutable policy for content-hashed `/_astro/*` assets.
+- Added repository validation that requires the bounded static-image cache rules in both source and built `_headers` output.
+
+### Security / privacy / cost
+
+- The cache change does not alter HTML caching, CSP/security headers, Worker routing, Secure Share, Cloudflare-managed `/cdn-cgi/*` resources, DNS, or email configuration.
+- Unhashed image URLs intentionally do not use `immutable`; same-path replacements may remain cached for at most 24 hours.
+- New recurring cost: **$0**.
+
 ## [0.6.0] - 2026-08-28
 
 ### Added
