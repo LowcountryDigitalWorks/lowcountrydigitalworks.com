@@ -1,0 +1,97 @@
+[
+  {
+    "slug": "websites",
+    "kicker": "Website projects",
+    "name": "Websites",
+    "summary": "Accessible, maintainable business websites built around clear ownership, useful content, and the smallest architecture that fits.",
+    "problems": [
+      "An existing website is dated, hard to maintain, slow, inaccessible, or unclear.",
+      "The business needs a new site without becoming dependent on an unnecessary platform.",
+      "Domain, hosting, source, deployment, or recovery ownership is unclear."
+    ],
+    "work": [
+      "Discovery around audience, journeys, content, ownership, integrations, and constraints",
+      "Existing-site modernization before full rebuild when that is the better option",
+      "Responsive, accessible, performance-conscious implementation",
+      "Repository, hosting, deployment, handoff, and rollback documentation"
+    ],
+    "ownership": "Production accounts should remain customer-owned where practical, with LDW using named, scoped access.",
+    "cta": "Discuss a website project"
+  },
+  {
+    "slug": "website-care",
+    "kicker": "Ongoing care",
+    "name": "Website Care",
+    "summary": "Bounded ongoing maintenance and improvement for websites that need a responsible technical owner without an unnecessary platform bundle.",
+    "problems": [
+      "Updates and small fixes are handled reactively or not at all.",
+      "Accessibility, performance, dependencies, links, or content quality need periodic attention.",
+      "The business wants continuity after a project without giving up ownership."
+    ],
+    "work": [
+      "Planned fixes and incremental improvements",
+      "Dependency and security upkeep within the agreed platform boundary",
+      "Accessibility, performance, link, and content-quality checks",
+      "Documented change history and owner-approved consequential changes"
+    ],
+    "ownership": "Website Care does not create a 24x7 support promise or transfer ownership of customer accounts to LDW.",
+    "cta": "Discuss Website Care"
+  },
+  {
+    "slug": "business-systems-automation",
+    "kicker": "Systems",
+    "name": "Business Systems & Automation",
+    "summary": "Improve repetitive or fragmented work by using native capabilities, integrations, automation, and focused custom tooling in that order.",
+    "problems": [
+      "Staff repeat the same manual handoff or data-entry work.",
+      "Forms, files, email, CRM, scheduling, or other systems do not connect cleanly.",
+      "An existing tool nearly solves the problem but leaves a specific operational gap."
+    ],
+    "work": [
+      "Workflow discovery and current-system inventory",
+      "Build-vs-buy and native-capability review before custom engineering",
+      "API, webhook, automation, and maintained-platform integration",
+      "Focused internal applications only when a measured gap remains"
+    ],
+    "ownership": "Automations should point back to authoritative systems rather than becoming a competing source of truth.",
+    "cta": "Discuss a workflow"
+  },
+  {
+    "slug": "digital-ownership-platform-administration",
+    "kicker": "Ownership",
+    "name": "Digital Ownership & Platform Administration",
+    "summary": "Clarify who owns critical digital assets, who has access, how recovery works, and who is responsible for ongoing administration.",
+    "problems": [
+      "Nobody is certain who owns the domain, DNS, hosting, repository, or business profile.",
+      "Former employees or vendors may still have access.",
+      "A provider transition or account cleanup needs to happen without breaking production systems."
+    ],
+    "work": [
+      "Digital estate and account inventory",
+      "Customer-owned account and scoped-access planning",
+      "Vendor transition, offboarding, and recovery documentation",
+      "Ongoing administration where a clear recurring responsibility is agreed"
+    ],
+    "ownership": "LDW does not need to become the permanent recovery owner or collect master passwords when delegated access is available.",
+    "cta": "Discuss ownership or administration"
+  },
+  {
+    "slug": "technology-consulting",
+    "kicker": "Planning",
+    "name": "Technology Consulting",
+    "summary": "Practical architecture, troubleshooting, platform selection, and technical planning when the next step is not obvious.",
+    "problems": [
+      "Several tools could solve the problem and the tradeoffs are unclear.",
+      "A technical issue needs root-cause review before more software is purchased.",
+      "The business needs a realistic roadmap rather than a large transformation program."
+    ],
+    "work": [
+      "Architecture and platform-choice review",
+      "Troubleshooting and root-cause analysis",
+      "Cost, support, security, portability, and maintainability tradeoffs",
+      "A bounded roadmap with clear next actions"
+    ],
+    "ownership": "Consulting should leave the customer with clearer decisions and documentation, not a dependency on hidden provider knowledge.",
+    "cta": "Discuss a technical decision"
+  }
+]
