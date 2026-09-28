@@ -2,10 +2,43 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import about from '../data/about.json';
 ---
-<BaseLayout title="About" description="About Lowcountry Digital Works, a small digital services business being established in South Carolina's Lowcountry.">
-  <section class="page-hero"><div class="container readable"><p class="eyebrow">{about.hero.eyebrow}</p><h1>{about.hero.title}</h1><p class="lede">{about.hero.lede}</p></div></section>
+<BaseLayout title="About" description="About Eddie Gugino and Lowcountry Digital Works, an owner-operated technology services business based in South Carolina's Lowcountry.">
+  <section class="page-hero page-hero--compact">
+    <div class="container readable">
+      <p class="eyebrow">{about.hero.eyebrow}</p>
+      <h1>{about.hero.title}</h1>
+      <p class="lede">{about.hero.lede}</p>
+    </div>
+  </section>
 
-  <section class="section"><div class="container grid grid--2">{about.principles.map((item) => <article class="card"><h2>{item.title}</h2><p>{item.description}</p></article>)}</div></section>
+  <section class="section">
+    <div class="container founder-grid" id="eddie-gugino" itemscope itemtype="https://schema.org/Person">
+      <figure class="founder-placeholder">
+        <div aria-hidden="true">Founder photo</div>
+        <figcaption>Owner-selected photo required before production.</figcaption>
+      </figure>
+      <div>
+        <p class="eyebrow">Founder</p>
+        <h2 itemprop="name">{about.founder.name}</h2>
+        <p class="founder-title" itemprop="jobTitle">{about.founder.title}</p>
+        <p class="lede">{about.founder.body}</p>
+        <p>{about.founder.body2}</p>
+        <p class="preview-note">{about.founder.note}</p>
+        <meta itemprop="worksFor" content="Lowcountry Digital Works" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--warm">
+    <div class="container principle-list">
+      {about.principles.map((item, index) => (
+        <article>
+          <span aria-hidden="true">0{index + 1}</span>
+          <div><h2>{item.title}</h2><p>{item.description}</p></div>
+        </article>
+      ))}
+    </div>
+  </section>
 
   <section class="section section--navy">
     <div class="container principle">
@@ -14,5 +47,10 @@ import about from '../data/about.json';
     </div>
   </section>
 
-  <section class="section section--warm"><div class="container readable"><p class="eyebrow">{about.fit.eyebrow}</p><h2>{about.fit.title}</h2><p class="lede">{about.fit.body}</p><div class="actions"><a class="button" href="/contact/">Start a conversation</a></div></div></section>
+  <section class="section">
+    <div class="container split-callout">
+      <div><p class="eyebrow">{about.fit.eyebrow}</p><h2>{about.fit.title}</h2><p class="lede">{about.fit.body}</p></div>
+      <div class="actions"><a class="button" href="/connect/">Start a conversation</a></div>
+    </div>
+  </section>
 </BaseLayout>
