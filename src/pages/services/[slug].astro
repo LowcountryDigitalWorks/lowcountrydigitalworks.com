@@ -1,0 +1,69 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import serviceDetails from '../../data/service-details.json';
+
+export function getStaticPaths() {
+  return serviceDetails.map((service) => ({
+    params: { slug: service.slug },
+    props: { service },
+  }));
+}
+
+const { service } = Astro.props;
+---
+<BaseLayout title={service.name} description={service.summary}>
+  <nav class="breadcrumbs" aria-label="Breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+    <div class="container">
+      <ol>
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a itemprop="item" href="/services/"><span itemprop="name">Services</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <li aria-current="page" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <span itemprop="name">{service.name}</span>
+          <meta itemprop="position" content="2" />
+        </li>
+      </ol>
+    </div>
+  </nav>
+
+  <article itemscope itemtype="https://schema.org/Service">
+    <section class="page-hero">
+      <div class="container readable">
+        <p class="eyebrow">{service.kicker}</p>
+        <h1 itemprop="name">{service.name}</h1>
+        <p class="lede" itemprop="description">{service.summary}</p>
+        <p class="service-provider">Provided by <a href="/" itemprop="provider" itemscope itemtype="https://schema.org/Organization"><span itemprop="name">Lowcountry Digital Works</span></a></p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container service-detail-grid">
+        <div>
+          <p class="eyebrow">When this helps</p>
+          <h2>Start with the friction.</h2>
+          <ul class="detail-list">{service.problems.map((problem) => <li>{problem}</li>)}</ul>
+        </div>
+        <div>
+          <p class="eyebrow">What the work can include</p>
+          <h2>Use the smallest useful intervention.</h2>
+          <ul class="detail-list">{service.work.map((item) => <li>{item}</li>)}</ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--navy">
+      <div class="container principle">
+        <div><p class="eyebrow">Ownership boundary</p><h2>Keep responsibility clear.</h2></div>
+        <p class="lede">{service.ownership}</p>
+      </div>
+    </section>
+
+    <section class="section section--warm">
+      <div class="container final-cta final-cta--single">
+        <div><p class="eyebrow">Next step</p><h2>{service.cta}</h2><p>Start with the current situation and desired outcome. A technical specification is not required.</p></div>
+        <div class="actions"><a class="button" href="/connect/">Connect with Eddie</a></div>
+      </div>
+    </section>
+  </article>
+</BaseLayout>
