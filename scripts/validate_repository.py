@@ -15,9 +15,9 @@ REQUIRED=[
  '.github/workflows/validate.yml','.github/dependabot.yml','brand/colors.json','brand/css/brand-tokens.css',
  'brand/logo/lowcountry-digital-works-logo-horizontal.svg','brand/logo/lowcountry-digital-works-logo-horizontal-white.svg',
  'brand/icons/favicon.svg','brand/social/social-card-1200x630.png','design/brand-production-validation.md','src/pages/index.astro','src/pages/services.astro',
- 'src/pages/work.astro','src/pages/approach.astro','src/pages/about.astro','src/pages/contact.astro','src/pages/privacy.astro','src/pages/share.astro','src/data/work.json',
+ 'src/pages/work.astro','src/pages/work/[slug].astro','src/pages/approach.astro','src/pages/about.astro','src/pages/connect.astro','src/pages/contact.astro','src/pages/privacy.astro','src/pages/share.astro','src/pages/services/[slug].astro','src/data/site.json','src/data/work.json',
  'public/technology/github.svg','public/technology/cloudflare.svg','public/technology/astro.svg','public/technology/typescript.svg','public/technology/python.svg',
- 'docs/technology-marks.md','public/_headers','public/robots.txt','public/sitemap.xml','tests/worker-unit.mjs'
+ 'docs/technology-marks.md','public/_headers','public/robots.txt','public/sitemap.xml','public/lowcountry-digital-works.vcf','public/work/ldw-site-home.png','tests/worker-unit.mjs'
 ]
 for rel in REQUIRED:
  if not (ROOT/rel).exists(): error(f'missing required file: {rel}')
@@ -38,7 +38,7 @@ try:
  if assets.get('binding')!='ASSETS': error('wrangler ASSETS binding missing')
  if assets.get('html_handling')!='auto-trailing-slash': error('wrangler HTML handling changed unexpectedly')
  if assets.get('not_found_handling')!='404-page': error('wrangler 404 handling missing')
- expected_worker_routes=['/','/about/','/approach/','/contact/','/privacy/','/services/','/share/','/share/continue','/work/']
+ expected_worker_routes=['/','/about/','/approach/','/connect/','/contact/','/privacy/','/services/','/services/business-systems-automation/','/services/digital-ownership-platform-administration/','/services/technology-consulting/','/services/website-care/','/services/websites/','/share/','/share/continue','/work/','/work/document-control/','/work/gas-engine/','/work/lowcountry-digital-works-website/','/work/secure-exchange/']
  if assets.get('run_worker_first')!=expected_worker_routes: error('wrangler selective Worker-first routes changed unexpectedly')
  if 'SECURE_SHARE_DESTINATION_URL' in wr: error('Secure Share destination must not be persisted in wrangler.jsonc')
 except Exception as exc: error(f'invalid wrangler.jsonc: {exc}')
@@ -94,7 +94,7 @@ class P(HTMLParser):
    if u:self.links.append(u)
   if tag=='a' and a.get('href'): self.anchors.append(a['href'])
 
-services_description='Websites, applications, automation, technical consulting, digital asset ownership, vendor transitions, and maintenance from Lowcountry Digital Works.'
+services_description='Websites and website care, business systems and automation, digital ownership and platform administration, and technology consulting from Lowcountry Digital Works.'
 if not DIST.exists(): error('dist/ missing; run npm run build before validator')
 else:
  built_headers=DIST/'_headers'
@@ -105,7 +105,7 @@ else:
   for rule in expected_static_image_caches:
    if rule not in built_headers_text: error(f'dist/_headers missing approved 24-hour static-image cache rule: {rule.splitlines()[0]}')
  htmls=sorted(DIST.rglob('*.html'))
- if len(htmls)<9: error(f'expected at least 9 built HTML pages, found {len(htmls)}')
+ if len(htmls)<19: error(f'expected at least 19 built HTML pages, found {len(htmls)}')
  for file in htmls:
   parser=P(); text=file.read_text(errors='replace'); parser.feed(text)
   rel=file.relative_to(DIST)
@@ -142,9 +142,11 @@ for icon in ['github.svg','cloudflare.svg','astro.svg','typescript.svg','python.
  if not (ROOT/'public'/'technology'/icon).read_text(errors='ignore').lstrip().startswith('<svg'): error(f'invalid technology SVG: {icon}')
 if 'https://lowcountrydigitalworks.com/sitemap.xml' not in robots: error('robots must declare production sitemap')
 if 'Disallow: /share' in robots: error('Secure Share should rely on page noindex metadata, not robots.txt blocking')
-for route in ['/','/services/','/work/','/approach/','/about/','/contact/','/privacy/']:
+for route in ['/','/services/','/services/websites/','/services/website-care/','/services/business-systems-automation/','/services/digital-ownership-platform-administration/','/services/technology-consulting/','/work/','/work/lowcountry-digital-works-website/','/work/document-control/','/work/secure-exchange/','/work/gas-engine/','/approach/','/about/','/connect/','/contact/','/privacy/']:
  if f'https://lowcountrydigitalworks.com{route}' not in sitemap: error(f'sitemap missing {route}')
 if 'https://lowcountrydigitalworks.com/share' in sitemap: error('Secure Share must remain omitted from the marketing sitemap')
+for social in ['https://www.facebook.com/LowcountryDigitalWorks/','https://x.com/LocoDW']:
+ if social not in site_implementation: error(f'verified social profile missing from website source: {social}')
 
 for nav_file in ['src/components/Header.astro','src/components/Footer.astro']:
  nav=(ROOT/nav_file).read_text()
