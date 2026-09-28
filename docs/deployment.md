@@ -4,7 +4,7 @@
 
 Cloudflare Workers Static Assets remains the platform, using Worker project name `lowcountrydigitalworks` and repository production branch `main`. Astro builds static output to `dist/`, which `wrangler.jsonc` deploys.
 
-Release 0.5.4 added a plain JavaScript Worker entrypoint for CSP nonce compatibility on selected HTML routes. Release 0.6.0 keeps that same dependency-free Worker and adds one fixed Secure Share transition at `/share/continue`. Astro output remains static and there is no SSR adapter or application framework runtime.
+Release 0.5.4 added a plain JavaScript Worker entrypoint for CSP nonce compatibility on selected HTML routes, and Release 0.6.0 added the fixed Secure Share transition at `/share/continue`. Release 0.7.0 only extends the existing exact Worker-first route list for new static Connect/service/project pages. Astro output remains static and there is no SSR adapter, database, or application framework runtime.
 
 ## Repository-controlled configuration
 
