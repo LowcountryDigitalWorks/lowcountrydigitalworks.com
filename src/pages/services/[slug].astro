@@ -1,0 +1,70 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import services from '../../data/services.json';
+
+export function getStaticPaths() {
+  return services.items.map((service) => ({
+    params: { slug: service.slug },
+    props: { service },
+  }));
+}
+
+const { service } = Astro.props;
+---
+<BaseLayout title={service.name} description={service.description}>
+  <nav class="breadcrumb" aria-label="Breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+    <div class="container">
+      <span itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="/services/"><span itemprop="name">Services</span></a>
+        <meta itemprop="position" content="1" />
+      </span>
+      <span aria-hidden="true">/</span>
+      <span itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <span itemprop="name">{service.name}</span>
+        <meta itemprop="position" content="2" />
+      </span>
+    </div>
+  </nav>
+
+  <article itemscope itemtype="https://schema.org/Service">
+    <section class="page-hero page-hero--compact">
+      <div class="container readable">
+        <p class="eyebrow">{service.kicker}</p>
+        <h1 itemprop="name">{service.name}</h1>
+        <p class="lede" itemprop="description">{service.description}</p>
+        <meta itemprop="provider" content="Lowcountry Digital Works" />
+        <meta itemprop="areaServed" content="United States" />
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container detail-grid">
+        <div>
+          <p class="eyebrow">When this helps</p>
+          <h2>Start with the friction.</h2>
+          <ul class="detail-list">{service.problems.map((problem) => <li>{problem}</li>)}</ul>
+        </div>
+        <div>
+          <p class="eyebrow">Typical work</p>
+          <h2>What the engagement may include.</h2>
+          <ul class="detail-list">{service.examples.map((example) => <li>{example}</li>)}</ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--warm">
+      <div class="container readable">
+        <p class="eyebrow">Boundary</p>
+        <h2>Keep the solution proportional.</h2>
+        <p class="lede">{service.boundary}</p>
+      </div>
+    </section>
+  </article>
+
+  <section class="section section--navy">
+    <div class="container split-callout">
+      <div><p class="eyebrow">Next step</p><h2>Talk through the problem before choosing the platform.</h2></div>
+      <div class="actions"><a class="button button--secondary" href="/connect/">Connect with Eddie</a></div>
+    </div>
+  </section>
+</BaseLayout>
