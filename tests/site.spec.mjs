@@ -42,7 +42,8 @@ test('production brand, accepted navigation, and Connect CTA render', async ({ p
     await expect(header.locator(`a[href="${href}"]`)).toHaveCount(2);
   }
   await expect(header.locator('a[href="/connect/"]')).toHaveCount(4);
-  await expect(header.getByRole('link', { name: 'Start a conversation' })).toHaveCount(2);
+  await expect(header.locator('.nav-cta')).toHaveAttribute('href', '/connect/');
+  await expect(header.locator('.mobile-nav__cta')).toHaveAttribute('href', '/connect/');
   await expect(header.locator('a[href="/share/"]')).toHaveCount(0);
 });
 
