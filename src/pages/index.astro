@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import home from '../data/home.json';
-import services from '../data/services.json';
 import work from '../data/work.json';
 ---
 <BaseLayout description="Owner-operated websites, business systems, automation, digital ownership, and technology consulting from Lowcountry Digital Works.">
@@ -36,17 +35,18 @@ import work from '../data/work.json';
         <p class="lede">{home.services.intro}</p>
       </div>
       <div class="pathway-list">
-        {services.families.map((family) => (
+        {home.startingPoints.map((point) => (
           <article class="pathway">
-            <p class="pathway__number">{family.number}</p>
+            <p class="pathway__number">{point.number}</p>
             <div>
-              <p class="card__kicker">{family.kicker}</p>
-              <h3>{family.name}</h3>
-              <p>{family.description}</p>
+              <p class="card__kicker">Starting point</p>
+              <h3>{point.title}</h3>
+              <p>{point.description}</p>
             </div>
             <div class="pathway__actions">
-              <a href={family.primaryHref}>{family.primaryLabel} →</a>
-              {family.secondaryHref && <a href={family.secondaryHref}>{family.secondaryLabel} →</a>}
+              <a href={point.serviceHref}>{point.service} →</a>
+              {point.secondaryHref && <a href={point.secondaryHref}>{point.secondaryService} →</a>}
+              <a href="/connect/">Start here →</a>
             </div>
           </article>
         ))}
