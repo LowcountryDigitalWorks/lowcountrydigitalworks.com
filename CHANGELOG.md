@@ -2,6 +2,32 @@
 
 All notable repository and website changes are recorded here.
 
+## [0.7.0] - 2026-09-28
+
+### Added
+
+- Added the stable mobile-first `/connect/` destination with phone, text, email, verified Facebook/X profiles, core site links, and a same-origin downloadable vCard.
+- Added five substantive service-detail routes and four evidence-oriented project-detail routes with visible schema.org Service/Breadcrumb/Person/ProfessionalService semantics.
+- Added a founder layer for Eddie Gugino with an explicit preview-only photo placeholder and owner-review gate.
+- Added G.A.S. Engine to selected work only as **Internal service-enabling evidence infrastructure**, with explicit non-SaaS boundaries.
+- Added a public-safe baseline screenshot of the LDW website as real project evidence.
+
+### Changed
+
+- Reworked Home, Services, Work, About, Contact, header, footer, metadata, internal linking, and visual hierarchy around the accepted owner-operated technology-partner direction.
+- Consolidated public service positioning into Websites, Website Care, Business Systems & Automation, Digital Ownership & Platform Administration, and Technology Consulting.
+- Expanded the existing selective Worker-first route list so the current CSP nonce behavior also covers the new static HTML routes; no new Worker/runtime is introduced.
+- Verified Facebook and X URLs are now the canonical public social inputs for website links and `sameAs` semantics.
+- Website package version advanced to `0.7.0`.
+
+### Security / privacy / cost
+
+- Astro remains static-first on the existing Cloudflare Workers Static Assets foundation; no CMS, database, custom auth, analytics SaaS, new framework, customer-data processor, or paid runtime is added.
+- Secure Share remains separate from ordinary marketing navigation and its secret/runtime boundaries are unchanged.
+- No DNS, email-routing, GBP/social-profile, billing, account-role, or production mutation is included.
+- Founder photo/final biography and production deployment remain owner-gated.
+- Expected incremental recurring cost: **$0**.
+
 ## [Unreleased]
 
 ### Changed
