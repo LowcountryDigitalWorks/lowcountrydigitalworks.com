@@ -66,6 +66,21 @@ test('services page presents four problem-led service families and detail routes
   await expect(page.getByText('configure', { exact: false })).toBeVisible();
 });
 
+test('homepage presents three customer-first entry paths without exposing gated discovery', async ({ page }) => {
+  await page.goto('/');
+  const pathways = page.locator('.pathway');
+  await expect(pathways).toHaveCount(3);
+  await expect(page.getByRole('heading', { name: 'I need a better website.' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: "We waste time doing this manually — or our tools don't work together." })).toBeVisible();
+  await expect(page.getByRole('heading', { name: "I'm not sure what we own, what we need, or what should change." })).toBeVisible();
+  await expect(page.locator('.pathway a[href="/services/websites/"]')).toHaveCount(1);
+  await expect(page.locator('.pathway a[href="/services/business-systems-automation/"]')).toHaveCount(1);
+  await expect(page.locator('.pathway a[href="/services/digital-ownership-platform-administration/"]')).toHaveCount(1);
+  await expect(page.locator('.pathway a[href="/connect/"]')).toHaveCount(3);
+  await expect(page.locator('#main-content form')).toHaveCount(0);
+  await expect(page.locator('a[href*="suitedash"]')).toHaveCount(0);
+});
+
 test('work page shows four truthful evidence-oriented project entries', async ({ page }) => {
   await page.goto('/work/');
   await expect(page.locator('.work-row--large')).toHaveCount(4);
@@ -78,15 +93,20 @@ test('work page shows four truthful evidence-oriented project entries', async ({
   await expect(page.getByText('Project screenshots or diagrams will be added only when a real public-safe asset is available', { exact: false })).toBeVisible();
 });
 
-test('founder structure is present without synthesizing owner photography', async ({ page }) => {
+test('founder structure uses approved trust facts without synthesizing owner photography', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('#main-content').getByText('Eddie Gugino', { exact: false })).toBeVisible();
+  await expect(page.locator('#main-content').getByText('service in the U.S. Navy', { exact: false })).toBeVisible();
   await expect(page.locator('[data-owner-asset-pending="founder-photo"]')).toHaveCount(1);
 
   await page.goto('/about/');
   await expect(page.locator('[itemtype="https://schema.org/Person"]')).toHaveCount(2);
   await expect(page.locator('[data-owner-asset-pending="founder-photo"]')).toHaveCount(1);
-  await expect(page.getByText('IT, cybersecurity, and technical operations', { exact: false })).toBeVisible();
+  await expect(page.getByText('CISSP certification', { exact: false })).toBeVisible();
+  await expect(page.getByText('Utica College', { exact: false })).toBeVisible();
+  await expect(page.getByText('Midlands Technical College', { exact: false })).toBeVisible();
+  await expect(page.locator('body')).not.toContainText('Coalfire');
+  await expect(page.locator('body')).not.toContainText('security clearance');
 });
 
 test('Connect is a mobile-first stable contact destination with verified social links and vCard', async ({ page }) => {
