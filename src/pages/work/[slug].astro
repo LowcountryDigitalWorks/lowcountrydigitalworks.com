@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import work from '../../data/work.json';
+import services from '../../data/services.json';
+
+export function getStaticPaths() {
+  return work.projects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const related = services.items.filter((service) => project.relatedServices.includes(service.slug));
+---
+<BaseLayout title={project.name} description={project.description}>
+  <nav class="breadcrumb" aria-label="Breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+    <div class="container">
+      <span itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="/work/"><span itemprop="name">Work</span></a>
+        <meta itemprop="position" content="1" />
+      </span>
+      <span aria-hidden="true">/</span>
+      <span itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <span itemprop="name">{project.name}</span>
+        <meta itemprop="position" content="2" />
+      </span>
+    </div>
+  </nav>
+
+  <section class="page-hero page-hero--compact">
+    <div class="container readable">
+      <div class="work-card__meta">
+        <span class={'status-pill ' + (project.status === 'Live' ? 'status-pill--live' : '')}>{project.status}</span>
+        <span>{project.type}</span>
+      </div>
+      <h1>{project.name}</h1>
+      <p class="lede">{project.description}</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container project-detail-grid">
+      <div class="project-detail-visual">
+        {project.image ? (
+          <figure>
+            <img src={project.image} alt={project.imageAlt} width="1440" height="1000" />
+            <figcaption>Public-safe project evidence. Status and scope remain explicit.</figcaption>
+          </figure>
+        ) : (
+          <div class="evidence-visual evidence-visual--large">
+            <span>{project.status}</span>
+            <strong>{project.type}</strong>
+            <small>No customer result or production maturity is implied by this visual.</small>
+          </div>
+        )}
+      </div>
+      <div>
+        <p class="eyebrow">Purpose</p>
+        <h2>What this work is proving.</h2>
+        <p class="lede">{project.purpose}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--warm">
+    <div class="container detail-grid">
+      <div>
+        <p class="eyebrow">Evidence</p>
+        <h2>What is actually present.</h2>
+        <ul class="detail-list">{project.evidence.map((item) => <li>{item}</li>)}</ul>
+      </div>
+      <div>
+        <p class="eyebrow">Boundaries</p>
+        <h2>What this does not claim.</h2>
+        <ul class="detail-list">{project.boundaries.map((item) => <li>{item}</li>)}</ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container split-callout">
+      <div>
+        <p class="eyebrow">Related services</p>
+        <h2>Where this work connects to customer needs.</h2>
+        <div class="inline-links">
+          {related.map((service) => <a href={'/services/' + service.slug + '/'}>{service.name}</a>)}
+        </div>
+      </div>
+      <div class="actions"><a class="button" href="/connect/">Connect with Eddie</a></div>
+    </div>
+  </section>
+</BaseLayout>
