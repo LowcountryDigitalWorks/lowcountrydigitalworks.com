@@ -14,6 +14,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
 const socialImage = new URL(image, Astro.site ?? Astro.url.origin);
 const fullTitle = title === 'Lowcountry Digital Works' ? title : `${title} | Lowcountry Digital Works`;
 const robotsContent = robots ?? (noindex ? 'noindex,nofollow' : undefined);
+const allowFooterSocialProfiles = Astro.url.pathname !== '/share/';
 ---
 <!doctype html>
 <html lang="en">
@@ -44,6 +45,6 @@ const robotsContent = robots ?? (noindex ? 'noindex,nofollow' : undefined);
   <a class="skip-link" href="#main-content">Skip to content</a>
   <Header />
   <main id="main-content"><slot /></main>
-  <Footer />
+  <Footer allowSocialProfiles={allowFooterSocialProfiles} />
 </body>
 </html>
