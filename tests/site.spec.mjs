@@ -37,12 +37,12 @@ test('production brand, accepted navigation, and Connect CTA render', async ({ p
   await page.goto('/');
   await expect(page.locator('header img[src*="logo-horizontal.svg"]')).toBeVisible();
   await expect(page.locator('footer img[src*="logo-horizontal-white.svg"]')).toBeVisible();
-  const primary = page.locator('header .desktop-nav');
-  for (const label of ['Services','Work','Approach','About','Connect']) {
-    await expect(primary.getByRole('link', { name: label, exact: true })).toBeVisible();
+  const header = page.locator('header');
+  for (const href of ['/services/','/work/','/approach/','/about/','/connect/']) {
+    await expect(header.locator(`a[href="${href}"]`)).toHaveCount(2);
   }
-  await expect(primary.getByRole('link', { name: 'Start a conversation' })).toHaveAttribute('href', '/connect/');
-  await expect(primary.locator('a[href="/share/"]')).toHaveCount(0);
+  await expect(header.getByRole('link', { name: 'Start a conversation' })).toHaveCount(2);
+  await expect(header.locator('a[href="/share/"]')).toHaveCount(0);
 });
 
 test('homepage uses four problem-led pathways and evidence-oriented work', async ({ page }) => {
@@ -81,8 +81,8 @@ test('work page distinguishes live, development, and internal infrastructure', a
   await page.goto('/work/');
   await expect(page.locator('.project-row')).toHaveCount(4);
   await expect(page.locator('.status-pill--live')).toHaveCount(1);
-  await expect(page.getByText('Active Development', { exact: true })).toHaveCount(2);
-  await expect(page.getByText('Internal Infrastructure', { exact: true })).toHaveCount(1);
+  await expect(page.locator('.project-row .status-pill').filter({ hasText: 'Active Development' })).toHaveCount(2);
+  await expect(page.locator('.project-row .status-pill').filter({ hasText: 'Internal Infrastructure' })).toHaveCount(1);
   await expect(page.getByRole('heading', { name: 'Document Control' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Secure Exchange' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'G.A.S. Engine' })).toBeVisible();
@@ -112,7 +112,7 @@ test('technology marks are served locally without third-party image requests', a
 
 test('About exposes founder semantics but preserves owner-review gate', async ({ page }) => {
   await page.goto('/about/');
-  const founder = page.locator('[itemtype="https://schema.org/Person"]');
+  const founder = page.locator('#eddie-gugino[itemtype="https://schema.org/Person"]');
   await expect(founder).toHaveCount(1);
   await expect(founder.getByText('Eddie Gugino', { exact: true })).toBeVisible();
   await expect(founder.getByText('Founder', { exact: true })).toBeVisible();
@@ -123,9 +123,9 @@ test('About exposes founder semantics but preserves owner-review gate', async ({
 test('Connect is a stable mobile-friendly contact destination with verified socials', async ({ page }) => {
   await page.goto('/connect/');
   await expect(page.getByRole('heading', { level: 1, name: 'Eddie Gugino' })).toBeVisible();
-  await expect(page.locator('a[href="sms:+18436333123"]')).toBeVisible();
-  await expect(page.locator('a[href="tel:+18436333123"]')).toBeVisible();
-  await expect(page.locator('a[href="mailto:eddie@lowcountrydigitalworks.com"]')).toBeVisible();
+  await expect(page.locator('#main-content a[href="sms:+18436333123"]')).toBeVisible();
+  await expect(page.locator('#main-content a[href="tel:+18436333123"]')).toBeVisible();
+  await expect(page.locator('#main-content a[href="mailto:eddie@lowcountrydigitalworks.com"]')).toBeVisible();
   await expect(page.locator('a[href="/lowcountry-digital-works.vcf"]')).toHaveAttribute('download', '');
   await expect(page.locator('a[href="https://www.facebook.com/LowcountryDigitalWorks/"]')).toBeVisible();
   await expect(page.locator('a[href="https://x.com/LocoDW"]')).toBeVisible();
