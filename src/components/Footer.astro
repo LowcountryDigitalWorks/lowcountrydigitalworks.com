@@ -1,5 +1,6 @@
 ---
 import contact from '../data/contact.json';
+const allowSocialProfiles = Astro.url.pathname !== '/share/';
 ---
 <footer class="site-footer">
   <div class="container footer-grid" itemscope itemtype="https://schema.org/ProfessionalService">
@@ -25,9 +26,11 @@ import contact from '../data/contact.json';
         <a itemprop="email" href={`mailto:${contact.email.address}`}>{contact.email.address}</a><br />
         <a itemprop="telephone" href={`tel:${contact.phone.number}`}>{contact.phone.display}</a>
       </p>
-      <p class="footer-socials">
-        {contact.socials.map((social) => <a itemprop="sameAs" href={social.href} rel="me noopener">{social.name}</a>)}
-      </p>
+      {allowSocialProfiles && (
+        <p class="footer-socials">
+          {contact.socials.map((social) => <a itemprop="sameAs" href={social.href} rel="me noopener">{social.name}</a>)}
+        </p>
+      )}
       <meta itemprop="url" content="https://lowcountrydigitalworks.com/" />
       <p class="small">South Carolina Lowcountry · remote work where the fit is right</p>
       <p class="small">© {new Date().getFullYear()} Lowcountry Digital Works.</p>
