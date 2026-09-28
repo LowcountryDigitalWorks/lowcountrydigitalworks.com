@@ -2,6 +2,8 @@
 
 All notable repository and website changes are recorded here.
 
+## [Unreleased]
+
 ## [0.7.0] - 2026-09-28
 
 ### Added
@@ -18,6 +20,7 @@ All notable repository and website changes are recorded here.
 - Consolidated public service positioning into Websites, Website Care, Business Systems & Automation, Digital Ownership & Platform Administration, and Technology Consulting.
 - Expanded the existing selective Worker-first route list so the current CSP nonce behavior also covers the new static HTML routes; no new Worker/runtime is introduced.
 - Verified Facebook and X URLs are now the canonical public social inputs for website links and `sameAs` semantics.
+- Added the previously accepted 24-hour browser-cache policy for LDW-owned unhashed brand/technology/favicon assets while preserving immutable caching only for fingerprinted `/_astro/*` assets.
 - Website package version advanced to `0.7.0`.
 
 ### Security / privacy / cost
@@ -26,20 +29,8 @@ All notable repository and website changes are recorded here.
 - Secure Share remains separate from ordinary marketing navigation and its secret/runtime boundaries are unchanged.
 - No DNS, email-routing, GBP/social-profile, billing, account-role, or production mutation is included.
 - Founder photo/final biography and production deployment remain owner-gated.
+- The cache-policy maintenance does not alter HTML caching, CSP/security headers, Worker routing, Secure Share, DNS, or email configuration.
 - Expected incremental recurring cost: **$0**.
-
-## [Unreleased]
-
-### Changed
-
-- Added a 24-hour browser-cache policy for LDW-owned unhashed logo, technology-mark, favicon, and Apple touch icon assets while preserving the existing one-year immutable policy for content-hashed `/_astro/*` assets.
-- Added repository validation that requires the bounded static-image cache rules in both source and built `_headers` output.
-
-### Security / privacy / cost
-
-- The cache change does not alter HTML caching, CSP/security headers, Worker routing, Secure Share, Cloudflare-managed `/cdn-cgi/*` resources, DNS, or email configuration.
-- Unhashed image URLs intentionally do not use `immutable`; same-path replacements may remain cached for at most 24 hours.
-- New recurring cost: **$0**.
 
 ## [0.6.0] - 2026-08-28
 
