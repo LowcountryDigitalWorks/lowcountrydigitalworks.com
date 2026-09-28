@@ -4,7 +4,7 @@
 
 Fast, accessible, secure, low-cost, portable, and straightforward to maintain. Infrastructure is added only for a concrete requirement.
 
-## Release 0.6 architecture
+## Current architecture
 
 - Source owner: `LowcountryDigitalWorks` GitHub organization
 - Repository: `LowcountryDigitalWorks/lowcountrydigitalworks.com`
@@ -29,7 +29,7 @@ Astro is used as a maintainability/build layer, not as a browser application fra
 
 Workers Static Assets remains the delivery foundation. For public page routes, the Worker first calls `env.ASSETS.fetch(request)`. It changes only an actual HTML response with the expected repository-owned CSP, adding one fresh per-response nonce source to `script-src`. Missing or ambiguous CSP input is returned unchanged. Redirects and non-HTML responses are returned unchanged.
 
-Selective `run_worker_first` patterns cover exactly `/`, `/about/`, `/approach/`, `/contact/`, `/privacy/`, `/services/`, `/share/`, `/share/continue`, and `/work/`. The custom 404, nested paths, content-hashed `/_astro/*` files, fonts, images, SVGs, favicons, technology marks, `robots.txt`, and `sitemap.xml` do not match these patterns and remain direct Static Assets requests.
+Selective `run_worker_first` patterns cover the current static marketing HTML routes, including `/connect/`, the five service-detail routes, the four Work detail routes, the existing top-level marketing routes, `/share/`, and `/share/continue`. The custom 404, content-hashed `/_astro/*` files, fonts, images, SVGs, favicons, technology marks, vCard, `robots.txt`, and `sitemap.xml` remain direct Static Assets requests.
 
 ## Secure Share
 
@@ -43,9 +43,21 @@ The tokenized Secure Share destination is not stored in Git, Astro source, gener
 
 Routine copy changes should normally update `src/data/*.json` rather than page markup. The protected-main pull-request, validation, preview, and squash-merge workflow still applies to content changes. See `docs/content-editing.md`.
 
+## Public information architecture
+
+WEB-UX-001 extends the static route set without changing the runtime architecture:
+
+- `/connect/` is the stable QR/business-card contact destination;
+- five focused `/services/<slug>/` pages provide useful service depth without thin location/keyword pages;
+- four `/work/<slug>/` pages provide truthful status, evidence, and boundary context;
+- `/contact/` remains a direct-contact route;
+- `/share/` remains operationally separate from ordinary marketing navigation.
+
+Structured data uses schema.org microdata attached to visible content rather than an inline JSON-LD script. This preserves the current strict CSP without adding runtime HTML rewriting merely for metadata.
+
 ## Work and technology presentation
 
-Release 0.5 adds a public Work page and a Home-page work/technology summary. It deliberately distinguishes live work from products in active development so the website does not imply completed client engagements that do not exist.
+The Work presentation deliberately distinguishes live work, products in active development, and G.A.S. as internal service-enabling evidence infrastructure so the website does not imply completed client engagements or customer SaaS that do not exist.
 
 Technology marks are stored locally and have no third-party runtime dependency. They are descriptive identifiers only and do not imply sponsorship, partnership, certification, or endorsement. See `docs/technology-marks.md`.
 
