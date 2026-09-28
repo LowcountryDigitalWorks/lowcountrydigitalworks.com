@@ -1,32 +1,50 @@
 ---
 import contact from '../data/contact.json';
+import site from '../data/site.json';
 ---
-<footer class="site-footer">
+<footer class="site-footer" itemscope itemtype="https://schema.org/ProfessionalService">
+  <meta itemprop="name" content={site.business.name} />
+  <meta itemprop="url" content={site.business.url} />
   <div class="container footer-grid">
     <div>
       <img class="footer-logo" src="/brand/logo/lowcountry-digital-works-logo-horizontal-white.svg" alt="Lowcountry Digital Works" width="312" height="88" />
-      <p>Practical digital systems built for maintainability, clear handoff, and client ownership.</p>
+      <p>Owner-operated technology work built for maintainability, clear handoff, and customer ownership.</p>
+      <p class="small">Based in South Carolina's Lowcountry. Local perspective, not a geographic limit.</p>
     </div>
     <nav aria-label="Footer">
       <a href="/services/">Services</a>
+      <a href="/work/">Work</a>
       <a href="/approach/">Approach</a>
       <a href="/about/">About</a>
+      <a href="/connect/">Connect</a>
       <a href="/contact/">Contact</a>
       <a href="/privacy/">Privacy / Website Use</a>
     </nav>
     <div>
-      <p><strong>Contact</strong><br /><a href={`mailto:${contact.email.address}`}>{contact.email.address}</a><br /><a href={`tel:${contact.phone.number}`}>{contact.phone.display}</a></p>
+      <p>
+        <strong>Contact</strong><br />
+        <a itemprop="email" href={'mailto:' + contact.email.address}>{contact.email.address}</a><br />
+        <a itemprop="telephone" href={'tel:' + contact.phone.number}>{contact.phone.display}</a>
+      </p>
+      <p itemprop="founder" itemscope itemtype="https://schema.org/Person">
+        <a itemprop="url" href="/about/#eddie-gugino"><span itemprop="name">{site.business.founder.name}</span></a><br />
+        <span class="small" itemprop="jobTitle">{site.business.founder.title}</span>
+      </p>
+      <div class="footer-social" aria-label="Verified social profiles">
+        {site.business.social.map((social) => <a itemprop="sameAs" href={social.url} rel="me noopener noreferrer">{social.name}</a>)}
+      </div>
       <p class="small">© {new Date().getFullYear()} Lowcountry Digital Works.</p>
     </div>
   </div>
 </footer>
 <style>
 .site-footer { padding: 3rem 0; background: var(--ldw-estuary-navy); color: white; }
-.footer-grid { display: grid; grid-template-columns: minmax(0,1.5fr) 1fr 1fr; gap: 2rem; align-items: start; }
+.footer-grid { display: grid; grid-template-columns: minmax(0,1.45fr) .8fr 1fr; gap: 2rem; align-items: start; }
 .footer-logo { width: min(260px, 100%); }
 .site-footer p { max-width: 44ch; color: #d9e4e7; }
 .site-footer nav { display: grid; gap: .45rem; }
 .site-footer a { color: white; }
+.footer-social { display: flex; flex-wrap: wrap; gap: .8rem; margin: .5rem 0 1.25rem; }
 .small { font-size: .88rem; }
 @media(max-width:760px){ .footer-grid { grid-template-columns: 1fr; } }
 </style>
