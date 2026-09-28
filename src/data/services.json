@@ -1,69 +1,117 @@
 {
   "page": {
     "eyebrow": "Services",
-    "title": "Digital work sized to the actual problem.",
-    "lede": "The goal is not to introduce the most technology. It is to build or improve a system that is useful, maintainable, appropriately secure, and clearly owned."
+    "title": "Technology work organized around the problem you need to solve.",
+    "lede": "Lowcountry Digital Works builds, improves, connects, and administers practical digital systems without forcing every need into a custom platform."
   },
   "items": [
     {
+      "slug": "websites",
       "kicker": "Web",
       "name": "Websites",
-      "description": "Lightweight, accessible business websites with maintainable source, sensible hosting, and clear ownership.",
-      "examples": ["New small-business sites", "Existing-site modernization", "Accessibility and performance improvements", "Hosting and deployment cleanup"],
-      "featured": true
+      "description": "Lightweight, accessible business websites with maintainable source, sensible hosting, clear ownership, and a deliberate handoff.",
+      "problems": [
+        "Your current site is dated, hard to use, or difficult to update safely.",
+        "Ownership or hosting is unclear.",
+        "The site is slow, inaccessible, or more complicated than the business needs."
+      ],
+      "examples": [
+        "New small-business and professional-service sites",
+        "Existing-site modernization",
+        "Accessibility and performance improvements",
+        "Hosting, deployment, and repository cleanup"
+      ],
+      "boundary": "LDW keeps the platform proportional to the requirement. A CMS, database, analytics stack, or custom application is added only when it earns its place."
     },
     {
-      "kicker": "Applications",
-      "name": "Custom Applications",
-      "description": "Focused web or offline applications shaped around the workflow instead of forcing the workflow around a product.",
-      "examples": ["Internal workflow tools", "Offline utilities", "Purpose-built dashboards", "Small operational applications"],
-      "featured": true
-    },
-    {
-      "kicker": "Automation",
-      "name": "Workflow Automation",
-      "description": "Practical automation for repetitive processes, handoffs, document movement, and system-to-system tasks when justified.",
-      "examples": ["Repeatable task automation", "File and document handoffs", "Process notifications", "Lightweight system integrations"],
-      "featured": true
-    },
-    {
-      "kicker": "Planning",
-      "name": "Technical Consulting",
-      "description": "Architecture, troubleshooting, technical planning, platform choices, and practical problem-solving without unnecessary product sales.",
-      "examples": ["Architecture and platform choices", "Troubleshooting and root-cause review", "Technical roadmaps", "Cost and maintainability tradeoffs"],
-      "featured": false
-    },
-    {
-      "kicker": "Ownership",
-      "name": "Digital Asset Ownership & Vendor Transitions",
-      "description": "Inventory and transition domains, DNS, hosting, repositories, cloud accounts, business profiles, and administrator access so critical assets are controlled by the business and outside providers use named, appropriately scoped access.",
-      "examples": ["Digital asset and account inventory", "Domain, DNS, hosting, and repository transitions", "Named or delegated vendor access and least-privilege cleanup", "MFA and recovery posture review", "Vendor offboarding, handoff, and recovery documentation", "Secure credential-sharing setup when delegated access is not available"],
-      "featured": false
-    },
-    {
+      "slug": "website-care",
       "kicker": "Care",
-      "name": "Maintenance & Improvement",
-      "description": "Ongoing fixes, accessibility and performance improvements, dependency updates, documentation, and measured modernization.",
-      "examples": ["Small fixes and enhancements", "Dependency and security upkeep", "Accessibility improvements", "Documentation and technical debt cleanup"],
-      "featured": false
+      "name": "Website Care",
+      "description": "Bounded ongoing maintenance and improvement for websites that need a clear owner for upkeep without turning into an oversized managed-service contract.",
+      "problems": [
+        "Updates and small fixes are handled inconsistently.",
+        "Accessibility, dependencies, or performance need periodic attention.",
+        "The owner wants a documented path for routine improvements."
+      ],
+      "examples": [
+        "Small fixes and enhancements",
+        "Dependency and security upkeep",
+        "Accessibility and performance improvements",
+        "Content, link, and technical-quality review"
+      ],
+      "boundary": "Website Care is scoped ongoing work, not a 24/7 help desk, ranking guarantee, or unlimited development subscription."
+    },
+    {
+      "slug": "business-systems-automation",
+      "kicker": "Systems",
+      "name": "Business Systems & Automation",
+      "description": "Practical workflow improvement across the tools a business already uses, with custom applications reserved for gaps that configuration and integration cannot solve well.",
+      "problems": [
+        "A repeated task is still being done by hand.",
+        "Information is copied between disconnected tools.",
+        "An existing SaaS product almost fits but needs better configuration or integration."
+      ],
+      "examples": [
+        "Workflow mapping and automation",
+        "API/webhook and file handoffs",
+        "System-to-system notifications and routing",
+        "Focused internal tools or custom applications when justified"
+      ],
+      "boundary": "LDW checks native features, maintained integrations, and existing SaaS before custom building. Automation does not become a second source of truth."
+    },
+    {
+      "slug": "digital-ownership-platform-administration",
+      "kicker": "Ownership",
+      "name": "Digital Ownership & Platform Administration",
+      "description": "Inventory, transition, and administer critical digital assets so the business retains control while outside providers use named, appropriately scoped access.",
+      "problems": [
+        "Nobody is sure who owns the domain, DNS, hosting, repository, or business profile.",
+        "A vendor or employee transition leaves uncertain access behind.",
+        "Routine platform administration has no clear owner or recovery path."
+      ],
+      "examples": [
+        "Digital asset and administrator inventory",
+        "Domain, DNS, hosting, repository, and business-profile transitions",
+        "Named/delegated access and least-privilege cleanup",
+        "Vendor offboarding, recovery, rollback, and handoff documentation"
+      ],
+      "boundary": "LDW does not store customer master passwords or recovery secrets as a substitute for platform-supported ownership and delegated access."
+    },
+    {
+      "slug": "technology-consulting",
+      "kicker": "Planning",
+      "name": "Technology Consulting",
+      "description": "Architecture, troubleshooting, platform selection, and technical planning for organizations that need a clear decision before they need another tool.",
+      "problems": [
+        "The team is choosing between platforms or vendors.",
+        "A technical problem has become difficult to isolate.",
+        "Leadership needs a practical roadmap rather than a broad MSP or product sale."
+      ],
+      "examples": [
+        "Architecture and platform choices",
+        "Troubleshooting and root-cause review",
+        "Technical roadmaps and modernization sequencing",
+        "Cost, ownership, security, and maintainability tradeoffs"
+      ],
+      "boundary": "Recommendations are sized to the decision at hand. LDW does not present consulting as a certification, compliance attestation, or guarantee of business results."
     }
   ],
   "startingPoints": [
     {
-      "title": "Build something new",
-      "description": "Start from a clear business need and choose the smallest maintainable architecture that solves it."
-    },
-    {
       "title": "Improve what already exists",
-      "description": "Keep the useful parts, identify the friction, and modernize only where the change earns its cost."
+      "description": "Keep the useful pieces, find the friction, and modernize only where the change earns its cost."
     },
     {
-      "title": "Untangle ownership, access, or a vendor transition",
-      "description": "Inventory the current assets and administrators, move critical accounts toward business-controlled ownership, remove obsolete access, verify MFA and recovery responsibility, and document the handoff."
+      "title": "Untangle ownership or vendors",
+      "description": "Identify who controls critical assets and access, then plan the safest practical transition."
+    },
+    {
+      "title": "Remove one repeated pain point",
+      "description": "Start with one workflow or decision that costs real time before considering a larger system."
     }
   ],
   "platformNote": {
     "title": "Not every project needs a platform.",
-    "body": "Static hosting, open formats, portable repositories, and low recurring costs are preferred when they meet the requirement. Databases, authentication services, paid SaaS, or other infrastructure should earn their place."
+    "body": "Static hosting, open formats, portable repositories, native integrations, and low recurring costs are preferred when they meet the requirement. Databases, authentication services, paid SaaS, or custom applications should earn their place."
   }
 }
