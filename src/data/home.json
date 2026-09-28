@@ -1,90 +1,80 @@
 {
   "hero": {
     "eyebrow": "Practical. Maintainable. Yours.",
-    "title": "Useful technology, built to remain yours.",
-    "lede": "Lowcountry Digital Works builds and improves websites, applications, automation, and digital systems with an emphasis on maintainability, named access, clear documentation, and straightforward handoff."
+    "title": "Practical technology that stays understandable—and stays yours.",
+    "lede": "Lowcountry Digital Works is an owner-operated technology partner for websites, automation, and business systems. I start with what you already have, add only what earns its place, and keep ownership, access, and handoff clear."
   },
   "trustPoints": [
-    "Client-owned assets where practical",
-    "Low recurring cost by default",
-    "Clear handoff and recovery documentation"
+    "Customer-owned assets where practical",
+    "Configure and integrate before custom build",
+    "Clear access, recovery, and handoff"
   ],
   "services": {
     "eyebrow": "What I can help with",
-    "title": "Practical systems for real business needs.",
-    "intro": "Projects can be as focused as a website refresh or as involved as a custom workflow tool or a vendor transition. The common thread is choosing technology and access in proportion to the problem."
-  },
-  "commonNeeds": {
-    "eyebrow": "Common starting points",
-    "title": "You do not need to arrive with a technical specification.",
-    "items": [
+    "title": "Start with the business problem, not a platform.",
+    "intro": "A website project, a recurring manual task, or a messy vendor transition may need very different tools. The common thread is solving the useful problem without creating unnecessary platform sprawl.",
+    "pathways": [
       {
-        "title": "“Our website needs to look and work better.”",
-        "description": "Improve the existing experience, rebuild only what is justified, and leave the source and hosting understandable."
+        "title": "Websites & Website Care",
+        "description": "Build or improve a fast, accessible site with clear ownership, then keep it healthy with bounded ongoing care when that creates value.",
+        "href": "/services/websites/",
+        "secondaryLabel": "Website Care",
+        "secondaryHref": "/services/website-care/"
       },
       {
-        "title": "“We keep doing this task by hand.”",
-        "description": "Map the repetitive process and decide whether a small application, script, or automation can remove the friction."
+        "title": "Business Systems & Automation",
+        "description": "Connect existing tools, remove repetitive work, and build focused internal applications only when configuration and integration leave a real gap.",
+        "href": "/services/business-systems-automation/"
       },
       {
-        "title": "“Nobody knows who owns this—or who still has access.”",
-        "description": "Inventory domains, DNS, hosting, repositories, cloud accounts, business profiles, and administrators; move critical assets toward business-controlled ownership, remove obsolete access, and document recovery."
+        "title": "Digital Ownership & Platform Administration",
+        "description": "Untangle domains, hosting, repositories, business profiles, administrator access, vendor transitions, and ongoing platform responsibility.",
+        "href": "/services/digital-ownership-platform-administration/"
       },
       {
-        "title": "“The tool we have almost works.”",
-        "description": "Troubleshoot what exists, preserve the useful pieces, and make targeted improvements before replacing an entire system."
+        "title": "Technology Consulting",
+        "description": "Get a practical architecture, troubleshooting, or platform decision without starting from a product sale.",
+        "href": "/services/technology-consulting/"
       }
     ]
   },
   "ownership": {
-    "eyebrow": "Ownership principle",
+    "eyebrow": "Yours",
     "title": "Your business should own its digital assets.",
-    "lede": "Company domains, DNS, website and hosting accounts, repositories, cloud services, business profiles, and other critical systems should be held in business-controlled primary accounts, with named role-based access for the employees and outside providers who manage them.",
+    "lede": "Domains, hosting, repositories, cloud services, business profiles, and other critical systems should live in business-controlled accounts where practical. LDW uses named, scoped access and leaves a documented path for handoff and recovery.",
     "items": [
-      "Business-controlled primary accounts where practical",
-      "Named or delegated access instead of shared administrator credentials",
-      "Least privilege, MFA, and recovery readiness",
-      "Obsolete vendor and employee access removed deliberately",
-      "Documented transition, handoff, recovery, and rollback",
-      "Secure credential-sharing methods when delegated access is not available"
+      "Business-controlled primary accounts",
+      "Named or delegated access instead of shared admin credentials",
+      "MFA, recovery, rollback, and offboarding treated as normal delivery quality"
     ]
   },
   "process": {
     "eyebrow": "How I work",
-    "title": "Assess → Build → Handoff",
+    "title": "Assess → Improve or Build → Handoff or Care",
     "steps": [
       {
         "title": "Assess",
-        "description": "Understand the real need, current systems, constraints, ownership, and cost before choosing technology."
+        "description": "Understand the outcome, current systems, constraints, ownership, privacy, and cost before choosing technology."
       },
       {
-        "title": "Build",
-        "description": "Use the simplest maintainable architecture that solves the problem, with accessibility and security treated as normal quality requirements."
+        "title": "Improve or Build",
+        "description": "Reuse, configure, integrate, and modernize first. Add custom code only where it solves a real remaining gap."
       },
       {
-        "title": "Handoff",
-        "description": "Leave clear documentation, named access, recovery information, and a system that can be maintained without artificial lock-in."
+        "title": "Handoff or Care",
+        "description": "Leave clear ownership and documentation, then continue with bounded care or administration only when it has a purpose."
       }
     ]
   },
-  "expectations": {
-    "eyebrow": "What to expect",
-    "title": "Straightforward technical work without unnecessary platform sprawl.",
-    "items": [
-      "Requirements and tradeoffs explained in plain language",
-      "Version-controlled work and practical validation",
-      "Accessibility, security, and maintainability treated as baseline quality",
-      "Recurring services proposed only when they have a clear purpose"
-    ]
-  },
-  "local": {
-    "eyebrow": "Lowcountry roots",
-    "title": "Local perspective, not a geographic limit.",
-    "lede": "Lowcountry Digital Works is being established in South Carolina's Lowcountry and can support practical digital work beyond the local area."
+  "founder": {
+    "eyebrow": "Owner-operated",
+    "title": "Work directly with the person accountable for the technical work.",
+    "body": "I'm Eddie Gugino, founder of Lowcountry Digital Works. I bring an IT, cybersecurity, and technical-delivery background to practical website and business-system work, with a bias toward clear ownership, scoped access, documentation, and maintainable choices.",
+    "note": "Founder photo and final biography wording require owner approval before production."
   },
   "contact": {
-    "eyebrow": "Contact",
-    "title": "Have a system that needs to work better?",
-    "lede": "Email Eddie with the problem you are trying to solve. A simple description of what is happening now and what you would like to improve is enough to start."
+    "eyebrow": "Start with the problem",
+    "title": "You do not need a technical specification to begin.",
+    "lede": "Tell me what is happening today, what needs to work better, and any deadline or constraint that already matters."
   }
 }
