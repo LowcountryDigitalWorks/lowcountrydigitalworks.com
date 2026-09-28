@@ -12,12 +12,22 @@
       "/",
       "/about/",
       "/approach/",
+      "/connect/",
       "/contact/",
       "/privacy/",
       "/services/",
+      "/services/business-systems-automation/",
+      "/services/digital-ownership-platform-administration/",
+      "/services/technology-consulting/",
+      "/services/website-care/",
+      "/services/websites/",
       "/share/",
       "/share/continue",
-      "/work/"
+      "/work/",
+      "/work/document-control/",
+      "/work/gas-engine/",
+      "/work/lowcountry-digital-works-website/",
+      "/work/secure-exchange/"
     ]
   }
 }
