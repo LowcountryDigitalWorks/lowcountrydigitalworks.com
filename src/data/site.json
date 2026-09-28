@@ -1,0 +1,23 @@
+{
+  "business": {
+    "name": "Lowcountry Digital Works",
+    "url": "https://lowcountrydigitalworks.com/",
+    "email": "eddie@lowcountrydigitalworks.com",
+    "phoneDisplay": "843-633-3123",
+    "phone": "+18436333123",
+    "founder": {
+      "name": "Eddie Gugino",
+      "title": "Founder"
+    },
+    "social": [
+      {
+        "name": "Facebook",
+        "url": "https://www.facebook.com/LowcountryDigitalWorks/"
+      },
+      {
+        "name": "X",
+        "url": "https://x.com/LocoDW"
+      }
+    ]
+  }
+}
