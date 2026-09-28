@@ -2,7 +2,7 @@
   "hero": {
     "eyebrow": "Contact",
     "title": "Start with the problem you need to solve.",
-    "lede": "You do not need a detailed technical specification. A short description of what is happening now and what you want to improve is enough to start a conversation."
+    "lede": "You do not need a detailed technical specification. A short description of what is happening now, what you want to improve, and any constraint that already matters is enough to start."
   },
   "helpfulDetails": {
     "eyebrow": "Helpful context",
@@ -30,6 +30,6 @@
   "whatNext": {
     "eyebrow": "What happens next",
     "title": "Clarify the need before prescribing the solution.",
-    "body": "The first step is to understand the current situation, the desired outcome, and any important constraints. From there, the work can be scoped around the smallest practical solution rather than starting with a predetermined product or platform."
+    "body": "The first step is to understand the current situation, desired outcome, and important constraints. From there, the work can be scoped around the smallest practical solution instead of a predetermined product or platform."
   }
 }
