@@ -1,69 +1,61 @@
 {
   "page": {
     "eyebrow": "Services",
-    "title": "Digital work sized to the actual problem.",
-    "lede": "The goal is not to introduce the most technology. It is to build or improve a system that is useful, maintainable, appropriately secure, and clearly owned."
+    "title": "Practical technology work, organized around the problem.",
+    "lede": "Lowcountry Digital Works combines focused project work with bounded ongoing care. The goal is to improve what exists, add only what earns its place, and leave ownership understandable."
   },
-  "items": [
+  "families": [
     {
+      "number": "01",
       "kicker": "Web",
-      "name": "Websites",
-      "description": "Lightweight, accessible business websites with maintainable source, sensible hosting, and clear ownership.",
-      "examples": ["New small-business sites", "Existing-site modernization", "Accessibility and performance improvements", "Hosting and deployment cleanup"],
-      "featured": true
+      "name": "Websites & Website Care",
+      "description": "Build or modernize an accessible, maintainable business website, then keep it healthy through clearly scoped ongoing care when useful.",
+      "primaryHref": "/services/websites/",
+      "primaryLabel": "Website projects",
+      "secondaryHref": "/services/website-care/",
+      "secondaryLabel": "Website Care"
     },
     {
-      "kicker": "Applications",
-      "name": "Custom Applications",
-      "description": "Focused web or offline applications shaped around the workflow instead of forcing the workflow around a product.",
-      "examples": ["Internal workflow tools", "Offline utilities", "Purpose-built dashboards", "Small operational applications"],
-      "featured": true
+      "number": "02",
+      "kicker": "Systems",
+      "name": "Business Systems & Automation",
+      "description": "Reduce repetitive work, connect existing systems, and build focused internal tooling only when configuration and integration leave a real gap.",
+      "primaryHref": "/services/business-systems-automation/",
+      "primaryLabel": "Business systems & automation"
     },
     {
-      "kicker": "Automation",
-      "name": "Workflow Automation",
-      "description": "Practical automation for repetitive processes, handoffs, document movement, and system-to-system tasks when justified.",
-      "examples": ["Repeatable task automation", "File and document handoffs", "Process notifications", "Lightweight system integrations"],
-      "featured": true
-    },
-    {
-      "kicker": "Planning",
-      "name": "Technical Consulting",
-      "description": "Architecture, troubleshooting, technical planning, platform choices, and practical problem-solving without unnecessary product sales.",
-      "examples": ["Architecture and platform choices", "Troubleshooting and root-cause review", "Technical roadmaps", "Cost and maintainability tradeoffs"],
-      "featured": false
-    },
-    {
+      "number": "03",
       "kicker": "Ownership",
-      "name": "Digital Asset Ownership & Vendor Transitions",
-      "description": "Inventory and transition domains, DNS, hosting, repositories, cloud accounts, business profiles, and administrator access so critical assets are controlled by the business and outside providers use named, appropriately scoped access.",
-      "examples": ["Digital asset and account inventory", "Domain, DNS, hosting, and repository transitions", "Named or delegated vendor access and least-privilege cleanup", "MFA and recovery posture review", "Vendor offboarding, handoff, and recovery documentation", "Secure credential-sharing setup when delegated access is not available"],
-      "featured": false
+      "name": "Digital Ownership & Platform Administration",
+      "description": "Untangle domains, DNS, hosting, repositories, business profiles, vendor access, and the ongoing administration needed to keep those systems recoverable.",
+      "primaryHref": "/services/digital-ownership-platform-administration/",
+      "primaryLabel": "Ownership & platform administration"
     },
     {
-      "kicker": "Care",
-      "name": "Maintenance & Improvement",
-      "description": "Ongoing fixes, accessibility and performance improvements, dependency updates, documentation, and measured modernization.",
-      "examples": ["Small fixes and enhancements", "Dependency and security upkeep", "Accessibility improvements", "Documentation and technical debt cleanup"],
-      "featured": false
+      "number": "04",
+      "kicker": "Planning",
+      "name": "Technology Consulting",
+      "description": "Architecture, troubleshooting, platform choices, technical planning, and practical decision support without a predetermined product sale.",
+      "primaryHref": "/services/technology-consulting/",
+      "primaryLabel": "Technology consulting"
     }
   ],
   "startingPoints": [
     {
-      "title": "Build something new",
-      "description": "Start from a clear business need and choose the smallest maintainable architecture that solves it."
-    },
-    {
-      "title": "Improve what already exists",
+      "title": "Improve an existing system",
       "description": "Keep the useful parts, identify the friction, and modernize only where the change earns its cost."
     },
     {
-      "title": "Untangle ownership, access, or a vendor transition",
-      "description": "Inventory the current assets and administrators, move critical accounts toward business-controlled ownership, remove obsolete access, verify MFA and recovery responsibility, and document the handoff."
+      "title": "Build a focused capability",
+      "description": "Start with the business need and choose the smallest maintainable implementation that solves it."
+    },
+    {
+      "title": "Untangle ownership or vendors",
+      "description": "Clarify who owns critical systems, who has access, how recovery works, and what a safe transition should look like."
     }
   ],
   "platformNote": {
-    "title": "Not every project needs a platform.",
-    "body": "Static hosting, open formats, portable repositories, and low recurring costs are preferred when they meet the requirement. Databases, authentication services, paid SaaS, or other infrastructure should earn their place."
+    "title": "Not every project needs another platform.",
+    "body": "Native features, maintained SaaS, open formats, portable repositories, and low recurring costs are preferred when they meet the requirement. Databases, custom authentication, new frameworks, and paid tools should earn their place."
   }
 }
