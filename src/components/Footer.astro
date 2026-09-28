@@ -1,6 +1,6 @@
 ---
 import contact from '../data/contact.json';
-const allowSocialProfiles = Astro.url.pathname !== '/share/';
+const { allowSocialProfiles = true } = Astro.props;
 ---
 <footer class="site-footer">
   <div class="container footer-grid" itemscope itemtype="https://schema.org/ProfessionalService">
