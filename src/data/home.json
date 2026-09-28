@@ -19,10 +19,37 @@
     ]
   },
   "services": {
-    "eyebrow": "Ways I can help",
-    "title": "Start with the business problem, not a product.",
-    "intro": "LDW works across websites, business systems, digital ownership, and technical planning. Existing platforms and maintained tools come first when they solve the need well."
+    "eyebrow": "Where to start",
+    "title": "You do not need to know which service to ask for.",
+    "intro": "Choose the starting point that sounds most like your situation. LDW can map it to the right website, systems, ownership, or consulting work after a short conversation."
   },
+  "startingPoints": [
+    {
+      "number": "01",
+      "title": "I need a better website.",
+      "description": "The site may be dated, hard to maintain, unclear, or simply not doing enough for the business.",
+      "service": "Websites",
+      "serviceHref": "/services/websites/",
+      "secondaryService": "Website Care",
+      "secondaryHref": "/services/website-care/"
+    },
+    {
+      "number": "02",
+      "title": "We waste time doing this manually — or our tools don't work together.",
+      "description": "A repeated workflow, handoff, or disconnected toolset may be a better fit for configuration, integration, automation, or a focused internal tool.",
+      "service": "Business Systems & Automation",
+      "serviceHref": "/services/business-systems-automation/"
+    },
+    {
+      "number": "03",
+      "title": "I'm not sure what we own, what we need, or what should change.",
+      "description": "When ownership, vendors, platforms, costs, or the right next step are unclear, start with a practical review before buying or rebuilding anything.",
+      "service": "Digital Ownership & Platform Administration",
+      "serviceHref": "/services/digital-ownership-platform-administration/",
+      "secondaryService": "Technology Consulting",
+      "secondaryHref": "/services/technology-consulting/"
+    }
+  ],
   "ownership": {
     "eyebrow": "The “yours” part",
     "title": "Your business should own its digital assets.",
@@ -57,8 +84,8 @@
     "title": "Work directly with the person responsible for the work.",
     "name": "Eddie Gugino",
     "role": "Founder",
-    "lede": "Eddie founded Lowcountry Digital Works to bring practical IT, cybersecurity, and technical-delivery discipline to small-business technology work without importing enterprise-sized complexity.",
-    "note": "The public founder photo and final background wording remain subject to owner approval before production."
+    "lede": "Eddie founded Lowcountry Digital Works to help small organizations improve websites, workflows, and technical systems without unnecessary complexity or lock-in. His background spans IT, cybersecurity, systems, and technical delivery, including service in the U.S. Navy.",
+    "note": "Founder photo remains pending owner selection before production."
   },
   "local": {
     "eyebrow": "Lowcountry roots",
