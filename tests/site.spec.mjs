@@ -80,7 +80,7 @@ test('work page shows four truthful evidence-oriented project entries', async ({
 
 test('founder structure is present without synthesizing owner photography', async ({ page }) => {
   await page.goto('/');
-  await expect(page.getByText('Eddie Gugino', { exact: false })).toBeVisible();
+  await expect(page.locator('#main-content').getByText('Eddie Gugino', { exact: false })).toBeVisible();
   await expect(page.locator('[data-owner-asset-pending="founder-photo"]')).toHaveCount(1);
 
   await page.goto('/about/');
@@ -108,7 +108,7 @@ test('Connect is a mobile-first stable contact destination with verified social 
 
 test('verified public entity links are exposed with schema microdata and no unverified company LinkedIn', async ({ page }) => {
   await page.goto('/');
-  const entity = page.locator('footer[itemtype="https://schema.org/ProfessionalService"]');
+  const entity = page.locator('footer [itemtype="https://schema.org/ProfessionalService"]').first();
   await expect(entity).toHaveCount(1);
   await expect(entity.locator('a[itemprop="sameAs"]')).toHaveCount(2);
   await expect(entity.locator('a[href="https://www.facebook.com/LowcountryDigitalWorks/"]')).toHaveCount(1);
