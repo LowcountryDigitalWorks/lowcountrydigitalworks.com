@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import work from '../data/work.json';
 ---
-<BaseLayout title="Work" description="Selected Lowcountry Digital Works websites and products, including live work and applications in active development.">
+<BaseLayout title="Work" description="Selected Lowcountry Digital Works systems and products with clear status, evidence, and boundaries.">
   <section class="page-hero">
     <div class="container readable">
       <p class="eyebrow">{work.hero.eyebrow}</p>
@@ -12,21 +12,22 @@ import work from '../data/work.json';
   </section>
 
   <section class="section">
-    <div class="container">
-      <div class="work-grid">
-        {work.projects.map((project) => (
-          <article class="card work-card">
-            <div class="work-card__meta">
-              <span class={`status-pill ${project.status === 'Live' ? 'status-pill--live' : ''}`}>{project.status}</span>
-              <span>{project.type}</span>
-            </div>
+    <div class="container work-list work-list--large">
+      {work.projects.map((project) => (
+        <article class="work-row work-row--large">
+          <div class="work-row__meta">
+            <span class={`status-pill ${project.status === 'Live' ? 'status-pill--live' : ''}`}>{project.status}</span>
+            <span>{project.type}</span>
+          </div>
+          <div>
             <h2>{project.name}</h2>
+            <p class="lede lede--compact">{project.purpose}</p>
             <p>{project.description}</p>
-            <ul class="card__list">{project.highlights.map((highlight) => <li>{highlight}</li>)}</ul>
-            {project.href && <div class="actions"><a href={project.href}>View live website</a></div>}
-          </article>
-        ))}
-      </div>
+            <ul class="evidence-inline">{project.evidence.slice(0, 3).map((item) => <li>{item}</li>)}</ul>
+          </div>
+          <a class="work-row__link" href={`/work/${project.slug}/`}>Project details →</a>
+        </article>
+      ))}
     </div>
   </section>
 
@@ -54,7 +55,7 @@ import work from '../data/work.json';
       <p class="eyebrow">{work.principle.eyebrow}</p>
       <h2>{work.principle.title}</h2>
       <p class="lede">{work.principle.body}</p>
-      <div class="actions"><a class="button button--secondary" href="/contact/">Discuss a project</a></div>
+      <div class="actions"><a class="button button--secondary" href="/connect/">Discuss a project</a></div>
     </div>
   </section>
 </BaseLayout>
