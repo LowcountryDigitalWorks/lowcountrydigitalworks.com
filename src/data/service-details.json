@@ -41,7 +41,7 @@
     "slug": "business-systems-automation",
     "kicker": "Systems",
     "name": "Business Systems & Automation",
-    "summary": "Improve repetitive or fragmented work by using native capabilities, integrations, automation, and focused custom tooling in that order.",
+    "summary": "Improve repetitive or fragmented work by configuring and integrating existing systems first, then adding automation or focused custom tooling only when a real gap remains.",
     "problems": [
       "Staff repeat the same manual handoff or data-entry work.",
       "Forms, files, email, CRM, scheduling, or other systems do not connect cleanly.",
