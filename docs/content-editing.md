@@ -1,43 +1,48 @@
 # Website content editing
 
-Lowcountry Digital Works keeps public business copy in simple repository-controlled JSON files under `src/data/`.
+Lowcountry Digital Works keeps routine public business copy in repository-controlled JSON under `src/data/`.
 
 ## Editable content files
 
-- `src/data/home.json` — Home-page hero, priorities, common starting points, ownership, process, expectations, local context, and contact call-to-action.
-- `src/data/services.json` — Service descriptions, examples, featured services, starting points, and the platform/cost note.
-- `src/data/work.json` — selected work/project status, technology names/descriptions, and the Work-page architecture principle.
-- `src/data/approach.json` — Assess/Build/Handoff copy, planning questions, operating principles, and handoff guidance.
-- `src/data/about.json` — About-page positioning, principles, lean-business explanation, and fit statement.
-- `src/data/contact.json` — Contact guidance, helpful first-message details, public email address, public business phone display/dial value, safety notes, and next-step explanation.
+- `src/data/site.json` — canonical public business identity, founder name/title, phone/email, and authenticated social-profile URLs.
+- `src/data/home.json` — Home hero, service pathways, ownership principle, process, founder summary, and final CTA.
+- `src/data/services.json` — five public service families, problems, examples, boundaries, and starting points. Dynamic service-detail routes are generated from each service `slug`.
+- `src/data/work.json` — selected-work status, purpose, evidence, boundaries, related services, and technology context. Dynamic project-detail routes are generated from each project `slug`.
+- `src/data/approach.json` — delivery approach and planning guidance.
+- `src/data/about.json` — founder/about copy, principles, operating model, and fit statement.
+- `src/data/contact.json` — contact guidance, public email/phone values, safety notes, and next-step copy.
 
-The Astro files under `src/pages/` own page structure and presentation. Routine copy edits should normally change the JSON content files rather than the Astro layout files.
+The Astro files under `src/pages/` own page structure and presentation. Routine copy edits should normally change JSON rather than layout code.
 
-For `contact.json`, remember that the email address and phone number are intentionally published on the public website. Keep the human-readable phone value and E.164-style dial value aligned whenever the number changes.
+## Truth and approval boundaries
 
-For `work.json`, keep project status truthful. A product still being designed or implemented should remain labeled **Active Development** rather than being presented as completed client work. Do not add clients, testimonials, partnerships, certifications, or deployment claims unless they are authoritative and approved for public use.
+- Keep project status explicit. Active Development and Internal Infrastructure must not be presented as completed customer deployments.
+- G.A.S. Engine remains internal service-enabling evidence/measurement infrastructure, not customer SaaS.
+- Founder photography and detailed biography/credential wording require owner review before production.
+- Social URLs in `site.json` should be changed only after authenticated verification.
+- Managed Search + AI Visibility maturity/pricing remains controlled by its own service-validation gate.
+- Do not add clients, testimonials, certifications, partnerships, deployment claims, rankings, revenue outcomes, or years of experience unless authoritative and approved for public use.
+- Ownership/access work is consulting/implementation. Do not imply LDW retains customer master passwords/recovery codes, guarantees recovery, or provides compliance certification.
 
-For ownership/access and vendor-transition service copy, describe the work as consulting, implementation, transition, and documentation that Lowcountry Digital Works can perform using existing account-management and secure-access practices. Do not present an LDW password vault, access-management dashboard, or **Secure Secrets** product as existing. Do not imply that Lowcountry Digital Works needs or retains client master passwords or recovery codes, guarantees account recovery, adjudicates legal ownership, or provides compliance certification.
+## Public assets
 
-Technology marks under `public/technology/` are structural assets rather than routine copy. See `docs/technology-marks.md` before adding or replacing one.
+- `public/work/` contains public-safe evidence images used by Work pages.
+- `public/technology/` contains locally served technology marks.
+- `public/lowcountry-digital-works.vcf` is the portable contact card linked from `/connect/`.
+
+Do not place customer records, secrets, PHI/CUI, private screenshots, credentials, or recovery material in public assets.
 
 ## Simplest safe edit from GitHub
 
-1. Open the appropriate file under `src/data/` in GitHub.
-2. Choose **Edit this file**.
-3. Make the copy change without changing JSON field names or structure unless the page code is being changed at the same time.
-4. Commit the change to a new branch rather than directly to protected `main`.
-5. Open a pull request to `main`.
-6. Confirm the required `validate` workflow and Cloudflare branch preview succeed.
-7. Review the preview visually before merge.
-8. Squash-merge the pull request when the exact tested head is approved.
+1. Start from current `main`.
+2. Edit the appropriate repository-controlled data or asset on a focused branch.
+3. Keep JSON field names/structure aligned with the consuming page code.
+4. Open a pull request to protected `main`.
+5. Confirm the required validation and branch preview.
+6. Review desktop/mobile presentation and accessibility.
+7. Obtain any required content or production approval.
+8. Squash-merge only the exact reviewed head.
 
-This preserves branch protection, preview deployment, accessibility/browser validation, and rollback through Git history.
+## CMS boundary
 
-## Pages CMS evaluation
-
-Pages CMS is a plausible optional editing UI because it can edit structured files in a GitHub-backed static site without replacing Astro or adding a separate content database to the website.
-
-It is **not installed or authorized yet**. Installing its GitHub App changes repository permissions and therefore requires a separate access/permissions review and Eddie's explicit approval. Before adoption, verify that the editing workflow preserves the LDW protected-main pull-request requirement rather than introducing direct production writes.
-
-Until that review is complete, GitHub's web editor plus the `src/data/` content layer is the authoritative low-complexity editing path.
+No CMS is currently installed or authorized. GitHub plus the structured content layer remains the authoritative low-complexity editing path. A future editing UI must preserve protected-main review and justify any permissions, runtime, database, or recurring cost before adoption.
