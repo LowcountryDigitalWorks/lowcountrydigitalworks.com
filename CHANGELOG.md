@@ -4,6 +4,15 @@ All notable repository and website changes are recorded here.
 
 ## [Unreleased]
 
+### Added
+
+- Added the stable mobile-first `/connect/` business-card/QR destination with public business contact actions, verified Facebook/X links, and a portable vCard.
+- Added five focused service-detail routes and four evidence-oriented Work detail routes without introducing a CMS, database, authentication layer, or new framework.
+- Added founder presentation architecture on Home/About with an explicit pre-production owner-photo placeholder rather than synthetic imagery.
+- Added schema.org ProfessionalService, Person, Service, and Breadcrumb microdata using visible page content so structured data does not require weakening the existing CSP.
+- Added verified Facebook/X `sameAs` entity links and richer Open Graph/Twitter metadata.
+- Added expanded browser/accessibility, mobile-overflow, route, sitemap, social/entity, and service/work boundary regression coverage.
+
 ### Changed
 
 - Added a 24-hour browser-cache policy for LDW-owned unhashed logo, technology-mark, favicon, and Apple touch icon assets while preserving the existing one-year immutable policy for content-hashed `/_astro/*` assets.
