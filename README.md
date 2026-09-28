@@ -4,9 +4,9 @@ Public source repository for the Lowcountry Digital Works website at [lowcountry
 
 ## Status
 
-**Current website release: 0.6.0 — Secure Share Entry Point.**
+**Candidate website release: 0.7.0 — Owner-Operated UX & Evidence Refresh.**
 
-Release 0.6.0 builds on the permanent Astro/Tidal Framework foundation and Release 0.5.4 CSP/JSD nonce middleware. Astro remains static output and Cloudflare Workers Static Assets remains the delivery foundation. The existing dependency-free Worker now handles the exact public HTML routes plus one fixed `/share/continue` transition whose destination is supplied only by a production Worker Secret.
+Release 0.7.0 is a bounded UX/content/SEO candidate on the permanent Astro/Tidal Framework foundation. It adds Connect, substantive service/project detail routes, founder and evidence presentation, verified social/entity metadata, and matching regression coverage while keeping Astro static output, Cloudflare Workers Static Assets, and the existing dependency-free CSP/Secure Share Worker. Production remains unchanged until the exact candidate is reviewed and explicitly approved.
 
 Cloudflare account access and the existing Worker context were re-verified on 2026-08-10 before production launch. No duplicate Worker or replacement DNS infrastructure was created. Zoho Mail remains the email provider and must not be disrupted by website changes.
 
@@ -30,7 +30,10 @@ Company-owned repositories and infrastructure remain organization-owned. Individ
 - LDW-branded Secure Share page at `/share/`;
 - fixed same-origin Secure Share transition at `/share/continue` using runtime secret binding `SECURE_SHARE_DESTINATION_URL`;
 - repository-controlled public copy under `src/data/`;
-- selected work/technology content under `src/data/work.json`;
+- canonical public identity/social data under `src/data/site.json`;
+- service, founder, selected-work, and technology content under `src/data/`;
+- substantive service/project detail pages generated statically from repository-controlled data;
+- stable mobile-first `/connect/` destination with a same-origin vCard;
 - local same-origin technology SVG marks under `public/technology/`;
 - no React or browser application framework;
 - no database, CMS, authentication, analytics, or server-side customer-data processing;
@@ -47,7 +50,7 @@ See [docs/architecture.md](docs/architecture.md).
 
 Routine business copy is separated from page structure. Edit the JSON files under `src/data/` through a branch and pull request, then use the normal CI and Cloudflare branch preview before merge.
 
-The selected-work statuses are intentionally explicit: live work is labeled **Live**, while unfinished LDW products are labeled **Active Development** rather than being presented as completed client engagements.
+Selected-work statuses remain intentionally explicit: live work is labeled **Live**, unfinished LDW products remain **Active Development**, and G.A.S. is labeled **Internal Infrastructure** rather than being presented as customer SaaS.
 
 See [docs/content-editing.md](docs/content-editing.md) and [docs/technology-marks.md](docs/technology-marks.md).
 
