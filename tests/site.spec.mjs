@@ -38,9 +38,10 @@ test('production brand, accepted navigation, and Connect CTA render', async ({ p
   await expect(page.locator('header img[src*="logo-horizontal.svg"]')).toBeVisible();
   await expect(page.locator('footer img[src*="logo-horizontal-white.svg"]')).toBeVisible();
   const header = page.locator('header');
-  for (const href of ['/services/','/work/','/approach/','/about/','/connect/']) {
+  for (const href of ['/services/','/work/','/approach/','/about/']) {
     await expect(header.locator(`a[href="${href}"]`)).toHaveCount(2);
   }
+  await expect(header.locator('a[href="/connect/"]')).toHaveCount(4);
   await expect(header.getByRole('link', { name: 'Start a conversation' })).toHaveCount(2);
   await expect(header.locator('a[href="/share/"]')).toHaveCount(0);
 });
@@ -115,7 +116,7 @@ test('About exposes founder semantics but preserves owner-review gate', async ({
   const founder = page.locator('#eddie-gugino[itemtype="https://schema.org/Person"]');
   await expect(founder).toHaveCount(1);
   await expect(founder.getByText('Eddie Gugino', { exact: true })).toBeVisible();
-  await expect(founder.getByText('Founder', { exact: true })).toBeVisible();
+  await expect(founder.locator('[itemprop="jobTitle"]')).toHaveText('Founder');
   await expect(page.getByText('Owner-selected photo required before production.')).toBeVisible();
   await expect(page.getByText('final biography wording require owner approval', { exact: false })).toBeVisible();
 });
@@ -127,8 +128,8 @@ test('Connect is a stable mobile-friendly contact destination with verified soci
   await expect(page.locator('#main-content a[href="tel:+18436333123"]')).toBeVisible();
   await expect(page.locator('#main-content a[href="mailto:eddie@lowcountrydigitalworks.com"]')).toBeVisible();
   await expect(page.locator('a[href="/lowcountry-digital-works.vcf"]')).toHaveAttribute('download', '');
-  await expect(page.locator('a[href="https://www.facebook.com/LowcountryDigitalWorks/"]')).toBeVisible();
-  await expect(page.locator('a[href="https://x.com/LocoDW"]')).toBeVisible();
+  await expect(page.locator('#main-content a[href="https://www.facebook.com/LowcountryDigitalWorks/"]')).toBeVisible();
+  await expect(page.locator('#main-content a[href="https://x.com/LocoDW"]')).toBeVisible();
   await expect(page.locator('form')).toHaveCount(0);
   await expect(page.locator('a[href="/share/"]')).toHaveCount(0);
 });
