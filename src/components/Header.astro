@@ -1,8 +1,13 @@
 ---
 const links = [
-  ['Home','/'], ['Services','/services/'], ['Work','/work/'], ['Approach','/approach/'], ['About','/about/'], ['Contact','/contact/']
+  ['Services','/services/'],
+  ['Work','/work/'],
+  ['Approach','/approach/'],
+  ['About','/about/'],
+  ['Connect','/connect/']
 ];
 const current = Astro.url.pathname;
+const isCurrent = (href) => href === '/' ? current === '/' : current === href || current.startsWith(href);
 ---
 <header class="site-header">
   <div class="container header-row">
@@ -10,20 +15,20 @@ const current = Astro.url.pathname;
       <img src="/brand/logo/lowcountry-digital-works-logo-horizontal.svg" alt="Lowcountry Digital Works" width="312" height="88" />
     </a>
     <nav class="desktop-nav" aria-label="Primary">
-      {links.map(([label,href]) => <a href={href} aria-current={current === href ? 'page' : undefined}>{label}</a>)}
-      <a class="nav-cta" href="mailto:eddie@lowcountrydigitalworks.com">Email Eddie</a>
+      {links.map(([label,href]) => <a href={href} aria-current={isCurrent(href) ? 'page' : undefined}>{label}</a>)}
+      <a class="nav-cta" href="/connect/">Start a conversation</a>
     </nav>
     <details class="mobile-nav">
       <summary>Menu</summary>
       <nav aria-label="Mobile primary">
-        {links.map(([label,href]) => <a href={href} aria-current={current === href ? 'page' : undefined}>{label}</a>)}
-        <a href="mailto:eddie@lowcountrydigitalworks.com">Email Eddie</a>
+        {links.map(([label,href]) => <a href={href} aria-current={isCurrent(href) ? 'page' : undefined}>{label}</a>)}
+        <a class="mobile-nav__cta" href="/connect/">Start a conversation</a>
       </nav>
     </details>
   </div>
 </header>
 <style>
-.site-header { position: sticky; top: 0; z-index: 20; background: var(--ldw-soft-white); border-bottom: 1px solid var(--border); }
+.site-header { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--ldw-soft-white) 96%, white); border-bottom: 1px solid var(--border); }
 .header-row { min-height: 70px; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
 .brand { display: inline-flex; width: clamp(180px, 22vw, 250px); line-height: 0; }
 .desktop-nav { display: flex; align-items: center; gap: clamp(.55rem, 1.45vw, 1.15rem); }
@@ -32,8 +37,9 @@ const current = Astro.url.pathname;
 .desktop-nav .nav-cta { border: 1px solid var(--interactive); background: var(--interactive); color: white; border-radius: var(--radius-md); padding: .55rem .8rem; }
 .mobile-nav { display: none; position: relative; }
 .mobile-nav summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; padding: .45rem .7rem; border: 1px solid var(--border); border-radius: var(--radius-md); font-weight: 750; }
-.mobile-nav nav { position: absolute; right: 0; top: calc(100% + .55rem); min-width: min(78vw, 300px); padding: .5rem; display: grid; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface); box-shadow: 0 16px 32px rgb(16 42 58 / .12); }
+.mobile-nav nav { position: absolute; right: 0; top: calc(100% + .55rem); min-width: min(82vw, 320px); padding: .5rem; display: grid; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface); box-shadow: 0 16px 32px rgb(16 42 58 / .12); }
 .mobile-nav nav a { color: var(--text); padding: .7rem .8rem; text-decoration: none; border-radius: var(--radius-sm); font-weight: 680; }
 .mobile-nav nav a:hover { background: var(--surface-warm); }
-@media (max-width: 900px) { .desktop-nav { display: none; } .mobile-nav { display: block; } .brand { width: 210px; } }
+.mobile-nav .mobile-nav__cta { margin-top: .25rem; background: var(--interactive); color: white; }
+@media (max-width: 960px) { .desktop-nav { display: none; } .mobile-nav { display: block; } .brand { width: 210px; } }
 </style>
