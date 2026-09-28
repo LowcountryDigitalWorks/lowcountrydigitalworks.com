@@ -25,14 +25,24 @@ The Secure Share secret value must never be committed to this repository, placed
 - `/`
 - `/about/`
 - `/approach/`
+- `/connect/`
 - `/contact/`
 - `/privacy/`
 - `/services/`
+- `/services/business-systems-automation/`
+- `/services/digital-ownership-platform-administration/`
+- `/services/technology-consulting/`
+- `/services/website-care/`
+- `/services/websites/`
 - `/share/`
 - `/share/continue`
 - `/work/`
+- `/work/document-control/`
+- `/work/gas-engine/`
+- `/work/lowcountry-digital-works-website/`
+- `/work/secure-exchange/`
 
-The HTML page routes consume Worker invocations and make one internal `ASSETS.fetch()` call so the existing CSP nonce can be added. `/share/continue` is handled directly by the same Worker and does not fetch a static asset. No-slash page forms use direct Static Assets canonical redirects before the final exact HTML path invokes the Worker.
+The public HTML page routes above consume Worker invocations and make one internal `ASSETS.fetch()` call so the existing CSP nonce can be added. Release 0.7.0 extends the existing selective list only for the new Connect, service-detail, and project-detail pages; it does not add a Worker runtime or change the Secure Share transition. `/share/continue` is handled directly by the same Worker and does not fetch a static asset. No-slash page forms use direct Static Assets canonical redirects before the final exact HTML path invokes the Worker.
 
 The custom 404, nested paths, and ordinary static files—including `/_astro/*`, font files, images and SVGs, favicons, technology marks, `robots.txt`, and `sitemap.xml`—do not match and remain direct Static Assets requests. For this small site, the expected invocation footprint remains page traffic plus deliberate Secure Share transitions. No paid Workers plan or new recurring subscription is required.
 
