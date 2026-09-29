@@ -98,7 +98,7 @@ import work from '../data/work.json';
                 <span>{project.type}</span>
               </div>
               <h3>{project.name}</h3>
-              <p>{project.purpose}</p>
+              <p>{project.homeSummary ?? project.purpose}</p>
               <a class="text-link" href={`/work/${project.slug}/`} aria-label={`View ${project.name} project details`}>Explore the work →</a>
             </div>
           </article>
