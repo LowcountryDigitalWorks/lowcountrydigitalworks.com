@@ -153,6 +153,8 @@ test('work page shows three truthful evidence-oriented project entries', async (
   await expect(page.getByText('Internal service-enabling evidence infrastructure', { exact: true })).toBeVisible();
   await expect(page.getByText('Internal evidence infrastructure that helps LDW compare website and search-quality findings over time', { exact: false })).toBeVisible();
   await expect(page.getByText('Internal infrastructure · not customer SaaS.', { exact: true })).toBeVisible();
+  await expect(page.locator('#main-content')).not.toContainText('Donovan Family Dentistry');
+  await expect(page.locator('#main-content')).not.toContainText('East Coast Foam');
 
   await page.goto('/work/gas-engine/');
   await expect(page.getByText('Internal evidence infrastructure that helps LDW compare website and search-quality findings over time', { exact: false })).toBeVisible();
