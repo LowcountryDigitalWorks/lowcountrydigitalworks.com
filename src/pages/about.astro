@@ -13,17 +13,23 @@ import about from '../data/about.json';
 
   <section class="section">
     <div class="container founder-block founder-block--light" itemscope itemtype="https://schema.org/Person">
-      <div class="founder-photo-placeholder" data-owner-asset-pending="founder-photo" role="img" aria-label="Founder photo pending owner selection">
-        <span>Founder photo</span>
-        <small>Owner selection pending before production</small>
-      </div>
+      <img
+        class="founder-photo"
+        data-founder-portrait
+        itemprop="image"
+        src="/brand/founder/eddie-gugino-founder.webp"
+        alt="Eddie Gugino, founder of Lowcountry Digital Works"
+        width="900"
+        height="1125"
+        loading="lazy"
+        decoding="async"
+      />
       <div>
         <p class="eyebrow">{about.founder.eyebrow}</p>
         <p class="founder-name"><strong itemprop="name">{about.founder.name}</strong> · <span itemprop="jobTitle">{about.founder.role}</span></p>
         <h2>{about.founder.title}</h2>
         <p class="lede">{about.founder.body}</p>
         <p>{about.founder.credentials}</p>
-        <p class="owner-review-note owner-review-note--light">{about.founder.note}</p>
       </div>
     </div>
   </section>
