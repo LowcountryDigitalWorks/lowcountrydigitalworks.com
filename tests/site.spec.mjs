@@ -97,7 +97,7 @@ test('Approach matches the accepted assess, improve-or-build, handoff-or-care me
   await expect(page.getByRole('heading', { name: 'Assess' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Improve or build' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Handoff or care' })).toBeVisible();
-  await expect(page.locator('a[href="/connect/"]')).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Discuss a project' })).toBeVisible();
   await expect(page.locator('a[href="/contact/"]')).toHaveCount(0);
 });
 
@@ -108,7 +108,7 @@ test('work page shows four truthful evidence-oriented project entries', async ({
   await expect(page.locator('.work-row__visual img')).toHaveCount(4);
   await expect(page.getByRole('heading', { name: 'G.A.S. Engine' })).toBeVisible();
   await expect(page.getByText('Internal service-enabling evidence infrastructure', { exact: true })).toBeVisible();
-  await expect(page.getByText('customer SaaS', { exact: false })).toBeVisible();
+  await expect(page.getByText('Website and search-visibility work can produce evidence from several replaceable tools over time.', { exact: false })).toBeVisible();
 
   await page.goto('/work/gas-engine/');
   await expect(page.locator('.project-detail-grid .lede').filter({ hasText: 'not customer SaaS' })).toBeVisible();
