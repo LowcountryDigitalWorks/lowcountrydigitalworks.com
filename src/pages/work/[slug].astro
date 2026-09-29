@@ -13,7 +13,7 @@ export function getStaticPaths() {
 
 const { project } = Astro.props;
 ---
-<BaseLayout title={project.name} description={project.purpose}>
+<BaseLayout title={project.name} description={project.homeSummary ?? project.purpose}>
   <nav class="breadcrumbs" aria-label="Breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
     <div class="container">
       <ol>
