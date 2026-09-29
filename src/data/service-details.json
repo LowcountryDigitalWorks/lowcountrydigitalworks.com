@@ -16,7 +16,21 @@
       "Repository, hosting, deployment, handoff, and rollback documentation"
     ],
     "ownership": "Production accounts should remain customer-owned where practical, with LDW using named, scoped access.",
-    "cta": "Discuss a website project"
+    "cta": "Discuss a website project",
+    "faqs": [
+      {
+        "question": "Do I always need a complete website rebuild?",
+        "answer": "No. LDW starts by understanding the current site, audience, content, ownership, integrations, and constraints. Modernizing what already works can be a better choice than replacing everything."
+      },
+      {
+        "question": "Who should own the domain, hosting, repository, and production accounts?",
+        "answer": "The customer should ordinarily own production assets where practical, with LDW using named, scoped access. That keeps recovery, portability, and future handoff clearer."
+      },
+      {
+        "question": "Do you require a CMS or a specific website platform?",
+        "answer": "No. The platform should fit the editing needs, integrations, support burden, portability, and budget. A static site, an existing platform, or a maintained service can each be the right answer in different situations."
+      }
+    ]
   },
   {
     "slug": "website-care",
@@ -35,7 +49,21 @@
       "Documented change history and owner-approved consequential changes"
     ],
     "ownership": "Website Care does not create a 24x7 support promise or transfer ownership of customer accounts to LDW.",
-    "cta": "Discuss Website Care"
+    "cta": "Discuss Website Care",
+    "faqs": [
+      {
+        "question": "Is Website Care a 24/7 emergency support plan?",
+        "answer": "No. Website Care is bounded ongoing maintenance and improvement under an agreed support scope. It does not imply a 24/7 response commitment unless a separate agreement explicitly says so."
+      },
+      {
+        "question": "Does ongoing care mean LDW takes ownership of my website accounts?",
+        "answer": "No. Ongoing support should preserve customer ownership. LDW generally works through named, scoped access rather than becoming the permanent recovery owner."
+      },
+      {
+        "question": "What kinds of work can Website Care include?",
+        "answer": "Depending on the agreed scope, it can include planned fixes, dependency and security upkeep, accessibility and performance checks, link/content-quality review, and incremental improvements."
+      }
+    ]
   },
   {
     "slug": "business-systems-automation",
@@ -54,7 +82,21 @@
       "Focused internal applications only when a measured gap remains"
     ],
     "ownership": "Automations should point back to authoritative systems rather than becoming a competing source of truth.",
-    "cta": "Discuss a workflow"
+    "cta": "Discuss a workflow",
+    "faqs": [
+      {
+        "question": "Do you start by building custom software?",
+        "answer": "No. LDW first checks whether an existing platform, maintained service, native feature, API, webhook, or configuration change can solve the problem. Custom tooling is reserved for a real gap that remains."
+      },
+      {
+        "question": "Can you connect tools we already use?",
+        "answer": "Often, yes. A typical engagement starts with workflow discovery and an inventory of the current systems, then looks for supported APIs, webhooks, automation paths, and maintained integrations."
+      },
+      {
+        "question": "Will the automation become another system we have to maintain as the source of truth?",
+        "answer": "It should not. LDW prefers automations that move or transform information around authoritative systems rather than creating a competing source of truth."
+      }
+    ]
   },
   {
     "slug": "digital-ownership-platform-administration",
@@ -73,7 +115,21 @@
       "Ongoing administration where a clear recurring responsibility is agreed"
     ],
     "ownership": "LDW does not need to become the permanent recovery owner or collect master passwords when delegated access is available.",
-    "cta": "Discuss ownership or administration"
+    "cta": "Discuss ownership or administration",
+    "faqs": [
+      {
+        "question": "Can you help if we are not sure who owns our domain, DNS, hosting, repository, or business profiles?",
+        "answer": "Yes. The work can start with a digital-estate inventory that identifies the current owner, access model, recovery path, and any transition or cleanup that is actually needed."
+      },
+      {
+        "question": "Do you need our master passwords or MFA recovery codes?",
+        "answer": "No. Named users, delegated access, scoped roles, and customer-owned accounts are preferred. LDW should not become the permanent holder of master credentials or recovery secrets when safer access models exist."
+      },
+      {
+        "question": "Can you help move away from a former vendor or employee account?",
+        "answer": "Yes, when the organization has authority to do so. The transition should document current state, proposed ownership, access changes, validation, and rollback so production systems are not broken during cleanup."
+      }
+    ]
   },
   {
     "slug": "technology-consulting",
@@ -92,6 +148,20 @@
       "A bounded roadmap with clear next actions"
     ],
     "ownership": "Consulting should leave the customer with clearer decisions and documentation, not a dependency on hidden provider knowledge.",
-    "cta": "Discuss a technical decision"
+    "cta": "Discuss a technical decision",
+    "faqs": [
+      {
+        "question": "Do I need a technical specification before we talk?",
+        "answer": "No. A useful starting point is the business problem, what is happening today, the desired outcome, and the constraints that already matter."
+      },
+      {
+        "question": "Will consulting always lead to a build project?",
+        "answer": "No. The result may be a configuration change, a platform decision, a troubleshooting finding, a small roadmap, or a recommendation to use an existing tool rather than build something new."
+      },
+      {
+        "question": "Can this be a small, focused engagement?",
+        "answer": "Yes. LDW prefers bounded work that leaves the customer with clearer decisions, documentation, and next actions rather than expanding the scope without a demonstrated need."
+      }
+    ]
   }
 ]
