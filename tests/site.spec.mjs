@@ -100,6 +100,8 @@ test('homepage presents three customer-first entry paths without exposing gated 
   await expect(page.locator('#main-content form')).toHaveCount(0);
   await expect(page.locator('a[href*="suitedash"]')).toHaveCount(0);
   await expect(page.locator('.portfolio-grid--home .portfolio-card')).toHaveCount(3);
+  await expect(page.getByText('A structured way to keep reviews, approvals, versions, and evidence', { exact: false })).toBeVisible();
+  await expect(page.getByText('Internal evidence infrastructure that helps LDW compare website and search-quality findings', { exact: false })).toBeVisible();
   const homeWorkThumbs = page.locator('.portfolio-grid--home .portfolio-card__visual img');
   await expect(homeWorkThumbs).toHaveCount(3);
   for (let i = 0; i < 3; i += 1) {
