@@ -154,7 +154,7 @@ p { margin: 0 0 1rem; }
 .service-provider { color: var(--muted); font-size: .9rem; }
 .service-detail-grid, .project-detail-grid, .contact-layout { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: clamp(2rem, 6vw, 5rem); align-items: start; }
 .detail-list { gap: 1rem; }
-.page-hero--project { background: linear-gradient(135deg, var(--surface) 0%, color-mix(in srgb, var(--surface-warm) 58%, white) 100%); }
+.page-hero--project { background: color-mix(in srgb, var(--surface-warm) 54%, white); }
 .project-hero-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(280px, .75fr); gap: clamp(2rem, 6vw, 5rem); align-items: end; }
 .project-summary-card { padding: clamp(1.35rem, 3vw, 2rem); border: 1px solid color-mix(in srgb, var(--interactive) 28%, var(--border)); border-radius: var(--radius-lg); background: rgb(255 255 255 / .76); box-shadow: 0 12px 32px rgb(16 42 58 / .055); }
 .project-summary-card p:last-child { margin-bottom: 0; }
