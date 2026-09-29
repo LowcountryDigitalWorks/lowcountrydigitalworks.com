@@ -124,7 +124,7 @@ test('founder structure uses the owner-approved portrait and approved trust fact
   await expect(page.locator('body')).not.toContainText('security clearance');
 });
 
-test('Connect is a mobile-first stable contact destination with verified social links and vCard', async ({ page }) => {
+test('Connect is a mobile-first stable contact destination with accessible contact-card and social iconography', async ({ page }) => {
   await page.goto('/connect/');
   const main = page.locator('#main-content');
   await expect(main.getByRole('heading', { level: 1, name: 'Eddie Gugino' })).toBeVisible();
@@ -133,12 +133,33 @@ test('Connect is a mobile-first stable contact destination with verified social 
   await expect(main.locator('a[href="mailto:eddie@lowcountrydigitalworks.com"]')).toBeVisible();
   await expect(main.locator('a[href="https://www.facebook.com/LowcountryDigitalWorks/"]')).toBeVisible();
   await expect(main.locator('a[href="https://x.com/LocoDW"]')).toBeVisible();
-  await expect(main.locator('a[href="/eddie-gugino-lowcountry-digital-works.vcf"]')).toBeVisible();
+  const contactCard = main.locator('a[href="/eddie-gugino-lowcountry-digital-works.vcf"]');
+  await expect(contactCard).toBeVisible();
+  await expect(contactCard).toContainText('Contact card');
+  await expect(main).not.toContainText('Save vCard');
+  await expect(main.locator('.connect-actions .ui-icon')).toHaveCount(4);
+  await expect(main.locator('.connect-links .ui-icon')).toHaveCount(2);
+  await expect(main.locator('.ui-icon[aria-hidden="true"]')).toHaveCount(6);
   await expect(main.locator('form')).toHaveCount(0);
 
   const vcard = await page.request.get('/eddie-gugino-lowcountry-digital-works.vcf');
   expect(vcard.ok()).toBeTruthy();
   expect(await vcard.text()).toContain('FN:Eddie Gugino');
+});
+
+test('Contact and footer iconography supplements visible labels rather than replacing them', async ({ page }) => {
+  await page.goto('/contact/');
+  const main = page.locator('#main-content');
+  await expect(main.getByRole('link', { name: /Text 843-633-3123/ })).toBeVisible();
+  await expect(main.getByRole('link', { name: /Call 843-633-3123/ })).toBeVisible();
+  await expect(main.getByRole('link', { name: 'Facebook' })).toBeVisible();
+  await expect(main.getByRole('link', { name: 'X' })).toBeVisible();
+  await expect(main.locator('.ui-icon[aria-hidden="true"]')).toHaveCount(5);
+
+  const footer = page.locator('footer');
+  await expect(footer.getByRole('link', { name: 'Facebook' })).toBeVisible();
+  await expect(footer.getByRole('link', { name: 'X' })).toBeVisible();
+  await expect(footer.locator('.ui-icon[aria-hidden="true"]')).toHaveCount(4);
 });
 
 test('verified public entity links are exposed with schema microdata and no unverified company LinkedIn', async ({ page }) => {
