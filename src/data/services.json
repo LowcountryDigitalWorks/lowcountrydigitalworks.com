@@ -13,7 +13,8 @@
       "primaryHref": "/services/websites/",
       "primaryLabel": "Website projects",
       "secondaryHref": "/services/website-care/",
-      "secondaryLabel": "Website Care"
+      "secondaryLabel": "Website Care",
+      "icon": "website"
     },
     {
       "number": "02",
@@ -21,7 +22,8 @@
       "name": "Business Systems & Automation",
       "description": "Reduce repetitive work, connect existing systems, and build focused internal tooling only when configuration and integration leave a real gap.",
       "primaryHref": "/services/business-systems-automation/",
-      "primaryLabel": "Business systems & automation"
+      "primaryLabel": "Business systems & automation",
+      "icon": "automation"
     },
     {
       "number": "03",
@@ -29,7 +31,8 @@
       "name": "Digital Ownership & Platform Administration",
       "description": "Untangle domains, DNS, hosting, repositories, business profiles, vendor access, and the ongoing administration needed to keep those systems recoverable.",
       "primaryHref": "/services/digital-ownership-platform-administration/",
-      "primaryLabel": "Ownership & platform administration"
+      "primaryLabel": "Ownership & platform administration",
+      "icon": "ownership"
     },
     {
       "number": "04",
@@ -37,7 +40,8 @@
       "name": "Technology Consulting",
       "description": "Architecture, troubleshooting, platform choices, technical planning, and practical decision support without a predetermined product sale.",
       "primaryHref": "/services/technology-consulting/",
-      "primaryLabel": "Technology consulting"
+      "primaryLabel": "Technology consulting",
+      "icon": "consulting"
     }
   ],
   "startingPoints": [

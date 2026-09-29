@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import contact from '../data/contact.json';
+import Icon from '../components/Icon.astro';
 ---
 <BaseLayout title="Connect" description="Connect with Eddie Gugino, founder of Lowcountry Digital Works, by text, phone, email, or verified social profile.">
   <section class="section connect-page">
@@ -14,16 +15,33 @@ import contact from '../data/contact.json';
       </div>
 
       <div class="connect-actions" aria-label="Contact options">
-        <a class="connect-action connect-action--primary" href={`sms:${contact.phone.number}`}><span>Text</span><strong>{contact.phone.display}</strong></a>
-        <a class="connect-action" href={`tel:${contact.phone.number}`}><span>Call</span><strong>{contact.phone.display}</strong></a>
-        <a class="connect-action" href={`mailto:${contact.email.address}`}><span>Email</span><strong>{contact.email.address}</strong></a>
-        <a class="connect-action" href="/eddie-gugino-lowcountry-digital-works.vcf" download><span>Contact card</span><strong>Save vCard</strong></a>
+        <a class="connect-action connect-action--primary" href={`sms:${contact.phone.number}`}>
+          <span class="connect-action__icon"><Icon name="message" size={22} /></span>
+          <span class="connect-action__copy"><span>Text</span><strong>{contact.phone.display}</strong></span>
+        </a>
+        <a class="connect-action" href={`tel:${contact.phone.number}`}>
+          <span class="connect-action__icon"><Icon name="phone" size={22} /></span>
+          <span class="connect-action__copy"><span>Call</span><strong>{contact.phone.display}</strong></span>
+        </a>
+        <a class="connect-action" href={`mailto:${contact.email.address}`}>
+          <span class="connect-action__icon"><Icon name="mail" size={22} /></span>
+          <span class="connect-action__copy"><span>Email</span><strong>{contact.email.address}</strong></span>
+        </a>
+        <a class="connect-action" href="/eddie-gugino-lowcountry-digital-works.vcf" download>
+          <span class="connect-action__icon"><Icon name="contact" size={22} /></span>
+          <span class="connect-action__copy"><span>Save to contacts</span><strong>Contact card</strong></span>
+        </a>
       </div>
 
       <div class="connect-links">
         <a href="/services/">Services →</a>
         <a href="/work/">Work →</a>
-        {contact.socials.map((social) => <a href={social.href} rel="me noopener">{social.name} →</a>)}
+        {contact.socials.map((social) => (
+          <a class="icon-link" href={social.href} rel="me noopener">
+            <Icon name={social.name === 'Facebook' ? 'facebook' : 'x'} size={18} />
+            <span>{social.name}</span>
+          </a>
+        ))}
       </div>
 
       <p class="connect-note">For passwords, MFA or recovery codes, private keys, API tokens, payment-card information, PHI, or other sensitive secrets, do not use ordinary email or text. Use a secure method specifically provided for the engagement.</p>

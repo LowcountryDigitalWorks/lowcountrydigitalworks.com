@@ -1,5 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import FaqList from '../../components/FaqList.astro';
+import Icon from '../../components/Icon.astro';
 import work from '../../data/work.json';
 
 export function getStaticPaths() {
@@ -27,14 +29,31 @@ const { project } = Astro.props;
     </div>
   </nav>
 
-  <section class="page-hero">
-    <div class="container readable">
-      <div class="work-row__meta">
-        <span class={`status-pill ${project.status === 'Live' ? 'status-pill--live' : ''}`}>{project.status}</span>
-        <span>{project.type}</span>
+  <section class="page-hero page-hero--project">
+    <div class="container project-hero-grid">
+      <div class="readable">
+        <div class="work-row__meta">
+          <span class={`status-pill ${project.status === 'Live' ? 'status-pill--live' : ''}`}>{project.status}</span>
+          <span>{project.type}</span>
+        </div>
+        <h1>{project.name}</h1>
+        <p class="lede">{project.purpose}</p>
+        {(project.externalHref || project.sourceHref) && (
+          <div class="actions">
+            {project.externalHref && <a class="button" href={project.externalHref}>View live site</a>}
+            {project.sourceHref && (
+              <a class="button button--secondary button--icon" href={project.sourceHref} rel="noopener">
+                <Icon name="github" size={18} />
+                <span>View source</span>
+              </a>
+            )}
+          </div>
+        )}
       </div>
-      <h1>{project.name}</h1>
-      <p class="lede">{project.purpose}</p>
+      <aside class="project-summary-card">
+        <p class="eyebrow">Why it matters</p>
+        <p>{project.whyItMatters}</p>
+      </aside>
     </div>
   </section>
 
@@ -44,29 +63,94 @@ const { project } = Astro.props;
         <p class="eyebrow">What it is</p>
         <h2>Purpose before polish.</h2>
         <p class="lede">{project.description}</p>
-        {project.externalHref && <div class="actions"><a class="button button--secondary" href={project.externalHref}>View live site</a></div>}
       </div>
-      <aside class="project-boundary">
+      <div>
+        <p class="eyebrow">Where it fits</p>
+        <h2>Useful when the problem looks like this.</h2>
+        <ul class="check-list">{project.fit.map((item) => <li>{item}</li>)}</ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--warm">
+    <div class="container">
+      <div class="section-heading">
+        <p class="eyebrow">How it works</p>
+        <h2>A bounded path from problem to evidence.</h2>
+      </div>
+      <div class="project-process">
+        {project.howItWorks.map((item, index) => (
+          <article class="project-process__step">
+            <span>{String(index + 1).padStart(2, '0')}</span>
+            <p>{item}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {project.visuals?.length > 0 && (
+    <section class="section project-visuals">
+      <div class="container">
+        <div class="section-heading">
+          <p class="eyebrow">Visual evidence</p>
+          <h2>See the work, not a fabricated mockup.</h2>
+        </div>
+        <div class:list={['project-visual-grid', project.visuals.length === 1 && 'project-visual-grid--single']}>
+          {project.visuals.map((visual) => (
+            <figure class="project-visual">
+              <a class="project-visual__frame" href={visual.src}>
+                <img src={visual.src} alt={visual.alt} width={visual.width} height={visual.height} loading="lazy" decoding="async" />
+              </a>
+              <figcaption>{visual.caption} <a href={visual.src}>Open full screenshot</a></figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="section section--warm">
+    <div class="container">
+      <div class="section-heading"><p class="eyebrow">Evidence</p><h2>What this work demonstrates.</h2></div>
+      <div class="evidence-grid">
+        {project.evidence.map((item, index) => <article><span>{String(index + 1).padStart(2, '0')}</span><p>{item}</p></article>)}
+      </div>
+      {(!project.visuals || project.visuals.length === 0) && (
+        <p class="asset-gap-note">Public-safe screenshots or diagrams will appear here only when they come from the real project and can be shown without exposing customer or sensitive information.</p>
+      )}
+    </div>
+  </section>
+
+  <section class="section section--navy">
+    <div class="container project-boundary-grid">
+      <div>
+        <p class="eyebrow">Maturity</p>
+        <h2>What exists today.</h2>
+        <p class="lede">{project.maturity}</p>
+      </div>
+      <aside class="project-boundary project-boundary--dark">
         <p class="eyebrow">Current boundary</p>
         <p>{project.boundary}</p>
       </aside>
     </div>
   </section>
 
-  <section class="section section--warm">
+  <section class="section">
     <div class="container">
-      <div class="section-heading"><p class="eyebrow">Evidence</p><h2>What this work demonstrates.</h2></div>
-      <div class="evidence-grid">
-        {project.evidence.map((item, index) => <article><span>0{index + 1}</span><p>{item}</p></article>)}
-      </div>
-      <p class="asset-gap-note">Project screenshots or diagrams will be added only when a real public-safe asset is available; this candidate does not invent visual evidence.</p>
+      <FaqList items={project.faqs} eyebrow="Project questions" title="What a prospective customer should understand." />
     </div>
   </section>
 
-  <section class="section section--navy">
+  <section class="section section--warm">
     <div class="container final-cta final-cta--single">
-      <div><p class="eyebrow">Related work</p><h2>Need help with a similar kind of problem?</h2><p>Use the problem as the starting point rather than trying to match a product name.</p></div>
-      <div class="actions"><a class="button button--secondary" href="/connect/">Connect with Eddie</a></div>
+      <div>
+        <p class="eyebrow">Related work</p>
+        <h2>Need help with a similar kind of problem?</h2>
+        <p>Use the problem as the starting point rather than trying to match a product name.</p>
+        {project.relatedService && <p class="asset-gap-note">Related service: <a href={project.relatedService.href}>{project.relatedService.name}</a></p>}
+      </div>
+      <div class="actions"><a class="button" href="/connect/">Connect with Eddie</a></div>
     </div>
   </section>
 </BaseLayout>

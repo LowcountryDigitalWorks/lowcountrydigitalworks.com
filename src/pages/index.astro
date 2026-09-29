@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import FaqList from '../components/FaqList.astro';
 import home from '../data/home.json';
 import work from '../data/work.json';
 ---
@@ -63,16 +64,27 @@ import work from '../data/work.json';
       </div>
       <div class="work-list">
         {work.projects.map((project) => (
-          <article class="work-row">
-            <div class="work-row__meta">
-              <span class={`status-pill ${project.status === 'Live' ? 'status-pill--live' : ''}`}>{project.status}</span>
-              <span>{project.type}</span>
-            </div>
-            <div>
+          <article class="work-row work-row--home">
+            {project.thumbnail && (
+              <a class="work-row__thumb" href={`/work/${project.slug}/`} aria-label={`View ${project.name} project details`}>
+                <img
+                  src={project.thumbnail.src}
+                  alt=""
+                  width={project.thumbnail.width}
+                  height={project.thumbnail.height}
+                  decoding="async"
+                />
+              </a>
+            )}
+            <div class="work-row__home-copy">
+              <div class="work-row__meta">
+                <span class={`status-pill ${project.status === 'Live' ? 'status-pill--live' : ''}`}>{project.status}</span>
+                <span>{project.type}</span>
+              </div>
               <h3>{project.name}</h3>
               <p>{project.purpose}</p>
+              <a class="work-row__link" href={`/work/${project.slug}/`} aria-label={`View ${project.name} project details`}>View evidence →</a>
             </div>
-            <a class="work-row__link" href={`/work/${project.slug}/`} aria-label={`View ${project.name} project details`}>View evidence →</a>
           </article>
         ))}
       </div>
@@ -89,7 +101,6 @@ import work from '../data/work.json';
         alt="Eddie Gugino, founder of Lowcountry Digital Works"
         width="480"
         height="600"
-        loading="lazy"
         decoding="async"
       />
       <div>
@@ -117,6 +128,12 @@ import work from '../data/work.json';
     <div class="container">
       <div class="section-heading"><p class="eyebrow">{home.process.eyebrow}</p><h2>{home.process.title}</h2></div>
       <div class="flow">{home.process.steps.map((step) => <article class="flow__step"><h3>{step.title}</h3><p>{step.description}</p></article>)}</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <FaqList items={home.faq.items} eyebrow={home.faq.eyebrow} title={home.faq.title} />
     </div>
   </section>
 

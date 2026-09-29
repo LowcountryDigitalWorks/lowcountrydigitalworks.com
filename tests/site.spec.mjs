@@ -10,7 +10,6 @@ const routes = [
   '/services/digital-ownership-platform-administration/',
   '/services/technology-consulting/',
   '/work/',
-  '/work/lowcountry-digital-works-website/',
   '/work/document-control/',
   '/work/secure-exchange/',
   '/work/gas-engine/',
@@ -55,6 +54,7 @@ test('primary navigation reflects the accepted consultancy IA and keeps Secure S
 test('services page presents four problem-led service families and detail routes', async ({ page }) => {
   await page.goto('/services/');
   await expect(page.locator('.service-family')).toHaveCount(4);
+  await expect(page.locator('.service-family__icon .ui-icon')).toHaveCount(4);
   await expect(page.getByRole('heading', { name: 'Websites & Website Care' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Business Systems & Automation' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Digital Ownership & Platform Administration' })).toBeVisible();
@@ -64,6 +64,16 @@ test('services page presents four problem-led service families and detail routes
   await expect(page.locator('article[itemtype="https://schema.org/Service"]')).toHaveCount(1);
   await expect(page.locator('[itemtype="https://schema.org/BreadcrumbList"]')).toHaveCount(1);
   await expect(page.getByText('configure', { exact: false })).toBeVisible();
+  await expect(page.locator('.faq-item')).toHaveCount(3);
+  await expect(page.getByText('Do you start by building custom software?')).toBeVisible();
+  await expect(page.getByText('Will the automation become another system we have to maintain as the source of truth?')).toBeVisible();
+  await expect(page.locator('.related-work-card')).toHaveCount(2);
+  await expect(page.getByRole('heading', { name: 'Document Control' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Secure Exchange' })).toBeVisible();
+  await expect(page.getByText('Document Control and Secure Exchange show how LDW explores real workflow gaps', { exact: false })).toBeVisible();
+
+  await page.goto('/services/website-care/');
+  await expect(page.getByRole('link', { name: 'View Website Quality Toolkit source' })).toHaveAttribute('href', 'https://github.com/LowcountryDigitalWorks/website-quality-toolkit');
 });
 
 test('homepage presents three customer-first entry paths without exposing gated discovery', async ({ page }) => {
@@ -79,18 +89,62 @@ test('homepage presents three customer-first entry paths without exposing gated 
   await expect(page.locator('.pathway a[href="/connect/"]')).toHaveCount(3);
   await expect(page.locator('#main-content form')).toHaveCount(0);
   await expect(page.locator('a[href*="suitedash"]')).toHaveCount(0);
+  await expect(page.locator('.work-row--home .work-row__thumb')).toHaveCount(3);
+  const homeWorkThumbs = page.locator('.work-row--home .work-row__thumb img');
+  await expect(homeWorkThumbs).toHaveCount(3);
+  for (let i = 0; i < 3; i += 1) {
+    await expect.poll(async () => homeWorkThumbs.nth(i).evaluate((img) => [img.complete, img.naturalWidth, img.naturalHeight]))
+      .toEqual([true, 720, 450]);
+  }
+  await expect(page.locator('.faq-item')).toHaveCount(4);
+  await expect(page.getByText('Do I need to know which LDW service I need?')).toBeVisible();
 });
 
-test('work page shows four truthful evidence-oriented project entries', async ({ page }) => {
+test('Approach matches the accepted assess, improve-or-build, handoff-or-care method', async ({ page }) => {
+  await page.goto('/approach/');
+  await expect(page.getByRole('heading', { name: 'Assess' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Improve or build' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Handoff or care' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Discuss a project' })).toBeVisible();
+  await expect(page.locator('a[href="/contact/"]')).toHaveCount(0);
+});
+
+test('work page shows three truthful evidence-oriented project entries', async ({ page }) => {
   await page.goto('/work/');
-  await expect(page.locator('.work-row--large')).toHaveCount(4);
+  await expect(page.locator('.work-row--large')).toHaveCount(3);
+  await expect(page.locator('.work-row__visual')).toHaveCount(3);
+  const workThumbs = page.locator('.work-row__visual img');
+  await expect(workThumbs).toHaveCount(3);
+  for (let i = 0; i < 3; i += 1) {
+    await expect.poll(async () => workThumbs.nth(i).evaluate((img) => [img.complete, img.naturalWidth, img.naturalHeight]))
+      .toEqual([true, 720, 450]);
+  }
   await expect(page.getByRole('heading', { name: 'G.A.S. Engine' })).toBeVisible();
   await expect(page.getByText('Internal service-enabling evidence infrastructure', { exact: true })).toBeVisible();
-  await expect(page.getByText('customer SaaS', { exact: false })).toBeVisible();
+  await expect(page.getByText('Website and search-visibility work can produce evidence from several replaceable tools over time.', { exact: false })).toBeVisible();
 
   await page.goto('/work/gas-engine/');
-  await expect(page.getByText('not customer SaaS', { exact: false })).toBeVisible();
-  await expect(page.getByText('Project screenshots or diagrams will be added only when a real public-safe asset is available', { exact: false })).toBeVisible();
+  await expect(page.locator('.project-detail-grid .lede').filter({ hasText: 'not customer SaaS' })).toBeVisible();
+  await expect(page.locator('.project-process__step')).toHaveCount(4);
+  await expect(page.locator('.faq-item')).toHaveCount(2);
+  await expect(page.getByText('Can a customer buy G.A.S. Engine as standalone software?')).toBeVisible();
+  await expect(page.getByRole('link', { name: 'View source' })).toHaveAttribute('href', 'https://github.com/LowcountryDigitalWorks/gas-engine');
+  await expect(page.locator('.project-visual')).toHaveCount(1);
+  await expect(page.locator('img[src="/work-assets/gas-engine-operator-view.jpg"]')).toBeVisible();
+  await expect(page.getByText('Release 0.9 read-only synthetic operator case/report preview', { exact: false })).toBeVisible();
+
+  await page.goto('/work/document-control/');
+  await expect(page.getByText('It is not a production customer deployment', { exact: false })).toBeVisible();
+  await expect(page.getByText('Is Document Control a finished DMS or eQMS that LDW is selling today?')).toBeVisible();
+  await expect(page.locator('.project-visual')).toHaveCount(2);
+  await expect(page.locator('img[src="/work-assets/document-control-overview.jpg"]')).toBeVisible();
+  await expect(page.locator('img[src="/work-assets/document-control-workflow.jpg"]')).toBeVisible();
+
+  await page.goto('/work/secure-exchange/');
+  await expect(page.locator('.project-visual')).toHaveCount(2);
+  await expect(page.locator('img[src="/work-assets/secure-exchange-intake.jpg"]')).toBeVisible();
+  await expect(page.getByText('Synthetic staff work item demonstrating resolution', { exact: false })).toBeVisible();
+
 });
 
 test('founder structure uses the owner-approved portrait and approved trust facts', async ({ page }) => {
@@ -124,7 +178,7 @@ test('founder structure uses the owner-approved portrait and approved trust fact
   await expect(page.locator('body')).not.toContainText('security clearance');
 });
 
-test('Connect is a mobile-first stable contact destination with verified social links and vCard', async ({ page }) => {
+test('Connect is a mobile-first stable contact destination with accessible contact-card and social iconography', async ({ page }) => {
   await page.goto('/connect/');
   const main = page.locator('#main-content');
   await expect(main.getByRole('heading', { level: 1, name: 'Eddie Gugino' })).toBeVisible();
@@ -133,12 +187,43 @@ test('Connect is a mobile-first stable contact destination with verified social 
   await expect(main.locator('a[href="mailto:eddie@lowcountrydigitalworks.com"]')).toBeVisible();
   await expect(main.locator('a[href="https://www.facebook.com/LowcountryDigitalWorks/"]')).toBeVisible();
   await expect(main.locator('a[href="https://x.com/LocoDW"]')).toBeVisible();
-  await expect(main.locator('a[href="/eddie-gugino-lowcountry-digital-works.vcf"]')).toBeVisible();
+  const contactCard = main.locator('a[href="/eddie-gugino-lowcountry-digital-works.vcf"]');
+  await expect(contactCard).toBeVisible();
+  await expect(contactCard).toContainText('Contact card');
+  await expect(main).not.toContainText('Save vCard');
+  await expect(main.locator('.connect-actions .ui-icon')).toHaveCount(4);
+  await expect(main.locator('.connect-links .ui-icon')).toHaveCount(2);
+  await expect(main.locator('.ui-icon[aria-hidden="true"]')).toHaveCount(6);
   await expect(main.locator('form')).toHaveCount(0);
 
   const vcard = await page.request.get('/eddie-gugino-lowcountry-digital-works.vcf');
   expect(vcard.ok()).toBeTruthy();
   expect(await vcard.text()).toContain('FN:Eddie Gugino');
+});
+
+test('Contact and footer iconography supplements visible labels rather than replacing them', async ({ page }) => {
+  await page.goto('/contact/');
+  const main = page.locator('#main-content');
+  await expect(main.getByRole('link', { name: /Text 843-633-3123/ })).toBeVisible();
+  await expect(main.getByRole('link', { name: /Call 843-633-3123/ })).toBeVisible();
+  await expect(main.getByRole('link', { name: 'Facebook' })).toBeVisible();
+  await expect(main.getByRole('link', { name: 'X', exact: true })).toBeVisible();
+  await expect(main.locator('.ui-icon[aria-hidden="true"]')).toHaveCount(5);
+
+  const footer = page.locator('footer');
+  await expect(footer.getByRole('link', { name: 'Facebook' })).toBeVisible();
+  await expect(footer.getByRole('link', { name: 'X', exact: true })).toBeVisible();
+  await expect(footer.locator('.social-mark--facebook')).toHaveCSS('background-color', 'rgb(24, 119, 242)');
+  await expect(footer.locator('.social-mark--x')).toHaveCSS('background-color', 'rgb(255, 255, 255)');
+  await expect(footer.locator('.ui-icon[aria-hidden="true"]')).toHaveCount(4);
+});
+
+test('privacy page reflects the current no-nonessential-cookie posture without a cosmetic consent banner', async ({ page }) => {
+  await page.goto('/privacy/');
+  await expect(page.getByRole('heading', { name: 'Cookies and browser storage' })).toBeVisible();
+  await expect(page.getByText('does not intentionally set nonessential cookies', { exact: false })).toBeVisible();
+  await expect(page.getByText('does not display a cookie banner merely for appearance', { exact: false })).toBeVisible();
+  await expect(page.locator('[class*="cookie"], [id*="cookie"], [class*="consent"], [id*="consent"]')).toHaveCount(0);
 });
 
 test('verified public entity links are exposed with schema microdata and no unverified company LinkedIn', async ({ page }) => {

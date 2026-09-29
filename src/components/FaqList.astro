@@ -1,0 +1,26 @@
+---
+const {
+  items = [],
+  eyebrow = 'Common questions',
+  title = 'Questions worth answering before the next step.',
+  inverse = false,
+} = Astro.props;
+---
+{items.length > 0 && (
+  <section class:list={['faq-block', inverse && 'faq-block--inverse']} aria-labelledby="faq-heading">
+    <div class="section-heading">
+      <p class="eyebrow">{eyebrow}</p>
+      <h2 id="faq-heading">{title}</h2>
+    </div>
+    <div class="faq-list">
+      {items.map((item) => (
+        <details class="faq-item">
+          <summary>{item.question}</summary>
+          <div class="faq-answer">
+            <p>{item.answer}</p>
+          </div>
+        </details>
+      ))}
+    </div>
+  </section>
+)}

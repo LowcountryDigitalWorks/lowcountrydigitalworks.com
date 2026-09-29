@@ -7,15 +7,15 @@
   "steps": [
     {
       "title": "Assess",
-      "description": "Inventory the current state, clarify the outcome, identify constraints, and understand ownership, cost, privacy, security, and maintenance requirements."
+      "description": "Inventory the current state, clarify the outcome, identify constraints, and understand ownership, cost, privacy, security, and maintenance requirements before choosing technology."
     },
     {
-      "title": "Build",
-      "description": "Choose a proportionate architecture, work through version-controlled changes, test what matters, and avoid recurring services that exist only for convenience."
+      "title": "Improve or build",
+      "description": "Keep useful systems when possible. Configure, integrate, automate, modernize, or build only the capability the problem actually requires."
     },
     {
-      "title": "Handoff",
-      "description": "Document deployment, access, recovery, rollback, and maintenance. Put business assets in the appropriate owner accounts and use named access for administration."
+      "title": "Handoff or care",
+      "description": "Document deployment, access, recovery, rollback, and maintenance. Put business assets in the appropriate owner accounts, then continue with bounded ongoing care only when it creates useful value."
     }
   ],
   "beforeBuild": {

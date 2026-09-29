@@ -1,5 +1,6 @@
 ---
 import contact from '../data/contact.json';
+import Icon from './Icon.astro';
 const { allowSocialProfiles = true } = Astro.props;
 ---
 <footer class="site-footer">
@@ -23,12 +24,19 @@ const { allowSocialProfiles = true } = Astro.props;
     </nav>
     <div class="footer-contact">
       <p><strong>Contact</strong><br />
-        <a itemprop="email" href={`mailto:${contact.email.address}`}>{contact.email.address}</a><br />
-        <a itemprop="telephone" href={`tel:${contact.phone.number}`}>{contact.phone.display}</a>
+        <a class="icon-link" itemprop="email" href={`mailto:${contact.email.address}`}><Icon name="mail" size={17} /><span>{contact.email.address}</span></a><br />
+        <a class="icon-link" itemprop="telephone" href={`tel:${contact.phone.number}`}><Icon name="phone" size={17} /><span>{contact.phone.display}</span></a>
       </p>
       {allowSocialProfiles && (
         <p class="footer-socials">
-          {contact.socials.map((social) => <a itemprop="sameAs" href={social.href} rel="me noopener">{social.name}</a>)}
+          {contact.socials.map((social) => (
+            <a class="icon-link footer-social-link" itemprop="sameAs" href={social.href} rel="me noopener">
+              <span class={`social-mark social-mark--${social.name === 'Facebook' ? 'facebook' : 'x'}`}>
+                <Icon name={social.name === 'Facebook' ? 'facebook' : 'x'} size={16} />
+              </span>
+              <span>{social.name}</span>
+            </a>
+          ))}
         </p>
       )}
       <meta itemprop="url" content="https://lowcountrydigitalworks.com/" />
@@ -46,6 +54,11 @@ const { allowSocialProfiles = true } = Astro.props;
 .site-footer a { color: white; }
 .footer-contact { min-width: 0; }
 .footer-socials { display: flex; gap: 1rem; flex-wrap: wrap; }
+.footer-social-link { gap: .5rem; text-decoration-thickness: .08em; }
+.social-mark { width: 1.75rem; height: 1.75rem; display: inline-grid; place-items: center; flex: 0 0 auto; border-radius: .5rem; }
+.social-mark--facebook { background: #1877f2; color: #fff; }
+.social-mark--x { background: #fff; color: #000; border: 1px solid rgb(255 255 255 / .8); }
+.footer-social-link:hover .social-mark { transform: translateY(-1px); }
 .small { font-size: .88rem; }
 @media(max-width:760px){ .footer-grid { grid-template-columns: 1fr; gap: 1.5rem; } }
 </style>

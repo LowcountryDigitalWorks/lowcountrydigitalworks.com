@@ -26,6 +26,15 @@ Include components only when genuinely needed.
 - no generic AI-generated people
 - no altered/translucent production-logo texture; any future background pattern requires its own approved asset
 
+## Icons
+- use a small local/static or inline SVG set rather than a runtime icon framework
+- icons supplement visible labels; they do not replace accessible text
+- decorative/supporting SVGs use `aria-hidden="true"` and remain unfocusable
+- keep stroke/fill treatment visually consistent with the Tidal Framework
+- use brand-specific marks only where they improve recognition, such as Facebook and X
+- contact actions may use icons for text/SMS, phone, email, and contact card
+- user-facing copy should say **Contact card** or **Save to contacts**; `vCard` / `.vcf` is an implementation detail, not preferred interface terminology
+
 ## Buttons
 Primary:
 - Cypress Teal background
