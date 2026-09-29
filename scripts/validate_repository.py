@@ -19,7 +19,6 @@ PUBLIC_ROUTES=[
  '/services/digital-ownership-platform-administration/',
  '/services/technology-consulting/',
  '/work/',
- '/work/lowcountry-digital-works-website/',
  '/work/document-control/',
  '/work/secure-exchange/',
  '/work/gas-engine/',
@@ -132,7 +131,8 @@ else:
   for rule in expected_static_image_caches:
    if rule not in built_headers_text: error(f'dist/_headers missing approved 24-hour static-image cache rule: {rule.splitlines()[0]}')
  htmls=sorted(DIST.rglob('*.html'))
- if len(htmls)<19: error(f'expected at least 19 built HTML pages, found {len(htmls)}')
+ expected_min_html=len(PUBLIC_ROUTES)+2  # public routes + Secure Share + 404
+ if len(htmls)<expected_min_html: error(f'expected at least {expected_min_html} built HTML pages, found {len(htmls)}')
  for file in htmls:
   parser=P(); text=file.read_text(errors='replace'); parser.feed(text)
   rel=file.relative_to(DIST)
