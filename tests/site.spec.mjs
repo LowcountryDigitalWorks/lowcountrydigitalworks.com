@@ -102,12 +102,12 @@ test('founder structure uses the owner-approved portrait and approved trust fact
     await expect(portrait).toHaveAttribute('alt', 'Eddie Gugino, founder of Lowcountry Digital Works');
     await expect(portrait).toHaveAttribute('width', '480');
     await expect(portrait).toHaveAttribute('height', '600');
-    const decoded = await portrait.evaluate((img) => ({
+    await portrait.scrollIntoViewIfNeeded();
+    await expect.poll(async () => portrait.evaluate((img) => ({
       complete: img.complete,
       naturalWidth: img.naturalWidth,
       naturalHeight: img.naturalHeight,
-    }));
-    expect(decoded).toEqual({ complete: true, naturalWidth: 480, naturalHeight: 600 });
+    }))).toEqual({ complete: true, naturalWidth: 480, naturalHeight: 600 });
     await expect(page.locator('[data-owner-asset-pending="founder-photo"]')).toHaveCount(0);
   }
 
