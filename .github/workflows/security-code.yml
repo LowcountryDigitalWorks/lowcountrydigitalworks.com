@@ -1,0 +1,37 @@
+name: SAST and security-functional tests
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '31 12 * * 3'
+  workflow_dispatch:
+
+jobs:
+  codeql:
+    permissions:
+      contents: read
+      security-events: write
+    uses: LowcountryDigitalWorks/.github/.github/workflows/security-codeql-js.yml@a377e52ba698e93d012aa553e4de4af39ba75799
+
+  security-functional:
+    if: ${{ github.event_name != 'schedule' }}
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: '22'
+
+      - name: Run Worker security-functional and input-boundary tests
+        run: node --test tests/worker-unit.mjs tests/security-boundary.unit.mjs
