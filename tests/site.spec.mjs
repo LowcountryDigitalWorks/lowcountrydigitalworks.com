@@ -71,6 +71,7 @@ test('services page presents four problem-led service families and detail routes
   await expect(page.getByText('configure', { exact: false })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Talk through your situation' })).toHaveAttribute('href', '/connect/');
   await expect(page.locator('.outcome-card')).toHaveCount(3);
+  await expect(page.locator('.outcome-grid--3')).toHaveCount(1);
   await expect(page.getByRole('heading', { name: 'Less repetitive manual work' })).toBeVisible();
   await expect(page.locator('.faq-item')).toHaveCount(3);
   await expect(page.getByText('Do you start by building custom software?')).toBeVisible();
