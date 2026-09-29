@@ -10,7 +10,6 @@ const routes = [
   '/services/digital-ownership-platform-administration/',
   '/services/technology-consulting/',
   '/work/',
-  '/work/lowcountry-digital-works-website/',
   '/work/document-control/',
   '/work/secure-exchange/',
   '/work/gas-engine/',
