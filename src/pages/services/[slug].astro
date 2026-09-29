@@ -52,7 +52,7 @@ const relatedWork = work.projects.filter((project) => service.relatedWork?.inclu
             <p class="eyebrow">What a good engagement should leave behind</p>
             <h2>Useful outcomes, not a bigger technology footprint.</h2>
           </div>
-          <div class="outcome-grid">
+          <div class:list={["outcome-grid", service.outcomes.length === 3 && "outcome-grid--3"]}>
             {service.outcomes.map((outcome, index) => (
               <article class="outcome-card">
                 <span>{String(index + 1).padStart(2, '0')}</span>
