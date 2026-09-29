@@ -55,7 +55,12 @@
           "height": 900,
           "caption": "Live Lowcountry Digital Works production homepage after the accepted WEB-UX-001 release."
         }
-      ]
+      ],
+      "thumbnail": {
+        "src": "/work-assets/ldw-website-home-thumb.jpg",
+        "width": 720,
+        "height": 450
+      }
     },
     {
       "slug": "document-control",
@@ -113,7 +118,12 @@
           "height": 1874,
           "caption": "Synthetic guided workflow after creating version 1 from an approved template; no customer data or production identity is used."
         }
-      ]
+      ],
+      "thumbnail": {
+        "src": "/work-assets/document-control-overview-thumb.jpg",
+        "width": 720,
+        "height": 450
+      }
     },
     {
       "slug": "secure-exchange",
@@ -171,7 +181,12 @@
           "height": 3171,
           "caption": "Synthetic staff work item demonstrating resolution, attachment review, filing mapping and lifecycle evidence without a real downstream provider."
         }
-      ]
+      ],
+      "thumbnail": {
+        "src": "/work-assets/secure-exchange-intake-thumb.jpg",
+        "width": 720,
+        "height": 450
+      }
     },
     {
       "slug": "gas-engine",
@@ -219,7 +234,12 @@
           "height": 3239,
           "caption": "Release 0.9 read-only synthetic operator case/report preview generated from the accepted G.A.S. local proof."
         }
-      ]
+      ],
+      "thumbnail": {
+        "src": "/work-assets/gas-engine-operator-view-thumb.jpg",
+        "width": 720,
+        "height": 450
+      }
     }
   ],
   "technology": {
