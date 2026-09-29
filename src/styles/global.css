@@ -117,10 +117,8 @@ p { margin: 0 0 1rem; }
 
 .founder-block { display: grid; grid-template-columns: minmax(230px, .65fr) minmax(0, 1.35fr); gap: clamp(2rem, 6vw, 5rem); align-items: center; }
 .founder-block--light { color: var(--text); }
-.founder-photo-placeholder { aspect-ratio: 4 / 5; min-height: 320px; display: grid; place-content: center; gap: .35rem; padding: 1.5rem; border: 1px dashed #8db9b4; border-radius: var(--radius-lg); background: rgb(255 255 255 / .055); text-align: center; color: #dbe5e7; }
-.founder-block--light .founder-photo-placeholder { background: var(--surface-warm); color: var(--text); border-color: var(--interactive); }
-.founder-photo-placeholder span { font-weight: 800; }
-.founder-photo-placeholder small { max-width: 24ch; }
+.founder-photo { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border: 1px solid rgb(255 255 255 / .18); border-radius: var(--radius-lg); box-shadow: 0 12px 32px rgb(0 0 0 / .16); }
+.founder-block--light .founder-photo { border-color: var(--border); box-shadow: 0 12px 32px rgb(16 42 58 / .10); }
 .founder-name { font-size: 1rem; color: #dbe5e7; }
 .founder-block--light .founder-name { color: var(--muted); }
 .owner-review-note { max-width: 58ch; padding-left: 1rem; border-left: 3px solid #8db9b4; color: #cbdadc; font-size: .88rem; }
