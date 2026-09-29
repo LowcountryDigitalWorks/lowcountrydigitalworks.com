@@ -287,7 +287,7 @@ test('page metadata includes canonical Open Graph and Twitter fields', async ({ 
 
 test('technology marks are served locally without third-party image requests', async ({ page }) => {
   await page.goto('/work/');
-  const marks = page.locator('.technology-card img');
+  const marks = page.locator('.technology-compact__item img');
   await expect(marks).toHaveCount(5);
   const origins = await marks.evaluateAll(images => images.map(image => new URL(image.src).origin));
   const pageOrigin = new URL(page.url()).origin;
