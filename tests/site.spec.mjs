@@ -115,6 +115,7 @@ test('work page shows four truthful evidence-oriented project entries', async ({
   await expect(page.locator('.project-process__step')).toHaveCount(4);
   await expect(page.locator('.faq-item')).toHaveCount(2);
   await expect(page.getByText('Can a customer buy G.A.S. Engine as standalone software?')).toBeVisible();
+  await expect(page.getByRole('link', { name: 'View source' })).toHaveAttribute('href', 'https://github.com/LowcountryDigitalWorks/gas-engine');
   await expect(page.locator('.project-visual')).toHaveCount(1);
   await expect(page.locator('img[src="/work-assets/gas-engine-operator-view.jpg"]')).toBeVisible();
   await expect(page.getByText('Release 0.9 read-only synthetic operator case/report preview', { exact: false })).toBeVisible();
