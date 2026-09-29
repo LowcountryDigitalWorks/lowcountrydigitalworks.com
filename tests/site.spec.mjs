@@ -100,8 +100,8 @@ test('founder structure uses the owner-approved portrait and approved trust fact
     await expect(portrait).toHaveCount(1);
     await expect(portrait).toHaveAttribute('src', '/founder/eddie-gugino-founder.webp');
     await expect(portrait).toHaveAttribute('alt', 'Eddie Gugino, founder of Lowcountry Digital Works');
-    await expect(portrait).toHaveAttribute('width', '900');
-    await expect(portrait).toHaveAttribute('height', '1125');
+    await expect(portrait).toHaveAttribute('width', '480');
+    await expect(portrait).toHaveAttribute('height', '600');
     await expect(page.locator('[data-owner-asset-pending="founder-photo"]')).toHaveCount(0);
   }
 
