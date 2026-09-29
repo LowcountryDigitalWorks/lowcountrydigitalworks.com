@@ -146,16 +146,9 @@ p { margin: 0 0 1rem; }
   color: var(--muted);
   font-size: .92rem;
 }
-.proof-list--compact {
-  gap: .55rem;
-  margin: 1rem 0 1.15rem;
-  font-size: .88rem;
-  line-height: 1.45;
-}
-.hero-owner-card__links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: .5rem 1rem;
+.hero-owner-card__content .text-link {
+  display: inline-block;
+  margin-top: .15rem;
   font-size: .9rem;
 }
 
