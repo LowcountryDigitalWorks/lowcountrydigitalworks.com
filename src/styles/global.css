@@ -76,9 +76,7 @@ p { margin: 0 0 1rem; }
   position: relative;
   overflow: hidden;
   padding: clamp(3.4rem, 7vw, 6.6rem) 0;
-  background:
-    radial-gradient(circle at 82% 14%, color-mix(in srgb, var(--ldw-cypress-teal) 12%, transparent) 0 18%, transparent 18.5%),
-    linear-gradient(135deg, var(--ldw-soft-white) 0%, color-mix(in srgb, var(--ldw-warm-oyster) 72%, white) 58%, var(--ldw-soft-white) 100%);
+  background: color-mix(in srgb, var(--ldw-warm-oyster) 42%, var(--ldw-soft-white));
 }
 .hero--coastal::after {
   content: "";
@@ -163,9 +161,7 @@ p { margin: 0 0 1rem; }
 
 .section--tidal {
   position: relative;
-  background:
-    radial-gradient(circle at 10% 12%, rgb(255 255 255 / .6), transparent 26%),
-    linear-gradient(180deg, var(--ldw-warm-oyster), color-mix(in srgb, var(--ldw-warm-oyster) 72%, white));
+  background: color-mix(in srgb, var(--ldw-warm-oyster) 86%, white);
 }
 
 .trust-strip { display: flex; flex-wrap: wrap; gap: .65rem; margin: 2rem 0 0; padding: 0; list-style: none; }
