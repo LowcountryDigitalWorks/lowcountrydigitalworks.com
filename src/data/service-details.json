@@ -72,7 +72,9 @@
     "relatedWork": [
       "lowcountry-digital-works-website",
       "gas-engine"
-    ]
+    ],
+    "proofHref": "https://github.com/LowcountryDigitalWorks/website-quality-toolkit",
+    "proofLabel": "View Website Quality Toolkit source"
   },
   {
     "slug": "business-systems-automation",
