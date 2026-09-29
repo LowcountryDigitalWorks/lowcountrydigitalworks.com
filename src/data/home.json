@@ -1,21 +1,21 @@
 {
   "hero": {
-    "eyebrow": "Practical. Maintainable. Yours.",
-    "title": "Useful technology, built to remain yours.",
-    "lede": "Lowcountry Digital Works is an owner-operated technology consultancy helping small organizations improve websites, automate business work, untangle digital ownership, and solve technical problems without unnecessary platform sprawl."
+    "eyebrow": "Beaufort, South Carolina · Owner-operated",
+    "title": "Websites and business systems that make work easier.",
+    "lede": "Lowcountry Digital Works helps small organizations fix confusing websites, automate repetitive work, and regain control of the digital systems their business depends on."
   },
   "trustPoints": [
-    "Client-owned assets where practical",
-    "Configure and integrate before unnecessary custom build",
-    "Clear handoff, recovery, and ongoing-care boundaries"
+    "Based in Beaufort, South Carolina",
+    "Customer-owned assets where practical",
+    "Clear handoff or ongoing care"
   ],
   "heroProof": {
-    "eyebrow": "Built for practical ownership",
-    "title": "Technology should stay understandable after the project.",
+    "eyebrow": "Work directly with Eddie",
+    "title": "Practical help without the agency runaround.",
     "items": [
-      "Named, scoped access instead of shared administrator credentials",
-      "Low recurring-cost bias and portable source where practical",
-      "Validation, documentation, and rollback treated as normal delivery quality"
+      "One accountable point of contact from discovery through handoff",
+      "Configure and integrate before unnecessary custom build",
+      "Low recurring-cost, maintainable choices by default"
     ]
   },
   "services": {
@@ -84,17 +84,17 @@
     "title": "Work directly with the person responsible for the work.",
     "name": "Eddie Gugino",
     "role": "Founder",
-    "lede": "Eddie founded Lowcountry Digital Works to help small organizations improve websites, workflows, and technical systems without unnecessary complexity or lock-in. His background spans IT, cybersecurity, systems, and technical delivery, including service in the U.S. Navy."
+    "lede": "Eddie works directly with clients on websites, workflows, and technical systems. His background spans IT, cybersecurity, systems, and technical delivery, including service in the U.S. Navy."
   },
   "local": {
     "eyebrow": "Lowcountry roots",
-    "title": "Local perspective, not a geographic limit.",
-    "lede": "Lowcountry Digital Works is based in South Carolina's Lowcountry and supports practical digital work where the engagement, ownership model, and support boundary are a good fit."
+    "title": "Built in the Lowcountry. Useful wherever the fit is right.",
+    "lede": "Lowcountry Digital Works is based in Beaufort, South Carolina. The work is personal, practical, and designed to leave your business with clearer ownership—not another layer of mystery."
   },
   "contact": {
-    "eyebrow": "Start with the problem",
-    "title": "Have a website, workflow, or technical system that needs to work better?",
-    "lede": "A short description of what is happening now and what you want to improve is enough to start."
+    "eyebrow": "Start with what is not working",
+    "title": "Tell me what is getting in the way.",
+    "lede": "You do not need a polished scope. A short note about what feels slow, confusing, manual, or hard to maintain is enough to start."
   },
   "faq": {
     "eyebrow": "Common questions",
