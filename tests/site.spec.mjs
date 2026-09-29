@@ -93,15 +93,24 @@ test('work page shows four truthful evidence-oriented project entries', async ({
   await expect(page.getByText('Project screenshots or diagrams will be added only when a real public-safe asset is available', { exact: false })).toBeVisible();
 });
 
-test('founder structure uses approved trust facts without synthesizing owner photography', async ({ page }) => {
+test('founder structure uses the owner-approved portrait and approved trust facts', async ({ page }) => {
+  for (const route of ['/', '/about/']) {
+    await page.goto(route);
+    const portrait = page.locator('[data-founder-portrait]');
+    await expect(portrait).toHaveCount(1);
+    await expect(portrait).toHaveAttribute('src', '/brand/founder/eddie-gugino-founder.webp');
+    await expect(portrait).toHaveAttribute('alt', 'Eddie Gugino, founder of Lowcountry Digital Works');
+    await expect(portrait).toHaveAttribute('width', '900');
+    await expect(portrait).toHaveAttribute('height', '1125');
+    await expect(page.locator('[data-owner-asset-pending="founder-photo"]')).toHaveCount(0);
+  }
+
   await page.goto('/');
   await expect(page.locator('#main-content').getByText('Eddie Gugino', { exact: false })).toBeVisible();
   await expect(page.locator('#main-content').getByText('service in the U.S. Navy', { exact: false })).toBeVisible();
-  await expect(page.locator('[data-owner-asset-pending="founder-photo"]')).toHaveCount(1);
 
   await page.goto('/about/');
   await expect(page.locator('[itemtype="https://schema.org/Person"]')).toHaveCount(2);
-  await expect(page.locator('[data-owner-asset-pending="founder-photo"]')).toHaveCount(1);
   await expect(page.getByText('CISSP certification', { exact: false })).toBeVisible();
   await expect(page.getByText('Utica College', { exact: false })).toBeVisible();
   await expect(page.getByText('Midlands Technical College', { exact: false })).toBeVisible();
