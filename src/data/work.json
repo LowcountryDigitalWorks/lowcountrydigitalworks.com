@@ -67,7 +67,8 @@
         "width": 720,
         "height": 450
       },
-      "sourceHref": "https://github.com/LowcountryDigitalWorks/document-control"
+      "sourceHref": "https://github.com/LowcountryDigitalWorks/document-control",
+      "homeSummary": "A structured way to keep reviews, approvals, versions, and evidence around important documents from becoming a guessing game."
     },
     {
       "slug": "secure-exchange",
@@ -131,7 +132,8 @@
         "width": 720,
         "height": 450
       },
-      "sourceHref": "https://github.com/LowcountryDigitalWorks/secure-exchange"
+      "sourceHref": "https://github.com/LowcountryDigitalWorks/secure-exchange",
+      "homeSummary": "A secure workflow pattern for receiving sensitive messages and files, routing the work clearly, and keeping responsibility visible."
     },
     {
       "slug": "gas-engine",
@@ -185,7 +187,8 @@
         "width": 720,
         "height": 450
       },
-      "sourceHref": "https://github.com/LowcountryDigitalWorks/gas-engine"
+      "sourceHref": "https://github.com/LowcountryDigitalWorks/gas-engine",
+      "homeSummary": "Internal evidence infrastructure that helps LDW compare website and search-quality findings over time instead of relying on one tool or one score."
     }
   ],
   "technology": {
