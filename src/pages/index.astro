@@ -81,16 +81,22 @@ import work from '../data/work.json';
 
   <section class="section section--navy">
     <div class="container founder-block" itemscope itemtype="https://schema.org/Person">
-      <div class="founder-photo-placeholder" data-owner-asset-pending="founder-photo" role="img" aria-label="Founder photo pending owner selection">
-        <span>Founder photo</span>
-        <small>Owner selection pending before production</small>
-      </div>
+      <img
+        class="founder-photo"
+        data-founder-portrait
+        itemprop="image"
+        src="/brand/founder/eddie-gugino-founder.webp"
+        alt="Eddie Gugino, founder of Lowcountry Digital Works"
+        width="900"
+        height="1125"
+        loading="lazy"
+        decoding="async"
+      />
       <div>
         <p class="eyebrow">{home.founder.eyebrow}</p>
         <h2>{home.founder.title}</h2>
         <p class="founder-name"><strong itemprop="name">{home.founder.name}</strong> · <span itemprop="jobTitle">{home.founder.role}</span></p>
         <p class="lede">{home.founder.lede}</p>
-        <p class="owner-review-note">{home.founder.note}</p>
         <a class="button button--secondary" href="/about/">About Eddie & LDW</a>
       </div>
     </div>
