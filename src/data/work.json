@@ -6,64 +6,6 @@
   },
   "projects": [
     {
-      "slug": "lowcountry-digital-works-website",
-      "name": "Lowcountry Digital Works website",
-      "type": "Business website",
-      "status": "Live",
-      "purpose": "A public business site that demonstrates the same low-complexity, customer-owned, validation-first website practices LDW recommends.",
-      "description": "A lightweight Astro site with repository-controlled content, local brand assets, Cloudflare edge delivery, protected-main review, and browser/accessibility regression coverage.",
-      "evidence": [
-        "Static-first Astro build with no CMS or database",
-        "Cloudflare Workers Static Assets delivery",
-        "Protected-main pull-request workflow",
-        "Automated browser and accessibility regression checks"
-      ],
-      "boundary": "The public site contains no customer portal, analytics SaaS, contact-form processor, or customer-data store.",
-      "externalHref": "/",
-      "whyItMatters": "A small-business website should make the business easier to understand without creating a maintenance burden or unnecessary platform dependency. This site is LDW's own proof that a public presence can stay fast, accessible, reviewable, and straightforward to hand off.",
-      "fit": [
-        "A business website needs clearer structure, stronger ownership, or easier maintenance.",
-        "The organization wants source, hosting, deployment, and recovery responsibilities documented.",
-        "A lightweight site can meet the need without a CMS, database, or large application stack."
-      ],
-      "howItWorks": [
-        "Repository-controlled Astro content is built as a static-first site.",
-        "Protected-main pull requests and automated browser/accessibility checks gate changes.",
-        "Cloudflare Workers Static Assets delivers the production site at the edge.",
-        "Ownership, rollback, and handoff remain explicit instead of being hidden inside a proprietary builder."
-      ],
-      "maturity": "Live production website and ongoing internal reference implementation. The site deliberately avoids a customer portal, analytics SaaS, public form processor, and customer-data store.",
-      "relatedService": {
-        "name": "Websites & Website Care",
-        "href": "/services/websites/"
-      },
-      "faqs": [
-        {
-          "question": "Is this site meant to prove that every business should use Astro or Cloudflare?",
-          "answer": "No. It demonstrates LDW's preference for the smallest maintainable architecture that fits the real requirements. A different customer ecosystem may justify a different platform."
-        },
-        {
-          "question": "Why does LDW emphasize ownership so much?",
-          "answer": "Because domains, DNS, hosting, source code, deployment access, and recovery paths are business assets. LDW generally prefers customer-owned production accounts with named, scoped access rather than hidden provider dependency."
-        }
-      ],
-      "visuals": [
-        {
-          "src": "/work-assets/ldw-website-home.jpg",
-          "alt": "Lowcountry Digital Works homepage showing the customer-first hero and owner-operated consultancy layout",
-          "width": 1440,
-          "height": 900,
-          "caption": "Live Lowcountry Digital Works production homepage after the accepted WEB-UX-001 release."
-        }
-      ],
-      "thumbnail": {
-        "src": "/work-assets/ldw-website-home-thumb.jpg",
-        "width": 720,
-        "height": 450
-      },
-      "sourceHref": "https://github.com/LowcountryDigitalWorks/lowcountrydigitalworks.com"
-    },
-    {
       "slug": "document-control",
       "name": "Document Control",
       "type": "Workflow application",
