@@ -1,59 +1,81 @@
 {
   "hero": {
     "eyebrow": "Approach",
-    "title": "Start with the need. Keep the solution understandable.",
-    "lede": "Good technical work should leave a business with clearer ownership and fewer avoidable surprises, not a system that only one person can operate."
+    "title": "From “this is not working” to a clear next step.",
+    "lede": "You bring the problem. LDW starts by understanding what is happening now, what you want to work better, and what already needs to stay intact before recommending technology."
   },
   "steps": [
     {
       "title": "Assess",
-      "description": "Inventory the current state, clarify the outcome, identify constraints, and understand ownership, cost, privacy, security, and maintenance requirements before choosing technology."
+      "description": "Start with the friction, desired outcome, current systems, ownership, constraints, cost, privacy, security, and support needs. The goal is to understand the real problem before choosing a tool."
     },
     {
       "title": "Improve or build",
-      "description": "Keep useful systems when possible. Configure, integrate, automate, modernize, or build only the capability the problem actually requires."
+      "description": "Keep what is already useful. Configure, integrate, automate, modernize, or repair first when that solves the problem well; build a focused missing piece only when a real gap remains."
     },
     {
       "title": "Handoff or care",
-      "description": "Document deployment, access, recovery, rollback, and maintenance. Put business assets in the appropriate owner accounts, then continue with bounded ongoing care only when it creates useful value."
+      "description": "Leave ownership, deployment, access, recovery, rollback, and maintenance understandable. Ongoing care can continue when it creates value, but basic ownership should not depend on keeping LDW forever."
     }
   ],
   "beforeBuild": {
-    "eyebrow": "Before choosing technology",
-    "title": "A few questions usually matter more than the framework.",
+    "eyebrow": "Before recommending technology",
+    "title": "Four questions usually matter more than the framework.",
     "items": [
       {
-        "title": "What outcome actually matters?",
-        "description": "Define the business result first so the implementation does not become the goal."
+        "title": "What are you trying to make easier?",
+        "description": "Define the business outcome first so the implementation does not become the goal."
       },
       {
         "title": "What already works?",
-        "description": "Preserve useful systems and data where practical instead of replacing everything by default."
+        "description": "Preserve useful systems, data, and staff habits where practical instead of replacing everything by default."
       },
       {
-        "title": "Who should own it?",
+        "title": "Who owns the important pieces?",
         "description": "Domains, repositories, hosting, data, and administrative access should have a clear owner and recovery path."
       },
       {
-        "title": "What will it cost to keep?",
-        "description": "Consider recurring services, maintenance effort, portability, and future change before adding infrastructure."
+        "title": "What will this cost to keep?",
+        "description": "Consider recurring services, maintenance effort, portability, support burden, and future change before adding infrastructure."
       }
     ]
   },
   "principles": {
-    "eyebrow": "Operating principles",
-    "title": "Maintainable by design.",
+    "eyebrow": "Delivery fundamentals",
+    "title": "The work should stay understandable.",
     "items": [
       "Accessible and responsive interfaces",
       "Secure named access and least practical privilege",
-      "Open standards and portable source",
-      "Low recurring cost where practical",
-      "Clear testing, documentation, and rollback"
+      "Open standards and portable source where practical",
+      "Low recurring cost when it meets the need",
+      "Clear testing, documentation, validation, and rollback"
     ]
   },
   "handoff": {
     "eyebrow": "The finish matters",
-    "title": "A project should not become a dependency on the person who built it.",
-    "body": "The final state should make ownership, deployment, access, maintenance, and recovery understandable. When continued support makes sense, it can be provided without turning basic ownership into a subscription requirement."
+    "title": "You should not need LDW forever just to understand what you own.",
+    "body": "A good final state makes ownership, deployment, access, maintenance, recovery, and the next decision understandable. When continued support makes sense, it can be provided without turning basic ownership into a subscription requirement."
+  },
+  "expect": {
+    "eyebrow": "What working together should feel like",
+    "title": "Direct conversation, explainable choices, and no pressure to make the solution bigger than it needs to be.",
+    "items": [
+      {
+        "title": "Talk with the person doing the work",
+        "description": "The same owner-operated model that starts the conversation carries through delivery and handoff."
+      },
+      {
+        "title": "Understand the tradeoffs",
+        "description": "Important choices should be explained in plain language, including cost, support, ownership, portability, privacy, and security."
+      },
+      {
+        "title": "Change consequential systems deliberately",
+        "description": "Production, ownership, access, and other consequential changes should have a known current state, proposed state, validation path, and rollback."
+      },
+      {
+        "title": "Be willing not to build",
+        "description": "A useful outcome can be a configuration change, an existing maintained service, a small repair, or a recommendation to leave a working system alone."
+      }
+    ]
   }
 }
