@@ -54,6 +54,7 @@ p { margin: 0 0 1rem; }
 .button:hover { background: var(--interactive-hover); color: white; }
 .button--secondary { background: transparent; color: var(--ldw-estuary-navy); border-color: var(--ldw-estuary-navy); }
 .button--secondary:hover { background: var(--ldw-estuary-navy); color: white; }
+.button--icon { gap: .45rem; }
 .section--navy .button--secondary { color: white; border-color: #c8d8dc; }
 .section--navy .button--secondary:hover { background: white; color: var(--ldw-estuary-navy); }
 .text-link { font-weight: 750; }
