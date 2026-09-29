@@ -35,6 +35,7 @@ button, input, textarea, select { font: inherit; }
 .container { width: min(calc(100% - 2rem), var(--max)); margin-inline: auto; }
 .readable { max-width: var(--readable); }
 .section { padding: clamp(3rem, 6.5vw, 5.5rem) 0; }
+.section[id] { scroll-margin-top: 86px; }
 .section--warm { background: var(--surface-warm); }
 .section--navy { background: var(--ldw-estuary-navy); color: white; }
 .hero { background: var(--ldw-soft-white); border-bottom: 1px solid var(--border); }
