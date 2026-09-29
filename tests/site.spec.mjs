@@ -74,6 +74,11 @@ test('services page presents four problem-led service families and detail routes
 
   await page.goto('/services/website-care/');
   await expect(page.getByRole('link', { name: 'View Website Quality Toolkit source' })).toHaveAttribute('href', 'https://github.com/LowcountryDigitalWorks/website-quality-toolkit');
+
+  await page.goto('/services/websites/');
+  await expect(page.locator('.outcome-card')).toHaveCount(4);
+  await expect(page.getByRole('heading', { name: 'A clearer first impression' })).toBeVisible();
+  await expect(page.getByText('That operating discipline is evidence of the method, not a client case study.', { exact: false })).toBeVisible();
 });
 
 test('homepage presents three customer-first entry paths without exposing gated discovery', async ({ page }) => {
@@ -89,8 +94,8 @@ test('homepage presents three customer-first entry paths without exposing gated 
   await expect(page.locator('.pathway a[href="/connect/"]')).toHaveCount(3);
   await expect(page.locator('#main-content form')).toHaveCount(0);
   await expect(page.locator('a[href*="suitedash"]')).toHaveCount(0);
-  await expect(page.locator('.work-row--home .work-row__thumb')).toHaveCount(3);
-  const homeWorkThumbs = page.locator('.work-row--home .work-row__thumb img');
+  await expect(page.locator('.portfolio-grid--home .portfolio-card')).toHaveCount(3);
+  const homeWorkThumbs = page.locator('.portfolio-grid--home .portfolio-card__visual img');
   await expect(homeWorkThumbs).toHaveCount(3);
   for (let i = 0; i < 3; i += 1) {
     await expect.poll(async () => homeWorkThumbs.nth(i).evaluate((img) => [img.complete, img.naturalWidth, img.naturalHeight]))
@@ -111,9 +116,8 @@ test('Approach matches the accepted assess, improve-or-build, handoff-or-care me
 
 test('work page shows three truthful evidence-oriented project entries', async ({ page }) => {
   await page.goto('/work/');
-  await expect(page.locator('.work-row--large')).toHaveCount(3);
-  await expect(page.locator('.work-row__visual')).toHaveCount(3);
-  const workThumbs = page.locator('.work-row__visual img');
+  await expect(page.locator('.portfolio-grid--work .portfolio-card')).toHaveCount(3);
+  const workThumbs = page.locator('.portfolio-grid--work .portfolio-card__visual img');
   await expect(workThumbs).toHaveCount(3);
   for (let i = 0; i < 3; i += 1) {
     await expect.poll(async () => workThumbs.nth(i).evaluate((img) => [img.complete, img.naturalWidth, img.naturalHeight]))
@@ -121,7 +125,7 @@ test('work page shows three truthful evidence-oriented project entries', async (
   }
   await expect(page.getByRole('heading', { name: 'G.A.S. Engine' })).toBeVisible();
   await expect(page.getByText('Internal service-enabling evidence infrastructure', { exact: true })).toBeVisible();
-  await expect(page.getByText('Website and search-visibility work can produce evidence from several replaceable tools over time.', { exact: false })).toBeVisible();
+  await expect(page.getByText('Longitudinal normalized evidence and provenance', { exact: true })).toBeVisible();
 
   await page.goto('/work/gas-engine/');
   await expect(page.locator('.project-detail-grid .lede').filter({ hasText: 'not customer SaaS' })).toBeVisible();

@@ -12,35 +12,35 @@ import work from '../data/work.json';
   </section>
 
   <section class="section">
-    <div class="container work-list work-list--large">
-      {work.projects.map((project) => (
-        <article class="work-row work-row--large work-row--visual">
-          {project.thumbnail && (
-            <a class="work-row__visual" href={`/work/${project.slug}/`} aria-label={`View ${project.name} project details`}>
-              <img
-                src={project.thumbnail.src}
-                alt=""
-                width={project.thumbnail.width}
-                height={project.thumbnail.height}
-                decoding="async"
-              />
-            </a>
-          )}
-          <div class="work-row__content">
-            <div class="work-row__meta">
-              <span class={`status-pill ${project.status === 'Live' ? 'status-pill--live' : ''}`}>{project.status}</span>
-              <span>{project.type}</span>
-            </div>
-            <div>
+    <div class="container">
+      <div class="portfolio-grid portfolio-grid--work">
+        {work.projects.map((project) => (
+          <article class="portfolio-card portfolio-card--work">
+            {project.thumbnail && (
+              <a class="portfolio-card__visual" href={`/work/${project.slug}/`} aria-label={`View ${project.name} project details`}>
+                <img
+                  src={project.thumbnail.src}
+                  alt=""
+                  width={project.thumbnail.width}
+                  height={project.thumbnail.height}
+                  decoding="async"
+                />
+              </a>
+            )}
+            <div class="portfolio-card__body">
+              <div class="work-row__meta">
+                <span class={`status-pill ${project.status === 'Live' ? 'status-pill--live' : ''}`}>{project.status}</span>
+                <span>{project.type}</span>
+              </div>
               <h2>{project.name}</h2>
               <p class="lede lede--compact">{project.purpose}</p>
-              <p>{project.whyItMatters}</p>
-              <ul class="evidence-inline">{project.evidence.slice(0, 3).map((item) => <li>{item}</li>)}</ul>
+              <ul class="evidence-inline">{project.evidence.slice(0, 2).map((item) => <li>{item}</li>)}</ul>
+              <a class="text-link" href={`/work/${project.slug}/`}>Purpose, evidence & boundaries →</a>
             </div>
-            <a class="work-row__link" href={`/work/${project.slug}/`}>Project details →</a>
-          </div>
-        </article>
-      ))}
+          </article>
+        ))}
+      </div>
+      <p class="portfolio-detail-note">Each project detail page separates current capability, maturity, boundaries, evidence, and what is deliberately not being claimed.</p>
     </div>
   </section>
 
