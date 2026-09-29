@@ -1,65 +1,69 @@
 {
   "page": {
     "eyebrow": "Services",
-    "title": "Practical technology work, organized around the problem.",
-    "lede": "Lowcountry Digital Works combines focused project work with bounded ongoing care. The goal is to improve what exists, add only what earns its place, and leave ownership understandable."
+    "title": "Start with what your business needs to work better.",
+    "lede": "You do not need to know which service to ask for. Choose the situation that feels closest to what is happening now, and LDW can help narrow the next useful step."
   },
   "families": [
     {
       "number": "01",
       "kicker": "Web",
       "name": "Websites & Website Care",
-      "description": "Build or modernize an accessible, maintainable business website, then keep it healthy through clearly scoped ongoing care when useful.",
+      "description": "Modernize or build a clear, accessible website, then keep it healthy through bounded Website Care when that is useful.",
       "primaryHref": "/services/websites/",
-      "primaryLabel": "Website projects",
+      "primaryLabel": "Improve or build a website",
       "secondaryHref": "/services/website-care/",
       "secondaryLabel": "Website Care",
-      "icon": "website"
+      "icon": "website",
+      "prompt": "Our website feels dated, confusing, hard to maintain, or is not helping people take the next step."
     },
     {
       "number": "02",
       "kicker": "Systems",
       "name": "Business Systems & Automation",
-      "description": "Reduce repetitive work, connect existing systems, and build focused internal tooling only when configuration and integration leave a real gap.",
+      "description": "Improve the workflow with configuration and integration first, then use automation or focused custom tooling only where a real gap remains.",
       "primaryHref": "/services/business-systems-automation/",
-      "primaryLabel": "Business systems & automation",
-      "icon": "automation"
+      "primaryLabel": "Improve a workflow",
+      "icon": "automation",
+      "prompt": "We keep repeating the same work, moving information by hand, or working around tools that do not connect."
     },
     {
       "number": "03",
       "kicker": "Ownership",
       "name": "Digital Ownership & Platform Administration",
-      "description": "Untangle domains, DNS, hosting, repositories, business profiles, vendor access, and the ongoing administration needed to keep those systems recoverable.",
+      "description": "Clarify ownership, access, recovery, vendor transitions, and the administration needed to keep important systems understandable and recoverable.",
       "primaryHref": "/services/digital-ownership-platform-administration/",
-      "primaryLabel": "Ownership & platform administration",
-      "icon": "ownership"
+      "primaryLabel": "Untangle ownership",
+      "icon": "ownership",
+      "prompt": "We are not sure who owns our domain, accounts, vendor access, recovery, or other critical digital assets."
     },
     {
       "number": "04",
       "kicker": "Planning",
       "name": "Technology Consulting",
-      "description": "Architecture, troubleshooting, platform choices, technical planning, and practical decision support without a predetermined product sale.",
+      "description": "Get practical troubleshooting, platform evaluation, architecture, and planning without beginning with a predetermined product sale.",
       "primaryHref": "/services/technology-consulting/",
-      "primaryLabel": "Technology consulting",
-      "icon": "consulting"
+      "primaryLabel": "Work through a technical decision",
+      "icon": "consulting",
+      "prompt": "We know something needs to change, but the right platform, architecture, or technical next step is not obvious."
     }
   ],
   "startingPoints": [
     {
-      "title": "Improve an existing system",
-      "description": "Keep the useful parts, identify the friction, and modernize only where the change earns its cost."
+      "title": "Understand what already exists",
+      "description": "Start with the current systems, real friction, ownership, constraints, and what the business actually needs to accomplish."
     },
     {
-      "title": "Build a focused capability",
-      "description": "Start with the business need and choose the smallest maintainable implementation that solves it."
+      "title": "Use what already works",
+      "description": "Prefer native features, configuration, integration, maintained services, and existing investments when they solve the problem well."
     },
     {
-      "title": "Untangle ownership or vendors",
-      "description": "Clarify who owns critical systems, who has access, how recovery works, and what a safe transition should look like."
+      "title": "Build only the missing piece",
+      "description": "Add custom technology only when a real gap remains and the long-term support, security, and cost are proportionate."
     }
   ],
   "platformNote": {
-    "title": "Not every project needs another platform.",
-    "body": "Native features, maintained SaaS, open formats, portable repositories, and low recurring costs are preferred when they meet the requirement. Databases, custom authentication, new frameworks, and paid tools should earn their place."
+    "title": "Still not sure where your situation fits?",
+    "body": "That is normal. A short description of what feels slow, confusing, outdated, manual, expensive, unreliable, or hard to own is enough to start. LDW can help map the problem before prescribing a solution."
   }
 }
