@@ -125,7 +125,7 @@ test('work page shows three truthful evidence-oriented project entries', async (
   }
   await expect(page.getByRole('heading', { name: 'G.A.S. Engine' })).toBeVisible();
   await expect(page.getByText('Internal service-enabling evidence infrastructure', { exact: true })).toBeVisible();
-  await expect(page.getByText('Website and search-visibility work can produce evidence from several replaceable tools over time.', { exact: false })).toBeVisible();
+  await expect(page.getByText('Longitudinal normalized evidence and provenance', { exact: true })).toBeVisible();
 
   await page.goto('/work/gas-engine/');
   await expect(page.locator('.project-detail-grid .lede').filter({ hasText: 'not customer SaaS' })).toBeVisible();
