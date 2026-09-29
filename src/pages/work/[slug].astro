@@ -37,7 +37,17 @@ const { project } = Astro.props;
         </div>
         <h1>{project.name}</h1>
         <p class="lede">{project.purpose}</p>
-        {project.externalHref && <div class="actions"><a class="button" href={project.externalHref}>View live site</a></div>}
+        {(project.externalHref || project.sourceHref) && (
+          <div class="actions">
+            {project.externalHref && <a class="button" href={project.externalHref}>View live site</a>}
+            {project.sourceHref && (
+              <a class="button button--secondary button--icon" href={project.sourceHref} rel="noopener">
+                <img src="/technology/github.svg" alt="" width="18" height="18" />
+                <span>View source</span>
+              </a>
+            )}
+          </div>
+        )}
       </div>
       <aside class="project-summary-card">
         <p class="eyebrow">Why it matters</p>
