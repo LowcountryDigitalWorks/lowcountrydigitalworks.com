@@ -72,6 +72,9 @@ test('services page presents four problem-led service families and detail routes
   await expect(page.getByRole('heading', { name: 'Document Control' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Secure Exchange' })).toBeVisible();
   await expect(page.getByText('Document Control and Secure Exchange show how LDW explores real workflow gaps', { exact: false })).toBeVisible();
+
+  await page.goto('/services/website-care/');
+  await expect(page.getByRole('link', { name: 'View Website Quality Toolkit source' })).toHaveAttribute('href', 'https://github.com/LowcountryDigitalWorks/website-quality-toolkit');
 });
 
 test('homepage presents three customer-first entry paths without exposing gated discovery', async ({ page }) => {
