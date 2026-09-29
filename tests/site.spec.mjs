@@ -88,6 +88,12 @@ test('homepage presents three customer-first entry paths without exposing gated 
   await expect(page.locator('#main-content form')).toHaveCount(0);
   await expect(page.locator('a[href*="suitedash"]')).toHaveCount(0);
   await expect(page.locator('.work-row--home .work-row__thumb')).toHaveCount(4);
+  const homeWorkThumbs = page.locator('.work-row--home .work-row__thumb img');
+  await expect(homeWorkThumbs).toHaveCount(4);
+  for (let i = 0; i < 4; i += 1) {
+    await expect.poll(async () => homeWorkThumbs.nth(i).evaluate((img) => [img.complete, img.naturalWidth, img.naturalHeight]))
+      .toEqual([true, 720, 450]);
+  }
   await expect(page.locator('.faq-item')).toHaveCount(4);
   await expect(page.getByText('Do I need to know which LDW service I need?')).toBeVisible();
 });
@@ -105,7 +111,12 @@ test('work page shows four truthful evidence-oriented project entries', async ({
   await page.goto('/work/');
   await expect(page.locator('.work-row--large')).toHaveCount(4);
   await expect(page.locator('.work-row__visual')).toHaveCount(4);
-  await expect(page.locator('.work-row__visual img')).toHaveCount(4);
+  const workThumbs = page.locator('.work-row__visual img');
+  await expect(workThumbs).toHaveCount(4);
+  for (let i = 0; i < 4; i += 1) {
+    await expect.poll(async () => workThumbs.nth(i).evaluate((img) => [img.complete, img.naturalWidth, img.naturalHeight]))
+      .toEqual([true, 720, 450]);
+  }
   await expect(page.getByRole('heading', { name: 'G.A.S. Engine' })).toBeVisible();
   await expect(page.getByText('Internal service-enabling evidence infrastructure', { exact: true })).toBeVisible();
   await expect(page.getByText('Website and search-visibility work can produce evidence from several replaceable tools over time.', { exact: false })).toBeVisible();
