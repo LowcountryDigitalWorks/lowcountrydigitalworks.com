@@ -90,10 +90,10 @@ test('homepage presents three customer-first entry paths without exposing gated 
   await expect(page.locator('.pathway a[href="/connect/"]')).toHaveCount(3);
   await expect(page.locator('#main-content form')).toHaveCount(0);
   await expect(page.locator('a[href*="suitedash"]')).toHaveCount(0);
-  await expect(page.locator('.work-row--home .work-row__thumb')).toHaveCount(4);
+  await expect(page.locator('.work-row--home .work-row__thumb')).toHaveCount(3);
   const homeWorkThumbs = page.locator('.work-row--home .work-row__thumb img');
-  await expect(homeWorkThumbs).toHaveCount(4);
-  for (let i = 0; i < 4; i += 1) {
+  await expect(homeWorkThumbs).toHaveCount(3);
+  for (let i = 0; i < 3; i += 1) {
     await expect.poll(async () => homeWorkThumbs.nth(i).evaluate((img) => [img.complete, img.naturalWidth, img.naturalHeight]))
       .toEqual([true, 720, 450]);
   }
@@ -110,13 +110,13 @@ test('Approach matches the accepted assess, improve-or-build, handoff-or-care me
   await expect(page.locator('a[href="/contact/"]')).toHaveCount(0);
 });
 
-test('work page shows four truthful evidence-oriented project entries', async ({ page }) => {
+test('work page shows three truthful evidence-oriented project entries', async ({ page }) => {
   await page.goto('/work/');
-  await expect(page.locator('.work-row--large')).toHaveCount(4);
-  await expect(page.locator('.work-row__visual')).toHaveCount(4);
+  await expect(page.locator('.work-row--large')).toHaveCount(3);
+  await expect(page.locator('.work-row__visual')).toHaveCount(3);
   const workThumbs = page.locator('.work-row__visual img');
-  await expect(workThumbs).toHaveCount(4);
-  for (let i = 0; i < 4; i += 1) {
+  await expect(workThumbs).toHaveCount(3);
+  for (let i = 0; i < 3; i += 1) {
     await expect.poll(async () => workThumbs.nth(i).evaluate((img) => [img.complete, img.naturalWidth, img.naturalHeight]))
       .toEqual([true, 720, 450]);
   }
@@ -146,9 +146,6 @@ test('work page shows four truthful evidence-oriented project entries', async ({
   await expect(page.locator('img[src="/work-assets/secure-exchange-intake.jpg"]')).toBeVisible();
   await expect(page.getByText('Synthetic staff work item demonstrating resolution', { exact: false })).toBeVisible();
 
-  await page.goto('/work/lowcountry-digital-works-website/');
-  await expect(page.locator('.project-visual')).toHaveCount(1);
-  await expect(page.locator('img[src="/work-assets/ldw-website-home.jpg"]')).toBeVisible();
 });
 
 test('founder structure uses the owner-approved portrait and approved trust facts', async ({ page }) => {
@@ -217,7 +214,17 @@ test('Contact and footer iconography supplements visible labels rather than repl
   const footer = page.locator('footer');
   await expect(footer.getByRole('link', { name: 'Facebook' })).toBeVisible();
   await expect(footer.getByRole('link', { name: 'X', exact: true })).toBeVisible();
+  await expect(footer.locator('.social-mark--facebook')).toHaveCSS('background-color', 'rgb(24, 119, 242)');
+  await expect(footer.locator('.social-mark--x')).toHaveCSS('background-color', 'rgb(255, 255, 255)');
   await expect(footer.locator('.ui-icon[aria-hidden="true"]')).toHaveCount(4);
+});
+
+test('privacy page reflects the current no-nonessential-cookie posture without a cosmetic consent banner', async ({ page }) => {
+  await page.goto('/privacy/');
+  await expect(page.getByRole('heading', { name: 'Cookies and browser storage' })).toBeVisible();
+  await expect(page.getByText('does not intentionally set nonessential cookies', { exact: false })).toBeVisible();
+  await expect(page.getByText('does not display a cookie banner merely for appearance', { exact: false })).toBeVisible();
+  await expect(page.locator('[class*="cookie"], [id*="cookie"], [class*="consent"], [id*="consent"]')).toHaveCount(0);
 });
 
 test('verified public entity links are exposed with schema microdata and no unverified company LinkedIn', async ({ page }) => {
