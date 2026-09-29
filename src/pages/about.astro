@@ -2,35 +2,50 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import about from '../data/about.json';
 ---
-<BaseLayout title="About" description="About Eddie Gugino and Lowcountry Digital Works, an owner-operated technology consultancy based in South Carolina's Lowcountry.">
-  <section class="page-hero">
-    <div class="container readable">
-      <p class="eyebrow">{about.hero.eyebrow}</p>
-      <h1>{about.hero.title}</h1>
-      <p class="lede">{about.hero.lede}</p>
+<BaseLayout title="About" description="About Eddie Gugino and Lowcountry Digital Works, an owner-operated technology consultancy based in Beaufort, South Carolina.">
+  <section class="page-hero page-hero--warm">
+    <div class="container about-hero-grid">
+      <div class="readable">
+        <p class="eyebrow">{about.hero.eyebrow}</p>
+        <h1>{about.hero.title}</h1>
+        <p class="lede">{about.hero.lede}</p>
+        <div class="actions">
+          <a class="button" href="/connect/">Talk with Eddie</a>
+          <a class="text-link" href="#how-i-work">How the work is approached ↓</a>
+        </div>
+      </div>
+
+      <aside class="about-owner-card" itemscope itemtype="https://schema.org/Person" aria-label="Eddie Gugino, founder of Lowcountry Digital Works">
+        <img
+          class="about-owner-card__photo"
+          data-founder-portrait
+          itemprop="image"
+          src="/founder/eddie-gugino-founder.webp"
+          alt="Eddie Gugino, founder of Lowcountry Digital Works"
+          width="480"
+          height="600"
+          decoding="async"
+        />
+        <div>
+          <p class="eyebrow">{about.founder.eyebrow}</p>
+          <p class="about-owner-card__name"><strong itemprop="name">{about.founder.name}</strong> · <span itemprop="jobTitle">{about.founder.role}</span></p>
+          <p>Beaufort, South Carolina · Owner-operated</p>
+        </div>
+      </aside>
     </div>
   </section>
 
-  <section class="section">
-    <div class="container founder-block founder-block--light" itemscope itemtype="https://schema.org/Person">
-      <img
-        class="founder-photo"
-        data-founder-portrait
-        itemprop="image"
-        src="/founder/eddie-gugino-founder.webp"
-        alt="Eddie Gugino, founder of Lowcountry Digital Works"
-        width="480"
-        height="600"
-        loading="lazy"
-        decoding="async"
-      />
+  <section class="section" id="how-i-work">
+    <div class="container about-story-grid">
       <div>
-        <p class="eyebrow">{about.founder.eyebrow}</p>
-        <p class="founder-name"><strong itemprop="name">{about.founder.name}</strong> · <span itemprop="jobTitle">{about.founder.role}</span></p>
+        <p class="eyebrow">Why this model</p>
         <h2>{about.founder.title}</h2>
         <p class="lede">{about.founder.body}</p>
-        <p>{about.founder.credentials}</p>
       </div>
+      <aside class="about-credentials">
+        <p class="eyebrow">Background & credentials</p>
+        <p>{about.founder.credentials}</p>
+      </aside>
     </div>
   </section>
 
@@ -52,10 +67,10 @@ import about from '../data/about.json';
     </div>
   </section>
 
-  <section class="section">
+  <section class="section section--warm">
     <div class="container final-cta final-cta--single">
       <div><p class="eyebrow">{about.fit.eyebrow}</p><h2>{about.fit.title}</h2><p class="lede">{about.fit.body}</p></div>
-      <div class="actions"><a class="button" href="/connect/">Start a conversation</a></div>
+      <div class="actions"><a class="button" href="/connect/">Tell Eddie what is going on</a></div>
     </div>
   </section>
 </BaseLayout>
