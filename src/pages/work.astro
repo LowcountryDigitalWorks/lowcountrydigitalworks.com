@@ -15,13 +15,13 @@ import work from '../data/work.json';
     <div class="container work-list work-list--large">
       {work.projects.map((project) => (
         <article class="work-row work-row--large work-row--visual">
-          {project.visuals?.[0] && (
+          {project.thumbnail && (
             <a class="work-row__visual" href={`/work/${project.slug}/`} aria-label={`View ${project.name} project details`}>
               <img
-                src={project.visuals[0].src}
+                src={project.thumbnail.src}
                 alt=""
-                width={project.visuals[0].width}
-                height={project.visuals[0].height}
+                width={project.thumbnail.width}
+                height={project.thumbnail.height}
                 loading="lazy"
                 decoding="async"
               />
