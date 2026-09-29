@@ -84,13 +84,13 @@ const relatedWork = work.projects.filter((project) => service.relatedWork?.inclu
           <div class="related-work-grid">
             {relatedWork.map((project) => (
               <article class="related-work-card">
-                {project.visuals?.[0] && (
+                {project.thumbnail && (
                   <a class="related-work-card__visual" href={`/work/${project.slug}/`} aria-label={`View ${project.name} project details`}>
                     <img
-                      src={project.visuals[0].src}
+                      src={project.thumbnail.src}
                       alt=""
-                      width={project.visuals[0].width}
-                      height={project.visuals[0].height}
+                      width={project.thumbnail.width}
+                      height={project.thumbnail.height}
                       loading="lazy"
                       decoding="async"
                     />
