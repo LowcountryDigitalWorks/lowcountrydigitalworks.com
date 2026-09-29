@@ -96,11 +96,25 @@ test('work page shows four truthful evidence-oriented project entries', async ({
   await expect(page.locator('.project-process__step')).toHaveCount(4);
   await expect(page.locator('.faq-item')).toHaveCount(2);
   await expect(page.getByText('Can a customer buy G.A.S. Engine as standalone software?')).toBeVisible();
-  await expect(page.getByText('Public-safe screenshots or diagrams will appear here only when they come from the real project', { exact: false })).toBeVisible();
+  await expect(page.locator('.project-visual')).toHaveCount(1);
+  await expect(page.locator('img[src="/work-assets/gas-engine-operator-view.jpg"]')).toBeVisible();
+  await expect(page.getByText('Release 0.9 read-only synthetic operator case/report preview', { exact: false })).toBeVisible();
 
   await page.goto('/work/document-control/');
   await expect(page.getByText('It is not a production customer deployment', { exact: false })).toBeVisible();
   await expect(page.getByText('Is Document Control a finished DMS or eQMS that LDW is selling today?')).toBeVisible();
+  await expect(page.locator('.project-visual')).toHaveCount(2);
+  await expect(page.locator('img[src="/work-assets/document-control-overview.jpg"]')).toBeVisible();
+  await expect(page.locator('img[src="/work-assets/document-control-workflow.jpg"]')).toBeVisible();
+
+  await page.goto('/work/secure-exchange/');
+  await expect(page.locator('.project-visual')).toHaveCount(2);
+  await expect(page.locator('img[src="/work-assets/secure-exchange-intake.jpg"]')).toBeVisible();
+  await expect(page.getByText('Synthetic staff work item demonstrating resolution', { exact: false })).toBeVisible();
+
+  await page.goto('/work/lowcountry-digital-works-website/');
+  await expect(page.locator('.project-visual')).toHaveCount(1);
+  await expect(page.locator('img[src="/work-assets/ldw-website-home.jpg"]')).toBeVisible();
 });
 
 test('founder structure uses the owner-approved portrait and approved trust facts', async ({ page }) => {
