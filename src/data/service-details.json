@@ -30,6 +30,10 @@
         "question": "Do you require a CMS or a specific website platform?",
         "answer": "No. The platform should fit the editing needs, integrations, support burden, portability, and budget. A static site, an existing platform, or a maintained service can each be the right answer in different situations."
       }
+    ],
+    "proofNote": "The LDW site itself is a live reference implementation: static-first Astro, Cloudflare delivery, protected-main review, browser/accessibility regression, and explicit ownership/rollback documentation.",
+    "relatedWork": [
+      "lowcountry-digital-works-website"
     ]
   },
   {
@@ -63,6 +67,11 @@
         "question": "What kinds of work can Website Care include?",
         "answer": "Depending on the agreed scope, it can include planned fixes, dependency and security upkeep, accessibility and performance checks, link/content-quality review, and incremental improvements."
       }
+    ],
+    "proofNote": "LDW uses deterministic website-quality evidence and project-local browser/accessibility checks to inform human review. Scanner findings and scores are evidence, not automatic policy or ranking guarantees.",
+    "relatedWork": [
+      "lowcountry-digital-works-website",
+      "gas-engine"
     ]
   },
   {
@@ -96,6 +105,11 @@
         "question": "Will the automation become another system we have to maintain as the source of truth?",
         "answer": "It should not. LDW prefers automations that move or transform information around authoritative systems rather than creating a competing source of truth."
       }
+    ],
+    "proofNote": "Document Control and Secure Exchange show how LDW explores real workflow gaps with synthetic/test-only evidence before claiming production maturity or provisioning customer infrastructure.",
+    "relatedWork": [
+      "document-control",
+      "secure-exchange"
     ]
   },
   {
@@ -129,6 +143,10 @@
         "question": "Can you help move away from a former vendor or employee account?",
         "answer": "Yes, when the organization has authority to do so. The transition should document current state, proposed ownership, access changes, validation, and rollback so production systems are not broken during cleanup."
       }
+    ],
+    "proofNote": "The same ownership model is used internally: source, DNS, deployment, recovery, and administrative access are treated as explicit business assets rather than hidden vendor dependencies.",
+    "relatedWork": [
+      "lowcountry-digital-works-website"
     ]
   },
   {
@@ -162,6 +180,11 @@
         "question": "Can this be a small, focused engagement?",
         "answer": "Yes. LDW prefers bounded work that leaves the customer with clearer decisions, documentation, and next actions rather than expanding the scope without a demonstrated need."
       }
+    ],
+    "proofNote": "Consulting decisions can end in a roadmap, platform choice, configuration change, proof, or a recommendation not to build. The selected Work pages show those boundaries in practice.",
+    "relatedWork": [
+      "lowcountry-digital-works-website",
+      "gas-engine"
     ]
   }
 ]
