@@ -89,7 +89,21 @@
       "gas-engine"
     ],
     "proofHref": "https://github.com/LowcountryDigitalWorks/website-quality-toolkit",
-    "proofLabel": "View Website Quality Toolkit source"
+    "proofLabel": "View Website Quality Toolkit source",
+    "outcomes": [
+      {
+        "title": "A healthier site over time",
+        "description": "Handle planned fixes, upkeep, and incremental improvements before small problems become neglected technical debt."
+      },
+      {
+        "title": "Clear ownership stays intact",
+        "description": "Keep the business in control of its accounts and source while LDW works through agreed, scoped access."
+      },
+      {
+        "title": "Evidence for what needs attention",
+        "description": "Use accessibility, performance, dependency, link, and content checks to inform human review rather than chasing scores for their own sake."
+      }
+    ]
   },
   {
     "slug": "business-systems-automation",
@@ -127,6 +141,20 @@
     "relatedWork": [
       "document-control",
       "secure-exchange"
+    ],
+    "outcomes": [
+      {
+        "title": "Less repetitive manual work",
+        "description": "Reduce avoidable copying, re-entry, handoffs, and routine steps where supported automation can do the work reliably."
+      },
+      {
+        "title": "Existing tools work together better",
+        "description": "Use native capabilities, APIs, webhooks, and maintained integrations before adding another application."
+      },
+      {
+        "title": "A maintainable operating boundary",
+        "description": "Keep authoritative systems authoritative and make the automation understandable enough to support, change, or remove later."
+      }
     ]
   },
   {
@@ -162,7 +190,21 @@
       }
     ],
     "proofNote": "The same ownership model is used internally: source, DNS, deployment, recovery, and administrative access are treated as explicit business assets rather than hidden vendor dependencies.",
-    "relatedWork": []
+    "relatedWork": [],
+    "outcomes": [
+      {
+        "title": "A clear picture of what the business owns",
+        "description": "Identify the important accounts, assets, providers, recovery paths, and current access model."
+      },
+      {
+        "title": "Safer access and transitions",
+        "description": "Use named or delegated access where possible and document vendor, employee, or administrator changes before making consequential moves."
+      },
+      {
+        "title": "A recoverable operating model",
+        "description": "Leave ownership, recovery, handoff, and ongoing administrative responsibility understandable to the business."
+      }
+    ]
   },
   {
     "slug": "technology-consulting",
@@ -199,6 +241,20 @@
     "proofNote": "Consulting decisions can end in a roadmap, platform choice, configuration change, proof, or a recommendation not to build. The selected Work pages show those boundaries in practice.",
     "relatedWork": [
       "gas-engine"
+    ],
+    "outcomes": [
+      {
+        "title": "A clearer decision",
+        "description": "Turn competing options and technical uncertainty into documented tradeoffs and a practical recommendation or next step."
+      },
+      {
+        "title": "A proportionate plan",
+        "description": "Match architecture, cost, support, security, and portability to the real need instead of defaulting to a large transformation."
+      },
+      {
+        "title": "Permission not to build",
+        "description": "A useful outcome can be a configuration change, troubleshooting finding, maintained service, or recommendation to leave a working system alone."
+      }
     ]
   }
 ]
