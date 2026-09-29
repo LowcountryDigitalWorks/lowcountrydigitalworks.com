@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
 import services from '../data/services.json';
 ---
 <BaseLayout title="Services" description="Website projects and care, business systems and automation, digital ownership and platform administration, and technology consulting from Lowcountry Digital Works.">
@@ -17,6 +18,7 @@ import services from '../data/services.json';
         <article class="service-family">
           <div class="service-family__index">
             <span>{family.number}</span>
+            <span class="service-family__icon"><Icon name={family.icon} size={28} /></span>
             <p class="card__kicker">{family.kicker}</p>
           </div>
           <div class="service-family__body">
