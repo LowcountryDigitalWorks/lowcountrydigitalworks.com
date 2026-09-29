@@ -31,8 +31,26 @@
         "answer": "No. The platform should fit the editing needs, integrations, support burden, portability, and budget. A static site, an existing platform, or a maintained service can each be the right answer in different situations."
       }
     ],
-    "proofNote": "The LDW site itself is a live reference implementation: static-first Astro, Cloudflare delivery, protected-main review, browser/accessibility regression, and explicit ownership/rollback documentation.",
-    "relatedWork": []
+    "proofNote": "LDW uses the same delivery controls on its own production changes—reviewable source, protected-main review, automated browser/accessibility checks, documented rollback, and explicit ownership. That operating discipline is evidence of the method, not a client case study.",
+    "relatedWork": [],
+    "outcomes": [
+      {
+        "title": "A clearer first impression",
+        "description": "Organize the site around what visitors need to understand and do, instead of forcing them through an inherited page structure."
+      },
+      {
+        "title": "A site the business can own",
+        "description": "Keep the domain, source, hosting and recovery model understandable, with customer-owned production assets where practical."
+      },
+      {
+        "title": "A faster, more accessible experience",
+        "description": "Treat responsive behavior, accessibility and performance as delivery quality rather than optional cleanup after launch."
+      },
+      {
+        "title": "A maintainable operating model",
+        "description": "Use the smallest architecture that fits the editing and integration needs, with documented deployment, rollback and handoff."
+      }
+    ]
   },
   {
     "slug": "website-care",
