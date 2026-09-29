@@ -85,6 +85,28 @@ Do not make claims about certifications, clients, staff, years in business, or c
 
 Break based on content, not device labels.
 
+## Public Work selection
+
+The existence of an LDW repository does **not** automatically make it public marketing content.
+
+A repository belongs in the public Work showcase only when:
+- it supports the current customer/service story;
+- its maturity can be stated truthfully and simply;
+- public-safe evidence exists or the lack of visual evidence is made explicit;
+- publication does not imply a customer deployment, regulated-production claim, commercial availability, or customer endorsement that has not been approved.
+
+Current WEB-UX-002 repository audit:
+- **LDW website** — public Work evidence: YES; live reference implementation.
+- **Document Control** — public Work evidence: YES; active development with synthetic/test-only boundaries.
+- **Secure Exchange** — public Work evidence: YES; active development with synthetic/local boundaries and no regulated-production claim.
+- **G.A.S. Engine** — public Work evidence: YES; internal service-enabling infrastructure only, not customer SaaS.
+- **Website Quality Toolkit** — use as supporting Website Care/Search-quality evidence, not standalone SaaS marketing.
+- **Reputation** — do not surface as a product while the repository remains dormant with no functional runtime.
+- **Royal Cruise Tracker / Royal Cruise Tracker Core** — useful R&D, but not part of the current small-business service story.
+- **Agent Trading Lab** — experimental measurement infrastructure; not a customer investment/trading product and not part of current public service positioning.
+- **SAST / DAST comparative proofs** — engineering/security evidence, not current standalone customer products or a substitute for a separately scoped security service.
+- **East Coast Foam** — do not publish as a client case study without explicit customer/publicity authorization.
+
 ## Work detail pages
 
 Public Work pages should explain more than a project name and status. When the owning product source supports the claim, a page should make clear:
