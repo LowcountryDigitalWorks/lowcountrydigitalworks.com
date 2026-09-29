@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import FaqList from '../../components/FaqList.astro';
 import serviceDetails from '../../data/service-details.json';
 
 export function getStaticPaths() {
@@ -56,6 +57,12 @@ const { service } = Astro.props;
       <div class="container principle">
         <div><p class="eyebrow">Ownership boundary</p><h2>Keep responsibility clear.</h2></div>
         <p class="lede">{service.ownership}</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <FaqList items={service.faqs} title="Useful answers before you decide what kind of help you need." />
       </div>
     </section>
 
