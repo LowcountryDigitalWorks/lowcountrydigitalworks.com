@@ -96,10 +96,11 @@ A repository belongs in the public Work showcase only when:
 - publication does not imply a customer deployment, regulated-production claim, commercial availability, or customer endorsement that has not been approved.
 
 Current WEB-UX-002 repository audit:
-- **LDW website** — public Work evidence: YES; live reference implementation.
 - **Document Control** — public Work evidence: YES; active development with synthetic/test-only boundaries.
 - **Secure Exchange** — public Work evidence: YES; active development with synthetic/local boundaries and no regulated-production claim.
 - **G.A.S. Engine** — public Work evidence: YES; internal service-enabling infrastructure only, not customer SaaS.
+- **LDW website** — do not use as a public Work showcase item; self-referential homepage screenshots weaken the portfolio presentation. The site remains internal proof of the website-delivery method, not a case-study tile.
+- **East Coast Foam** — candidate future website Work item only after authorized production cutover and explicit customer/publicity approval.
 - **Website Quality Toolkit** — use as supporting Website Care/Search-quality evidence, not standalone SaaS marketing.
 - **Reputation** — do not surface as a product while the repository remains dormant with no functional runtime.
 - **Royal Cruise Tracker / Royal Cruise Tracker Core** — useful R&D, but not part of the current small-business service story.
@@ -145,3 +146,18 @@ Contact and social icons should supplement visible labels. They never replace ac
 - privacy / website-use link
 - restrained local iconography for contact/social recognition where useful
 - no clutter
+
+
+## Cookies and tracking
+
+The public LDW website should not display a cookie banner simply because banners are common.
+
+Current rule:
+- repository-controlled public-site code should not intentionally set nonessential cookies or use local/session browser storage for behavioral analytics, advertising, or tracking;
+- no consent banner is needed while there is no nonessential cookie/storage purpose to consent to;
+- hosting/security metadata needed to deliver and protect the site is treated separately from marketing/behavioral tracking;
+- privacy-preserving, cookieless, aggregate measurement should be preferred when it satisfies the business need;
+- adding analytics, advertising pixels, third-party embeds, personalization, or another cookie/storage-using feature requires a pre-deployment review of provider, purpose, data flow, retention, consent/opt-out requirements, and privacy-notice changes;
+- if consent becomes necessary, use a clear category-based mechanism with nonessential categories off by default, an easy revocation path, no dark patterns, and no loading of nonessential technologies before consent where consent is required.
+
+This is a product/architecture rule, not legal advice. A dedicated privacy/compliance review should occur before LDW introduces advertising technology, cross-site tracking, or materially expands public-site data collection.
