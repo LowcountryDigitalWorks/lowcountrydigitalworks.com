@@ -46,6 +46,15 @@
           "question": "Why does LDW emphasize ownership so much?",
           "answer": "Because domains, DNS, hosting, source code, deployment access, and recovery paths are business assets. LDW generally prefers customer-owned production accounts with named, scoped access rather than hidden provider dependency."
         }
+      ],
+      "visuals": [
+        {
+          "src": "/work-assets/ldw-website-home.jpg",
+          "alt": "Lowcountry Digital Works homepage showing the customer-first hero and owner-operated consultancy layout",
+          "width": 1440,
+          "height": 900,
+          "caption": "Live Lowcountry Digital Works production homepage after the accepted WEB-UX-001 release."
+        }
       ]
     },
     {
@@ -87,6 +96,22 @@
         {
           "question": "Can customers upload real files or regulated data into it now?",
           "answer": "No. Current content-ingestion and product-surface work is staged with synthetic or non-sensitive test content. Production uploads, malware scanning, retention, recovery, identity, and customer provisioning require later explicit gates."
+        }
+      ],
+      "visuals": [
+        {
+          "src": "/work-assets/document-control-overview.jpg",
+          "alt": "Document Control synthetic workspace overview showing document, template, approval, review and administration navigation",
+          "width": 1440,
+          "height": 1067,
+          "caption": "Synthetic read-only workspace overview generated from the real Document Control application surface."
+        },
+        {
+          "src": "/work-assets/document-control-workflow.jpg",
+          "alt": "Document Control synthetic guided workflow showing an exact-version approval-required state",
+          "width": 1440,
+          "height": 1874,
+          "caption": "Synthetic guided workflow after creating version 1 from an approved template; no customer data or production identity is used."
         }
       ]
     },
@@ -130,6 +155,22 @@
           "question": "Is the goal to replace a customer's existing systems?",
           "answer": "Not by default. The accepted direction is customer-owned augmentation: fit a secure exchange workflow around the customer's existing provider and operational process rather than requiring a standalone replacement."
         }
+      ],
+      "visuals": [
+        {
+          "src": "/work-assets/secure-exchange-intake.jpg",
+          "alt": "Secure Exchange synthetic provider-augmented records intake form",
+          "width": 1440,
+          "height": 1282,
+          "caption": "Release 0.14 synthetic commercial intake surface. The demo explicitly prohibits real customer, patient, confidential, regulated or PHI data."
+        },
+        {
+          "src": "/work-assets/secure-exchange-work-item.jpg",
+          "alt": "Secure Exchange synthetic staff work item showing patient-resolution and filing-mapping workflow",
+          "width": 1440,
+          "height": 3171,
+          "caption": "Synthetic staff work item demonstrating resolution, attachment review, filing mapping and lifecycle evidence without a real downstream provider."
+        }
       ]
     },
     {
@@ -168,6 +209,15 @@
         {
           "question": "Does G.A.S. automatically prioritize recommendations or change customer websites?",
           "answer": "No. Current releases preserve evidence and human review history. Recommendations remain human-authored, and accepted recommendations create no execution authority. Any action path is separately authorized."
+        }
+      ],
+      "visuals": [
+        {
+          "src": "/work-assets/gas-engine-operator-view.jpg",
+          "alt": "G.A.S. Engine Release 0.9 synthetic operator case view showing evidence changes, human review history, measurements and outcomes",
+          "width": 1440,
+          "height": 3239,
+          "caption": "Release 0.9 read-only synthetic operator case/report preview generated from the accepted G.A.S. local proof."
         }
       ]
     }
