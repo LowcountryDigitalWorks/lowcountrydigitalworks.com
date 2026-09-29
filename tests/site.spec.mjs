@@ -87,6 +87,18 @@ test('homepage presents three customer-first entry paths without exposing gated 
   await expect(page.locator('.pathway a[href="/connect/"]')).toHaveCount(3);
   await expect(page.locator('#main-content form')).toHaveCount(0);
   await expect(page.locator('a[href*="suitedash"]')).toHaveCount(0);
+  await expect(page.locator('.work-row--home .work-row__thumb')).toHaveCount(4);
+  await expect(page.locator('.faq-item')).toHaveCount(4);
+  await expect(page.getByText('Do I need to know which LDW service I need?')).toBeVisible();
+});
+
+test('Approach matches the accepted assess, improve-or-build, handoff-or-care method', async ({ page }) => {
+  await page.goto('/approach/');
+  await expect(page.getByRole('heading', { name: 'Assess' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Improve or build' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Handoff or care' })).toBeVisible();
+  await expect(page.locator('a[href="/connect/"]')).toBeVisible();
+  await expect(page.locator('a[href="/contact/"]')).toHaveCount(0);
 });
 
 test('work page shows four truthful evidence-oriented project entries', async ({ page }) => {
