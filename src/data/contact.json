@@ -1,8 +1,8 @@
 {
   "hero": {
-    "eyebrow": "Contact",
-    "title": "Start with the problem you need to solve.",
-    "lede": "You do not need a detailed technical specification. A short description of what is happening now and what you want to improve is enough to start a conversation."
+    "eyebrow": "Connect with Eddie",
+    "title": "Tell me what is getting in the way.",
+    "lede": "You do not need a polished scope or the right technical terminology. A short note about what feels slow, confusing, outdated, manual, unreliable, or hard to own is enough to start."
   },
   "founder": {
     "name": "Eddie Gugino",
@@ -45,5 +45,9 @@
     "eyebrow": "What happens next",
     "title": "Clarify the need before prescribing the solution.",
     "body": "The first step is to understand the current situation, desired outcome, and important constraints. From there, the work can be scoped around the smallest practical solution rather than starting with a predetermined product or platform."
+  },
+  "quickStart": {
+    "title": "A useful first message can be simple.",
+    "body": "What are you trying to improve, and what is happening today? If a deadline, platform, ownership issue, or budget constraint already matters, include it. Everything else can be worked through together."
   }
 }

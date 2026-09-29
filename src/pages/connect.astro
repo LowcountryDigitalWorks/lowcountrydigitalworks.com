@@ -3,39 +3,45 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import contact from '../data/contact.json';
 import Icon from '../components/Icon.astro';
 ---
-<BaseLayout title="Connect" description="Connect with Eddie Gugino, founder of Lowcountry Digital Works, by text, phone, email, or verified social profile.">
+<BaseLayout title="Connect" description="Connect directly with Eddie Gugino at Lowcountry Digital Works by text, phone, email, or contact card.">
   <section class="section connect-page">
-    <div class="container connect-shell">
+    <div class="container connect-shell connect-shell--warm">
       <div class="connect-brand">
         <img src="/brand/logo/lowcountry-digital-works-logo-horizontal.svg" alt="Lowcountry Digital Works" width="312" height="88" />
-        <p class="eyebrow">Connect</p>
-        <h1>{contact.founder.name}</h1>
-        <p class="lede">{contact.founder.role} · Lowcountry Digital Works</p>
-        <p>Practical websites, business systems, automation, digital ownership, and technical consulting built to remain understandable and yours.</p>
+        <p class="eyebrow">{contact.hero.eyebrow}</p>
+        <h1>{contact.hero.title}</h1>
+        <p class="lede">{contact.hero.lede}</p>
+        <p class="connect-identity"><strong>{contact.founder.name}</strong> · {contact.founder.role} · Beaufort, South Carolina</p>
+      </div>
+
+      <div class="connect-reassurance">
+        <p class="eyebrow">Easy first step</p>
+        <h2>{contact.quickStart.title}</h2>
+        <p>{contact.quickStart.body}</p>
       </div>
 
       <div class="connect-actions" aria-label="Contact options">
         <a class="connect-action connect-action--primary" href={`sms:${contact.phone.number}`}>
           <span class="connect-action__icon"><Icon name="message" size={22} /></span>
-          <span class="connect-action__copy"><span>Text</span><strong>{contact.phone.display}</strong></span>
+          <span class="connect-action__copy"><span>Text Eddie</span><strong>{contact.phone.display}</strong><small>Send a short note</small></span>
         </a>
         <a class="connect-action" href={`tel:${contact.phone.number}`}>
           <span class="connect-action__icon"><Icon name="phone" size={22} /></span>
-          <span class="connect-action__copy"><span>Call</span><strong>{contact.phone.display}</strong></span>
+          <span class="connect-action__copy"><span>Call Eddie</span><strong>{contact.phone.display}</strong><small>Talk it through</small></span>
         </a>
         <a class="connect-action" href={`mailto:${contact.email.address}`}>
           <span class="connect-action__icon"><Icon name="mail" size={22} /></span>
-          <span class="connect-action__copy"><span>Email</span><strong>{contact.email.address}</strong></span>
+          <span class="connect-action__copy"><span>Email Eddie</span><strong>{contact.email.address}</strong><small>Share a little context</small></span>
         </a>
         <a class="connect-action" href="/eddie-gugino-lowcountry-digital-works.vcf" download>
           <span class="connect-action__icon"><Icon name="contact" size={22} /></span>
-          <span class="connect-action__copy"><span>Save to contacts</span><strong>Contact card</strong></span>
+          <span class="connect-action__copy"><span>Save Eddie</span><strong>Contact card</strong><small>Keep the details handy</small></span>
         </a>
       </div>
 
       <div class="connect-links">
-        <a href="/services/">Services →</a>
-        <a href="/work/">Work →</a>
+        <a href="/services/">Find a service →</a>
+        <a href="/work/">See how LDW works →</a>
         {contact.socials.map((social) => (
           <a class="icon-link" href={social.href} rel="me noopener">
             <Icon name={social.name === 'Facebook' ? 'facebook' : 'x'} size={18} />

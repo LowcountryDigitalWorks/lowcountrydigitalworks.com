@@ -4,7 +4,7 @@ import Icon from '../components/Icon.astro';
 import services from '../data/services.json';
 ---
 <BaseLayout title="Services" description="Website projects and care, business systems and automation, digital ownership and platform administration, and technology consulting from Lowcountry Digital Works.">
-  <section class="page-hero">
+  <section class="page-hero page-hero--warm">
     <div class="container readable">
       <p class="eyebrow">{services.page.eyebrow}</p>
       <h1>{services.page.title}</h1>
@@ -13,30 +13,42 @@ import services from '../data/services.json';
   </section>
 
   <section class="section">
-    <div class="container service-family-list">
-      {services.families.map((family) => (
-        <article class="service-family">
-          <div class="service-family__index">
-            <span>{family.number}</span>
-            <span class="service-family__icon"><Icon name={family.icon} size={28} /></span>
-            <p class="card__kicker">{family.kicker}</p>
-          </div>
-          <div class="service-family__body">
-            <h2>{family.name}</h2>
-            <p>{family.description}</p>
-          </div>
-          <div class="service-family__links">
-            <a href={family.primaryHref}>{family.primaryLabel} →</a>
-            {family.secondaryHref && <a href={family.secondaryHref}>{family.secondaryLabel} →</a>}
-          </div>
-        </article>
-      ))}
+    <div class="container">
+      <div class="section-heading">
+        <p class="eyebrow">Find your starting point</p>
+        <h2>Which of these sounds most like what is happening now?</h2>
+      </div>
+
+      <div class="service-family-list service-choice-list">
+        {services.families.map((family) => (
+          <article class="service-family service-choice">
+            <div class="service-family__index">
+              <span>{family.number}</span>
+              <span class="service-family__icon"><Icon name={family.icon} size={28} /></span>
+              <p class="card__kicker">{family.kicker}</p>
+            </div>
+            <div class="service-family__body">
+              <p class="service-choice__prompt">{family.prompt}</p>
+              <h2>{family.name}</h2>
+              <p>{family.description}</p>
+            </div>
+            <div class="service-family__links">
+              <a class="service-choice__primary" href={family.primaryHref}>{family.primaryLabel} →</a>
+              {family.secondaryHref && <a href={family.secondaryHref}>{family.secondaryLabel} →</a>}
+              <a href="/connect/">Talk it through →</a>
+            </div>
+          </article>
+        ))}
+      </div>
     </div>
   </section>
 
   <section class="section section--navy">
     <div class="container">
-      <div class="section-heading"><p class="eyebrow">Ways to begin</p><h2>Start from where the business is today.</h2></div>
+      <div class="section-heading">
+        <p class="eyebrow">How LDW chooses the solution</p>
+        <h2>Use the smallest change that solves the real problem.</h2>
+      </div>
       <div class="editorial-list editorial-list--dark">
         {services.startingPoints.map((item) => <article class="editorial-row"><h3>{item.title}</h3><p>{item.description}</p></article>)}
       </div>
@@ -44,10 +56,13 @@ import services from '../data/services.json';
   </section>
 
   <section class="section section--warm">
-    <div class="container readable">
-      <h2>{services.platformNote.title}</h2>
-      <p>{services.platformNote.body}</p>
-      <div class="actions"><a class="button" href="/connect/">Discuss a need</a></div>
+    <div class="container final-cta final-cta--single">
+      <div>
+        <p class="eyebrow">Not sure which path fits?</p>
+        <h2>{services.platformNote.title}</h2>
+        <p class="lede">{services.platformNote.body}</p>
+      </div>
+      <div class="actions"><a class="button" href="/connect/">Tell Eddie what is getting in the way</a></div>
     </div>
   </section>
 </BaseLayout>

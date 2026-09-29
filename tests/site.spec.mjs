@@ -54,7 +54,12 @@ test('primary navigation reflects the accepted consultancy IA and keeps Secure S
 test('services page presents four problem-led service families and detail routes', async ({ page }) => {
   await page.goto('/services/');
   await expect(page.locator('.service-family')).toHaveCount(4);
+  await expect(page.locator('.service-choice__prompt')).toHaveCount(4);
   await expect(page.locator('.service-family__icon .ui-icon')).toHaveCount(4);
+  await expect(page.getByRole('heading', { level: 1, name: 'Start with what your business needs to work better.' })).toBeVisible();
+  await expect(page.getByText('Our website feels dated, confusing, hard to maintain', { exact: false })).toBeVisible();
+  await expect(page.getByText('We keep repeating the same work', { exact: false })).toBeVisible();
+  await expect(page.locator('.service-family a[href="/connect/"]')).toHaveCount(4);
   await expect(page.getByRole('heading', { name: 'Websites & Website Care' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Business Systems & Automation' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Digital Ownership & Platform Administration' })).toBeVisible();
@@ -64,6 +69,10 @@ test('services page presents four problem-led service families and detail routes
   await expect(page.locator('article[itemtype="https://schema.org/Service"]')).toHaveCount(1);
   await expect(page.locator('[itemtype="https://schema.org/BreadcrumbList"]')).toHaveCount(1);
   await expect(page.getByText('configure', { exact: false })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Talk through your situation' })).toHaveAttribute('href', '/connect/');
+  await expect(page.locator('.outcome-card')).toHaveCount(3);
+  await expect(page.locator('.outcome-grid--3')).toHaveCount(1);
+  await expect(page.getByRole('heading', { name: 'Less repetitive manual work' })).toBeVisible();
   await expect(page.locator('.faq-item')).toHaveCount(3);
   await expect(page.getByText('Do you start by building custom software?')).toBeVisible();
   await expect(page.getByText('Will the automation become another system we have to maintain as the source of truth?')).toBeVisible();
@@ -73,6 +82,8 @@ test('services page presents four problem-led service families and detail routes
   await expect(page.getByText('Document Control and Secure Exchange show how LDW explores real workflow gaps', { exact: false })).toBeVisible();
 
   await page.goto('/services/website-care/');
+  await expect(page.locator('.outcome-card')).toHaveCount(3);
+  await expect(page.getByRole('heading', { name: 'A healthier site over time' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'View Website Quality Toolkit source' })).toHaveAttribute('href', 'https://github.com/LowcountryDigitalWorks/website-quality-toolkit');
 
   await page.goto('/services/websites/');
@@ -181,6 +192,9 @@ test('founder structure uses the owner-approved portrait and approved trust fact
   await expect(page.locator('#main-content').getByText('service in the U.S. Navy', { exact: false })).toBeVisible();
 
   await page.goto('/about/');
+  await expect(page.getByRole('heading', { level: 1, name: 'Local, practical, and accountable by design.' })).toBeVisible();
+  await expect(page.getByText('Beaufort, South Carolina · Owner-operated', { exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'One accountable point of contact from the first conversation through handoff.' })).toBeVisible();
   await expect(page.locator('[itemtype="https://schema.org/Person"]')).toHaveCount(2);
   await expect(page.getByText('CISSP certification', { exact: false })).toBeVisible();
   await expect(page.getByText('Utica College', { exact: false })).toBeVisible();
@@ -192,7 +206,10 @@ test('founder structure uses the owner-approved portrait and approved trust fact
 test('Connect is a mobile-first stable contact destination with accessible contact-card and social iconography', async ({ page }) => {
   await page.goto('/connect/');
   const main = page.locator('#main-content');
-  await expect(main.getByRole('heading', { level: 1, name: 'Eddie Gugino' })).toBeVisible();
+  await expect(main.getByRole('heading', { level: 1, name: 'Tell me what is getting in the way.' })).toBeVisible();
+  await expect(main.getByText('You do not need a polished scope or the right technical terminology.', { exact: false })).toBeVisible();
+  await expect(main.getByText('Eddie Gugino', { exact: false })).toBeVisible();
+  await expect(main.getByRole('heading', { name: 'A useful first message can be simple.' })).toBeVisible();
   await expect(main.locator('a[href="sms:+18436333123"]')).toBeVisible();
   await expect(main.locator('a[href="tel:+18436333123"]')).toBeVisible();
   await expect(main.locator('a[href="mailto:eddie@lowcountrydigitalworks.com"]')).toBeVisible();
