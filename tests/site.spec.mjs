@@ -55,6 +55,7 @@ test('primary navigation reflects the accepted consultancy IA and keeps Secure S
 test('services page presents four problem-led service families and detail routes', async ({ page }) => {
   await page.goto('/services/');
   await expect(page.locator('.service-family')).toHaveCount(4);
+  await expect(page.locator('.service-family__icon .ui-icon')).toHaveCount(4);
   await expect(page.getByRole('heading', { name: 'Websites & Website Care' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Business Systems & Automation' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Digital Ownership & Platform Administration' })).toBeVisible();
@@ -67,6 +68,10 @@ test('services page presents four problem-led service families and detail routes
   await expect(page.locator('.faq-item')).toHaveCount(3);
   await expect(page.getByText('Do you start by building custom software?')).toBeVisible();
   await expect(page.getByText('Will the automation become another system we have to maintain as the source of truth?')).toBeVisible();
+  await expect(page.locator('.related-work-card')).toHaveCount(2);
+  await expect(page.getByRole('heading', { name: 'Document Control' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Secure Exchange' })).toBeVisible();
+  await expect(page.getByText('Document Control and Secure Exchange show how LDW explores real workflow gaps', { exact: false })).toBeVisible();
 });
 
 test('homepage presents three customer-first entry paths without exposing gated discovery', async ({ page }) => {
@@ -87,6 +92,8 @@ test('homepage presents three customer-first entry paths without exposing gated 
 test('work page shows four truthful evidence-oriented project entries', async ({ page }) => {
   await page.goto('/work/');
   await expect(page.locator('.work-row--large')).toHaveCount(4);
+  await expect(page.locator('.work-row__visual')).toHaveCount(4);
+  await expect(page.locator('.work-row__visual img')).toHaveCount(4);
   await expect(page.getByRole('heading', { name: 'G.A.S. Engine' })).toBeVisible();
   await expect(page.getByText('Internal service-enabling evidence infrastructure', { exact: true })).toBeVisible();
   await expect(page.getByText('customer SaaS', { exact: false })).toBeVisible();
