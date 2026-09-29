@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import FaqList from '../../components/FaqList.astro';
+import Icon from '../../components/Icon.astro';
 import serviceDetails from '../../data/service-details.json';
 import work from '../../data/work.json';
 
@@ -69,7 +70,10 @@ const relatedWork = work.projects.filter((project) => service.relatedWork?.inclu
             <p class="eyebrow">How LDW applies this</p>
             <h2>Evidence before broad claims.</h2>
           </div>
-          <p class="lede">{service.proofNote}</p>
+          <div>
+            <p class="lede">{service.proofNote}</p>
+            {service.proofHref && <a class="text-link icon-link" href={service.proofHref} rel="noopener"><Icon name="github" size={17} /><span>{service.proofLabel}</span></a>}
+          </div>
         </div>
       </section>
     )}
