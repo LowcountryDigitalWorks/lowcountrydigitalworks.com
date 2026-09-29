@@ -68,6 +68,20 @@ High-value website signals include:
 
 Do not fabricate testimonials, reviews, outcomes, or client proof to imitate larger agencies.
 
+## Production-delivery reinforcement
+
+Recent LDW local-business website delivery reinforces the same research direction:
+
+- lead with the actual service/category and local context instead of agency language;
+- use real business, owner, facility, project, or work photography when authorized and useful;
+- expose one obvious primary task such as call, request an estimate, get directions, prepare for a visit, or start a conversation;
+- keep secondary tasks nearby but visually subordinate;
+- make direct contact information easy to find;
+- use complete operating information such as location, hours, service area, forms, or project evidence when those details reduce visitor uncertainty;
+- treat the homepage as an orientation and trust surface rather than an exhaustive document.
+
+This is a reusable delivery pattern, not permission to publish any customer relationship or case study. Named customer proof remains separately publicity-gated.
+
 ## Accessibility and interaction baseline
 
 Keep accessibility structural rather than bolt-on:
