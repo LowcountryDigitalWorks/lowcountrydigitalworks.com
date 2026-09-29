@@ -52,14 +52,14 @@
           "alt": "Document Control synthetic workspace overview showing document, template, approval, review and administration navigation",
           "width": 1440,
           "height": 1067,
-          "caption": "Synthetic read-only workspace overview generated from the real Document Control application surface."
+          "caption": "Dark-mode synthetic read-only workspace overview generated from the real Document Control application surface."
         },
         {
           "src": "/work-assets/document-control-workflow.jpg",
           "alt": "Document Control synthetic guided workflow showing an exact-version approval-required state",
           "width": 1440,
           "height": 1874,
-          "caption": "Synthetic guided workflow after creating version 1 from an approved template; no customer data or production identity is used."
+          "caption": "Dark-mode synthetic guided workflow after creating version 1 from an approved template; no customer data or production identity is used."
         }
       ],
       "thumbnail": {
@@ -116,14 +116,14 @@
           "alt": "Secure Exchange synthetic provider-augmented records intake form",
           "width": 1440,
           "height": 1282,
-          "caption": "Release 0.14 synthetic commercial intake surface. The demo explicitly prohibits real customer, patient, confidential, regulated or PHI data."
+          "caption": "Dark-mode Release 0.14 synthetic commercial intake surface. The demo explicitly prohibits real customer, patient, confidential, regulated or PHI data."
         },
         {
           "src": "/work-assets/secure-exchange-work-item.jpg",
           "alt": "Secure Exchange synthetic staff work item showing patient-resolution and filing-mapping workflow",
           "width": 1440,
           "height": 3171,
-          "caption": "Synthetic staff work item demonstrating resolution, attachment review, filing mapping and lifecycle evidence without a real downstream provider."
+          "caption": "Dark-mode synthetic staff work item demonstrating resolution, attachment review, filing mapping and lifecycle evidence without a real downstream provider."
         }
       ],
       "thumbnail": {
