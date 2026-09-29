@@ -19,7 +19,34 @@
         "Automated browser and accessibility regression checks"
       ],
       "boundary": "The public site contains no customer portal, analytics SaaS, contact-form processor, or customer-data store.",
-      "externalHref": "/"
+      "externalHref": "/",
+      "whyItMatters": "A small-business website should make the business easier to understand without creating a maintenance burden or unnecessary platform dependency. This site is LDW's own proof that a public presence can stay fast, accessible, reviewable, and straightforward to hand off.",
+      "fit": [
+        "A business website needs clearer structure, stronger ownership, or easier maintenance.",
+        "The organization wants source, hosting, deployment, and recovery responsibilities documented.",
+        "A lightweight site can meet the need without a CMS, database, or large application stack."
+      ],
+      "howItWorks": [
+        "Repository-controlled Astro content is built as a static-first site.",
+        "Protected-main pull requests and automated browser/accessibility checks gate changes.",
+        "Cloudflare Workers Static Assets delivers the production site at the edge.",
+        "Ownership, rollback, and handoff remain explicit instead of being hidden inside a proprietary builder."
+      ],
+      "maturity": "Live production website and ongoing internal reference implementation. The site deliberately avoids a customer portal, analytics SaaS, public form processor, and customer-data store.",
+      "relatedService": {
+        "name": "Websites & Website Care",
+        "href": "/services/websites/"
+      },
+      "faqs": [
+        {
+          "question": "Is this site meant to prove that every business should use Astro or Cloudflare?",
+          "answer": "No. It demonstrates LDW's preference for the smallest maintainable architecture that fits the real requirements. A different customer ecosystem may justify a different platform."
+        },
+        {
+          "question": "Why does LDW emphasize ownership so much?",
+          "answer": "Because domains, DNS, hosting, source code, deployment access, and recovery paths are business assets. LDW generally prefers customer-owned production accounts with named, scoped access rather than hidden provider dependency."
+        }
+      ]
     },
     {
       "slug": "document-control",
@@ -34,7 +61,34 @@
         "Audit and export capabilities",
         "Repository-controlled product development"
       ],
-      "boundary": "Active development is not presented as a finished client engagement or mature standalone SaaS."
+      "boundary": "Active development is not presented as a finished client engagement or mature standalone SaaS.",
+      "whyItMatters": "Controlled-document work becomes risky when reviewers cannot tell which version was approved, who acted, what changed, or how evidence can be exported. This project explores those problems with exact-version workflow evidence, auditability, portability, and explicit tenant boundaries.",
+      "fit": [
+        "Teams that need structured review and approval around controlled documents or templates.",
+        "Organizations that care about exact-version evidence, audit history, role-aware workflow, and export.",
+        "Situations where a focused customer-owned augmentation may be preferable to replacing an existing document platform."
+      ],
+      "howItWorks": [
+        "Documents and controlled templates keep immutable version identity and bounded change history.",
+        "Versioned workflows bind reviews and approvals to the exact document version and hash being acted on.",
+        "Tenant-aware roles, audit records, search/filtering, and export preserve accountability around the workflow.",
+        "The current product surface remains synthetic/test-only while production identity, uploads, scanning, recovery, and customer provisioning stay behind explicit readiness gates."
+      ],
+      "maturity": "Active development with substantial synthetic/test-only capability and accepted production-readiness foundations. It is not a production customer deployment and does not currently authorize live authentication, customer uploads, customer data, or production D1/R2 resources.",
+      "relatedService": {
+        "name": "Business Systems & Automation",
+        "href": "/services/business-systems-automation/"
+      },
+      "faqs": [
+        {
+          "question": "Is Document Control a finished DMS or eQMS that LDW is selling today?",
+          "answer": "No. It is an active service-first product foundation being validated around controlled-document workflow needs. The current repository explicitly does not claim a production customer deployment."
+        },
+        {
+          "question": "Can customers upload real files or regulated data into it now?",
+          "answer": "No. Current content-ingestion and product-surface work is staged with synthetic or non-sensitive test content. Production uploads, malware scanning, retention, recovery, identity, and customer provisioning require later explicit gates."
+        }
+      ]
     },
     {
       "slug": "secure-exchange",
@@ -49,7 +103,34 @@
         "Configurable retention and disposition",
         "Provider-neutral core with customer-owned deployment direction"
       ],
-      "boundary": "No public website claim implies that LDW currently operates production Secure Exchange infrastructure for customers."
+      "boundary": "No public website claim implies that LDW currently operates production Secure Exchange infrastructure for customers.",
+      "whyItMatters": "Organizations often need to exchange sensitive messages or documents with people outside their normal systems without losing accountability for who may read, download, reply, file, complete, or dispose of an item. Secure Exchange is exploring that workflow without making transport state or a secure link stand in for application authorization.",
+      "fit": [
+        "Organizations that need role-routed external message or document intake around an existing internal workflow.",
+        "Teams that need explicit evidence for opened, downloaded, filed/transferred, completed, and disposition states instead of treating them as the same event.",
+        "Customer-owned deployments where provider-specific services should remain adapters rather than become the business workflow itself."
+      ],
+      "howItWorks": [
+        "Provider-neutral domain rules model threads, messages, attachments, queue routing, lifecycle, retention/disposition, and explicit access grants.",
+        "External bootstrap/session work is designed so possession of a browser session does not create wildcard application authority.",
+        "Synthetic commercial workflow slices validate intake, attachment review, staff-directed resolution, downstream filing simulation, completion, and disposition.",
+        "The current AWS-first direction remains a reference architecture for an isolated customer-owned deployment rather than a claim of live regulated production."
+      ],
+      "maturity": "Release 0.14 is a synthetic/local commercial-workflow demo. There is no production mail provider, Open Dental integration, customer data or PHI, production persistence, or regulated-production claim. A paying pilot or production deployment requires separate provider, BAA, support, ownership, security/privacy, and operational gates.",
+      "relatedService": {
+        "name": "Business Systems & Automation",
+        "href": "/services/business-systems-automation/"
+      },
+      "faqs": [
+        {
+          "question": "Is Secure Exchange already a production HIPAA-compliant service?",
+          "answer": "No. The current product is synthetic/local validation work. Encryption, secure links, or cloud services by themselves do not establish HIPAA compliance, and any regulated deployment requires a separately reviewed end-to-end operating boundary."
+        },
+        {
+          "question": "Is the goal to replace a customer's existing systems?",
+          "answer": "Not by default. The accepted direction is customer-owned augmentation: fit a secure exchange workflow around the customer's existing provider and operational process rather than requiring a standalone replacement."
+        }
+      ]
     },
     {
       "slug": "gas-engine",
@@ -64,7 +145,31 @@
         "Human-reviewed recommendation and outcome lineage",
         "Supports service-first Search + AI Visibility validation"
       ],
-      "boundary": "G.A.S. remains internal infrastructure; customer-facing service claims and pricing remain governed by the separate Managed Search + AI Visibility gate."
+      "boundary": "G.A.S. remains internal infrastructure; customer-facing service claims and pricing remain governed by the separate Managed Search + AI Visibility gate.",
+      "whyItMatters": "Website and search-visibility work can produce evidence from several replaceable tools over time. G.A.S. exists so LDW can normalize that evidence, preserve provenance, compare compatible observations, record human review, and measure outcomes without turning any single sensor or score into the source of truth.",
+      "fit": [
+        "LDW's internal managed-service delivery where evidence needs to be compared longitudinally.",
+        "Human reviewers who need normalized observations, provenance, recommendation history, measurements, and outcomes in one bounded case view.",
+        "Internal validation of whether stronger evidence handling reduces recurring reconciliation and reporting work."
+      ],
+      "howItWorks": [
+        "Replaceable sensors provide already-normalized or sanitized evidence into provider-specific adapters.",
+        "Tenant-scoped persistence preserves canonical observations, provenance, and compatible longitudinal snapshots.",
+        "Human-authored review history, measurements, and declared outcomes remain distinct from automated sensing.",
+        "A read-only local operator case view and printable HTML report preview expose accepted evidence without creating a public SaaS portal or action authority."
+      ],
+      "maturity": "Internal validation infrastructure. Accepted releases through 0.9 include evidence contracts, local persistence, bounded ingestion, WQT and ZeroRank adapters, longitudinal comparison, human review/measurement history, and a read-only local operator view. There is no customer portal, runtime AI, scheduler, provider networking, automated prioritization, or deployment.",
+      "relatedService": null,
+      "faqs": [
+        {
+          "question": "Can a customer buy G.A.S. Engine as standalone software?",
+          "answer": "No. G.A.S. is LDW-operated internal service-enabling infrastructure, not customer SaaS, a self-service SEO product, or a standalone commercial platform."
+        },
+        {
+          "question": "Does G.A.S. automatically prioritize recommendations or change customer websites?",
+          "answer": "No. Current releases preserve evidence and human review history. Recommendations remain human-authored, and accepted recommendations create no execution authority. Any action path is separately authorized."
+        }
+      ]
     }
   ],
   "technology": {
@@ -72,11 +177,31 @@
     "title": "Technology chosen in proportion to the problem.",
     "lede": "These are examples of technologies currently used in LDW website, application, automation, and delivery work. A project does not inherit a platform simply because it appears here.",
     "items": [
-      { "name": "GitHub", "description": "Source control, review, and delivery workflows", "icon": "/technology/github.svg" },
-      { "name": "Cloudflare", "description": "DNS, edge hosting, security, and deployment", "icon": "/technology/cloudflare.svg" },
-      { "name": "Astro", "description": "Fast, maintainable static websites", "icon": "/technology/astro.svg" },
-      { "name": "TypeScript", "description": "Web applications and maintainable tooling", "icon": "/technology/typescript.svg" },
-      { "name": "Python", "description": "Automation, validation, and scripting", "icon": "/technology/python.svg" }
+      {
+        "name": "GitHub",
+        "description": "Source control, review, and delivery workflows",
+        "icon": "/technology/github.svg"
+      },
+      {
+        "name": "Cloudflare",
+        "description": "DNS, edge hosting, security, and deployment",
+        "icon": "/technology/cloudflare.svg"
+      },
+      {
+        "name": "Astro",
+        "description": "Fast, maintainable static websites",
+        "icon": "/technology/astro.svg"
+      },
+      {
+        "name": "TypeScript",
+        "description": "Web applications and maintainable tooling",
+        "icon": "/technology/typescript.svg"
+      },
+      {
+        "name": "Python",
+        "description": "Automation, validation, and scripting",
+        "icon": "/technology/python.svg"
+      }
     ],
     "trademarkNote": "Product names and marks are used only to identify technologies used in the work. Their owners do not sponsor or endorse Lowcountry Digital Works."
   },
