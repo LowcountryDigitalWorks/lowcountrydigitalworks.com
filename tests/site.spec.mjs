@@ -92,7 +92,7 @@ test('work page shows four truthful evidence-oriented project entries', async ({
   await expect(page.getByText('customer SaaS', { exact: false })).toBeVisible();
 
   await page.goto('/work/gas-engine/');
-  await expect(page.getByText('not customer SaaS', { exact: false })).toBeVisible();
+  await expect(page.locator('.readable .lede').filter({ hasText: 'not customer SaaS' })).toBeVisible();
   await expect(page.locator('.project-process__step')).toHaveCount(4);
   await expect(page.locator('.faq-item')).toHaveCount(2);
   await expect(page.getByText('Can a customer buy G.A.S. Engine as standalone software?')).toBeVisible();
@@ -177,12 +177,12 @@ test('Contact and footer iconography supplements visible labels rather than repl
   await expect(main.getByRole('link', { name: /Text 843-633-3123/ })).toBeVisible();
   await expect(main.getByRole('link', { name: /Call 843-633-3123/ })).toBeVisible();
   await expect(main.getByRole('link', { name: 'Facebook' })).toBeVisible();
-  await expect(main.getByRole('link', { name: 'X' })).toBeVisible();
+  await expect(main.getByRole('link', { name: 'X', exact: true })).toBeVisible();
   await expect(main.locator('.ui-icon[aria-hidden="true"]')).toHaveCount(5);
 
   const footer = page.locator('footer');
   await expect(footer.getByRole('link', { name: 'Facebook' })).toBeVisible();
-  await expect(footer.getByRole('link', { name: 'X' })).toBeVisible();
+  await expect(footer.getByRole('link', { name: 'X', exact: true })).toBeVisible();
   await expect(footer.locator('.ui-icon[aria-hidden="true"]')).toHaveCount(4);
 });
 
