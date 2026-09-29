@@ -64,6 +64,9 @@ test('services page presents four problem-led service families and detail routes
   await expect(page.locator('article[itemtype="https://schema.org/Service"]')).toHaveCount(1);
   await expect(page.locator('[itemtype="https://schema.org/BreadcrumbList"]')).toHaveCount(1);
   await expect(page.getByText('configure', { exact: false })).toBeVisible();
+  await expect(page.locator('.faq-item')).toHaveCount(3);
+  await expect(page.getByText('Do you start by building custom software?')).toBeVisible();
+  await expect(page.getByText('Will the automation become another system we have to maintain as the source of truth?')).toBeVisible();
 });
 
 test('homepage presents three customer-first entry paths without exposing gated discovery', async ({ page }) => {
@@ -90,7 +93,14 @@ test('work page shows four truthful evidence-oriented project entries', async ({
 
   await page.goto('/work/gas-engine/');
   await expect(page.getByText('not customer SaaS', { exact: false })).toBeVisible();
-  await expect(page.getByText('Project screenshots or diagrams will be added only when a real public-safe asset is available', { exact: false })).toBeVisible();
+  await expect(page.locator('.project-process__step')).toHaveCount(4);
+  await expect(page.locator('.faq-item')).toHaveCount(2);
+  await expect(page.getByText('Can a customer buy G.A.S. Engine as standalone software?')).toBeVisible();
+  await expect(page.getByText('Public-safe screenshots or diagrams will appear here only when they come from the real project', { exact: false })).toBeVisible();
+
+  await page.goto('/work/document-control/');
+  await expect(page.getByText('It is not a production customer deployment', { exact: false })).toBeVisible();
+  await expect(page.getByText('Is Document Control a finished DMS or eQMS that LDW is selling today?')).toBeVisible();
 });
 
 test('founder structure uses the owner-approved portrait and approved trust facts', async ({ page }) => {
