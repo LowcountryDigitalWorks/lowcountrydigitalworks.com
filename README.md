@@ -4,7 +4,9 @@ Public source repository for the Lowcountry Digital Works website at [lowcountry
 
 ## Status
 
-**Current website release: 0.6.0 — Secure Share Entry Point.**
+**Current production website release: 0.6.0 — Secure Share Entry Point.**
+
+WEB-UX-001 is being developed through a protected branch/PR as the next UX/content/SEO candidate. The candidate adds no production authority by itself and must not deploy until the owner-photo/biography gate, preview review, exact validation, and current → proposed → rollback approval are complete.
 
 Release 0.6.0 builds on the permanent Astro/Tidal Framework foundation and Release 0.5.4 CSP/JSD nonce middleware. Astro remains static output and Cloudflare Workers Static Assets remains the delivery foundation. The existing dependency-free Worker now handles the exact public HTML routes plus one fixed `/share/continue` transition whose destination is supplied only by a production Worker Secret.
 

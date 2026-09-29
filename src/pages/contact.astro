@@ -2,35 +2,50 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import contact from '../data/contact.json';
 ---
-<BaseLayout title="Contact" description="Contact Eddie at Lowcountry Digital Works about a website, application, automation, transition, maintenance, or technical problem.">
-  <section class="page-hero"><div class="container readable"><p class="eyebrow">{contact.hero.eyebrow}</p><h1>{contact.hero.title}</h1><p class="lede">{contact.hero.lede}</p></div></section>
-
-  <section class="section section--warm">
-    <div class="container principle">
-      <div><p class="eyebrow">{contact.helpfulDetails.eyebrow}</p><h2>{contact.helpfulDetails.title}</h2></div>
-      <ul class="check-list">{contact.helpfulDetails.items.map((item) => <li>{item}</li>)}</ul>
-    </div>
+<BaseLayout title="Contact" description="Contact Eddie Gugino at Lowcountry Digital Works about a website, automation, digital ownership, platform administration, or technical problem.">
+  <section class="page-hero">
+    <div class="container readable"><p class="eyebrow">{contact.hero.eyebrow}</p><h1>{contact.hero.title}</h1><p class="lede">{contact.hero.lede}</p></div>
   </section>
 
   <section class="section">
-    <div class="container grid grid--2">
-      <article class="card card--accent contact-card">
-        <h2>{contact.email.title}</h2>
-        <div class="actions">
-          <a class="button" href={`mailto:${contact.email.address}`}>{contact.email.address}</a>
-        </div>
-        <div class="meta-note"><strong>{contact.email.noteTitle}</strong><p>{contact.email.noteBody}</p></div>
-      </article>
-      <article class="card card--accent contact-card">
-        <h2>{contact.phone.title}</h2>
-        <div class="actions">
+    <div class="container contact-layout">
+      <div class="contact-primary">
+        <p class="eyebrow">Direct contact</p>
+        <h2>{contact.founder.name} · {contact.founder.role}</h2>
+        <div class="contact-actions">
           <a class="button" href={`sms:${contact.phone.number}`}>Text {contact.phone.display}</a>
           <a class="button button--secondary" href={`tel:${contact.phone.number}`}>Call {contact.phone.display}</a>
+          <a class="text-link" href={`mailto:${contact.email.address}`}>{contact.email.address}</a>
         </div>
-        <div class="meta-note"><strong>{contact.phone.noteTitle}</strong><p>{contact.phone.noteBody}</p></div>
+        <div class="social-list" aria-label="Verified Lowcountry Digital Works social profiles">
+          {contact.socials.map((social) => <a href={social.href} rel="me noopener">{social.name} →</a>)}
+        </div>
+      </div>
+      <div>
+        <p class="eyebrow">{contact.helpfulDetails.eyebrow}</p>
+        <h2>{contact.helpfulDetails.title}</h2>
+        <ul class="check-list">{contact.helpfulDetails.items.map((item) => <li>{item}</li>)}</ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--warm">
+    <div class="container grid grid--2">
+      <article class="contact-safety">
+        <h2>{contact.email.noteTitle}</h2>
+        <p>{contact.email.noteBody}</p>
+      </article>
+      <article class="contact-safety">
+        <h2>{contact.phone.noteTitle}</h2>
+        <p>{contact.phone.noteBody}</p>
       </article>
     </div>
   </section>
 
-  <section class="section section--navy"><div class="container readable"><p class="eyebrow">{contact.whatNext.eyebrow}</p><h2>{contact.whatNext.title}</h2><p class="lede">{contact.whatNext.body}</p></div></section>
+  <section class="section section--navy">
+    <div class="container final-cta">
+      <div><p class="eyebrow">{contact.whatNext.eyebrow}</p><h2>{contact.whatNext.title}</h2><p class="lede">{contact.whatNext.body}</p></div>
+      <div><p>Need the compact business-card destination instead?</p><a class="button button--secondary" href="/connect/">Open Connect</a></div>
+    </div>
+  </section>
 </BaseLayout>

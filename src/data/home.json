@@ -2,89 +2,98 @@
   "hero": {
     "eyebrow": "Practical. Maintainable. Yours.",
     "title": "Useful technology, built to remain yours.",
-    "lede": "Lowcountry Digital Works builds and improves websites, applications, automation, and digital systems with an emphasis on maintainability, named access, clear documentation, and straightforward handoff."
+    "lede": "Lowcountry Digital Works is an owner-operated technology consultancy helping small organizations improve websites, automate business work, untangle digital ownership, and solve technical problems without unnecessary platform sprawl."
   },
   "trustPoints": [
     "Client-owned assets where practical",
-    "Low recurring cost by default",
-    "Clear handoff and recovery documentation"
+    "Configure and integrate before unnecessary custom build",
+    "Clear handoff, recovery, and ongoing-care boundaries"
   ],
-  "services": {
-    "eyebrow": "What I can help with",
-    "title": "Practical systems for real business needs.",
-    "intro": "Projects can be as focused as a website refresh or as involved as a custom workflow tool or a vendor transition. The common thread is choosing technology and access in proportion to the problem."
-  },
-  "commonNeeds": {
-    "eyebrow": "Common starting points",
-    "title": "You do not need to arrive with a technical specification.",
+  "heroProof": {
+    "eyebrow": "Built for practical ownership",
+    "title": "Technology should stay understandable after the project.",
     "items": [
-      {
-        "title": "“Our website needs to look and work better.”",
-        "description": "Improve the existing experience, rebuild only what is justified, and leave the source and hosting understandable."
-      },
-      {
-        "title": "“We keep doing this task by hand.”",
-        "description": "Map the repetitive process and decide whether a small application, script, or automation can remove the friction."
-      },
-      {
-        "title": "“Nobody knows who owns this—or who still has access.”",
-        "description": "Inventory domains, DNS, hosting, repositories, cloud accounts, business profiles, and administrators; move critical assets toward business-controlled ownership, remove obsolete access, and document recovery."
-      },
-      {
-        "title": "“The tool we have almost works.”",
-        "description": "Troubleshoot what exists, preserve the useful pieces, and make targeted improvements before replacing an entire system."
-      }
+      "Named, scoped access instead of shared administrator credentials",
+      "Low recurring-cost bias and portable source where practical",
+      "Validation, documentation, and rollback treated as normal delivery quality"
     ]
   },
+  "services": {
+    "eyebrow": "Where to start",
+    "title": "You do not need to know which service to ask for.",
+    "intro": "Choose the starting point that sounds most like your situation. LDW can map it to the right website, systems, ownership, or consulting work after a short conversation."
+  },
+  "startingPoints": [
+    {
+      "number": "01",
+      "title": "I need a better website.",
+      "description": "The site may be dated, hard to maintain, unclear, or simply not doing enough for the business.",
+      "service": "Websites",
+      "serviceHref": "/services/websites/",
+      "secondaryService": "Website Care",
+      "secondaryHref": "/services/website-care/"
+    },
+    {
+      "number": "02",
+      "title": "We waste time doing this manually — or our tools don't work together.",
+      "description": "A repeated workflow, handoff, or disconnected toolset may be a better fit for configuration, integration, automation, or a focused internal tool.",
+      "service": "Business Systems & Automation",
+      "serviceHref": "/services/business-systems-automation/"
+    },
+    {
+      "number": "03",
+      "title": "I'm not sure what we own, what we need, or what should change.",
+      "description": "When ownership, vendors, platforms, costs, or the right next step are unclear, start with a practical review before buying or rebuilding anything.",
+      "service": "Digital Ownership & Platform Administration",
+      "serviceHref": "/services/digital-ownership-platform-administration/",
+      "secondaryService": "Technology Consulting",
+      "secondaryHref": "/services/technology-consulting/"
+    }
+  ],
   "ownership": {
-    "eyebrow": "Ownership principle",
+    "eyebrow": "The “yours” part",
     "title": "Your business should own its digital assets.",
-    "lede": "Company domains, DNS, website and hosting accounts, repositories, cloud services, business profiles, and other critical systems should be held in business-controlled primary accounts, with named role-based access for the employees and outside providers who manage them.",
+    "lede": "Domains, DNS, website and hosting accounts, repositories, cloud services, business profiles, and other critical systems should be held in business-controlled primary accounts wherever practical.",
     "items": [
-      "Business-controlled primary accounts where practical",
-      "Named or delegated access instead of shared administrator credentials",
-      "Least privilege, MFA, and recovery readiness",
-      "Obsolete vendor and employee access removed deliberately",
-      "Documented transition, handoff, recovery, and rollback",
-      "Secure credential-sharing methods when delegated access is not available"
+      "Business-controlled primary accounts",
+      "Named or delegated provider access",
+      "MFA and recovery responsibility made explicit",
+      "Documented transition, handoff, and rollback"
     ]
   },
   "process": {
     "eyebrow": "How I work",
-    "title": "Assess → Build → Handoff",
+    "title": "Assess → Improve or Build → Handoff or Care",
     "steps": [
       {
         "title": "Assess",
-        "description": "Understand the real need, current systems, constraints, ownership, and cost before choosing technology."
+        "description": "Understand the real need, current systems, constraints, ownership, risk, and cost before choosing technology."
       },
       {
-        "title": "Build",
-        "description": "Use the simplest maintainable architecture that solves the problem, with accessibility and security treated as normal quality requirements."
+        "title": "Improve or build",
+        "description": "Keep useful systems when possible. Configure, integrate, automate, or build only what the problem actually requires."
       },
       {
-        "title": "Handoff",
-        "description": "Leave clear documentation, named access, recovery information, and a system that can be maintained without artificial lock-in."
+        "title": "Handoff or care",
+        "description": "Leave clear ownership and documentation, then continue with bounded ongoing care only when it creates useful value."
       }
     ]
   },
-  "expectations": {
-    "eyebrow": "What to expect",
-    "title": "Straightforward technical work without unnecessary platform sprawl.",
-    "items": [
-      "Requirements and tradeoffs explained in plain language",
-      "Version-controlled work and practical validation",
-      "Accessibility, security, and maintainability treated as baseline quality",
-      "Recurring services proposed only when they have a clear purpose"
-    ]
+  "founder": {
+    "eyebrow": "Owner-operated",
+    "title": "Work directly with the person responsible for the work.",
+    "name": "Eddie Gugino",
+    "role": "Founder",
+    "lede": "Eddie founded Lowcountry Digital Works to help small organizations improve websites, workflows, and technical systems without unnecessary complexity or lock-in. His background spans IT, cybersecurity, systems, and technical delivery, including service in the U.S. Navy."
   },
   "local": {
     "eyebrow": "Lowcountry roots",
     "title": "Local perspective, not a geographic limit.",
-    "lede": "Lowcountry Digital Works is being established in South Carolina's Lowcountry and can support practical digital work beyond the local area."
+    "lede": "Lowcountry Digital Works is based in South Carolina's Lowcountry and supports practical digital work where the engagement, ownership model, and support boundary are a good fit."
   },
   "contact": {
-    "eyebrow": "Contact",
-    "title": "Have a system that needs to work better?",
-    "lede": "Email Eddie with the problem you are trying to solve. A simple description of what is happening now and what you would like to improve is enough to start."
+    "eyebrow": "Start with the problem",
+    "title": "Have a website, workflow, or technical system that needs to work better?",
+    "lede": "A short description of what is happening now and what you want to improve is enough to start."
   }
 }

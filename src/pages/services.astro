@@ -2,18 +2,31 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import services from '../data/services.json';
 ---
-<BaseLayout title="Services" description="Websites, applications, automation, technical consulting, digital asset ownership, vendor transitions, and maintenance from Lowcountry Digital Works.">
-  <section class="page-hero"><div class="container readable"><p class="eyebrow">{services.page.eyebrow}</p><h1>{services.page.title}</h1><p class="lede">{services.page.lede}</p></div></section>
+<BaseLayout title="Services" description="Website projects and care, business systems and automation, digital ownership and platform administration, and technology consulting from Lowcountry Digital Works.">
+  <section class="page-hero">
+    <div class="container readable">
+      <p class="eyebrow">{services.page.eyebrow}</p>
+      <h1>{services.page.title}</h1>
+      <p class="lede">{services.page.lede}</p>
+    </div>
+  </section>
 
   <section class="section">
-    <div class="container grid grid--2">
-      {services.items.map((service) => (
-        <article class="card service-card">
-          <p class="card__kicker">{service.kicker}</p>
-          <h2>{service.name}</h2>
-          <p>{service.description}</p>
-          <h3>Examples</h3>
-          <ul class="card__list">{service.examples.map((example) => <li>{example}</li>)}</ul>
+    <div class="container service-family-list">
+      {services.families.map((family) => (
+        <article class="service-family">
+          <div class="service-family__index">
+            <span>{family.number}</span>
+            <p class="card__kicker">{family.kicker}</p>
+          </div>
+          <div class="service-family__body">
+            <h2>{family.name}</h2>
+            <p>{family.description}</p>
+          </div>
+          <div class="service-family__links">
+            <a href={family.primaryHref}>{family.primaryLabel} →</a>
+            {family.secondaryHref && <a href={family.secondaryHref}>{family.secondaryLabel} →</a>}
+          </div>
         </article>
       ))}
     </div>
@@ -22,13 +35,17 @@ import services from '../data/services.json';
   <section class="section section--navy">
     <div class="container">
       <div class="section-heading"><p class="eyebrow">Ways to begin</p><h2>Start from where the business is today.</h2></div>
-      <div class="grid grid--3">
-        {services.startingPoints.map((item) => <article class="card card--dark"><h3>{item.title}</h3><p>{item.description}</p></article>)}
+      <div class="editorial-list editorial-list--dark">
+        {services.startingPoints.map((item) => <article class="editorial-row"><h3>{item.title}</h3><p>{item.description}</p></article>)}
       </div>
     </div>
   </section>
 
   <section class="section section--warm">
-    <div class="container readable"><h2>{services.platformNote.title}</h2><p>{services.platformNote.body}</p><div class="actions"><a class="button" href="/contact/">Discuss a need</a></div></div>
+    <div class="container readable">
+      <h2>{services.platformNote.title}</h2>
+      <p>{services.platformNote.body}</p>
+      <div class="actions"><a class="button" href="/connect/">Discuss a need</a></div>
+    </div>
   </section>
 </BaseLayout>

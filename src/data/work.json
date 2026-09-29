@@ -1,52 +1,76 @@
 {
   "hero": {
     "eyebrow": "Selected work",
-    "title": "Useful systems, built in the open where practical.",
-    "lede": "Lowcountry Digital Works is still being established, so this page distinguishes what is live from what is actively being developed. The examples below show the kind of practical website and application work underway without presenting unfinished products as completed client engagements."
+    "title": "Evidence of how Lowcountry Digital Works approaches real systems.",
+    "lede": "These examples distinguish what is live, what is in active development, and what exists only as internal service-enabling infrastructure. They are not presented as completed customer case studies."
   },
   "projects": [
     {
+      "slug": "lowcountry-digital-works-website",
       "name": "Lowcountry Digital Works website",
       "type": "Business website",
       "status": "Live",
-      "description": "The public LDW site is a lightweight, accessibility-tested static website with repository-controlled content, local brand assets, and Cloudflare edge delivery.",
-      "highlights": [
-        "Astro static-site build",
-        "Cloudflare Workers Static Assets deployment",
-        "Repository-controlled editable content",
+      "purpose": "A public business site that demonstrates the same low-complexity, customer-owned, validation-first website practices LDW recommends.",
+      "description": "A lightweight Astro site with repository-controlled content, local brand assets, Cloudflare edge delivery, protected-main review, and browser/accessibility regression coverage.",
+      "evidence": [
+        "Static-first Astro build with no CMS or database",
+        "Cloudflare Workers Static Assets delivery",
+        "Protected-main pull-request workflow",
         "Automated browser and accessibility regression checks"
       ],
-      "href": "/"
+      "boundary": "The public site contains no customer portal, analytics SaaS, contact-form processor, or customer-data store.",
+      "externalHref": "/"
     },
     {
+      "slug": "document-control",
       "name": "Document Control",
-      "type": "Custom workflow application",
+      "type": "Workflow application",
       "status": "Active Development",
-      "description": "A configurable Lowcountry Digital Works product for structured document workflows, approvals, accountability, audit history, search, export, and administrative configuration.",
-      "highlights": [
-        "Workflow and document lifecycle management",
-        "Role-aware review and approval flows",
+      "purpose": "Explore structured document workflow, review, accountability, audit history, search, and export without claiming a completed customer deployment.",
+      "description": "A configurable LDW workflow application being developed service-first around controlled document lifecycle needs.",
+      "evidence": [
+        "Workflow and document lifecycle design",
+        "Role-aware review and approval patterns",
         "Audit and export capabilities",
-        "Portable, repository-controlled product development"
-      ]
+        "Repository-controlled product development"
+      ],
+      "boundary": "Active development is not presented as a finished client engagement or mature standalone SaaS."
     },
     {
+      "slug": "secure-exchange",
       "name": "Secure Exchange",
       "type": "Secure workflow product",
       "status": "Active Development",
-      "description": "A provider-neutral product for protected message and document exchange, queue-based staff workflows, lifecycle accountability, retention, and sanitized audit history. Current foundation work uses a customer-owned, isolated deployment model with an AWS-first reference architecture; production infrastructure is not yet provisioned.",
-      "highlights": [
-        "Secure external intake and outbound delivery workflows",
+      "purpose": "Develop a provider-neutral pattern for protected message and document exchange with clear queue ownership, retention, and accountability.",
+      "description": "Current foundation work uses a customer-owned isolated-deployment direction with an AWS-first reference architecture; production customer infrastructure is not yet provisioned.",
+      "evidence": [
+        "Secure external intake and outbound workflow design",
         "Individual workforce accountability and queue routing",
         "Configurable retention and disposition",
         "Provider-neutral core with customer-owned deployment direction"
-      ]
+      ],
+      "boundary": "No public website claim implies that LDW currently operates production Secure Exchange infrastructure for customers."
+    },
+    {
+      "slug": "gas-engine",
+      "name": "G.A.S. Engine",
+      "type": "Internal service-enabling evidence infrastructure",
+      "status": "Internal / Validation",
+      "purpose": "Preserve normalized website-quality and visibility evidence so human-reviewed recommendations can be compared over time.",
+      "description": "G.A.S. is LDW-operated internal evidence and measurement infrastructure supporting managed-service validation. It is not customer SaaS, a standalone commercial product, or a self-service SEO platform.",
+      "evidence": [
+        "Longitudinal normalized evidence and provenance",
+        "Provider-neutral typed facts within accepted boundaries",
+        "Human-reviewed recommendation and outcome lineage",
+        "Supports service-first Search + AI Visibility validation"
+      ],
+      "boundary": "G.A.S. remains internal infrastructure; customer-facing service claims and pricing remain governed by the separate Managed Search + AI Visibility gate."
     }
   ],
   "technology": {
     "eyebrow": "Tools and platforms",
     "title": "Technology chosen in proportion to the problem.",
-    "lede": "These are examples of tools and platforms currently used in Lowcountry Digital Works website, application, automation, and delivery work. A project does not inherit a platform simply because it appears here.",
+    "lede": "These are examples of technologies currently used in LDW website, application, automation, and delivery work. A project does not inherit a platform simply because it appears here.",
     "items": [
       { "name": "GitHub", "description": "Source control, review, and delivery workflows", "icon": "/technology/github.svg" },
       { "name": "Cloudflare", "description": "DNS, edge hosting, security, and deployment", "icon": "/technology/cloudflare.svg" },
@@ -59,6 +83,6 @@
   "principle": {
     "eyebrow": "The point is the result",
     "title": "The stack should serve the work, not become the work.",
-    "body": "A small static website, an offline tool, a serverless application, or a more involved workflow system can all be the right answer in different situations. The goal is to choose the simplest maintainable architecture that meets the actual requirements."
+    "body": "A small static website, an offline tool, an automation, or a more involved workflow system can all be the right answer in different situations. The goal is to choose the simplest maintainable architecture that meets the actual requirements."
   }
 }

@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import contact from '../data/contact.json';
+---
+<BaseLayout title="Connect" description="Connect with Eddie Gugino, founder of Lowcountry Digital Works, by text, phone, email, or verified social profile.">
+  <section class="section connect-page">
+    <div class="container connect-shell">
+      <div class="connect-brand">
+        <img src="/brand/logo/lowcountry-digital-works-logo-horizontal.svg" alt="Lowcountry Digital Works" width="312" height="88" />
+        <p class="eyebrow">Connect</p>
+        <h1>{contact.founder.name}</h1>
+        <p class="lede">{contact.founder.role} · Lowcountry Digital Works</p>
+        <p>Practical websites, business systems, automation, digital ownership, and technical consulting built to remain understandable and yours.</p>
+      </div>
+
+      <div class="connect-actions" aria-label="Contact options">
+        <a class="connect-action connect-action--primary" href={`sms:${contact.phone.number}`}><span>Text</span><strong>{contact.phone.display}</strong></a>
+        <a class="connect-action" href={`tel:${contact.phone.number}`}><span>Call</span><strong>{contact.phone.display}</strong></a>
+        <a class="connect-action" href={`mailto:${contact.email.address}`}><span>Email</span><strong>{contact.email.address}</strong></a>
+        <a class="connect-action" href="/eddie-gugino-lowcountry-digital-works.vcf" download><span>Contact card</span><strong>Save vCard</strong></a>
+      </div>
+
+      <div class="connect-links">
+        <a href="/services/">Services →</a>
+        <a href="/work/">Work →</a>
+        {contact.socials.map((social) => <a href={social.href} rel="me noopener">{social.name} →</a>)}
+      </div>
+
+      <p class="connect-note">For passwords, MFA or recovery codes, private keys, API tokens, payment-card information, PHI, or other sensitive secrets, do not use ordinary email or text. Use a secure method specifically provided for the engagement.</p>
+    </div>
+  </section>
+</BaseLayout>

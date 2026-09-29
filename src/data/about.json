@@ -1,41 +1,49 @@
 {
   "hero": {
     "eyebrow": "About",
-    "title": "Small by design. Practical by default.",
-    "lede": "Lowcountry Digital Works is being established as a small digital services business focused on useful websites, applications, automation, technical problem-solving, and maintainable digital systems."
+    "title": "Owner-operated technology work with disciplined fundamentals.",
+    "lede": "Lowcountry Digital Works is a small technology consultancy based in South Carolina's Lowcountry, focused on useful websites, business systems, automation, digital ownership, and practical technical problem-solving."
+  },
+  "founder": {
+    "eyebrow": "Founder",
+    "name": "Eddie Gugino",
+    "role": "Founder",
+    "title": "Practical delivery shaped by IT, cybersecurity, systems, and technical operations.",
+    "body": "Eddie started Lowcountry Digital Works to help smaller organizations improve websites, workflows, and technical systems without forcing enterprise-sized complexity onto ordinary business problems. His background spans IT, cybersecurity, systems, and technical delivery, including service in the U.S. Navy. The operating model is intentionally direct: understand the problem first, use established tools where they fit, build only where a real gap remains, treat security, access, and recovery as ordinary delivery quality, and leave ownership and handoff understandable.",
+    "credentials": "Eddie holds the CISSP certification, a bachelor's degree in Cybersecurity from Utica College, and an Associate of Applied Science (AAS) in Network Systems Management from Midlands Technical College in Columbia, South Carolina."
   },
   "principles": [
     {
       "title": "Lowcountry roots",
-      "description": "The business is based in South Carolina's Lowcountry. Local context matters, but the work is not restricted to one geography."
+      "description": "Local context matters, but the work is not restricted to one geography."
     },
     {
       "title": "Clear ownership",
-      "description": "Company and client assets should be held in the right owner accounts with named access, documented handoff, and a practical recovery path."
+      "description": "Critical business assets should be held in the right owner accounts with named access, documented handoff, and a practical recovery path."
     },
     {
       "title": "Technology in proportion",
-      "description": "Static hosting and simple architectures are preferred when they solve the problem. More infrastructure is added only when a real requirement justifies it."
+      "description": "Native features, simple architectures, and maintained services are preferred when they solve the problem well. More infrastructure is added only when a real requirement justifies it."
     },
     {
       "title": "Work that can be explained",
-      "description": "Documentation, testing, and understandable tradeoffs are part of the deliverable rather than an afterthought."
+      "description": "Documentation, testing, security, accessibility, and understandable tradeoffs are treated as part of normal delivery quality."
     }
   ],
   "whySmall": {
     "eyebrow": "Why this model",
-    "title": "A small business can still use disciplined technical practices.",
-    "body": "Lowcountry Digital Works is intentionally starting lean. That means avoiding invented scale, unnecessary subscriptions, and complicated systems that only make sense for a much larger operation. The aim is to pair practical delivery with the habits that make technology easier to own and maintain.",
+    "title": "Small by design does not mean casual about delivery.",
+    "body": "LDW is intentionally lean. That means avoiding invented scale, unnecessary subscriptions, and systems that exist mainly to make the provider harder to replace.",
     "items": [
-      "Direct communication about the actual problem",
+      "Direct communication with the person responsible for the work",
       "Cost-conscious architecture and tooling",
       "Documented decisions instead of hidden knowledge",
-      "A clear path for handoff, maintenance, or future growth"
+      "A clear path for handoff, maintenance, recovery, or future growth"
     ]
   },
   "fit": {
     "eyebrow": "A good fit",
-    "title": "Work where clarity and maintainability matter.",
-    "body": "The best fit is a business, professional practice, team, or individual with a concrete digital problem to solve and a preference for understandable systems over unnecessary complexity."
+    "title": "Organizations with a concrete digital problem and a preference for understandable systems.",
+    "body": "Good engagements begin with a real need: a website that is not doing its job, repetitive work that should be automated, fragmented tools, unclear ownership, or a technical decision that needs an independent practical plan."
   }
 }

@@ -10,14 +10,37 @@ DIST=ROOT/'dist'
 ERRORS=[]
 def error(msg): ERRORS.append(msg)
 
+PUBLIC_ROUTES=[
+ '/',
+ '/services/',
+ '/services/websites/',
+ '/services/website-care/',
+ '/services/business-systems-automation/',
+ '/services/digital-ownership-platform-administration/',
+ '/services/technology-consulting/',
+ '/work/',
+ '/work/lowcountry-digital-works-website/',
+ '/work/document-control/',
+ '/work/secure-exchange/',
+ '/work/gas-engine/',
+ '/approach/',
+ '/about/',
+ '/contact/',
+ '/connect/',
+ '/privacy/',
+]
+WORKER_ROUTES=sorted(PUBLIC_ROUTES+['/share/','/share/continue'])
+
 REQUIRED=[
  'README.md','CHANGELOG.md','SECURITY.md','package.json','astro.config.mjs','playwright.config.mjs','wrangler.jsonc','worker.js',
  '.github/workflows/validate.yml','.github/dependabot.yml','brand/colors.json','brand/css/brand-tokens.css',
  'brand/logo/lowcountry-digital-works-logo-horizontal.svg','brand/logo/lowcountry-digital-works-logo-horizontal-white.svg',
  'brand/icons/favicon.svg','brand/social/social-card-1200x630.png','design/brand-production-validation.md','src/pages/index.astro','src/pages/services.astro',
- 'src/pages/work.astro','src/pages/approach.astro','src/pages/about.astro','src/pages/contact.astro','src/pages/privacy.astro','src/pages/share.astro','src/data/work.json',
- 'public/technology/github.svg','public/technology/cloudflare.svg','public/technology/astro.svg','public/technology/typescript.svg','public/technology/python.svg',
- 'docs/technology-marks.md','public/_headers','public/robots.txt','public/sitemap.xml','tests/worker-unit.mjs'
+ 'src/pages/services/[slug].astro','src/pages/work.astro','src/pages/work/[slug].astro','src/pages/approach.astro','src/pages/about.astro',
+ 'src/pages/contact.astro','src/pages/connect.astro','src/pages/privacy.astro','src/pages/share.astro','src/data/work.json','src/data/service-details.json',
+ 'public/eddie-gugino-lowcountry-digital-works.vcf','public/technology/github.svg','public/technology/cloudflare.svg','public/technology/astro.svg',
+ 'public/technology/typescript.svg','public/technology/python.svg','docs/technology-marks.md','public/_headers','public/robots.txt','public/sitemap.xml',
+ 'tests/worker-unit.mjs'
 ]
 for rel in REQUIRED:
  if not (ROOT/rel).exists(): error(f'missing required file: {rel}')
@@ -38,8 +61,7 @@ try:
  if assets.get('binding')!='ASSETS': error('wrangler ASSETS binding missing')
  if assets.get('html_handling')!='auto-trailing-slash': error('wrangler HTML handling changed unexpectedly')
  if assets.get('not_found_handling')!='404-page': error('wrangler 404 handling missing')
- expected_worker_routes=['/','/about/','/approach/','/contact/','/privacy/','/services/','/share/','/share/continue','/work/']
- if assets.get('run_worker_first')!=expected_worker_routes: error('wrangler selective Worker-first routes changed unexpectedly')
+ if sorted(assets.get('run_worker_first',[]))!=WORKER_ROUTES: error('wrangler selective Worker-first routes changed unexpectedly')
  if 'SECURE_SHARE_DESTINATION_URL' in wr: error('Secure Share destination must not be persisted in wrangler.jsonc')
 except Exception as exc: error(f'invalid wrangler.jsonc: {exc}')
 
@@ -73,6 +95,11 @@ if '../brand/css/brand-tokens.css' not in design_tokens: error('design tokens mu
 site_implementation='\n'.join(p.read_text(errors='ignore') for p in (ROOT/'src').rglob('*') if p.is_file())
 if 'linear-gradient(' in site_implementation: error('marketing site should not use gradients in the approved restrained visual direction')
 if 'backdrop-filter' in site_implementation: error('marketing site should not use decorative glassmorphism/backdrop filtering')
+if 'linkedin.com/company' in site_implementation.lower(): error('unverified LDW LinkedIn company page must not be published')
+if 'https://x.com/LocoDW' not in site_implementation or 'https://www.facebook.com/LowcountryDigitalWorks/' not in site_implementation:
+ error('verified Facebook/X canonical links must remain in repository-controlled public content')
+if 'customer SaaS' not in (ROOT/'src/data/work.json').read_text():
+ error('G.A.S. public boundary must explicitly reject customer SaaS framing')
 
 class P(HTMLParser):
  def __init__(self):
@@ -94,7 +121,7 @@ class P(HTMLParser):
    if u:self.links.append(u)
   if tag=='a' and a.get('href'): self.anchors.append(a['href'])
 
-services_description='Websites, applications, automation, technical consulting, digital asset ownership, vendor transitions, and maintenance from Lowcountry Digital Works.'
+services_description='Website projects and care, business systems and automation, digital ownership and platform administration, and technology consulting from Lowcountry Digital Works.'
 if not DIST.exists(): error('dist/ missing; run npm run build before validator')
 else:
  built_headers=DIST/'_headers'
@@ -105,7 +132,7 @@ else:
   for rule in expected_static_image_caches:
    if rule not in built_headers_text: error(f'dist/_headers missing approved 24-hour static-image cache rule: {rule.splitlines()[0]}')
  htmls=sorted(DIST.rglob('*.html'))
- if len(htmls)<9: error(f'expected at least 9 built HTML pages, found {len(htmls)}')
+ if len(htmls)<19: error(f'expected at least 19 built HTML pages, found {len(htmls)}')
  for file in htmls:
   parser=P(); text=file.read_text(errors='replace'); parser.feed(text)
   rel=file.relative_to(DIST)
@@ -122,7 +149,7 @@ else:
   if parser.h1!=1: error(f'{rel}: expected one h1, found {parser.h1}')
   if parser.dups: error(f'{rel}: duplicate ids {parser.dups}')
   for u in parser.links:
-   if u.startswith(('mailto:','http://','https://','data:','#')): continue
+   if u.startswith(('mailto:','tel:','sms:','http://','https://','data:','#')): continue
    parsed=urlparse(u); path=parsed.path
    if not path.startswith('/'): continue
    if path=='/share/continue': continue
@@ -133,7 +160,7 @@ else:
    if not any(c.exists() for c in candidates): error(f'{rel}: broken internal asset/link {u}')
 
  for p in DIST.rglob('*'):
-  if not p.is_file() or p.suffix.lower() not in {'.html','.js','.mjs','.json','.xml','.txt','.css'}: continue
+  if not p.is_file() or p.suffix.lower() not in {'.html','.js','.mjs','.json','.xml','.txt','.css','.vcf'}: continue
   if 'share.lowcountrydigitalworks.com' in p.read_text(errors='ignore'):
    error(f'{p.relative_to(DIST)}: built public output must not expose the Secure Share destination hostname')
 
@@ -142,7 +169,7 @@ for icon in ['github.svg','cloudflare.svg','astro.svg','typescript.svg','python.
  if not (ROOT/'public'/'technology'/icon).read_text(errors='ignore').lstrip().startswith('<svg'): error(f'invalid technology SVG: {icon}')
 if 'https://lowcountrydigitalworks.com/sitemap.xml' not in robots: error('robots must declare production sitemap')
 if 'Disallow: /share' in robots: error('Secure Share should rely on page noindex metadata, not robots.txt blocking')
-for route in ['/','/services/','/work/','/approach/','/about/','/contact/','/privacy/']:
+for route in PUBLIC_ROUTES:
  if f'https://lowcountrydigitalworks.com{route}' not in sitemap: error(f'sitemap missing {route}')
 if 'https://lowcountrydigitalworks.com/share' in sitemap: error('Secure Share must remain omitted from the marketing sitemap')
 
@@ -156,7 +183,6 @@ if 'href="/share/continue"' not in share_source: error('Secure Share source CTA 
 gitignore=(ROOT/'.gitignore').read_text().splitlines()
 if '.dev.vars' not in gitignore or '.dev.vars.*' not in gitignore: error('local Cloudflare secret files must remain ignored')
 
-# Repository secret-pattern review on text files only; skip generated/vendor paths.
 patterns=[
  ('private key', re.compile(r'-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----')),
  ('github token', re.compile(r'\bgh[pousr]_[A-Za-z0-9._-]{30,}\b')),
