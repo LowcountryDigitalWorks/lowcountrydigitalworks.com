@@ -112,6 +112,14 @@ p { margin: 0 0 1rem; }
 .work-row__content { display: grid; grid-template-columns: 1fr auto; gap: .85rem 1.5rem; align-content: start; }
 .work-row__content > .work-row__meta, .work-row__content > div { grid-column: 1 / -1; }
 .work-row__content > .work-row__link { justify-self: start; align-self: end; }
+.work-row--home { grid-template-columns: 170px minmax(0,1fr); align-items: stretch; }
+.work-row__thumb { display: block; overflow: hidden; min-height: 128px; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface-warm); }
+.work-row__thumb:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+.work-row__thumb img { display: block; width: 100%; height: 100%; min-height: 128px; object-fit: cover; object-position: top; transition: transform .18s ease; }
+.work-row__thumb:hover img { transform: scale(1.015); }
+.work-row__home-copy { display: grid; gap: .45rem; align-content: start; }
+.work-row__home-copy h3, .work-row__home-copy p { margin-bottom: 0; }
+.work-row__home-copy .work-row__link { margin-top: .25rem; justify-self: start; }
 .work-row h2, .work-row h3 { margin-bottom: .5rem; }
 .work-row__meta { display: flex; flex-wrap: wrap; align-items: center; gap: .55rem .75rem; color: var(--muted); font-size: .86rem; font-weight: 700; }
 .work-row__link { align-self: center; font-weight: 800; white-space: nowrap; }
@@ -246,6 +254,8 @@ p { margin: 0 0 1rem; }
 @media (max-width: 860px) {
   .hero-grid, .founder-block, .service-detail-grid, .project-detail-grid, .project-hero-grid, .project-boundary-grid, .proof-callout, .contact-layout, .final-cta { grid-template-columns: 1fr; }
   .pathway, .service-family, .work-row, .work-row--large, .work-row--visual { grid-template-columns: 1fr; gap: .85rem; }
+  .work-row--home { grid-template-columns: 112px minmax(0,1fr); }
+  .work-row__thumb, .work-row__thumb img { min-height: 96px; }
   .pathway__number { margin-bottom: -.25rem; }
   .service-family__index { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
   .service-family__index > span { margin-bottom: 0; }
