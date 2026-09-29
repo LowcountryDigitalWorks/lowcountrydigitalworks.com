@@ -57,6 +57,9 @@ p { margin: 0 0 1rem; }
 .section--navy .button--secondary { color: white; border-color: #c8d8dc; }
 .section--navy .button--secondary:hover { background: white; color: var(--ldw-estuary-navy); }
 .text-link { font-weight: 750; }
+.ui-icon { flex: 0 0 auto; display: inline-block; vertical-align: middle; }
+.icon-link { display: inline-flex; align-items: center; gap: .45rem; }
+.icon-link .ui-icon { color: currentColor; }
 
 .hero--editorial { padding: clamp(3.25rem, 7vw, 6.5rem) 0; }
 .hero-grid { display: grid; grid-template-columns: minmax(0, 1.28fr) minmax(280px, .72fr); gap: clamp(2rem, 6vw, 5rem); align-items: center; }
@@ -171,12 +174,15 @@ p { margin: 0 0 1rem; }
 .connect-brand img { width: min(290px, 80%); margin-bottom: 2.25rem; }
 .connect-brand h1 { font-size: clamp(2.5rem, 8vw, 4.5rem); margin-bottom: .2rem; }
 .connect-actions { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: .8rem; }
-.connect-action { min-height: 92px; display: flex; flex-direction: column; justify-content: center; padding: 1rem 1.1rem; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface); color: var(--text); text-decoration: none; }
+.connect-action { min-height: 92px; display: flex; align-items: center; gap: .9rem; padding: 1rem 1.1rem; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface); color: var(--text); text-decoration: none; }
 .connect-action:hover { border-color: var(--interactive); color: var(--text); }
 .connect-action--primary { background: var(--ldw-estuary-navy); color: white; border-color: var(--ldw-estuary-navy); }
 .connect-action--primary:hover { color: white; }
-.connect-action span { color: var(--muted); font-size: .78rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
-.connect-action--primary span { color: #cbdadc; }
+.connect-action__icon { width: 42px; height: 42px; display: grid; place-items: center; flex: 0 0 auto; border-radius: 999px; background: var(--surface-warm); color: var(--interactive); }
+.connect-action--primary .connect-action__icon { background: rgb(255 255 255 / .12); color: white; }
+.connect-action__copy { min-width: 0; display: flex; flex-direction: column; }
+.connect-action__copy > span { color: var(--muted); font-size: .78rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.connect-action--primary .connect-action__copy > span { color: #cbdadc; }
 .connect-action strong { overflow-wrap: anywhere; }
 .connect-links { display: flex; flex-wrap: wrap; gap: .7rem 1.3rem; padding: 1.4rem 0; border-bottom: 1px solid var(--border); }
 .connect-links a { font-weight: 750; }
