@@ -32,9 +32,7 @@
       }
     ],
     "proofNote": "The LDW site itself is a live reference implementation: static-first Astro, Cloudflare delivery, protected-main review, browser/accessibility regression, and explicit ownership/rollback documentation.",
-    "relatedWork": [
-      "lowcountry-digital-works-website"
-    ]
+    "relatedWork": []
   },
   {
     "slug": "website-care",
@@ -70,7 +68,6 @@
     ],
     "proofNote": "LDW uses deterministic website-quality evidence and project-local browser/accessibility checks to inform human review. Scanner findings and scores are evidence, not automatic policy or ranking guarantees.",
     "relatedWork": [
-      "lowcountry-digital-works-website",
       "gas-engine"
     ],
     "proofHref": "https://github.com/LowcountryDigitalWorks/website-quality-toolkit",
@@ -147,9 +144,7 @@
       }
     ],
     "proofNote": "The same ownership model is used internally: source, DNS, deployment, recovery, and administrative access are treated as explicit business assets rather than hidden vendor dependencies.",
-    "relatedWork": [
-      "lowcountry-digital-works-website"
-    ]
+    "relatedWork": []
   },
   {
     "slug": "technology-consulting",
@@ -185,7 +180,6 @@
     ],
     "proofNote": "Consulting decisions can end in a roadmap, platform choice, configuration change, proof, or a recommendation not to build. The selected Work pages show those boundaries in practice.",
     "relatedWork": [
-      "lowcountry-digital-works-website",
       "gas-engine"
     ]
   }
