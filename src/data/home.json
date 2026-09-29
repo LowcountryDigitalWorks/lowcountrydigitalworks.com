@@ -95,5 +95,27 @@
     "eyebrow": "Start with the problem",
     "title": "Have a website, workflow, or technical system that needs to work better?",
     "lede": "A short description of what is happening now and what you want to improve is enough to start."
+  },
+  "faq": {
+    "eyebrow": "Common questions",
+    "title": "A few things you should know before reaching out.",
+    "items": [
+      {
+        "question": "Do I need to know which LDW service I need?",
+        "answer": "No. Start with the problem, what is happening today, and what you want to improve. LDW can map that to website, systems, ownership, or consulting work after a short conversation."
+      },
+      {
+        "question": "Will LDW try to replace the tools we already use?",
+        "answer": "Not by default. Existing platforms and native capabilities are reviewed first. Configuration, integration, and maintained services are preferred when they solve the problem well; custom work is reserved for a real gap."
+      },
+      {
+        "question": "Who owns the website, code, cloud accounts, and other business assets after the work?",
+        "answer": "Customer-owned production assets are the default where practical. LDW generally works through named, scoped access and documents deployment, recovery, handoff, and rollback so ownership stays understandable."
+      },
+      {
+        "question": "Can LDW provide ongoing help after a project?",
+        "answer": "Yes, when an agreed maintenance or administration scope creates useful value. Ongoing care is bounded and does not require giving up ownership of the underlying business assets."
+      }
+    ]
   }
 }
