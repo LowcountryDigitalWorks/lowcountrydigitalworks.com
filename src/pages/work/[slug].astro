@@ -85,11 +85,13 @@ const { project } = Astro.props;
           <p class="eyebrow">Visual evidence</p>
           <h2>See the work, not a fabricated mockup.</h2>
         </div>
-        <div class="project-visual-grid">
+        <div class:list={['project-visual-grid', project.visuals.length === 1 && 'project-visual-grid--single']}>
           {project.visuals.map((visual) => (
             <figure class="project-visual">
-              <img src={visual.src} alt={visual.alt} width={visual.width} height={visual.height} loading="lazy" decoding="async" />
-              <figcaption>{visual.caption}</figcaption>
+              <a class="project-visual__frame" href={visual.src}>
+                <img src={visual.src} alt={visual.alt} width={visual.width} height={visual.height} loading="lazy" decoding="async" />
+              </a>
+              <figcaption>{visual.caption} <a href={visual.src}>Open full screenshot</a></figcaption>
             </figure>
           ))}
         </div>
@@ -135,7 +137,7 @@ const { project } = Astro.props;
         <p class="eyebrow">Related work</p>
         <h2>Need help with a similar kind of problem?</h2>
         <p>Use the problem as the starting point rather than trying to match a product name.</p>
-        {project.relatedService && <p class="small">Related service: <a href={project.relatedService.href}>{project.relatedService.name}</a></p>}
+        {project.relatedService && <p class="asset-gap-note">Related service: <a href={project.relatedService.href}>{project.relatedService.name}</a></p>}
       </div>
       <div class="actions"><a class="button" href="/connect/">Connect with Eddie</a></div>
     </div>
