@@ -60,7 +60,8 @@
         "src": "/work-assets/ldw-website-home-thumb.jpg",
         "width": 720,
         "height": 450
-      }
+      },
+      "sourceHref": "https://github.com/LowcountryDigitalWorks/lowcountrydigitalworks.com"
     },
     {
       "slug": "document-control",
@@ -123,7 +124,8 @@
         "src": "/work-assets/document-control-overview-thumb.jpg",
         "width": 720,
         "height": 450
-      }
+      },
+      "sourceHref": "https://github.com/LowcountryDigitalWorks/document-control"
     },
     {
       "slug": "secure-exchange",
@@ -186,7 +188,8 @@
         "src": "/work-assets/secure-exchange-intake-thumb.jpg",
         "width": 720,
         "height": 450
-      }
+      },
+      "sourceHref": "https://github.com/LowcountryDigitalWorks/secure-exchange"
     },
     {
       "slug": "gas-engine",
@@ -239,7 +242,8 @@
         "src": "/work-assets/gas-engine-operator-view-thumb.jpg",
         "width": 720,
         "height": 450
-      }
+      },
+      "sourceHref": "https://github.com/LowcountryDigitalWorks/gas-engine"
     }
   ],
   "technology": {
