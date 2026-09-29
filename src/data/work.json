@@ -1,8 +1,8 @@
 {
   "hero": {
     "eyebrow": "Selected work",
-    "title": "Evidence of how Lowcountry Digital Works approaches real systems.",
-    "lede": "These examples distinguish what is live, what is in active development, and what exists only as internal service-enabling infrastructure. They are not presented as completed customer case studies."
+    "title": "See the problem, the proof, and the boundary.",
+    "lede": "These examples show how LDW approaches real workflow and evidence problems. Each one is labeled with its current maturity, real screenshots, and what is deliberately not being claimed. They are not customer case studies."
   },
   "projects": [
     {
@@ -68,7 +68,9 @@
         "height": 450
       },
       "sourceHref": "https://github.com/LowcountryDigitalWorks/document-control",
-      "homeSummary": "A structured way to keep reviews, approvals, versions, and evidence around important documents from becoming a guessing game."
+      "homeSummary": "A structured way to keep reviews, approvals, versions, and evidence around important documents from becoming a guessing game.",
+      "workWhy": "Useful when important documents need clear version, review, approval, and audit history instead of relying on memory or scattered files.",
+      "cardBoundary": "Active development · not a production customer deployment."
     },
     {
       "slug": "secure-exchange",
@@ -133,7 +135,9 @@
         "height": 450
       },
       "sourceHref": "https://github.com/LowcountryDigitalWorks/secure-exchange",
-      "homeSummary": "A secure workflow pattern for receiving sensitive messages and files, routing the work clearly, and keeping responsibility visible."
+      "homeSummary": "A secure workflow pattern for receiving sensitive messages and files, routing the work clearly, and keeping responsibility visible.",
+      "workWhy": "Useful when sensitive messages or files need a clear intake and handling workflow without losing responsibility for what happens next.",
+      "cardBoundary": "Synthetic/local validation · no regulated-production claim."
     },
     {
       "slug": "gas-engine",
@@ -188,13 +192,15 @@
         "height": 450
       },
       "sourceHref": "https://github.com/LowcountryDigitalWorks/gas-engine",
-      "homeSummary": "Internal evidence infrastructure that helps LDW compare website and search-quality findings over time instead of relying on one tool or one score."
+      "homeSummary": "Internal evidence infrastructure that helps LDW compare website and search-quality findings over time instead of relying on one tool or one score.",
+      "workWhy": "Useful when website and search-quality work needs evidence that can be compared over time instead of relying on one-off scores.",
+      "cardBoundary": "Internal infrastructure · not customer SaaS."
     }
   ],
   "technology": {
-    "eyebrow": "Tools and platforms",
-    "title": "Technology chosen in proportion to the problem.",
-    "lede": "These are examples of technologies currently used in LDW website, application, automation, and delivery work. A project does not inherit a platform simply because it appears here.",
+    "eyebrow": "Tools stay secondary",
+    "title": "Technology is chosen after the problem is understood.",
+    "lede": "These are examples of tools used in LDW delivery. They support the work; they are not the reason a project exists.",
     "items": [
       {
         "name": "GitHub",
@@ -225,8 +231,8 @@
     "trademarkNote": "Product names and marks are used only to identify technologies used in the work. Their owners do not sponsor or endorse Lowcountry Digital Works."
   },
   "principle": {
-    "eyebrow": "The point is the result",
-    "title": "The stack should serve the work, not become the work.",
-    "body": "A small static website, an offline tool, an automation, or a more involved workflow system can all be the right answer in different situations. The goal is to choose the simplest maintainable architecture that meets the actual requirements."
+    "eyebrow": "What the examples are meant to show",
+    "title": "Evidence matters more than a technology logo.",
+    "body": "The useful part of these examples is the reasoning, workflow, ownership model, evidence, and boundaries. The stack can change when the problem changes."
   }
 }
