@@ -92,7 +92,7 @@ test('work page shows four truthful evidence-oriented project entries', async ({
   await expect(page.getByText('customer SaaS', { exact: false })).toBeVisible();
 
   await page.goto('/work/gas-engine/');
-  await expect(page.locator('.readable .lede').filter({ hasText: 'not customer SaaS' })).toBeVisible();
+  await expect(page.locator('.project-detail-grid .lede').filter({ hasText: 'not customer SaaS' })).toBeVisible();
   await expect(page.locator('.project-process__step')).toHaveCount(4);
   await expect(page.locator('.faq-item')).toHaveCount(2);
   await expect(page.getByText('Can a customer buy G.A.S. Engine as standalone software?')).toBeVisible();
