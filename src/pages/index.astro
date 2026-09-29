@@ -62,11 +62,11 @@ import work from '../data/work.json';
         <h2>Real systems, with status and boundaries shown plainly.</h2>
         <p class="lede">Work is presented as evidence of approach, not as invented customer success stories.</p>
       </div>
-      <div class="work-list">
+      <div class="portfolio-grid portfolio-grid--home">
         {work.projects.map((project) => (
-          <article class="work-row work-row--home">
+          <article class="portfolio-card">
             {project.thumbnail && (
-              <a class="work-row__thumb" href={`/work/${project.slug}/`} aria-label={`View ${project.name} project details`}>
+              <a class="portfolio-card__visual" href={`/work/${project.slug}/`} aria-label={`View ${project.name} project details`}>
                 <img
                   src={project.thumbnail.src}
                   alt=""
@@ -76,14 +76,14 @@ import work from '../data/work.json';
                 />
               </a>
             )}
-            <div class="work-row__home-copy">
+            <div class="portfolio-card__body">
               <div class="work-row__meta">
                 <span class={`status-pill ${project.status === 'Live' ? 'status-pill--live' : ''}`}>{project.status}</span>
                 <span>{project.type}</span>
               </div>
               <h3>{project.name}</h3>
               <p>{project.purpose}</p>
-              <a class="work-row__link" href={`/work/${project.slug}/`} aria-label={`View ${project.name} project details`}>View evidence →</a>
+              <a class="text-link" href={`/work/${project.slug}/`} aria-label={`View ${project.name} project details`}>Explore the work →</a>
             </div>
           </article>
         ))}
