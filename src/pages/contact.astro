@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import contact from '../data/contact.json';
+import Icon from '../components/Icon.astro';
 ---
 <BaseLayout title="Contact" description="Contact Eddie Gugino at Lowcountry Digital Works about a website, automation, digital ownership, platform administration, or technical problem.">
   <section class="page-hero">
@@ -13,12 +14,17 @@ import contact from '../data/contact.json';
         <p class="eyebrow">Direct contact</p>
         <h2>{contact.founder.name} · {contact.founder.role}</h2>
         <div class="contact-actions">
-          <a class="button" href={`sms:${contact.phone.number}`}>Text {contact.phone.display}</a>
-          <a class="button button--secondary" href={`tel:${contact.phone.number}`}>Call {contact.phone.display}</a>
-          <a class="text-link" href={`mailto:${contact.email.address}`}>{contact.email.address}</a>
+          <a class="button icon-link" href={`sms:${contact.phone.number}`}><Icon name="message" size={18} /><span>Text {contact.phone.display}</span></a>
+          <a class="button button--secondary icon-link" href={`tel:${contact.phone.number}`}><Icon name="phone" size={18} /><span>Call {contact.phone.display}</span></a>
+          <a class="text-link icon-link" href={`mailto:${contact.email.address}`}><Icon name="mail" size={18} /><span>{contact.email.address}</span></a>
         </div>
         <div class="social-list" aria-label="Verified Lowcountry Digital Works social profiles">
-          {contact.socials.map((social) => <a href={social.href} rel="me noopener">{social.name} →</a>)}
+          {contact.socials.map((social) => (
+            <a class="icon-link" href={social.href} rel="me noopener">
+              <Icon name={social.name === 'Facebook' ? 'facebook' : 'x'} size={18} />
+              <span>{social.name}</span>
+            </a>
+          ))}
         </div>
       </div>
       <div>
