@@ -4,11 +4,11 @@ Public source repository for the Lowcountry Digital Works website at [lowcountry
 
 ## Status
 
-**Current production baseline: protected `main`, most recently advanced through accepted WEB-UX-006.**
+**Current production baseline: protected `main`, most recently advanced through accepted WEB-CONTENT-002.**
 
 Production is tracked by the protected `main` branch and its validated deployment state rather than by inventing a new semantic release number for every UX slice. The repository package metadata remains at `0.6.0`; that value reflects the existing package/release lineage and should not be read as the current UX workstream number.
 
-Accepted UX work through WEB-UX-006 includes the solution-first Home and Services experience, warmer owner-operated About and Connect journeys, proof-before-platform Work presentation, and the humanized Assess → Improve or Build → Handoff or Care approach.
+Accepted website work through WEB-CONTENT-002 includes the solution-first Home and Services experience, warmer owner-operated About and Connect journeys, proof-before-platform Work presentation, the humanized Assess → Improve or Build → Handoff or Care approach, Organization/canonical discovery cleanup, and two first-hand static Guides covering website ownership/handoff and post-launch maintenance.
 
 Release 0.6.0 introduced the Secure Share entry point and builds on the permanent Astro/Tidal Framework foundation plus Release 0.5.4 CSP/JSD nonce middleware. Astro remains static output and Cloudflare Workers Static Assets remains the delivery foundation. The existing dependency-free Worker handles the exact public HTML routes plus one fixed `/share/continue` transition whose destination is supplied only by a production Worker Secret.
 
@@ -35,6 +35,7 @@ Company-owned repositories and infrastructure remain organization-owned. Individ
 - fixed same-origin Secure Share transition at `/share/continue` using runtime secret binding `SECURE_SHARE_DESTINATION_URL`;
 - repository-controlled public copy under `src/data/`;
 - selected work/technology content under `src/data/work.json`;
+- static Guides / Field Notes under `src/pages/guides/`;
 - local same-origin technology SVG marks under `public/technology/`;
 - no React or browser application framework;
 - no database, CMS, authentication, analytics, or server-side customer-data processing;
@@ -52,6 +53,8 @@ See [docs/architecture.md](docs/architecture.md).
 Routine business copy is separated from page structure. Edit the JSON files under `src/data/` through a branch and pull request, then use the normal CI and Cloudflare branch preview before merge.
 
 The selected-work statuses are intentionally explicit: live work is labeled **Live**, while unfinished LDW products are labeled **Active Development** rather than being presented as completed client engagements.
+
+The Guides / Field Notes layer is intentionally small and repository-controlled. It is not a CMS/blog engine or a publishing-cadence commitment. New guides should be first-hand, source-grounded where platform/standards claims require it, and independently useful without depending on search rankings or AI citations.
 
 See [docs/content-editing.md](docs/content-editing.md) and [docs/technology-marks.md](docs/technology-marks.md).
 
