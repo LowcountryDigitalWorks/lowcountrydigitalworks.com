@@ -24,6 +24,8 @@ PUBLIC_ROUTES=[
  '/work/gas-engine/',
  '/approach/',
  '/about/',
+ '/guides/',
+ '/guides/website-ownership-handoff/',
  '/contact/',
  '/connect/',
  '/privacy/',
@@ -37,7 +39,7 @@ REQUIRED=[
  'brand/logo/lowcountry-digital-works-logo-horizontal.svg','brand/logo/lowcountry-digital-works-logo-horizontal-white.svg',
  'brand/icons/favicon.svg','brand/social/social-card-1200x630.png','design/brand-production-validation.md','src/pages/index.astro','src/pages/services.astro',
  'src/pages/services/[slug].astro','src/pages/work.astro','src/pages/work/[slug].astro','src/pages/approach.astro','src/pages/about.astro',
- 'src/pages/contact.astro','src/pages/connect.astro','src/pages/privacy.astro','src/pages/share.astro','src/data/work.json','src/data/service-details.json',
+ 'src/pages/contact.astro','src/pages/connect.astro','src/pages/privacy.astro','src/pages/share.astro','src/pages/guides/index.astro','src/pages/guides/website-ownership-handoff.astro','src/data/work.json','src/data/service-details.json',
  'public/eddie-gugino-lowcountry-digital-works.vcf','public/technology/github.svg','public/technology/cloudflare.svg','public/technology/astro.svg',
  'public/technology/typescript.svg','public/technology/python.svg','docs/technology-marks.md','public/_headers','public/robots.txt','public/sitemap.xml',
  'tests/worker-unit.mjs'
@@ -104,6 +106,18 @@ footer_source=(ROOT/'src/components/Footer.astro').read_text()
 if 'schema.org/ProfessionalService' in footer_source: error('deprecated ProfessionalService schema type must not be published')
 if 'itemtype="https://schema.org/Organization"' not in footer_source: error('footer must expose the LDW Organization entity')
 if 'itemid="https://lowcountrydigitalworks.com/#organization"' not in footer_source: error('footer Organization entity id missing')
+guide_source=(ROOT/'src/pages/guides/website-ownership-handoff.astro').read_text()
+for required_guide_source in [
+ 'https://www.icann.org/registrants',
+ 'https://support.google.com/webmasters/answer/7687615?hl=en',
+ 'https://support.google.com/business/answer/3403100?hl=en',
+ 'https://docs.github.com/en/organizations/managing-user-access-to-your-organizations-repositories/managing-repository-roles/repository-roles-for-an-organization',
+ 'https://developers.cloudflare.com/fundamentals/manage-members/',
+]:
+ if required_guide_source not in guide_source: error(f'ownership/handoff guide missing primary-source reference: {required_guide_source}')
+if 'legal advice' not in guide_source: error('ownership/handoff guide must preserve operational-vs-legal boundary')
+if 'Donovan Family Dentistry' in guide_source or 'East Coast Foam' in guide_source:
+ error('ownership/handoff guide must not publish gated customer names')
 
 class P(HTMLParser):
  def __init__(self):
