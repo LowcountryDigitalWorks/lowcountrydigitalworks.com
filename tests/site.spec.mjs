@@ -15,6 +15,8 @@ const routes = [
   '/work/gas-engine/',
   '/approach/',
   '/about/',
+  '/guides/',
+  '/guides/website-ownership-handoff/',
   '/contact/',
   '/connect/',
   '/privacy/',
@@ -49,6 +51,8 @@ test('primary navigation reflects the accepted consultancy IA and keeps Secure S
   await expect(page.locator('.desktop-nav a[href="/connect/"]').first()).toHaveText('Connect');
   await expect(page.locator('header a[href="/share/"]')).toHaveCount(0);
   await expect(page.locator('header a[href="/contact/"]')).toHaveCount(0);
+  await expect(page.locator('.desktop-nav a[href="/guides/"]')).toHaveCount(0);
+  await expect(page.locator('footer a[href="/guides/"]')).toHaveText('Guides');
 });
 
 test('services page presents four problem-led service families and detail routes', async ({ page }) => {
@@ -91,6 +95,13 @@ test('services page presents four problem-led service families and detail routes
   await expect(page.getByRole('heading', { name: 'A clearer first impression' })).toBeVisible();
   await expect(page.getByText('That operating discipline is evidence of the method, not a client case study.', { exact: false })).toBeVisible();
 });
+test('Digital Ownership service provides a contextual path to the first-hand ownership guide', async ({ page }) => {
+  await page.goto('/services/digital-ownership-platform-administration/');
+  await expect(page.getByRole('link', { name: 'Read the website ownership & handoff guide →' }))
+    .toHaveAttribute('href', '/guides/website-ownership-handoff/');
+  await expect(page.getByText('LDW does not need to become the permanent recovery owner', { exact: false })).toBeVisible();
+});
+
 
 test('desktop three-outcome layout and sticky-header anchors preserve their UX invariants', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
@@ -164,6 +175,38 @@ test('Approach matches the accepted assess, improve-or-build, handoff-or-care me
   await expect(page.getByRole('link', { name: 'Find a service →' })).toHaveAttribute('href', '/services/');
   await expect(page.locator('a[href="/contact/"]')).toHaveCount(0);
 });
+test('Guides pilot is first-hand, source-linked, and avoids blog or customer-proof inflation', async ({ page }) => {
+  await page.goto('/guides/');
+  await expect(page.getByRole('heading', { level: 1, name: 'Practical guidance for owning and operating your digital systems.' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Read the guide →' })).toHaveAttribute('href', '/guides/website-ownership-handoff/');
+  await expect(page.getByText('No publishing treadmill.')).toBeVisible();
+  await expect(page.locator('#main-content')).not.toContainText('Donovan Family Dentistry');
+  await expect(page.locator('#main-content')).not.toContainText('East Coast Foam');
+
+  await page.goto('/guides/website-ownership-handoff/');
+  await expect(page.getByRole('heading', { level: 1, name: /Website ownership & handoff: what your business should control/i })).toBeVisible();
+  await expect(page.locator('article[itemtype="https://schema.org/Article"]')).toHaveCount(1);
+  await expect(page.locator('article [itemprop="author"][itemtype="https://schema.org/Person"] [itemprop="name"]')).toHaveText('Eddie Gugino');
+  await expect(page.locator('time[itemprop="dateModified"]')).toHaveAttribute('datetime', '2026-09-29');
+  await expect(page.locator('[itemprop="publisher"][itemid="https://lowcountrydigitalworks.com/#organization"]')).toHaveCount(1);
+  await expect(page.locator('.guide-control-item')).toHaveCount(7);
+  await expect(page.getByText('This is an operational guide, not legal advice.', { exact: false })).toBeVisible();
+  await expect(page.getByText('Named access is easier to audit, reduce, and remove than a shared password.')).toBeVisible();
+  await expect(page.getByText('A handoff should transfer operating context, not just send a ZIP file.')).toBeVisible();
+  await expect(page.locator('.guide-source-list a')).toHaveCount(5);
+  await expect(page.locator('a[href="https://www.icann.org/registrants"]')).toBeVisible();
+  await expect(page.locator('a[href="https://support.google.com/webmasters/answer/7687615?hl=en"]')).toBeVisible();
+  await expect(page.locator('a[href="https://support.google.com/business/answer/3403100?hl=en"]')).toBeVisible();
+  await expect(page.locator('a[href*="docs.github.com/en/organizations/managing-user-access"]')).toBeVisible();
+  await expect(page.locator('a[href="https://developers.cloudflare.com/fundamentals/manage-members/"]')).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Digital Ownership service' })).toHaveAttribute('href', '/services/digital-ownership-platform-administration/');
+  await expect(page.getByRole('link', { name: 'See the approach' })).toHaveAttribute('href', '/approach/');
+  await expect(page.getByRole('link', { name: 'Talk through your situation' })).toHaveAttribute('href', '/connect/');
+  await expect(page.locator('#main-content')).not.toContainText('Donovan Family Dentistry');
+  await expect(page.locator('#main-content')).not.toContainText('East Coast Foam');
+  await expect(page.locator('#main-content form')).toHaveCount(0);
+});
+
 
 test('work page shows three truthful evidence-oriented project entries', async ({ page }) => {
   await page.goto('/work/');
@@ -408,6 +451,8 @@ test('sitemap includes expanded public routes and excludes Secure Share', async 
   const xml = await response.text();
   expect(xml).toContain('https://lowcountrydigitalworks.com/connect/');
   expect(xml).not.toContain('https://lowcountrydigitalworks.com/contact/');
+  expect(xml).toContain('https://lowcountrydigitalworks.com/guides/');
+  expect(xml).toContain('https://lowcountrydigitalworks.com/guides/website-ownership-handoff/');
   expect(xml).toContain('https://lowcountrydigitalworks.com/services/website-care/');
   expect(xml).toContain('https://lowcountrydigitalworks.com/work/gas-engine/');
   expect(xml).not.toContain('https://lowcountrydigitalworks.com/share');
