@@ -202,3 +202,130 @@ The first bounded application should:
 - Visit Beaufort — planning/local destination context: https://www.beaufortsc.org/plan-your-visit/
 - Astro theme reference — Daymark: https://astro.build/themes/details/daymark-saas-b2b-astro-theme/
 - Astro theme reference — Mend: https://astro.build/themes/details/mend-trades-local-services-astro-theme/
+
+
+## Continuous improvement update — late September 2026
+
+The standing website-improvement loop has now moved beyond the initial WEB-UX-004 application. Accepted production work also includes:
+
+- WEB-UX-005 — problem-first Services, warmer About, lower-friction Connect;
+- WEB-UX-006 — proof-before-platform Work and a more human Approach;
+- WEB-DISCOVERY-001 — Organization entity cleanup plus Contact → Connect canonical consolidation;
+- WEB-CONTENT-001 — first-hand website ownership / handoff guide;
+- WEB-CONTENT-002 — stack-aware post-launch website maintenance guide.
+
+The cumulative lesson is that the current Astro/Tidal foundation can keep improving through bounded content, semantics, CSS, routing, tests, and evidence without a framework/theme migration.
+
+### First-hand content beats content volume
+
+Current search guidance and the site’s own operating model support a small Field Notes approach rather than a high-volume blog.
+
+Useful LDW content should:
+
+- answer a real owner/operator question;
+- reflect actual LDW delivery practice;
+- distinguish operating recommendations from legal/vendor requirements;
+- link primary standards/vendor documentation where a claim depends on it;
+- stay useful even if search engines did not exist;
+- avoid mass-generated location/service pages, keyword stuffing, and publication quotas.
+
+Do not add `llms.txt`, AI-specific duplicate pages, special GEO/AEO markup, or artificial content chunking merely because generative search exists. Preserve normal crawlability, semantic HTML, useful internal links, accurate entity data, canonical URLs, sitemap discipline, real evidence, and first-hand expertise.
+
+### Discovery and entity hygiene are part of UX
+
+Search/discovery maintenance should remain consistent with visitor-facing truth:
+
+- use one stable public Organization identity;
+- do not force a storefront/physical-address claim when the business is service-area/remote;
+- keep canonical and sitemap signals aligned;
+- keep legacy URLs functional only when there is a real user reason;
+- make the preferred visitor path the preferred discovery path where appropriate.
+
+The Contact → Connect consolidation is the current example: keep the legacy path usable, but submit and canonicalize the preferred Connect destination.
+
+### Measurement before more optimization
+
+A live read-only Search Console evidence path and a live Google Business Profile evidence path are now available through existing connected infrastructure without adding analytics or client-side tracking.
+
+Current evidence volume is still too small to justify:
+
+- query-driven page rewrites;
+- device-specific UX conclusions;
+- CTR/ranking claims;
+- category changes;
+- another content release solely to create activity.
+
+When data is sparse, missing query rows remain **unknown/unavailable**, not zero.
+
+Search Console performance/sitemap evidence can support recurring observation, but page-level URL Inspection remains a native Search Console capability rather than something the current read bridge provides.
+
+### Google Business Profile positioning
+
+Google’s own category guidance favors a primary category that describes the business as a whole rather than using categories as keywords or as a list of every service.
+
+For LDW:
+
+- do not switch primary GBP category merely because another category appears competitive;
+- decide primary category from the intended primary business identity and actual customer/revenue motion;
+- use truthful secondary services/categories where appropriate;
+- keep private/home address hidden when operating as a service-area business that does not serve customers there.
+
+The current GBP-versus-website wording difference is therefore a positioning decision for the Growth/Local workstream, not an automatic website or profile fix.
+
+### Local competitor research — what is actually differentiated
+
+Fresh Lowcountry competitor review shows that local providers commonly use:
+
+- founder/local accountability;
+- obvious consultation/quote CTAs;
+- websites + care plans;
+- IT/support or marketing adjacencies;
+- public starting prices;
+- named customer proof when available.
+
+LDW should not imitate every local convention.
+
+Current defensible fit remains:
+
+- owner-operated accountability;
+- websites + business systems rather than marketing-only delivery;
+- customer-owned production assets where practical;
+- named/scoped provider access;
+- configure/integrate/manage before custom building;
+- explicit handoff/recovery;
+- security/access discipline as baseline delivery quality;
+- evidence and maturity boundaries before claims.
+
+Two visible competitor differences should remain outside automatic UX changes:
+
+1. **Pricing transparency** — requires an explicit commercial/pricing decision.
+2. **Named customer proof** — requires real evidence plus separate publicity authorization.
+
+Do not invent starting prices, testimonials, case studies, or results to fill those gaps.
+
+### Current operating posture
+
+After the current accepted releases, the default state of the website loop is:
+
+**MEASURE → OBSERVE → RESEARCH → SHIP ONLY A CONCRETE GAP**
+
+Good reasons to open the next website PR include:
+
+- a real visitor/task failure;
+- accessibility/performance regression;
+- broken discovery/index signal;
+- stale or misleading business information;
+- evidence-supported journey improvement;
+- independently useful first-hand content that adds a distinct owner-facing answer;
+- authorized real customer proof.
+
+“More changes are possible” is not sufficient reason.
+
+## Additional primary references
+
+- Google Search Central — Creating helpful, reliable, people-first content: https://developers.google.com/search/docs/fundamentals/creating-helpful-content
+- Google Search Central — Organization structured data: https://developers.google.com/search/docs/appearance/structured-data/organization
+- Google Search Central — Canonicalization: https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls
+- Google Business Profile — Edit your Business Profile: https://support.google.com/business/answer/3039617
+- Google Business Profile — Guidelines for representing your business: https://support.google.com/business/answer/3038177
+- Google Business Profile — Service-area businesses: https://support.google.com/business/answer/10514743
