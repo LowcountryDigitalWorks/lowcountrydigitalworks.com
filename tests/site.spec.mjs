@@ -92,6 +92,33 @@ test('services page presents four problem-led service families and detail routes
   await expect(page.getByText('That operating discipline is evidence of the method, not a client case study.', { exact: false })).toBeVisible();
 });
 
+test('desktop three-outcome layout and sticky-header anchors preserve their UX invariants', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto('/services/business-systems-automation/');
+
+  const grid = page.locator('.outcome-grid--3');
+  await expect(grid).toHaveCount(1);
+  const gridState = await grid.evaluate((element) => ({
+    columns: getComputedStyle(element).gridTemplateColumns.split(/\s+/).filter(Boolean).length,
+    overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
+  }));
+  expect(gridState.columns).toBe(3);
+  expect(gridState.overflow).toBeFalsy();
+
+  await page.goto('/services/business-systems-automation/#fit');
+  await expect(page.locator('#fit')).toBeVisible();
+  const anchorState = await page.evaluate(() => {
+    const header = document.querySelector('.site-header');
+    const target = document.querySelector('#fit');
+    if (!header || !target) throw new Error('Expected sticky header and #fit target');
+    return {
+      headerBottom: header.getBoundingClientRect().bottom,
+      targetTop: target.getBoundingClientRect().top,
+    };
+  });
+  expect(anchorState.targetTop).toBeGreaterThan(anchorState.headerBottom);
+});
+
 test('homepage presents three customer-first entry paths without exposing gated discovery', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByRole('heading', { level: 1, name: 'Websites and business systems that make work easier.' })).toBeVisible();
@@ -134,6 +161,7 @@ test('Approach matches the accepted assess, improve-or-build, handoff-or-care me
   await expect(page.getByRole('link', { name: 'Tell Eddie what is not working' })).toHaveAttribute('href', '/connect/');
   await expect(page.getByRole('link', { name: 'Talk it through with Eddie' })).toHaveAttribute('href', '/connect/');
   await expect(page.getByRole('link', { name: 'See the evidence →' })).toHaveAttribute('href', '/work/');
+  await expect(page.getByRole('link', { name: 'Find a service →' })).toHaveAttribute('href', '/services/');
   await expect(page.locator('a[href="/contact/"]')).toHaveCount(0);
 });
 
@@ -152,7 +180,12 @@ test('work page shows three truthful evidence-oriented project entries', async (
   await expect(page.getByRole('heading', { name: 'G.A.S. Engine' })).toBeVisible();
   await expect(page.getByText('Internal service-enabling evidence infrastructure', { exact: true })).toBeVisible();
   await expect(page.getByText('Internal evidence infrastructure that helps LDW compare website and search-quality findings over time', { exact: false })).toBeVisible();
-  await expect(page.locator('.portfolio-card__boundary').filter({ hasText: 'Internal infrastructure · not customer SaaS.' })).toBeVisible();
+  const documentControlCard = page.locator('.portfolio-card').filter({ hasText: 'Document Control' });
+  const secureExchangeCard = page.locator('.portfolio-card').filter({ hasText: 'Secure Exchange' });
+  const gasCard = page.locator('.portfolio-card').filter({ hasText: 'G.A.S. Engine' });
+  await expect(documentControlCard.locator('.portfolio-card__boundary')).toContainText('Active development · not a production customer deployment.');
+  await expect(secureExchangeCard.locator('.portfolio-card__boundary')).toContainText('Synthetic/local validation · no regulated-production claim.');
+  await expect(gasCard.locator('.portfolio-card__boundary')).toContainText('Internal infrastructure · not customer SaaS.');
   await expect(page.locator('#main-content')).not.toContainText('Donovan Family Dentistry');
   await expect(page.locator('#main-content')).not.toContainText('East Coast Foam');
 
