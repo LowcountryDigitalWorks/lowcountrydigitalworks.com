@@ -41,6 +41,9 @@ jobs:
       - name: Validate repository and built site
         run: python scripts/validate_repository.py
 
+      - name: Production smoke unit tests
+        run: npm run test:smoke
+
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
 
