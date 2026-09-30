@@ -1,4 +1,13 @@
+# LDW public-content policy:
+# - ordinary search/discovery is allowed;
+# - query-time AI grounding/reference is allowed;
+# - model-training use is reserved against.
 User-agent: *
+Content-Signal: search=yes, ai-input=yes, ai-train=no, use=reference
 Allow: /
+
+# OpenAI exposes a separate training crawler, so block it while preserving ChatGPT Search via OAI-SearchBot under the wildcard rule.
+User-agent: GPTBot
+Disallow: /
 
 Sitemap: https://lowcountrydigitalworks.com/sitemap.xml
