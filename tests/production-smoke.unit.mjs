@@ -8,6 +8,7 @@ import {
   assertSecurityHeaders,
   assertSitemap,
   assertWwwBehavior,
+  fetchWithRetry,
   parseHstsMaxAge,
 } from '../scripts/production-smoke.mjs';
 
@@ -142,4 +143,62 @@ test('www behavior rejects redirect to an unrelated host', () => {
     () => assertWwwBehavior({ status: 302, location: 'https://example.com/', body: '' }),
     /www redirect must target canonical apex origin/,
   );
+});
+
+
+test('ordinary production fetches use manual redirects and never auto-follow an external Location', async () => {
+  const calls = [];
+  const fakeFetch = async (url, options) => {
+    calls.push({ url: url.href, redirect: options.redirect });
+    return new Response(null, {
+      status: 302,
+      headers: { location: 'https://example.com/escape' },
+    });
+  };
+
+  const response = await fetchWithRetry(
+    new URL('/services/', PRODUCTION_ORIGIN),
+    { fetchImpl: fakeFetch },
+  );
+
+  assert.equal(response.status, 302);
+  assert.deepEqual(calls, [
+    {
+      url: 'https://lowcountrydigitalworks.com/services/',
+      redirect: 'manual',
+    },
+  ]);
+});
+
+test('production fetch rejects Secure Share transition before any network request', async () => {
+  let networkCalls = 0;
+  const fakeFetch = async () => {
+    networkCalls += 1;
+    return new Response('unexpected', { status: 200 });
+  };
+
+  await assert.rejects(
+    () => fetchWithRetry(
+      new URL('/share/continue', PRODUCTION_ORIGIN),
+      { fetchImpl: fakeFetch },
+    ),
+    /must never request \/share\/continue/,
+  );
+
+  assert.equal(networkCalls, 0);
+});
+
+test('production fetch rejects direct external origins before any network request', async () => {
+  let networkCalls = 0;
+  const fakeFetch = async () => {
+    networkCalls += 1;
+    return new Response('unexpected', { status: 200 });
+  };
+
+  await assert.rejects(
+    () => fetchWithRetry('https://example.com/escape', { fetchImpl: fakeFetch }),
+    /escaped approved origin/,
+  );
+
+  assert.equal(networkCalls, 0);
 });
