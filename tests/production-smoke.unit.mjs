@@ -78,17 +78,43 @@ test('robots policy rejects accidental OAI-SearchBot block', () => {
   assert.throws(() => assertRobots(robots), /must not block OAI-SearchBot/);
 });
 
-test('sitemap accepts current public route set and rejects Secure Share exposure', () => {
-  const accepted = [
+test('sitemap accepts exact canonical locations and rejects Secure Share exposure', () => {
+  const required = [
     'https://lowcountrydigitalworks.com/connect/',
     'https://lowcountrydigitalworks.com/guides/',
     'https://lowcountrydigitalworks.com/guides/website-maintenance-after-launch/',
     'https://lowcountrydigitalworks.com/guides/website-ownership-handoff/',
     'https://lowcountrydigitalworks.com/services/business-systems-automation/',
     'https://lowcountrydigitalworks.com/work/gas-engine/',
-  ].join('\n');
-  assert.doesNotThrow(() => assertSitemap(accepted));
-  assert.throws(() => assertSitemap(accepted + '\nhttps://lowcountrydigitalworks.com/share/'), /Secure Share/);
+  ];
+
+  const sitemap = locations =>
+    '<urlset>' + locations.map(url => '<url><loc>' + url + '</loc></url>').join('') + '</urlset>';
+
+  assert.doesNotThrow(() => assertSitemap(sitemap(required)));
+  assert.throws(
+    () => assertSitemap(sitemap([...required, 'https://lowcountrydigitalworks.com/share/'])),
+    /Secure Share/,
+  );
+});
+
+test('sitemap rejects external origins even when an LDW URL appears as a substring', () => {
+  const required = [
+    'https://lowcountrydigitalworks.com/connect/',
+    'https://lowcountrydigitalworks.com/guides/',
+    'https://lowcountrydigitalworks.com/guides/website-maintenance-after-launch/',
+    'https://lowcountrydigitalworks.com/guides/website-ownership-handoff/',
+    'https://lowcountrydigitalworks.com/services/business-systems-automation/',
+    'https://lowcountrydigitalworks.com/work/gas-engine/',
+  ];
+  const malicious =
+    'https://example.com/?next=https://lowcountrydigitalworks.com/share/';
+  const xml =
+    '<urlset>' +
+    [...required, malicious].map(url => '<url><loc>' + url + '</loc></url>').join('') +
+    '</urlset>';
+
+  assert.throws(() => assertSitemap(xml), /canonical production origin/);
 });
 
 test('www behavior accepts either apex redirect or canonicalized 200', () => {
