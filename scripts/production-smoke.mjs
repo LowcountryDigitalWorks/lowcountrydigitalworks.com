@@ -170,13 +170,38 @@ export function assertWwwBehavior({ status, location, body }) {
   return 'canonical-200';
 }
 
-async function fetchWithRetry(url, { redirect = 'follow' } = {}) {
+export function assertSafeSmokeRequestUrl(value, { allowWww = false } = {}) {
+  const target = value instanceof URL ? value : new URL(value);
+  const allowedOrigins = allowWww
+    ? new Set([PRODUCTION_ORIGIN, 'https://www.lowcountrydigitalworks.com'])
+    : new Set([PRODUCTION_ORIGIN]);
+
+  assert.ok(
+    allowedOrigins.has(target.origin),
+    'production smoke request escaped approved origin: ' + target.origin,
+  );
+  assert.equal(target.username, '', 'production smoke requests must not include URL credentials');
+  assert.equal(target.password, '', 'production smoke requests must not include URL credentials');
+
+  if (target.pathname === '/share/continue' || target.pathname.startsWith('/share/continue/')) {
+    fail('production smoke must never request /share/continue');
+  }
+
+  return target;
+}
+
+export async function fetchWithRetry(
+  url,
+  { allowWww = false, fetchImpl = fetch } = {},
+) {
+  const target = assertSafeSmokeRequestUrl(url, { allowWww });
   let lastError;
+
   for (let attempt = 1; attempt <= 2; attempt += 1) {
     try {
-      const response = await fetch(url, {
+      const response = await fetchImpl(target, {
         method: SAFE_METHOD,
-        redirect,
+        redirect: 'manual',
         headers: { 'User-Agent': USER_AGENT },
         signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
       });
@@ -196,6 +221,7 @@ async function fetchWithRetry(url, { redirect = 'follow' } = {}) {
       }
     }
   }
+
   throw lastError ?? new Error('request failed without a response');
 }
 
@@ -295,7 +321,7 @@ export async function runProductionSmoke() {
   await missingResponse.body?.cancel();
   results.push({ name: '404 behavior', detail: 'expected HTTP 404' });
 
-  const wwwResponse = await fetchWithRetry('https://www.lowcountrydigitalworks.com/', { redirect: 'manual' });
+  const wwwResponse = await fetchWithRetry('https://www.lowcountrydigitalworks.com/', { allowWww: true });
   const wwwBody = wwwResponse.status === 200 ? await wwwResponse.text() : '';
   const wwwMode = assertWwwBehavior({
     status: wwwResponse.status,
