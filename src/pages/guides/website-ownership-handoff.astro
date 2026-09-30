@@ -1,0 +1,200 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="Website Ownership & Handoff"
+  description="A practical small-business guide to controlling domain registration, DNS, hosting, source, recovery, Search Console, Business Profile, provider access, and website handoff."
+>
+  <nav class="breadcrumbs" aria-label="Breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+    <div class="container">
+      <ol>
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a itemprop="item" href="/guides/"><span itemprop="name">Guides</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <li aria-current="page" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <span itemprop="name">Website Ownership & Handoff</span>
+          <meta itemprop="position" content="2" />
+        </li>
+      </ol>
+    </div>
+  </nav>
+
+  <article class="guide-article" itemscope itemtype="https://schema.org/Article">
+    <section class="page-hero page-hero--warm">
+      <div class="container readable">
+        <p class="eyebrow">Guide · Digital ownership</p>
+        <h1 itemprop="headline">Website ownership & handoff: what your business should control.</h1>
+        <p class="lede" itemprop="description">A website is more than the pages people see. It also depends on accounts, recovery methods, source files, providers, and access decisions. This guide gives a business owner a practical way to tell whether those pieces are actually under control.</p>
+        <div class="guide-meta">
+          <span itemprop="author" itemscope itemtype="https://schema.org/Person">
+            <span itemprop="name">Eddie Gugino</span> · Founder, Lowcountry Digital Works
+          </span>
+          <span>Reviewed <time itemprop="dateModified" datetime="2026-09-29">September 29, 2026</time></span>
+          <meta itemprop="datePublished" content="2026-09-29" />
+          <span itemprop="publisher" itemscope itemtype="https://schema.org/Organization" itemid="https://lowcountrydigitalworks.com/#organization">
+            <meta itemprop="name" content="Lowcountry Digital Works" />
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container guide-layout">
+        <aside class="guide-toc" aria-label="On this page">
+          <p class="eyebrow">On this page</p>
+          <nav>
+            <a href="#short-version">The short version</a>
+            <a href="#control-map">What the business should control</a>
+            <a href="#named-access">Named access, not shared passwords</a>
+            <a href="#handoff">What a useful handoff includes</a>
+            <a href="#portability">What portability really means</a>
+            <a href="#transition">Changing providers safely</a>
+            <a href="#questions">Questions to ask before signing</a>
+            <a href="#sources">Source notes</a>
+          </nav>
+        </aside>
+
+        <div class="guide-body">
+          <section class="guide-section" id="short-version">
+            <p class="eyebrow">The short version</p>
+            <h2>Your provider can help run the website without becoming the only person who can recover it.</h2>
+            <p>LDW's default operating model is simple: the business should control the important production assets where practical, and a provider should work through named, scoped access. The business should be able to identify who controls each account, how recovery works, what recurring services cost, and what happens if the provider relationship ends.</p>
+            <div class="guide-callout">
+              <strong>A useful test:</strong>
+              <p>If your current provider disappeared tomorrow, could the business identify the registrar, DNS, hosting, source, recovery path, and critical integrations well enough for another competent provider to take over?</p>
+            </div>
+            <p>This is an operational guide, not legal advice. Contracts, copyright, licenses, and platform terms determine legal rights. “Control” here means the practical ability to administer, recover, transfer, export, or deliberately replace a business asset.</p>
+          </section>
+
+          <section class="guide-section" id="control-map">
+            <p class="eyebrow">Control map</p>
+            <h2>Know which account is the business account and which access belongs to the provider.</h2>
+            <div class="guide-control-list">
+              <article class="guide-control-item">
+                <div><h3>Domain registrar</h3><p>The business should ordinarily be the registrant/customer controlling the registrar account, renewal, recovery, and transfer process.</p></div>
+                <p><strong>Provider access:</strong> Help with configuration or transfers when needed; do not make the provider's personal account the only recovery path.</p>
+              </article>
+              <article class="guide-control-item">
+                <div><h3>DNS</h3><p>Keep the DNS account and recovery relationship understandable to the business. Record who can change A, CNAME, MX, TXT, and nameserver settings.</p></div>
+                <p><strong>Provider access:</strong> Use a named member or domain-scoped role when the platform supports it.</p>
+              </article>
+              <article class="guide-control-item">
+                <div><h3>Hosting & deployment</h3><p>Prefer a business-controlled production account and billing relationship where practical. Document the deployment path and the dependencies needed to reproduce it.</p></div>
+                <p><strong>Provider access:</strong> Deployment/admin access appropriate to the work, removable without destroying the site.</p>
+              </article>
+              <article class="guide-control-item">
+                <div><h3>Source code & repository</h3><p>For custom code, the business should have durable access to the source and enough documentation for another qualified maintainer to build or deploy it.</p></div>
+                <p><strong>Provider access:</strong> Repository collaborator/team role matched to the job instead of ownership by default.</p>
+              </article>
+              <article class="guide-control-item">
+                <div><h3>Search & business profiles</h3><p>The business should retain an owner-level relationship to properties such as Search Console and Google Business Profile rather than relying on an agency login.</p></div>
+                <p><strong>Provider access:</strong> Delegated owner/user/manager access only where it is actually needed.</p>
+              </article>
+              <article class="guide-control-item">
+                <div><h3>Recovery, MFA & billing</h3><p>Recovery email, MFA administration, billing contacts, and renewal decisions should not depend on a provider's private identity or phone.</p></div>
+                <p><strong>Provider access:</strong> Named user access. Avoid handing over master passwords, recovery codes, or the only MFA method.</p>
+              </article>
+              <article class="guide-control-item">
+                <div><h3>Forms, CRM, email & other integrations</h3><p>Record where data goes, who owns the account, which plan is paid for, what happens on cancellation, and whether data/configuration can be exported.</p></div>
+                <p><strong>Provider access:</strong> Scoped access to configure and support the integration; the authoritative system remains clear.</p>
+              </article>
+            </div>
+          </section>
+
+          <section class="guide-section" id="named-access">
+            <p class="eyebrow">Access model</p>
+            <h2>Named access is easier to audit, reduce, and remove than a shared password.</h2>
+            <p>Many modern platforms are built around this model. Google Business Profile lets owners invite owners or managers using each person's own Google Account, so access does not require sharing a password. Search Console separates verified owners, delegated owners, full users, and restricted users. GitHub organizations provide repository roles and outside-collaborator access. Cloudflare accounts support member policies with roles and scopes.</p>
+            <p>The practical advantage is not paperwork. It is revocability: when the engagement changes, one person's access can be reduced or removed without rotating a shared credential for everyone else.</p>
+            <div class="card card--accent">
+              <p class="card__kicker">Recovery warning</p>
+              <p>Removing a user from a dashboard is not always enough. Google Search Console warns that a former verified owner can regain access if their verification token remains on the property. A real offboarding check therefore includes old verification methods, deploy keys, API credentials, OAuth grants, webhooks, and other persistent access paths that apply to the system.</p>
+            </div>
+          </section>
+
+          <section class="guide-section" id="handoff">
+            <p class="eyebrow">Handoff</p>
+            <h2>A handoff should transfer operating context, not just send a ZIP file.</h2>
+            <p>What belongs in the closeout depends on the platform, but a useful handoff normally answers these questions:</p>
+            <ul class="check-list guide-check-list">
+              <li>Who controls the domain registrar, DNS, hosting/deployment, repository, and material third-party accounts?</li>
+              <li>Which named users still have access, at what role, and why?</li>
+              <li>Where are billing, renewals, and recovery methods controlled?</li>
+              <li>Where is the source or export, and can another maintainer use it?</li>
+              <li>How is the site built, deployed, rolled back, backed up, or restored where those concepts apply?</li>
+              <li>Which environment variables, API relationships, webhooks, forms, email services, or integrations exist—without copying secrets into the handoff document?</li>
+              <li>Which domains, redirects, canonical URLs, sitemap rules, analytics/search properties, and business profiles need to survive a transition?</li>
+              <li>Which licenses, fonts, photos, plugins, themes, SaaS plans, or other third-party assets have continuing terms or costs?</li>
+              <li>What support ends at closeout, and what optional ongoing care remains?</li>
+            </ul>
+            <p>A password list is not a complete handoff. A business can possess a password while still lacking the billing relationship, recovery channel, source files, transfer authority, or documentation needed to operate independently.</p>
+          </section>
+
+          <section class="guide-section" id="portability">
+            <p class="eyebrow">Portability</p>
+            <h2>Portable does not mean every website can move byte-for-byte to any host.</h2>
+            <p>Different platforms create different exit paths. A static site with portable source may move relatively cleanly between compatible hosts. A hosted website builder may provide content exports but not its proprietary rendering system. A CMS may be movable but depend on paid plugins, licensed themes, a database, or server configuration.</p>
+            <p>The useful question is not “Is this platform portable?” in the abstract. Ask what the business receives if it leaves: source, content export, media, database, redirects, DNS records, configuration, licenses, and a documented replacement path. A platform can still be the right choice when some dependency is proprietary—as long as that tradeoff is understood before launch.</p>
+          </section>
+
+          <section class="guide-section" id="transition">
+            <p class="eyebrow">Provider transition</p>
+            <h2>Change access in a sequence that preserves recovery and rollback.</h2>
+            <ol class="guide-steps">
+              <li><strong>Inventory the current state.</strong> Confirm the registrar, DNS, hosting, repository, search properties, business profiles, integrations, billing, recovery methods, and current administrators.</li>
+              <li><strong>Establish business-controlled ownership first.</strong> Add or verify the correct business owners/admins before removing the outgoing provider.</li>
+              <li><strong>Capture the operating record.</strong> Export relevant DNS/configuration, source/content, redirects, vendor inventory, deployment notes, and known limitations.</li>
+              <li><strong>Validate before revoking.</strong> Confirm the replacement owner can log in, recover access, build/deploy where applicable, and complete the agreed operational checks.</li>
+              <li><strong>Remove persistent access deliberately.</strong> Revoke former users and review verification tokens, keys, apps, webhooks, and credentials that could outlive the visible user account.</li>
+              <li><strong>Keep a rollback path for consequential changes.</strong> DNS, email routing, production hosting, and security changes should have a known current state and recovery path before mutation.</li>
+            </ol>
+          </section>
+
+          <section class="guide-section" id="questions">
+            <p class="eyebrow">Before you sign</p>
+            <h2>Questions that expose ownership problems early.</h2>
+            <div class="grid grid--2">
+              <article class="card"><h3>Accounts</h3><p>Which production accounts will be created in our business name, and which will stay in the provider's account?</p></article>
+              <article class="card"><h3>Domain & DNS</h3><p>Who is the registrant, who pays renewal, and can our business independently manage or transfer the domain?</p></article>
+              <article class="card"><h3>Source & content</h3><p>What source files, exports, media, configuration, and documentation do we receive?</p></article>
+              <article class="card"><h3>Recovery</h3><p>Which email, phone, MFA, and recovery routes control the critical accounts?</p></article>
+              <article class="card"><h3>Provider access</h3><p>Can the provider work through a named role that our business can later revoke?</p></article>
+              <article class="card"><h3>Recurring cost</h3><p>Which hosting, plugins, licenses, SaaS plans, domains, or other services must keep being paid?</p></article>
+              <article class="card"><h3>Leaving</h3><p>If support ends, what keeps working, what must move, what can be exported, and what offboarding help is included?</p></article>
+              <article class="card"><h3>Ongoing care</h3><p>Is maintenance optional and bounded, or does basic ownership depend on keeping the same provider forever?</p></article>
+            </div>
+          </section>
+
+          <section class="guide-section guide-sources" id="sources">
+            <p class="eyebrow">Source notes</p>
+            <h2>Platform rules change. These are the primary references behind the platform-specific parts of this guide.</h2>
+            <ul class="guide-source-list">
+              <li><a href="https://www.icann.org/registrants">ICANN — Information for Domain Name Registrants</a>: registrants contract with a registrar and manage domain registration settings through that registrar.</li>
+              <li><a href="https://support.google.com/webmasters/answer/7687615?hl=en">Google Search Console — Managing owners, users, and permissions</a>: verified/delegated owners, user roles, and ownership-token behavior.</li>
+              <li><a href="https://support.google.com/business/answer/3403100?hl=en">Google Business Profile — Manage owners & managers</a>: named owner/manager access through individual Google Accounts.</li>
+              <li><a href="https://docs.github.com/en/organizations/managing-user-access-to-your-organizations-repositories/managing-repository-roles/repository-roles-for-an-organization">GitHub — Repository roles for an organization</a>: granular repository roles for members, teams, and outside collaborators.</li>
+              <li><a href="https://developers.cloudflare.com/fundamentals/manage-members/">Cloudflare — Members and permissions</a>: member policies combine actors, roles, and scopes so access can be limited to what is needed.</li>
+            </ul>
+            <p class="asset-gap-note">External platform documentation is linked for policy context. LDW's customer-owned-account model is an operating recommendation, not a claim that every vendor requires the same ownership structure.</p>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--navy">
+      <div class="container final-cta final-cta--single">
+        <div>
+          <p class="eyebrow">How LDW applies this</p>
+          <h2>Keep ownership clear before adding more technology.</h2>
+          <p class="lede">LDW normally prefers customer-owned production accounts with named, scoped provider access, documented recovery, and an explicit handoff path. Ongoing support can continue without making the business dependent on hidden provider ownership.</p>
+        </div>
+        <div class="actions">
+          <a class="button button--secondary" href="/services/digital-ownership-platform-administration/">Digital Ownership service</a>
+          <a class="button button--secondary" href="/approach/">See the approach</a>
+          <a class="button button--secondary" href="/connect/">Talk through your situation</a>
+        </div>
+      </div>
+    </section>
+  </article>
+</BaseLayout>
