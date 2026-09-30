@@ -207,6 +207,11 @@ robots=(ROOT/'public/robots.txt').read_text(); sitemap=(ROOT/'public/sitemap.xml
 for icon in ['github.svg','cloudflare.svg','astro.svg','typescript.svg','python.svg']:
  if not (ROOT/'public'/'technology'/icon).read_text(errors='ignore').lstrip().startswith('<svg'): error(f'invalid technology SVG: {icon}')
 if 'https://lowcountrydigitalworks.com/sitemap.xml' not in robots: error('robots must declare production sitemap')
+required_content_signal='Content-Signal: search=yes, ai-input=yes, ai-train=no, use=reference'
+if required_content_signal not in robots: error('robots must preserve approved search/AI-input/training content policy')
+if 'User-agent: GPTBot\nDisallow: /' not in robots: error('robots must explicitly block GPTBot training crawl')
+if 'User-agent: OAI-SearchBot\nDisallow:' in robots: error('robots must not block OAI-SearchBot / ChatGPT Search')
+if 'User-agent: Google-Extended\nDisallow:' in robots: error('robots must not block Google-Extended without a separate owner-approved grounding/training decision')
 if 'Disallow: /share' in robots: error('Secure Share should rely on page noindex metadata, not robots.txt blocking')
 for route in SITEMAP_ROUTES:
  if f'https://lowcountrydigitalworks.com{route}' not in sitemap: error(f'sitemap missing {route}')
