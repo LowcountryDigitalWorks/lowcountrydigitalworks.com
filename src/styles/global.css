@@ -651,6 +651,7 @@ p { margin: 0 0 1rem; }
 .guide-card .text-link { margin-top: auto; padding-top: .5rem; }
 .guide-card__meta { color: var(--muted); font-size: .88rem; font-weight: 700; }
 .guide-index-note { background: var(--surface-warm); }
+.guide-index-note--standalone { margin-top: 1.25rem; }
 
 .guide-meta {
   display: flex;
