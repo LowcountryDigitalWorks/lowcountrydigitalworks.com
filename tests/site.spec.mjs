@@ -307,7 +307,11 @@ test('verified public entity links expose one Organization identity without priv
   const entity = page.locator('footer [itemtype="https://schema.org/Organization"]').first();
   await expect(entity).toHaveCount(1);
   await expect(entity).toHaveAttribute('itemid', 'https://lowcountrydigitalworks.com/#organization');
-  await expect(entity.locator('[itemprop="name"]')).toContainText('Lowcountry Digital Works');
+  await expect(entity.locator('strong[itemprop="name"]')).toHaveText('Lowcountry Digital Works');
+  const founder = entity.locator('[itemprop="founder"][itemtype="https://schema.org/Person"]');
+  await expect(founder).toHaveCount(1);
+  await expect(founder.locator('[itemprop="name"]')).toHaveText('Eddie Gugino');
+  await expect(founder.locator('[itemprop="jobTitle"]')).toHaveText('Founder');
   await expect(entity.locator('a[itemprop="url"]')).toHaveAttribute('href', '/');
   await expect(entity.locator('[itemprop="areaServed"]')).toHaveText('South Carolina Lowcountry');
   await expect(entity.locator('a[itemprop="email"]')).toHaveAttribute('href', 'mailto:eddie@lowcountrydigitalworks.com');
