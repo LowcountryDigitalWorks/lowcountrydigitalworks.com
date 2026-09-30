@@ -85,7 +85,7 @@ const relatedWork = work.projects.filter((project) => service.relatedWork?.inclu
         <div><p class="eyebrow">Ownership boundary</p><h2>Keep responsibility clear.</h2></div>
         <div>
           <p class="lede">{service.ownership}</p>
-          {service.guideHref && <a class="text-link" href={service.guideHref}>{service.guideLabel} →</a>}
+          {service.guideHref && <a class="text-link text-link--light" href={service.guideHref}>{service.guideLabel} →</a>}
         </div>
       </div>
     </section>
