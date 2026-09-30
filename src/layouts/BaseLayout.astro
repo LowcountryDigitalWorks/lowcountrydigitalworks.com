@@ -9,8 +9,9 @@ const {
   image = '/brand/social/social-card-1200x630.png',
   noindex = false,
   robots,
+  canonicalPath,
 } = Astro.props;
-const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
+const canonical = new URL(canonicalPath ?? Astro.url.pathname, Astro.site ?? Astro.url.origin);
 const socialImage = new URL(image, Astro.site ?? Astro.url.origin);
 const fullTitle = title === 'Lowcountry Digital Works' ? title : `${title} | Lowcountry Digital Works`;
 const robotsContent = robots ?? (noindex ? 'noindex,nofollow' : undefined);

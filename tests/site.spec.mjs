@@ -302,14 +302,31 @@ test('privacy page reflects the current no-nonessential-cookie posture without a
   await expect(page.locator('[class*="cookie"], [id*="cookie"], [class*="consent"], [id*="consent"]')).toHaveCount(0);
 });
 
-test('verified public entity links are exposed with schema microdata and no unverified company LinkedIn', async ({ page }) => {
+test('verified public entity links expose one Organization identity without private-location claims', async ({ page }) => {
   await page.goto('/');
-  const entity = page.locator('footer [itemtype="https://schema.org/ProfessionalService"]').first();
+  const entity = page.locator('footer [itemtype="https://schema.org/Organization"]').first();
   await expect(entity).toHaveCount(1);
+  await expect(entity).toHaveAttribute('itemid', 'https://lowcountrydigitalworks.com/#organization');
+  await expect(entity.locator('strong[itemprop="name"]')).toHaveText('Lowcountry Digital Works');
+  const founder = entity.locator('[itemprop="founder"][itemtype="https://schema.org/Person"]');
+  await expect(founder).toHaveCount(1);
+  await expect(founder.locator('[itemprop="name"]')).toHaveText('Eddie Gugino');
+  await expect(founder.locator('[itemprop="jobTitle"]')).toHaveText('Founder');
+  await expect(entity.locator('a[itemprop="url"]')).toHaveAttribute('href', '/');
+  await expect(entity.locator('[itemprop="areaServed"]')).toHaveText('South Carolina Lowcountry');
+  await expect(entity.locator('a[itemprop="email"]')).toHaveAttribute('href', 'mailto:eddie@lowcountrydigitalworks.com');
+  await expect(entity.locator('a[itemprop="telephone"]')).toHaveAttribute('href', 'tel:+18436333123');
   await expect(entity.locator('a[itemprop="sameAs"]')).toHaveCount(2);
   await expect(entity.locator('a[href="https://www.facebook.com/LowcountryDigitalWorks/"]')).toHaveCount(1);
   await expect(entity.locator('a[href="https://x.com/LocoDW"]')).toHaveCount(1);
+  await expect(page.locator('[itemtype="https://schema.org/ProfessionalService"]')).toHaveCount(0);
+  await expect(entity.locator('[itemprop="address"]')).toHaveCount(0);
   await expect(page.locator('a[href*="linkedin.com/company"]')).toHaveCount(0);
+
+  await page.goto('/services/business-systems-automation/');
+  const provider = page.locator('[itemprop="provider"][itemtype="https://schema.org/Organization"]');
+  await expect(provider).toHaveCount(1);
+  await expect(provider).toHaveAttribute('itemid', 'https://lowcountrydigitalworks.com/#organization');
 });
 
 test('page metadata includes canonical Open Graph and Twitter fields', async ({ page }) => {
@@ -318,6 +335,13 @@ test('page metadata includes canonical Open Graph and Twitter fields', async ({ 
   await expect(page.locator('meta[property="og:site_name"]')).toHaveAttribute('content', 'Lowcountry Digital Works');
   await expect(page.locator('meta[name="twitter:title"]')).toHaveAttribute('content', /Websites/);
   await expect(page.locator('meta[name="twitter:description"]')).toHaveAttribute('content', /accessible/i);
+
+  await page.goto('/contact/');
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://lowcountrydigitalworks.com/connect/');
+  await expect(page.locator('meta[property="og:url"]')).toHaveAttribute('content', 'https://lowcountrydigitalworks.com/connect/');
+
+  await page.goto('/connect/');
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://lowcountrydigitalworks.com/connect/');
 });
 
 test('technology marks are served locally without third-party image requests', async ({ page }) => {
@@ -383,6 +407,7 @@ test('sitemap includes expanded public routes and excludes Secure Share', async 
   expect(response.ok()).toBeTruthy();
   const xml = await response.text();
   expect(xml).toContain('https://lowcountrydigitalworks.com/connect/');
+  expect(xml).not.toContain('https://lowcountrydigitalworks.com/contact/');
   expect(xml).toContain('https://lowcountrydigitalworks.com/services/website-care/');
   expect(xml).toContain('https://lowcountrydigitalworks.com/work/gas-engine/');
   expect(xml).not.toContain('https://lowcountrydigitalworks.com/share');
