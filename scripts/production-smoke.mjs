@@ -115,26 +115,41 @@ export function assertRobots(text) {
   );
 }
 
-export function assertSitemap(text) {
-  const required = [
-    'https://lowcountrydigitalworks.com/connect/',
-    'https://lowcountrydigitalworks.com/guides/',
-    'https://lowcountrydigitalworks.com/guides/website-maintenance-after-launch/',
-    'https://lowcountrydigitalworks.com/guides/website-ownership-handoff/',
-    'https://lowcountrydigitalworks.com/services/business-systems-automation/',
-    'https://lowcountrydigitalworks.com/work/gas-engine/',
-  ];
-  for (const url of required) {
-    assert.ok(text.includes(url), 'sitemap missing accepted URL: ' + url);
+export function parseSitemapLocations(text) {
+  const locations = new Map();
+  for (const match of text.matchAll(/<loc>\s*([^<]+?)\s*<\/loc>/gi)) {
+    const url = new URL(match[1].trim());
+    assert.equal(url.origin, PRODUCTION_ORIGIN, 'sitemap locations must use canonical production origin');
+    assert.equal(url.search, '', 'sitemap locations must not contain query parameters');
+    assert.equal(url.hash, '', 'sitemap locations must not contain fragments');
+    locations.set(url.href, url);
   }
-  assert.ok(
-    !text.includes('https://lowcountrydigitalworks.com/contact/'),
-    'legacy Contact must remain excluded from sitemap',
+  assert.ok(locations.size > 0, 'sitemap must contain at least one valid location');
+  return locations;
+}
+
+export function assertSitemap(text) {
+  const locations = parseSitemapLocations(text);
+  const requiredPaths = [
+    '/connect/',
+    '/guides/',
+    '/guides/website-maintenance-after-launch/',
+    '/guides/website-ownership-handoff/',
+    '/services/business-systems-automation/',
+    '/work/gas-engine/',
+  ];
+  for (const path of requiredPaths) {
+    const url = new URL(path, PRODUCTION_ORIGIN).href;
+    assert.ok(locations.has(url), 'sitemap missing accepted URL: ' + url);
+  }
+
+  const legacyContact = new URL('/contact/', PRODUCTION_ORIGIN).href;
+  assert.ok(!locations.has(legacyContact), 'legacy Contact must remain excluded from sitemap');
+
+  const exposesSecureShare = [...locations.values()].some(url =>
+    url.pathname === '/share' || url.pathname.startsWith('/share/'),
   );
-  assert.ok(
-    !text.includes('https://lowcountrydigitalworks.com/share'),
-    'Secure Share must remain excluded from sitemap',
-  );
+  assert.ok(!exposesSecureShare, 'Secure Share must remain excluded from sitemap');
 }
 
 export function assertWwwBehavior({ status, location, body }) {
