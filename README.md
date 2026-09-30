@@ -4,11 +4,13 @@ Public source repository for the Lowcountry Digital Works website at [lowcountry
 
 ## Status
 
-**Current production website release: 0.6.0 — Secure Share Entry Point.**
+**Current production baseline: protected `main`, most recently advanced through accepted WEB-UX-006.**
 
-WEB-UX-001 is being developed through a protected branch/PR as the next UX/content/SEO candidate. The candidate adds no production authority by itself and must not deploy until the owner-photo/biography gate, preview review, exact validation, and current → proposed → rollback approval are complete.
+Production is tracked by the protected `main` branch and its validated deployment state rather than by inventing a new semantic release number for every UX slice. The repository package metadata remains at `0.6.0`; that value reflects the existing package/release lineage and should not be read as the current UX workstream number.
 
-Release 0.6.0 builds on the permanent Astro/Tidal Framework foundation and Release 0.5.4 CSP/JSD nonce middleware. Astro remains static output and Cloudflare Workers Static Assets remains the delivery foundation. The existing dependency-free Worker now handles the exact public HTML routes plus one fixed `/share/continue` transition whose destination is supplied only by a production Worker Secret.
+Accepted UX work through WEB-UX-006 includes the solution-first Home and Services experience, warmer owner-operated About and Connect journeys, proof-before-platform Work presentation, and the humanized Assess → Improve or Build → Handoff or Care approach.
+
+Release 0.6.0 introduced the Secure Share entry point and builds on the permanent Astro/Tidal Framework foundation plus Release 0.5.4 CSP/JSD nonce middleware. Astro remains static output and Cloudflare Workers Static Assets remains the delivery foundation. The existing dependency-free Worker handles the exact public HTML routes plus one fixed `/share/continue` transition whose destination is supplied only by a production Worker Secret.
 
 Cloudflare account access and the existing Worker context were re-verified on 2026-08-10 before production launch. No duplicate Worker or replacement DNS infrastructure was created. Zoho Mail remains the email provider and must not be disrupted by website changes.
 
