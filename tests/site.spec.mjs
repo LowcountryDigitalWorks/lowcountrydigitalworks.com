@@ -125,16 +125,24 @@ test('homepage presents three customer-first entry paths without exposing gated 
 
 test('Approach matches the accepted assess, improve-or-build, handoff-or-care method', async ({ page }) => {
   await page.goto('/approach/');
+  await expect(page.getByRole('heading', { level: 1, name: 'From “this is not working” to a clear next step.' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Assess' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Improve or build' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Handoff or care' })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Discuss a project' })).toBeVisible();
+  await expect(page.locator('.approach-expectations .card')).toHaveCount(4);
+  await expect(page.getByRole('heading', { name: 'Be willing not to build' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Tell Eddie what is not working' })).toHaveAttribute('href', '/connect/');
+  await expect(page.getByRole('link', { name: 'Talk it through with Eddie' })).toHaveAttribute('href', '/connect/');
+  await expect(page.getByRole('link', { name: 'See the evidence →' })).toHaveAttribute('href', '/work/');
   await expect(page.locator('a[href="/contact/"]')).toHaveCount(0);
 });
 
 test('work page shows three truthful evidence-oriented project entries', async ({ page }) => {
   await page.goto('/work/');
+  await expect(page.getByRole('heading', { level: 1, name: 'See the problem, the proof, and the boundary.' })).toBeVisible();
   await expect(page.locator('.portfolio-grid--work .portfolio-card')).toHaveCount(3);
+  await expect(page.locator('.portfolio-card__context')).toHaveCount(3);
+  await expect(page.getByText('They are not customer case studies.', { exact: false })).toBeVisible();
   const workThumbs = page.locator('.portfolio-grid--work .portfolio-card__visual img');
   await expect(workThumbs).toHaveCount(3);
   for (let i = 0; i < 3; i += 1) {
@@ -143,9 +151,16 @@ test('work page shows three truthful evidence-oriented project entries', async (
   }
   await expect(page.getByRole('heading', { name: 'G.A.S. Engine' })).toBeVisible();
   await expect(page.getByText('Internal service-enabling evidence infrastructure', { exact: true })).toBeVisible();
-  await expect(page.getByText('Longitudinal normalized evidence and provenance', { exact: true })).toBeVisible();
+  await expect(page.getByText('Internal evidence infrastructure that helps LDW compare website and search-quality findings over time', { exact: false })).toBeVisible();
+  await expect(page.locator('.portfolio-card__boundary').filter({ hasText: 'Internal infrastructure · not customer SaaS.' })).toBeVisible();
+  await expect(page.locator('#main-content')).not.toContainText('Donovan Family Dentistry');
+  await expect(page.locator('#main-content')).not.toContainText('East Coast Foam');
 
   await page.goto('/work/gas-engine/');
+  await expect(page.getByText('Internal evidence infrastructure that helps LDW compare website and search-quality findings over time', { exact: false })).toBeVisible();
+  await expect(page.getByText('Current boundary:', { exact: false })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'See the evidence' })).toHaveAttribute('href', '#proof');
+  await expect(page.locator('#proof')).toHaveCount(1);
   await expect(page.locator('.project-detail-grid .lede').filter({ hasText: 'not customer SaaS' })).toBeVisible();
   await expect(page.locator('.project-process__step')).toHaveCount(4);
   await expect(page.locator('.faq-item')).toHaveCount(2);
@@ -274,7 +289,7 @@ test('page metadata includes canonical Open Graph and Twitter fields', async ({ 
 
 test('technology marks are served locally without third-party image requests', async ({ page }) => {
   await page.goto('/work/');
-  const marks = page.locator('.technology-card img');
+  const marks = page.locator('.technology-compact__item img');
   await expect(marks).toHaveCount(5);
   const origins = await marks.evaluateAll(images => images.map(image => new URL(image.src).origin));
   const pageOrigin = new URL(page.url()).origin;

@@ -264,6 +264,80 @@ p { margin: 0 0 1rem; }
 .portfolio-card__body .evidence-inline { margin: .2rem 0 1.2rem; display: grid; gap: .4rem; }
 .portfolio-detail-note { max-width: 78ch; margin: 1.25rem auto 0; text-align: center; color: var(--muted); font-size: .88rem; }
 
+
+/* WEB-UX-006: proof-before-platform Work and human Approach */
+.portfolio-card--proof .portfolio-card__body { gap: .15rem; }
+.portfolio-card__context {
+  display: grid;
+  gap: .75rem;
+  width: 100%;
+  margin: .3rem 0 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+.portfolio-card__context p {
+  margin: 0;
+  color: var(--muted);
+  font-size: .9rem;
+  line-height: 1.5;
+}
+.portfolio-card__context strong {
+  display: block;
+  margin-bottom: .18rem;
+  color: var(--text);
+  font-size: .74rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.portfolio-card__boundary {
+  padding-left: .8rem;
+  border-left: 3px solid var(--interactive);
+}
+.text-link--light { color: #dbe5e7; }
+.text-link--light:hover { color: white; }
+.technology-compact {
+  display: grid;
+  grid-template-columns: repeat(5,minmax(0,1fr));
+  gap: 1px;
+  border: 1px solid var(--border);
+  background: var(--border);
+}
+.technology-compact__item {
+  min-width: 0;
+  display: flex;
+  gap: .7rem;
+  align-items: flex-start;
+  padding: .9rem;
+  background: color-mix(in srgb, var(--surface-warm) 74%, white);
+}
+.technology-compact__item img {
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
+  opacity: .76;
+}
+.technology-compact__item h3 {
+  margin: .05rem 0 .2rem;
+  font-size: .92rem;
+}
+.technology-compact__item p {
+  margin: 0;
+  color: var(--muted);
+  font-size: .8rem;
+  line-height: 1.4;
+}
+.project-quick-boundary {
+  max-width: 62ch;
+  margin: 1rem 0 0;
+  padding-left: .9rem;
+  border-left: 3px solid var(--interactive);
+  color: var(--muted);
+  font-size: .9rem;
+}
+.project-quick-boundary strong { color: var(--text); }
+.approach-expectations .card { box-shadow: none; }
+.approach-expectations .card h3 { font-size: clamp(1.25rem,2vw,1.55rem); }
 .technology-grid { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: .8rem; }
 .technology-card { min-height: 132px; display: flex; gap: .9rem; align-items: flex-start; padding: 1rem; border: 1px solid var(--border); border-radius: var(--radius-md); background: rgb(255 255 255 / .7); }
 .technology-card img { flex: 0 0 40px; width: 40px; height: 40px; opacity: .82; }
@@ -519,7 +593,7 @@ p { margin: 0 0 1rem; }
 .meta-note { border-left: 3px solid var(--interactive); padding: .9rem 1rem; background: var(--surface-warm); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
 
 @media (max-width: 1000px) {
-  .technology-grid { grid-template-columns: repeat(3,minmax(0,1fr)); }
+  .technology-grid, .technology-compact { grid-template-columns: repeat(3,minmax(0,1fr)); }
   .portfolio-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .portfolio-card:last-child { grid-column: 1 / -1; max-width: 620px; justify-self: center; width: 100%; }
   .evidence-grid, .project-process, .outcome-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
@@ -554,7 +628,7 @@ p { margin: 0 0 1rem; }
   .solution-grid { grid-template-columns: 1fr; }
   .solution-card { min-height: 0; }
   .container { width: min(calc(100% - 2rem), var(--max)); }
-  .grid--3,.grid--2,.flow,.technology-grid,.portfolio-grid,.evidence-grid,.project-process,.outcome-grid,.project-visual-grid,.related-work-grid,.connect-actions { grid-template-columns: 1fr; }
+  .grid--3,.grid--2,.flow,.technology-grid,.technology-compact,.portfolio-grid,.evidence-grid,.project-process,.outcome-grid,.project-visual-grid,.related-work-grid,.connect-actions { grid-template-columns: 1fr; }
   .portfolio-card:last-child { grid-column: auto; max-width: none; }
   .section { padding: 3.25rem 0; }
   .hero--editorial { padding: 3.4rem 0; }

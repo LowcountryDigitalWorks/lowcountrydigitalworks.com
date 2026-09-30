@@ -2,19 +2,83 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import approach from '../data/approach.json';
 ---
-<BaseLayout title="Approach" description="A practical Assess, Improve or Build, Handoff or Care approach focused on maintainability, ownership, accessibility, security, and clear documentation.">
-  <section class="page-hero"><div class="container readable"><p class="eyebrow">{approach.hero.eyebrow}</p><h1>{approach.hero.title}</h1><p class="lede">{approach.hero.lede}</p></div></section>
-
-  <section class="section"><div class="container"><div class="flow">{approach.steps.map((step) => <article class="flow__step"><h2>{step.title}</h2><p>{step.description}</p></article>)}</div></div></section>
-
-  <section class="section section--warm">
-    <div class="container">
-      <div class="section-heading"><p class="eyebrow">{approach.beforeBuild.eyebrow}</p><h2>{approach.beforeBuild.title}</h2></div>
-      <div class="grid grid--2">{approach.beforeBuild.items.map((item) => <article class="card"><h3>{item.title}</h3><p>{item.description}</p></article>)}</div>
+<BaseLayout title="Approach" description="A practical Assess, Improve or Build, Handoff or Care approach focused on understanding the problem, using proportionate technology, clear ownership, and clean handoff.">
+  <section class="page-hero page-hero--warm">
+    <div class="container readable">
+      <p class="eyebrow">{approach.hero.eyebrow}</p>
+      <h1>{approach.hero.title}</h1>
+      <p class="lede">{approach.hero.lede}</p>
+      <div class="actions">
+        <a class="button" href="/connect/">Tell Eddie what is not working</a>
+        <a class="text-link" href="#stages">See the three stages ↓</a>
+      </div>
     </div>
   </section>
 
-  <section class="section section--navy"><div class="container principle"><div><p class="eyebrow">{approach.principles.eyebrow}</p><h2>{approach.principles.title}</h2></div><ul class="principle__list">{approach.principles.items.map((item) => <li>{item}</li>)}</ul></div></section>
+  <section class="section" id="stages">
+    <div class="container">
+      <div class="section-heading">
+        <p class="eyebrow">From first conversation to finish</p>
+        <h2>Three stages, with the problem—not the platform—driving the work.</h2>
+      </div>
+      <div class="flow approach-flow">
+        {approach.steps.map((step) => <article class="flow__step"><h3>{step.title}</h3><p>{step.description}</p></article>)}
+      </div>
+    </div>
+  </section>
 
-  <section class="section"><div class="container readable"><p class="eyebrow">{approach.handoff.eyebrow}</p><h2>{approach.handoff.title}</h2><p class="lede">{approach.handoff.body}</p><div class="actions"><a class="button" href="/connect/">Discuss a project</a></div></div></section>
+  <section class="section section--warm">
+    <div class="container">
+      <div class="section-heading">
+        <p class="eyebrow">{approach.expect.eyebrow}</p>
+        <h2>{approach.expect.title}</h2>
+      </div>
+      <div class="grid grid--2 approach-expectations">
+        {approach.expect.items.map((item) => <article class="card"><h3>{item.title}</h3><p>{item.description}</p></article>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-heading">
+        <p class="eyebrow">{approach.beforeBuild.eyebrow}</p>
+        <h2>{approach.beforeBuild.title}</h2>
+      </div>
+      <div class="editorial-list">
+        {approach.beforeBuild.items.map((item, index) => (
+          <article class="editorial-row">
+            <p class="editorial-row__number">{String(index + 1).padStart(2, '0')}</p>
+            <div><h3>{item.title}</h3><p>{item.description}</p></div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--navy">
+    <div class="container principle">
+      <div><p class="eyebrow">{approach.principles.eyebrow}</p><h2>{approach.principles.title}</h2></div>
+      <ul class="principle__list">{approach.principles.items.map((item) => <li>{item}</li>)}</ul>
+    </div>
+  </section>
+
+  <section class="section section--warm">
+    <div class="container final-cta">
+      <div>
+        <p class="eyebrow">{approach.handoff.eyebrow}</p>
+        <h2>{approach.handoff.title}</h2>
+        <p class="lede">{approach.handoff.body}</p>
+      </div>
+      <div>
+        <p class="eyebrow">Start where you are</p>
+        <p>You do not need to turn the problem into a technical specification before reaching out.</p>
+        <div class="actions">
+          <a class="button" href="/connect/">Talk it through with Eddie</a>
+          <a class="text-link" href="/services/">Find a service →</a>
+          <a class="text-link" href="/work/">See the evidence →</a>
+        </div>
+      </div>
+    </div>
+  </section>
 </BaseLayout>

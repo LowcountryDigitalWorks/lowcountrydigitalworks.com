@@ -2,20 +2,30 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import work from '../data/work.json';
 ---
-<BaseLayout title="Work" description="Selected Lowcountry Digital Works systems and products with clear status, evidence, and boundaries.">
-  <section class="page-hero">
+<BaseLayout title="Work" description="Selected Lowcountry Digital Works systems with plain-language context, current maturity, real evidence, and explicit boundaries.">
+  <section class="page-hero page-hero--warm">
     <div class="container readable">
       <p class="eyebrow">{work.hero.eyebrow}</p>
       <h1>{work.hero.title}</h1>
       <p class="lede">{work.hero.lede}</p>
+      <div class="actions">
+        <a class="button" href="#examples">See the examples</a>
+        <a class="text-link" href="/connect/">Talk through a similar problem →</a>
+      </div>
     </div>
   </section>
 
-  <section class="section">
+  <section class="section" id="examples">
     <div class="container">
+      <div class="section-heading">
+        <p class="eyebrow">Three different kinds of proof</p>
+        <h2>Understand the problem first. Then inspect the evidence.</h2>
+        <p class="lede">The overview stays intentionally plain-language. Each detail page carries the deeper architecture, screenshots, maturity, FAQs, and explicit non-claims.</p>
+      </div>
+
       <div class="portfolio-grid portfolio-grid--work">
         {work.projects.map((project) => (
-          <article class="portfolio-card portfolio-card--work">
+          <article class="portfolio-card portfolio-card--work portfolio-card--proof">
             {project.thumbnail && (
               <a class="portfolio-card__visual" href={`/work/${project.slug}/`} aria-label={`View ${project.name} project details`}>
                 <img
@@ -33,33 +43,18 @@ import work from '../data/work.json';
                 <span>{project.type}</span>
               </div>
               <h2>{project.name}</h2>
-              <p class="lede lede--compact">{project.purpose}</p>
-              <ul class="evidence-inline">{project.evidence.slice(0, 2).map((item) => <li>{item}</li>)}</ul>
-              <a class="text-link" href={`/work/${project.slug}/`}>Purpose, evidence & boundaries →</a>
+              <p class="lede lede--compact">{project.homeSummary ?? project.purpose}</p>
+              <div class="portfolio-card__context">
+                <p><strong>Why this matters</strong>{project.workWhy}</p>
+                <p class="portfolio-card__boundary"><strong>Current boundary</strong>{project.cardBoundary}</p>
+              </div>
+              <a class="text-link" href={`/work/${project.slug}/`}>See evidence, maturity & boundaries →</a>
             </div>
           </article>
         ))}
       </div>
-      <p class="portfolio-detail-note">Each project detail page separates current capability, maturity, boundaries, evidence, and what is deliberately not being claimed.</p>
-    </div>
-  </section>
 
-  <section class="section section--warm">
-    <div class="container">
-      <div class="section-heading">
-        <p class="eyebrow">{work.technology.eyebrow}</p>
-        <h2>{work.technology.title}</h2>
-        <p class="lede">{work.technology.lede}</p>
-      </div>
-      <div class="technology-grid">
-        {work.technology.items.map((technology) => (
-          <article class="technology-card">
-            <img src={technology.icon} alt="" width="40" height="40" loading="lazy" />
-            <div><h3>{technology.name}</h3><p>{technology.description}</p></div>
-          </article>
-        ))}
-      </div>
-      <p class="trademark-note">{work.technology.trademarkNote}</p>
+      <p class="portfolio-detail-note">These are LDW-owned examples of method and product development. They are not presented as completed customer case studies.</p>
     </div>
   </section>
 
@@ -68,7 +63,29 @@ import work from '../data/work.json';
       <p class="eyebrow">{work.principle.eyebrow}</p>
       <h2>{work.principle.title}</h2>
       <p class="lede">{work.principle.body}</p>
-      <div class="actions"><a class="button button--secondary" href="/connect/">Discuss a project</a></div>
+      <div class="actions">
+        <a class="button button--secondary" href="/approach/">See how LDW approaches the work</a>
+        <a class="text-link text-link--light" href="/connect/">Discuss a similar problem →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--warm work-tools">
+    <div class="container">
+      <div class="section-heading">
+        <p class="eyebrow">{work.technology.eyebrow}</p>
+        <h2>{work.technology.title}</h2>
+        <p class="lede">{work.technology.lede}</p>
+      </div>
+      <div class="technology-compact" aria-label="Examples of tools used in LDW delivery">
+        {work.technology.items.map((technology) => (
+          <article class="technology-compact__item">
+            <img src={technology.icon} alt="" width="32" height="32" loading="lazy" />
+            <div><h3>{technology.name}</h3><p>{technology.description}</p></div>
+          </article>
+        ))}
+      </div>
+      <p class="trademark-note">{work.technology.trademarkNote}</p>
     </div>
   </section>
 </BaseLayout>
