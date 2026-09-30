@@ -69,6 +69,8 @@
       "Documented change history and owner-approved consequential changes"
     ],
     "ownership": "Website Care does not create a 24x7 support promise or transfer ownership of customer accounts to LDW.",
+    "guideHref": "/guides/website-maintenance-after-launch/",
+    "guideLabel": "Read what website maintenance should actually check",
     "cta": "Discuss Website Care",
     "faqs": [
       {

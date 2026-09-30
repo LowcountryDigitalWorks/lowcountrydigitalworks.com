@@ -16,6 +16,7 @@ const routes = [
   '/approach/',
   '/about/',
   '/guides/',
+  '/guides/website-maintenance-after-launch/',
   '/guides/website-ownership-handoff/',
   '/contact/',
   '/connect/',
@@ -88,6 +89,8 @@ test('services page presents four problem-led service families and detail routes
   await page.goto('/services/website-care/');
   await expect(page.locator('.outcome-card')).toHaveCount(3);
   await expect(page.getByRole('heading', { name: 'A healthier site over time' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Read what website maintenance should actually check →' }))
+    .toHaveAttribute('href', '/guides/website-maintenance-after-launch/');
   await expect(page.getByRole('link', { name: 'View Website Quality Toolkit source' })).toHaveAttribute('href', 'https://github.com/LowcountryDigitalWorks/website-quality-toolkit');
 
   await page.goto('/services/websites/');
@@ -175,10 +178,12 @@ test('Approach matches the accepted assess, improve-or-build, handoff-or-care me
   await expect(page.getByRole('link', { name: 'Find a service →' })).toHaveAttribute('href', '/services/');
   await expect(page.locator('a[href="/contact/"]')).toHaveCount(0);
 });
-test('Guides pilot is first-hand, source-linked, and avoids blog or customer-proof inflation', async ({ page }) => {
+test('Guides remain small, first-hand, source-linked, and publicity-safe', async ({ page }) => {
   await page.goto('/guides/');
   await expect(page.getByRole('heading', { level: 1, name: 'Practical guidance for owning and operating your digital systems.' })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Read the guide →' })).toHaveAttribute('href', '/guides/website-ownership-handoff/');
+  await expect(page.locator('.guide-card')).toHaveCount(2);
+  await expect(page.getByRole('link', { name: 'Read the ownership guide →' })).toHaveAttribute('href', '/guides/website-ownership-handoff/');
+  await expect(page.getByRole('link', { name: 'Read the maintenance guide →' })).toHaveAttribute('href', '/guides/website-maintenance-after-launch/');
   await expect(page.getByText('No publishing treadmill.')).toBeVisible();
   await expect(page.locator('#main-content')).not.toContainText('Donovan Family Dentistry');
   await expect(page.locator('#main-content')).not.toContainText('East Coast Foam');
@@ -194,14 +199,32 @@ test('Guides pilot is first-hand, source-linked, and avoids blog or customer-pro
   await expect(page.getByText('Named access is easier to audit, reduce, and remove than a shared password.')).toBeVisible();
   await expect(page.getByText('A handoff should transfer operating context, not just send a ZIP file.')).toBeVisible();
   await expect(page.locator('.guide-source-list a')).toHaveCount(5);
-  await expect(page.locator('a[href="https://www.icann.org/registrants"]')).toBeVisible();
-  await expect(page.locator('a[href="https://support.google.com/webmasters/answer/7687615?hl=en"]')).toBeVisible();
-  await expect(page.locator('a[href="https://support.google.com/business/answer/3403100?hl=en"]')).toBeVisible();
-  await expect(page.locator('a[href*="docs.github.com/en/organizations/managing-user-access"]')).toBeVisible();
-  await expect(page.locator('a[href="https://developers.cloudflare.com/fundamentals/manage-members/"]')).toBeVisible();
   await expect(page.getByRole('link', { name: 'Digital Ownership service' })).toHaveAttribute('href', '/services/digital-ownership-platform-administration/');
-  await expect(page.getByRole('link', { name: 'See the approach' })).toHaveAttribute('href', '/approach/');
-  await expect(page.getByRole('link', { name: 'Talk through your situation' })).toHaveAttribute('href', '/connect/');
+  await expect(page.locator('#main-content')).not.toContainText('Donovan Family Dentistry');
+  await expect(page.locator('#main-content')).not.toContainText('East Coast Foam');
+  await expect(page.locator('#main-content form')).toHaveCount(0);
+
+  await page.goto('/guides/website-maintenance-after-launch/');
+  await expect(page.getByRole('heading', { level: 1, name: /Website maintenance after launch: what should actually be checked/i })).toBeVisible();
+  await expect(page.locator('article[itemtype="https://schema.org/Article"]')).toHaveCount(1);
+  await expect(page.locator('article [itemprop="author"][itemtype="https://schema.org/Person"] [itemprop="name"]')).toHaveText('Eddie Gugino');
+  await expect(page.locator('time[itemprop="dateModified"]')).toHaveAttribute('datetime', '2026-09-29');
+  await expect(page.locator('[itemprop="publisher"][itemid="https://lowcountrydigitalworks.com/#organization"]')).toHaveCount(1);
+  await expect(page.getByText('Maintain the business path and the actual stack—not a generic checklist.')).toBeVisible();
+  await expect(page.getByText('no tool alone can determine whether a site meets accessibility standards', { exact: false })).toBeVisible();
+  await expect(page.getByText('There is no single honest rule that every business website needs the same daily, weekly, monthly, and quarterly checklist.', { exact: false })).toBeVisible();
+  await expect(page.getByText('Static / low-runtime')).toBeVisible();
+  await expect(page.getByText('CMS / plugin-heavy')).toBeVisible();
+  await expect(page.locator('.guide-source-list a')).toHaveCount(6);
+  await expect(page.locator('a[href="https://www.w3.org/WAI/standards-guidelines/wcag/"]')).toBeVisible();
+  await expect(page.locator('a[href="https://www.w3.org/WAI/test-evaluate/"]')).toBeVisible();
+  await expect(page.locator('a[href="https://developers.google.com/search/docs/appearance/page-experience"]')).toBeVisible();
+  await expect(page.locator('a[href="https://developers.google.com/search/docs/appearance/core-web-vitals"]')).toBeVisible();
+  await expect(page.locator('a[href="https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap"]')).toBeVisible();
+  await expect(page.locator('a[href="https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls"]')).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Website Care service' })).toHaveAttribute('href', '/services/website-care/');
+  await expect(page.getByRole('link', { name: 'Ownership & handoff guide' })).toHaveAttribute('href', '/guides/website-ownership-handoff/');
+  await expect(page.getByRole('link', { name: 'Talk through your site' })).toHaveAttribute('href', '/connect/');
   await expect(page.locator('#main-content')).not.toContainText('Donovan Family Dentistry');
   await expect(page.locator('#main-content')).not.toContainText('East Coast Foam');
   await expect(page.locator('#main-content form')).toHaveCount(0);
@@ -452,6 +475,7 @@ test('sitemap includes expanded public routes and excludes Secure Share', async 
   expect(xml).toContain('https://lowcountrydigitalworks.com/connect/');
   expect(xml).not.toContain('https://lowcountrydigitalworks.com/contact/');
   expect(xml).toContain('https://lowcountrydigitalworks.com/guides/');
+  expect(xml).toContain('https://lowcountrydigitalworks.com/guides/website-maintenance-after-launch/');
   expect(xml).toContain('https://lowcountrydigitalworks.com/guides/website-ownership-handoff/');
   expect(xml).toContain('https://lowcountrydigitalworks.com/services/website-care/');
   expect(xml).toContain('https://lowcountrydigitalworks.com/work/gas-engine/');

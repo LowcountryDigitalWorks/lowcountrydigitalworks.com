@@ -1,0 +1,260 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="Website Maintenance After Launch"
+  description="A practical small-business guide to post-launch website maintenance: critical journeys, content, accessibility, performance, search integrity, security, recovery, access, renewals, and stack-appropriate care."
+>
+  <nav class="breadcrumbs" aria-label="Breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+    <div class="container">
+      <ol>
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a itemprop="item" href="/guides/"><span itemprop="name">Guides</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <li aria-current="page" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <span itemprop="name">Website Maintenance After Launch</span>
+          <meta itemprop="position" content="2" />
+        </li>
+      </ol>
+    </div>
+  </nav>
+
+  <article class="guide-article" itemscope itemtype="https://schema.org/Article">
+    <section class="page-hero page-hero--warm">
+      <div class="container readable">
+        <p class="eyebrow">Guide · Website care</p>
+        <h1 itemprop="headline">Website maintenance after launch: what should actually be checked?</h1>
+        <p class="lede" itemprop="description">Maintenance is not the same thing as “update some plugins every month.” The useful job is to keep the business-critical paths working, preserve accessibility and search integrity, manage the actual stack, and leave an evidence trail when something needs attention.</p>
+        <div class="guide-meta">
+          <span itemprop="author" itemscope itemtype="https://schema.org/Person">
+            <span itemprop="name">Eddie Gugino</span> · Founder, Lowcountry Digital Works
+          </span>
+          <span>Reviewed <time itemprop="dateModified" datetime="2026-09-29">September 29, 2026</time></span>
+          <meta itemprop="datePublished" content="2026-09-29" />
+          <span itemprop="publisher" itemscope itemtype="https://schema.org/Organization" itemid="https://lowcountrydigitalworks.com/#organization">
+            <meta itemprop="name" content="Lowcountry Digital Works" />
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container guide-layout">
+        <aside class="guide-toc" aria-label="On this page">
+          <p class="eyebrow">On this page</p>
+          <nav>
+            <a href="#short-version">The short version</a>
+            <a href="#business-path">Start with the business path</a>
+            <a href="#content">Keep public facts current</a>
+            <a href="#accessibility">Accessibility</a>
+            <a href="#performance">Performance</a>
+            <a href="#search">Search integrity</a>
+            <a href="#security">Security, dependencies & access</a>
+            <a href="#recovery">Recovery & backups</a>
+            <a href="#stack">Maintenance depends on the stack</a>
+            <a href="#cadence">Choose cadence by risk</a>
+            <a href="#report">What the owner should receive</a>
+            <a href="#sources">Source notes</a>
+          </nav>
+        </aside>
+
+        <div class="guide-body">
+          <section class="guide-section" id="short-version">
+            <p class="eyebrow">The short version</p>
+            <h2>Maintain the business path and the actual stack—not a generic checklist.</h2>
+            <p>A healthy maintenance routine starts with the things the business depends on: important pages load, phone/email/form/booking paths still work, public information is accurate, changes do not create accessibility or performance regressions, search signals remain coherent, and the people responsible for hosting, recovery, renewals, and integrations are still clear.</p>
+            <div class="guide-callout">
+              <strong>A useful test:</strong>
+              <p>Could you explain what was checked this cycle, what evidence was reviewed, what changed, what failed, and what decision—if any—the business owner needs to make?</p>
+            </div>
+            <p>That routine should be proportionate. A static information site, a WordPress site with plugins, and a transactional application do not have the same maintenance surface.</p>
+          </section>
+
+          <section class="guide-section" id="business-path">
+            <p class="eyebrow">1 · Business path</p>
+            <h2>Check the thing the visitor is actually supposed to do.</h2>
+            <p>A website can return HTTP 200 and still fail the business. Maintenance should test the critical journey, not only whether the homepage loads.</p>
+            <ul class="check-list guide-check-list">
+              <li>Important landing and service pages resolve without visible errors.</li>
+              <li>Phone, email, text, booking, quote, checkout, login, or other primary actions work where they apply.</li>
+              <li>Forms reach the intended destination and confirmation behavior still makes sense.</li>
+              <li>Mobile visitors can complete the same primary task without horizontal overflow, hidden controls, or unusable navigation.</li>
+              <li>Major third-party integrations still connect to the intended authoritative system.</li>
+            </ul>
+            <p>The exact journey should be named in the maintenance scope. “Check the site” is too vague to prove that enquiries, bookings, payments, or support requests still reach the right place.</p>
+          </section>
+
+          <section class="guide-section" id="content">
+            <p class="eyebrow">2 · Public facts</p>
+            <h2>Stale information is a maintenance defect even when the code is healthy.</h2>
+            <p>Review the facts that can change outside the codebase: services, owner/staff information, phone/email, locations or hours where applicable, published pricing or offers, policies, downloadable files, screenshots, project maturity, and claims about what the business currently provides.</p>
+            <p>Remove or qualify evidence that has become outdated. A site should not preserve an old claim merely because the template still renders it correctly.</p>
+          </section>
+
+          <section class="guide-section" id="accessibility">
+            <p class="eyebrow">3 · Accessibility</p>
+            <h2>Use automation to catch regressions, then use human judgment for what automation cannot decide.</h2>
+            <p>Automated checks are valuable for repeatable issues such as missing labels, some contrast problems, landmark errors, and certain ARIA defects. They are not proof that a site conforms to WCAG or works well for every user.</p>
+            <p>W3C's accessibility-evaluation guidance explicitly says no tool alone can determine whether a site meets accessibility standards. A maintenance routine should therefore combine automated regression checks with human review appropriate to the site: keyboard operation, visible focus, headings and landmarks, readable content, zoom/responsive behavior, alternative text/context, form errors, and real task completion.</p>
+            <div class="card card--accent">
+              <p class="card__kicker">LDW operating boundary</p>
+              <p>A clean scanner result is evidence, not a conformance certificate. New content, design changes, embeds, forms, and navigation changes can create barriers even when the underlying framework did not change.</p>
+            </div>
+          </section>
+
+          <section class="guide-section" id="performance">
+            <p class="eyebrow">4 · Performance</p>
+            <h2>Watch user experience and regressions—not a vanity score.</h2>
+            <p>Google's current Core Web Vitals measure loading, responsiveness, and visual stability. Its “good” thresholds are LCP within 2.5 seconds, INP below 200 milliseconds, and CLS below 0.1.</p>
+            <p>Those metrics are useful evidence, especially when real-user data is available, but maintenance should also ask what changed: a new hero image, font, script, embed, tag, API call, or layout change may explain a regression. Lab tools such as Lighthouse are useful diagnostics; a perfect score is not the business objective.</p>
+            <p>Google's broader page-experience guidance likewise says site owners should not focus on only one or two signals. Secure delivery, mobile usability, intrusive experiences, and the clarity of the main content all matter to the overall experience.</p>
+          </section>
+
+          <section class="guide-section" id="search">
+            <p class="eyebrow">5 · Search integrity</p>
+            <h2>Preserve the technical signals that tell search engines which pages exist and which URLs matter.</h2>
+            <ul class="check-list guide-check-list">
+              <li>Important pages remain crawlable and are not accidentally marked <code>noindex</code>.</li>
+              <li>Canonical URLs still point to the intended production pages.</li>
+              <li>The sitemap contains the preferred canonical URLs and does not accumulate retired/private utility routes.</li>
+              <li>Internal links do not create avoidable 404s or stale destinations.</li>
+              <li>When URLs change, redirects and internal links are updated deliberately.</li>
+              <li>Search Console indexing/crawl evidence is reviewed when the business has the property and the data is available.</li>
+            </ul>
+            <p>Google treats sitemaps as a way to suggest canonical URLs and recommends including the URLs you actually want to appear in Search. Redirects are the stronger signal when a duplicate or old URL is being retired.</p>
+          </section>
+
+          <section class="guide-section" id="security">
+            <p class="eyebrow">6 · Security & access</p>
+            <h2>Maintain the software and the administrative surface that actually exist.</h2>
+            <p>For a code-based site, that can include dependency advisories, supported runtime/framework versions, build/deploy integrity, security headers, TLS, public-storage boundaries, and secret scanning. For a CMS, the maintenance surface may additionally include core, theme, plugin, and admin-user updates.</p>
+            <p>Account hygiene belongs here too. Review named administrators and provider access, remove stale users when authority is clear, preserve customer-controlled recovery/MFA, and avoid putting passwords, API keys, private keys, or recovery codes into maintenance reports.</p>
+          </section>
+
+          <section class="guide-section" id="recovery">
+            <p class="eyebrow">7 · Recovery</p>
+            <h2>Backup and recovery should match what could actually be lost.</h2>
+            <p>A CMS or application with a database may need scheduled data/file backups, retention, restore testing, and a documented recovery objective. A static site with repository-controlled source and reproducible deployment may have a different recovery model: source history, build configuration, hosting state, DNS, environment relationships, and the ability to redeploy a known-good version can matter more than a database backup that does not exist.</p>
+            <p>The maintenance question is therefore: <strong>Can the current production state be recovered or deliberately rebuilt after a bad change, account loss, provider failure, or content/data incident?</strong></p>
+          </section>
+
+          <section class="guide-section" id="stack">
+            <p class="eyebrow">8 · Stack fit</p>
+            <h2>Different sites need different maintenance.</h2>
+            <div class="grid grid--2">
+              <article class="card">
+                <p class="card__kicker">Static / low-runtime</p>
+                <h3>Fewer moving server-side parts does not mean “no maintenance.”</h3>
+                <ul class="card__list">
+                  <li>critical journeys and content</li>
+                  <li>dependency/build/deploy hygiene</li>
+                  <li>accessibility and mobile</li>
+                  <li>performance and asset growth</li>
+                  <li>canonicals, sitemap, links and redirects</li>
+                  <li>domain/hosting/account ownership</li>
+                  <li>known-good redeploy/recovery path</li>
+                </ul>
+              </article>
+              <article class="card">
+                <p class="card__kicker">CMS / plugin-heavy</p>
+                <h3>Maintenance includes compatibility and data recovery.</h3>
+                <ul class="card__list">
+                  <li>core/plugin/theme updates</li>
+                  <li>compatibility testing around risky changes</li>
+                  <li>database/file backups and restore confidence</li>
+                  <li>admin-user review</li>
+                  <li>plugin/vendor security advisories</li>
+                  <li>staging/rollback where appropriate</li>
+                  <li>the same journey, content, accessibility and search checks</li>
+                </ul>
+              </article>
+              <article class="card">
+                <p class="card__kicker">Lead-processing / transactional</p>
+                <h3>The business workflow raises the operational stakes.</h3>
+                <ul class="card__list">
+                  <li>real form/booking/checkout/login smoke tests</li>
+                  <li>delivery/webhook/integration verification</li>
+                  <li>application/API/log review where relevant</li>
+                  <li>data backup/recovery appropriate to the system</li>
+                  <li>closer monitoring when failure directly loses revenue or service</li>
+                </ul>
+              </article>
+              <article class="card">
+                <p class="card__kicker">Hosted builder</p>
+                <h3>The vendor may own more of the patching, but the business still owns the outcome.</h3>
+                <ul class="card__list">
+                  <li>critical journeys and integrations</li>
+                  <li>content accuracy</li>
+                  <li>accessibility and performance</li>
+                  <li>search/indexing health</li>
+                  <li>account ownership, renewals and recovery</li>
+                  <li>export/transition limits understood before they become urgent</li>
+                </ul>
+              </article>
+            </div>
+          </section>
+
+          <section class="guide-section" id="cadence">
+            <p class="eyebrow">9 · Cadence</p>
+            <h2>Choose frequency from business risk, not a universal calendar.</h2>
+            <p>There is no single honest rule that every business website needs the same daily, weekly, monthly, and quarterly checklist. Frequency should reflect how often the site changes, how much revenue/service depends on it, whether it processes data or transactions, how many third-party integrations exist, and how quickly the business needs to detect and recover from failure.</p>
+            <p>A small stable informational site may justify a lighter scheduled review plus automated platform alerts. A booking, ecommerce, authenticated, or high-lead-volume system may justify continuous monitoring and more frequent real workflow checks. Critical security updates should not wait for the next arbitrary calendar date.</p>
+          </section>
+
+          <section class="guide-section" id="report">
+            <p class="eyebrow">10 · Owner-facing evidence</p>
+            <h2>A maintenance report should make responsibility clearer, not bury the owner in scanner output.</h2>
+            <div class="guide-control-list">
+              <article class="guide-control-item">
+                <div><h3>What was checked</h3><p>Name the important routes, journeys, systems, accounts, or evidence reviewed.</p></div>
+                <p><strong>Why it matters:</strong> The owner can tell whether the scope actually covered the parts the business relies on.</p>
+              </article>
+              <article class="guide-control-item">
+                <div><h3>What changed</h3><p>Record content edits, dependency/platform updates, configuration changes, deployments, redirects, access changes, or other material work.</p></div>
+                <p><strong>Why it matters:</strong> Maintenance becomes a change history rather than invisible provider activity.</p>
+              </article>
+              <article class="guide-control-item">
+                <div><h3>What needs attention</h3><p>Separate confirmed failures, risks, observations, and optional improvements instead of presenting every scanner finding as equally urgent.</p></div>
+                <p><strong>Why it matters:</strong> The business gets a usable priority signal.</p>
+              </article>
+              <article class="guide-control-item">
+                <div><h3>Owner decision / next review</h3><p>State any approval, budget, content, account, or vendor decision needed and what the next planned check is.</p></div>
+                <p><strong>Why it matters:</strong> Responsibility and follow-up remain explicit.</p>
+              </article>
+            </div>
+          </section>
+
+          <section class="guide-section guide-sources" id="sources">
+            <p class="eyebrow">Source notes</p>
+            <h2>Primary references behind the standards-specific parts of this guide.</h2>
+            <ul class="guide-source-list">
+              <li><a href="https://www.w3.org/WAI/standards-guidelines/wcag/">W3C WAI — WCAG 2 Overview</a>: current WCAG 2 standards and the recommendation to use the latest WCAG version.</li>
+              <li><a href="https://www.w3.org/WAI/test-evaluate/">W3C WAI — Evaluating Web Accessibility</a>: automated tools help, but knowledgeable human evaluation is still required.</li>
+              <li><a href="https://developers.google.com/search/docs/appearance/page-experience">Google Search Central — Page Experience</a>: overall page experience rather than a single metric.</li>
+              <li><a href="https://developers.google.com/search/docs/appearance/core-web-vitals">Google Search Central — Core Web Vitals</a>: LCP, INP, CLS and current good thresholds.</li>
+              <li><a href="https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap">Google Search Central — Build and submit a sitemap</a>: canonical/preferred URL and sitemap guidance.</li>
+              <li><a href="https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls">Google Search Central — Canonicalization</a>: canonical signals, sitemaps, and redirects for duplicate/retired URLs.</li>
+            </ul>
+            <p class="asset-gap-note">The maintenance cadence and stack-specific recommendations are LDW operating guidance, not claims that these standards require one universal schedule or care plan.</p>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--navy">
+      <div class="container final-cta final-cta--single">
+        <div>
+          <p class="eyebrow">How LDW applies this</p>
+          <h2>Website Care should preserve ownership while keeping the important paths healthy.</h2>
+          <p class="lede">A useful care plan is bounded around the real stack and business need. It can include scheduled checks and improvements without turning LDW into the permanent owner of customer accounts or promising a 24×7 response that was never agreed.</p>
+        </div>
+        <div class="actions">
+          <a class="button button--secondary" href="/services/website-care/">Website Care service</a>
+          <a class="button button--secondary" href="/guides/website-ownership-handoff/">Ownership & handoff guide</a>
+          <a class="button button--secondary" href="/connect/">Talk through your site</a>
+        </div>
+      </div>
+    </section>
+  </article>
+</BaseLayout>
