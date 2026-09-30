@@ -25,6 +25,7 @@ PUBLIC_ROUTES=[
  '/approach/',
  '/about/',
  '/guides/',
+ '/guides/website-maintenance-after-launch/',
  '/guides/website-ownership-handoff/',
  '/contact/',
  '/connect/',
@@ -39,7 +40,7 @@ REQUIRED=[
  'brand/logo/lowcountry-digital-works-logo-horizontal.svg','brand/logo/lowcountry-digital-works-logo-horizontal-white.svg',
  'brand/icons/favicon.svg','brand/social/social-card-1200x630.png','design/brand-production-validation.md','src/pages/index.astro','src/pages/services.astro',
  'src/pages/services/[slug].astro','src/pages/work.astro','src/pages/work/[slug].astro','src/pages/approach.astro','src/pages/about.astro',
- 'src/pages/contact.astro','src/pages/connect.astro','src/pages/privacy.astro','src/pages/share.astro','src/pages/guides/index.astro','src/pages/guides/website-ownership-handoff.astro','src/data/work.json','src/data/service-details.json',
+ 'src/pages/contact.astro','src/pages/connect.astro','src/pages/privacy.astro','src/pages/share.astro','src/pages/guides/index.astro','src/pages/guides/website-maintenance-after-launch.astro','src/pages/guides/website-ownership-handoff.astro','src/data/work.json','src/data/service-details.json',
  'public/eddie-gugino-lowcountry-digital-works.vcf','public/technology/github.svg','public/technology/cloudflare.svg','public/technology/astro.svg',
  'public/technology/typescript.svg','public/technology/python.svg','docs/technology-marks.md','public/_headers','public/robots.txt','public/sitemap.xml',
  'tests/worker-unit.mjs'
@@ -118,6 +119,25 @@ for required_guide_source in [
 if 'legal advice' not in guide_source: error('ownership/handoff guide must preserve operational-vs-legal boundary')
 if 'Donovan Family Dentistry' in guide_source or 'East Coast Foam' in guide_source:
  error('ownership/handoff guide must not publish gated customer names')
+
+maintenance_guide_source=(ROOT/'src/pages/guides/website-maintenance-after-launch.astro').read_text()
+for required_maintenance_source in [
+ 'https://www.w3.org/WAI/standards-guidelines/wcag/',
+ 'https://www.w3.org/WAI/test-evaluate/',
+ 'https://developers.google.com/search/docs/appearance/page-experience',
+ 'https://developers.google.com/search/docs/appearance/core-web-vitals',
+ 'https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap',
+ 'https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls',
+]:
+ if required_maintenance_source not in maintenance_guide_source: error(f'maintenance guide missing primary-source reference: {required_maintenance_source}')
+if 'no tool alone can determine' not in maintenance_guide_source.lower():
+ error('maintenance guide must preserve automated-accessibility-tool limitation')
+if 'There is no single honest rule' not in maintenance_guide_source:
+ error('maintenance guide must reject universal maintenance cadence claims')
+if 'Static / low-runtime' not in maintenance_guide_source or 'CMS / plugin-heavy' not in maintenance_guide_source:
+ error('maintenance guide must preserve static-vs-CMS distinction')
+if 'Donovan Family Dentistry' in maintenance_guide_source or 'East Coast Foam' in maintenance_guide_source:
+ error('maintenance guide must not publish gated customer names')
 
 class P(HTMLParser):
  def __init__(self):
