@@ -29,6 +29,7 @@ PUBLIC_ROUTES=[
  '/privacy/',
 ]
 WORKER_ROUTES=sorted(PUBLIC_ROUTES+['/share/','/share/continue'])
+SITEMAP_ROUTES=[route for route in PUBLIC_ROUTES if route!='/contact/']
 
 REQUIRED=[
  'README.md','CHANGELOG.md','SECURITY.md','package.json','astro.config.mjs','playwright.config.mjs','wrangler.jsonc','worker.js',
@@ -99,6 +100,10 @@ if 'https://x.com/LocoDW' not in site_implementation or 'https://www.facebook.co
  error('verified Facebook/X canonical links must remain in repository-controlled public content')
 if 'customer SaaS' not in (ROOT/'src/data/work.json').read_text():
  error('G.A.S. public boundary must explicitly reject customer SaaS framing')
+footer_source=(ROOT/'src/components/Footer.astro').read_text()
+if 'schema.org/ProfessionalService' in footer_source: error('deprecated ProfessionalService schema type must not be published')
+if 'itemtype="https://schema.org/Organization"' not in footer_source: error('footer must expose the LDW Organization entity')
+if 'itemid="https://lowcountrydigitalworks.com/#organization"' not in footer_source: error('footer Organization entity id missing')
 
 class P(HTMLParser):
  def __init__(self):
@@ -169,8 +174,9 @@ for icon in ['github.svg','cloudflare.svg','astro.svg','typescript.svg','python.
  if not (ROOT/'public'/'technology'/icon).read_text(errors='ignore').lstrip().startswith('<svg'): error(f'invalid technology SVG: {icon}')
 if 'https://lowcountrydigitalworks.com/sitemap.xml' not in robots: error('robots must declare production sitemap')
 if 'Disallow: /share' in robots: error('Secure Share should rely on page noindex metadata, not robots.txt blocking')
-for route in PUBLIC_ROUTES:
+for route in SITEMAP_ROUTES:
  if f'https://lowcountrydigitalworks.com{route}' not in sitemap: error(f'sitemap missing {route}')
+if 'https://lowcountrydigitalworks.com/contact/' in sitemap: error('legacy Contact route must remain omitted from the canonical sitemap')
 if 'https://lowcountrydigitalworks.com/share' in sitemap: error('Secure Share must remain omitted from the marketing sitemap')
 
 for nav_file in ['src/components/Header.astro','src/components/Footer.astro']:
