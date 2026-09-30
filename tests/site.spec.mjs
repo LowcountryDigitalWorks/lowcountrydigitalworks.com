@@ -410,6 +410,17 @@ test('page metadata includes canonical Open Graph and Twitter fields', async ({ 
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://lowcountrydigitalworks.com/connect/');
 });
 
+test('robots preserves search and AI-answer visibility while opting out of training', async ({ page }) => {
+  const response = await page.request.get('/robots.txt');
+  expect(response.ok()).toBeTruthy();
+  const robots = await response.text();
+  expect(robots).toContain('Content-Signal: search=yes, ai-input=yes, ai-train=no, use=reference');
+  expect(robots).toContain('User-agent: GPTBot\nDisallow: /');
+  expect(robots).toContain('Sitemap: https://lowcountrydigitalworks.com/sitemap.xml');
+  expect(robots).not.toContain('User-agent: OAI-SearchBot\nDisallow:');
+  expect(robots).not.toContain('User-agent: Google-Extended\nDisallow:');
+});
+
 test('technology marks are served locally without third-party image requests', async ({ page }) => {
   await page.goto('/work/');
   const marks = page.locator('.technology-compact__item img');
