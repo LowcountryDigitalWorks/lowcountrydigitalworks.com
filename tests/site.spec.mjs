@@ -157,6 +157,8 @@ test('homepage presents three customer-first entry paths without exposing gated 
   const homeWorkThumbs = page.locator('.portfolio-grid--home .portfolio-card__visual img');
   await expect(homeWorkThumbs).toHaveCount(3);
   for (let i = 0; i < 3; i += 1) {
+    await expect(homeWorkThumbs.nth(i)).toHaveAttribute('loading', 'lazy');
+    await homeWorkThumbs.nth(i).scrollIntoViewIfNeeded();
     await expect.poll(async () => homeWorkThumbs.nth(i).evaluate((img) => [img.complete, img.naturalWidth, img.naturalHeight]))
       .toEqual([true, 720, 450]);
   }
