@@ -233,6 +233,35 @@ test('Guides remain small, first-hand, source-linked, and publicity-safe', async
 });
 
 
+test('guide educational diagrams stay semantic, bounded, and mobile-readable', async ({ page }) => {
+  await page.goto('/guides/website-ownership-handoff/');
+  const ownership = page.locator('[data-education-diagram="ownership"]');
+  await expect(ownership).toHaveCount(1);
+  await expect(ownership.locator('figcaption')).toContainText('Website ownership map');
+  await expect(ownership.locator('.ownership-node')).toHaveCount(6);
+  await expect(ownership.getByText('Your business', { exact: true })).toBeVisible();
+  await expect(ownership.getByText('Domain & DNS', { exact: true })).toBeVisible();
+  await expect(ownership.getByText('Recovery, MFA & billing', { exact: true })).toBeVisible();
+  await expect(ownership.locator('img, svg, canvas, script')).toHaveCount(0);
+
+  await page.goto('/guides/website-maintenance-after-launch/');
+  const care = page.locator('[data-education-diagram="care-loop"]');
+  await expect(care).toHaveCount(1);
+  await expect(care.locator('figcaption')).toContainText('Website care loop');
+  await expect(care.locator('.care-loop > li')).toHaveCount(7);
+  await expect(care.getByText('Observe', { exact: true })).toBeVisible();
+  await expect(care.getByText('Validate', { exact: true })).toBeVisible();
+  await expect(care.getByText('Repeat', { exact: true })).toBeVisible();
+  await expect(care.locator('img, svg, canvas, script')).toHaveCount(0);
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  for (const route of ['/guides/website-ownership-handoff/', '/guides/website-maintenance-after-launch/']) {
+    await page.goto(route);
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1);
+    expect(overflow, `${route} educational diagram should not overflow horizontally`).toBeFalsy();
+  }
+});
+
 test('work page shows three truthful evidence-oriented project entries', async ({ page }) => {
   await page.goto('/work/');
   await expect(page.getByRole('heading', { level: 1, name: 'See the problem, the proof, and the boundary.' })).toBeVisible();
