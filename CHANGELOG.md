@@ -26,7 +26,7 @@ All notable repository and website changes are recorded here.
 
 - WEB-DISCOVERY-001 adds no form processor, iframe, third-party script, CRM automation, analytics, storage, new dependency, or recurring cost to the LDW website; SuiteDash remains the authoritative raw-intake system.
 - WEB-LEGAL-001 preserves the existing no-nonessential-cookie/no-behavioral-tracking posture and does not add a cookie banner, CMP, analytics, advertising pixel, database, auth, public form processor, or payment collection.
-- Public legal copy remains a review candidate until owner approval; no DNS, email, account, billing, or provider changes are part of the change.
+- WEB-LEGAL-001 public legal copy was owner-approved and merged; it introduced no DNS, email, account, billing, or provider changes.
 - The cache change does not alter HTML caching, CSP/security headers, Worker routing, Secure Share, Cloudflare-managed `/cdn-cgi/*` resources, DNS, or email configuration.
 - Unhashed image URLs intentionally do not use `immutable`; same-path replacements may remain cached for at most 24 hours.
 - New recurring cost: **$0**.
