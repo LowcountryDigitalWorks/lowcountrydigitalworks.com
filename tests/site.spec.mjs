@@ -408,7 +408,7 @@ test('legal and accessibility surfaces preserve narrow public-site boundaries', 
   await expect(page.getByRole('heading', { level: 1, name: 'Accessibility Statement' })).toBeVisible();
   await expect(page.getByText('targets WCAG 2.2 Level AA where applicable', { exact: false })).toBeVisible();
   await expect(page.getByText('not a guarantee', { exact: false })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'eddie@lowcountrydigitalworks.com' })).toHaveAttribute('href', 'mailto:eddie@lowcountrydigitalworks.com');
+  await expect(page.locator('#main-content').getByRole('link', { name: 'eddie@lowcountrydigitalworks.com' })).toHaveAttribute('href', 'mailto:eddie@lowcountrydigitalworks.com');
 
   await page.goto('/terms/');
   await expect(page.getByRole('heading', { level: 1, name: 'Website Terms' })).toBeVisible();
