@@ -380,6 +380,16 @@ test('Connect is a mobile-first stable contact destination with accessible conta
   await expect(discovery.getByRole('link', { name: 'Read the LDW Privacy Notice.' })).toHaveAttribute('href', '/privacy/');
   await expect(discovery.getByText('Do not submit passwords', { exact: false })).toBeVisible();
   await expect(discovery.getByText('not a quote, contract, or commitment', { exact: false })).toBeVisible();
+
+  const disclosurePrecedesCta = await discovery.evaluate((section) => {
+    const disclosure = section.querySelector('.connect-discovery__handoff');
+    const cta = section.querySelector('a[href="https://app.suitedash.com/frm/23RUmJBYvG5tHNcRm"]');
+    if (!disclosure || !cta) return false;
+    const relation = disclosure.compareDocumentPosition(cta);
+    return Boolean(relation & Node.DOCUMENT_POSITION_FOLLOWING);
+  });
+  expect(disclosurePrecedesCta).toBeTruthy();
+
   await expect(main.locator('.connect-actions a[href*="suitedash"]')).toHaveCount(0);
   await expect(main.locator('form, iframe')).toHaveCount(0);
 
