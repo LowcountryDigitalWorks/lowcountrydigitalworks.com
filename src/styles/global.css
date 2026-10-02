@@ -501,6 +501,10 @@ p { margin: 0 0 1rem; }
   line-height: 1.35;
 }
 .connect-action--primary .connect-action__copy small { color: #dbe5e7; }
+.connect-discovery { margin-top: 1.4rem; }
+.connect-discovery .actions { margin: 1rem 0; }
+.connect-discovery .small { margin-bottom: .65rem; color: var(--muted); }
+.connect-discovery .small:last-child { margin-bottom: 0; }
 
 .breadcrumbs { background: var(--surface); border-bottom: 1px solid var(--border); }
 .breadcrumbs ol { display: flex; flex-wrap: wrap; gap: .45rem; margin: 0; padding: .8rem 0; list-style: none; font-size: .9rem; }
