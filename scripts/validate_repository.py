@@ -12,6 +12,7 @@ def error(msg): ERRORS.append(msg)
 
 PUBLIC_ROUTES=[
  '/',
+ '/accessibility/',
  '/services/',
  '/services/websites/',
  '/services/website-care/',
@@ -30,6 +31,7 @@ PUBLIC_ROUTES=[
  '/contact/',
  '/connect/',
  '/privacy/',
+ '/terms/',
 ]
 WORKER_ROUTES=sorted(PUBLIC_ROUTES+['/share/','/share/continue'])
 SITEMAP_ROUTES=[route for route in PUBLIC_ROUTES if route!='/contact/']
@@ -40,7 +42,7 @@ REQUIRED=[
  'brand/logo/lowcountry-digital-works-logo-horizontal.svg','brand/logo/lowcountry-digital-works-logo-horizontal-white.svg',
  'brand/icons/favicon.svg','brand/social/social-card-1200x630.png','design/brand-production-validation.md','src/pages/index.astro','src/pages/services.astro',
  'src/pages/services/[slug].astro','src/pages/work.astro','src/pages/work/[slug].astro','src/pages/approach.astro','src/pages/about.astro',
- 'src/pages/contact.astro','src/pages/connect.astro','src/pages/privacy.astro','src/pages/share.astro','src/pages/guides/index.astro','src/pages/guides/website-maintenance-after-launch.astro','src/pages/guides/website-ownership-handoff.astro','src/data/work.json','src/data/service-details.json',
+ 'src/pages/contact.astro','src/pages/connect.astro','src/pages/privacy.astro','src/pages/accessibility.astro','src/pages/terms.astro','src/pages/share.astro','src/pages/guides/index.astro','src/pages/guides/website-maintenance-after-launch.astro','src/pages/guides/website-ownership-handoff.astro','src/data/work.json','src/data/service-details.json',
  'public/eddie-gugino-lowcountry-digital-works.vcf','public/technology/github.svg','public/technology/cloudflare.svg','public/technology/astro.svg',
  'public/technology/typescript.svg','public/technology/python.svg','docs/technology-marks.md','public/_headers','public/robots.txt','public/sitemap.xml',
  'tests/worker-unit.mjs'

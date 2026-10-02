@@ -3,6 +3,7 @@ import AxeBuilder from '@axe-core/playwright';
 
 const routes = [
   '/',
+  '/accessibility/',
   '/services/',
   '/services/websites/',
   '/services/website-care/',
@@ -21,6 +22,7 @@ const routes = [
   '/contact/',
   '/connect/',
   '/privacy/',
+  '/terms/',
   '/share/',
 ];
 
@@ -393,10 +395,35 @@ test('Contact and footer iconography supplements visible labels rather than repl
 
 test('privacy page reflects the current no-nonessential-cookie posture without a cosmetic consent banner', async ({ page }) => {
   await page.goto('/privacy/');
-  await expect(page.getByRole('heading', { name: 'Cookies and browser storage' })).toBeVisible();
-  await expect(page.getByText('does not intentionally set nonessential cookies', { exact: false })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Cookies, browser storage, and tracking' })).toBeVisible();
+  await expect(page.getByText('does not intentionally use advertising trackers', { exact: false })).toBeVisible();
   await expect(page.getByText('does not display a cookie banner merely for appearance', { exact: false })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Do Not Track and cross-site collection' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Review, correction, and deletion requests' })).toBeVisible();
+  await expect(page.getByText('Lowcountry Digital Works LLC, operating as Lowcountry Digital Works', { exact: false })).toBeVisible();
+  await expect(page.getByText('Effective date:', { exact: false })).toBeVisible();
   await expect(page.locator('[class*="cookie"], [id*="cookie"], [class*="consent"], [id*="consent"]')).toHaveCount(0);
+});
+
+test('legal and accessibility surfaces preserve narrow public-site boundaries', async ({ page }) => {
+  await page.goto('/accessibility/');
+  await expect(page.getByRole('heading', { level: 1, name: 'Accessibility Statement' })).toBeVisible();
+  await expect(page.getByText('targets WCAG 2.2 Level AA where applicable', { exact: false })).toBeVisible();
+  await expect(page.getByText('not a guarantee', { exact: false })).toBeVisible();
+  await expect(page.locator('#main-content').getByRole('link', { name: 'eddie@lowcountrydigitalworks.com' })).toHaveAttribute('href', 'mailto:eddie@lowcountrydigitalworks.com');
+
+  await page.goto('/terms/');
+  await expect(page.getByRole('heading', { level: 1, name: 'Website Terms' })).toBeVisible();
+  await expect(page.getByText('does not by itself create a client relationship', { exact: false })).toBeVisible();
+  await expect(page.getByText('does not by itself certify', { exact: false })).toBeVisible();
+  await expect(page.getByText('Lowcountry Digital Works LLC, operating as Lowcountry Digital Works', { exact: false })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Privacy Notice' })).toHaveAttribute('href', '/privacy/');
+  await expect(page.getByRole('link', { name: 'Accessibility Statement' })).toHaveAttribute('href', '/accessibility/');
+
+  const footer = page.locator('footer');
+  await expect(footer.getByRole('link', { name: 'Privacy' })).toHaveAttribute('href', '/privacy/');
+  await expect(footer.getByRole('link', { name: 'Accessibility' })).toHaveAttribute('href', '/accessibility/');
+  await expect(footer.getByRole('link', { name: 'Website Terms' })).toHaveAttribute('href', '/terms/');
 });
 
 test('verified public entity links expose one Organization identity without private-location claims', async ({ page }) => {
