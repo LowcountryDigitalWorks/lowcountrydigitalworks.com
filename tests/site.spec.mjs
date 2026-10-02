@@ -194,7 +194,7 @@ test('Guides remain small, first-hand, source-linked, and publicity-safe', async
   await expect(page.getByRole('heading', { level: 1, name: /Website ownership & handoff: what your business should control/i })).toBeVisible();
   await expect(page.locator('article[itemtype="https://schema.org/Article"]')).toHaveCount(1);
   await expect(page.locator('article [itemprop="author"][itemtype="https://schema.org/Person"] [itemprop="name"]')).toHaveText('Eddie Gugino');
-  await expect(page.locator('time[itemprop="dateModified"]')).toHaveAttribute('datetime', '2026-09-29');
+  await expect(page.locator('time[itemprop="dateModified"]')).toHaveAttribute('datetime', '2026-10-01');
   await expect(page.locator('[itemprop="publisher"][itemid="https://lowcountrydigitalworks.com/#organization"]')).toHaveCount(1);
   await expect(page.locator('.guide-control-item')).toHaveCount(7);
   await expect(page.getByText('This is an operational guide, not legal advice.', { exact: false })).toBeVisible();
@@ -210,7 +210,7 @@ test('Guides remain small, first-hand, source-linked, and publicity-safe', async
   await expect(page.getByRole('heading', { level: 1, name: /Website maintenance after launch: what should actually be checked/i })).toBeVisible();
   await expect(page.locator('article[itemtype="https://schema.org/Article"]')).toHaveCount(1);
   await expect(page.locator('article [itemprop="author"][itemtype="https://schema.org/Person"] [itemprop="name"]')).toHaveText('Eddie Gugino');
-  await expect(page.locator('time[itemprop="dateModified"]')).toHaveAttribute('datetime', '2026-09-29');
+  await expect(page.locator('time[itemprop="dateModified"]')).toHaveAttribute('datetime', '2026-10-01');
   await expect(page.locator('[itemprop="publisher"][itemid="https://lowcountrydigitalworks.com/#organization"]')).toHaveCount(1);
   await expect(page.getByText('Maintain the business path and the actual stack—not a generic checklist.')).toBeVisible();
   await expect(page.getByText('no tool alone can determine whether a site meets accessibility standards', { exact: false })).toBeVisible();
