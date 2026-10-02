@@ -475,6 +475,20 @@ test('verified public entity links expose one Organization identity without priv
   await expect(provider).toHaveAttribute('itemid', 'https://lowcountrydigitalworks.com/#organization');
 });
 
+test('home page exposes one WebSite identity for preferred site-name discovery', async ({ page }) => {
+  await page.goto('/');
+  const website = page.locator('[itemtype="https://schema.org/WebSite"]');
+  await expect(website).toHaveCount(1);
+  await expect(website).toHaveAttribute('itemid', 'https://lowcountrydigitalworks.com/#website');
+  await expect(website.locator('link[itemprop="url"]')).toHaveAttribute('href', 'https://lowcountrydigitalworks.com/');
+  await expect(website.locator('meta[itemprop="name"]')).toHaveAttribute('content', 'Lowcountry Digital Works');
+  await expect(website.locator('meta[itemprop="alternateName"]')).toHaveAttribute('content', 'LDW');
+  await expect(page.locator('script[type="application/ld+json"]')).toHaveCount(0);
+
+  await page.goto('/services/');
+  await expect(page.locator('[itemtype="https://schema.org/WebSite"]')).toHaveCount(0);
+});
+
 test('page metadata includes canonical Open Graph and Twitter fields', async ({ page }) => {
   await page.goto('/services/websites/');
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://lowcountrydigitalworks.com/services/websites/');

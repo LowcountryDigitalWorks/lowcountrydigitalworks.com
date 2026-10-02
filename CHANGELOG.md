@@ -6,6 +6,8 @@ All notable repository and website changes are recorded here.
 
 ### Added
 
+- Added home-page `WebSite` Microdata for the preferred site name `Lowcountry Digital Works` with `LDW` as the alternate name, without adding inline scripts or weakening CSP.
+- Added regression coverage that keeps the site-name entity home-page-only and preserves the no-inline-JSON-LD security posture.
 - Added an optional SuiteDash-hosted Guided Project Discovery handoff on `/connect/`, while preserving text/call/email/contact-card actions as the primary direct-contact paths.
 - Added browser regression coverage proving the guided form stays secondary, uses the canonical #314 URL, exposes an LDW Privacy link and sensitive-data warning, and is not embedded as a form or iframe.
 - Added a focused Accessibility Statement and narrow Website Terms surface, with the existing Privacy page upgraded into a fuller evidence-aligned Privacy Notice.
