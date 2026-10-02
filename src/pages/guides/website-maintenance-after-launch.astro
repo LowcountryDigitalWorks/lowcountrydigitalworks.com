@@ -30,7 +30,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
           <span itemprop="author" itemscope itemtype="https://schema.org/Person">
             <span itemprop="name">Eddie Gugino</span> · Founder, Lowcountry Digital Works
           </span>
-          <span>Reviewed <time itemprop="dateModified" datetime="2026-09-29">September 29, 2026</time></span>
+          <span>Reviewed <time itemprop="dateModified" datetime="2026-10-01">October 1, 2026</time></span>
           <meta itemprop="datePublished" content="2026-09-29" />
           <span itemprop="publisher" itemscope itemtype="https://schema.org/Organization" itemid="https://lowcountrydigitalworks.com/#organization">
             <meta itemprop="name" content="Lowcountry Digital Works" />
@@ -69,6 +69,22 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
               <p>Could you explain what was checked this cycle, what evidence was reviewed, what changed, what failed, and what decision—if any—the business owner needs to make?</p>
             </div>
             <p>That routine should be proportionate. A static information site, a WordPress site with plugins, and a transactional application do not have the same maintenance surface.</p>
+            <figure class="guide-diagram guide-diagram--care" data-education-diagram="care-loop">
+              <figcaption>
+                <strong>Website care loop</strong>
+                <span>Maintenance is a repeatable decision cycle: collect evidence, make only justified changes, prove the result, and keep a rollback path.</span>
+              </figcaption>
+              <ol class="care-loop" aria-label="Website care cycle">
+                <li><strong>Observe</strong><span>Journeys, content, accessibility, performance, search, dependencies.</span></li>
+                <li><strong>Review evidence</strong><span>Separate a real defect or trend from scanner noise and normal variance.</span></li>
+                <li><strong>Prioritize</strong><span>Act first on business impact, user harm, risk, or repeated failure.</span></li>
+                <li><strong>Change</strong><span>Make the smallest justified update through the normal controlled path.</span></li>
+                <li><strong>Validate</strong><span>Re-run the relevant checks and confirm the customer journey still works.</span></li>
+                <li><strong>Document / roll back</strong><span>Record what changed; recover quickly if the result regresses.</span></li>
+                <li class="care-loop__repeat"><strong>Repeat</strong><span>Use a cadence matched to the site's real risk and change frequency.</span></li>
+              </ol>
+              <p class="guide-diagram__boundary"><strong>Boundary:</strong> evidence informs the decision. A scanner finding is not an automatic instruction to change production.</p>
+            </figure>
           </section>
 
           <section class="guide-section" id="business-path">

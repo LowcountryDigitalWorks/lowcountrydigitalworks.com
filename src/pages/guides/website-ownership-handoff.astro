@@ -30,7 +30,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
           <span itemprop="author" itemscope itemtype="https://schema.org/Person">
             <span itemprop="name">Eddie Gugino</span> · Founder, Lowcountry Digital Works
           </span>
-          <span>Reviewed <time itemprop="dateModified" datetime="2026-09-29">September 29, 2026</time></span>
+          <span>Reviewed <time itemprop="dateModified" datetime="2026-10-01">October 1, 2026</time></span>
           <meta itemprop="datePublished" content="2026-09-29" />
           <span itemprop="publisher" itemscope itemtype="https://schema.org/Organization" itemid="https://lowcountrydigitalworks.com/#organization">
             <meta itemprop="name" content="Lowcountry Digital Works" />
@@ -70,6 +70,52 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
           <section class="guide-section" id="control-map">
             <p class="eyebrow">Control map</p>
             <h2>Know which account is the business account and which access belongs to the provider.</h2>
+            <figure class="guide-diagram guide-diagram--ownership" data-education-diagram="ownership">
+              <figcaption>
+                <strong>Website ownership map</strong>
+                <span>Keep the recovery and ownership relationship with the business; give a provider only the named access needed to do the work.</span>
+              </figcaption>
+              <div class="ownership-map" role="group" aria-label="Website ownership layers and provider access">
+                <div class="ownership-map__business">
+                  <span class="ownership-map__kicker">Primary control</span>
+                  <strong>Your business</strong>
+                  <span>Owns the critical accounts, recovery paths, billing decisions, and exit authority.</span>
+                </div>
+                <div class="ownership-map__grid">
+                  <article class="ownership-node">
+                    <h3>Domain & DNS</h3>
+                    <p><strong>Business:</strong> registrar, renewal, recovery, nameservers.</p>
+                    <p><strong>LDW:</strong> scoped configuration or transfer help.</p>
+                  </article>
+                  <article class="ownership-node">
+                    <h3>Hosting & deployment</h3>
+                    <p><strong>Business:</strong> production account and billing where practical.</p>
+                    <p><strong>LDW:</strong> deploy/admin role appropriate to the work.</p>
+                  </article>
+                  <article class="ownership-node">
+                    <h3>Source & repository</h3>
+                    <p><strong>Business:</strong> durable source access and usable handoff.</p>
+                    <p><strong>LDW:</strong> collaborator/team access instead of hidden ownership.</p>
+                  </article>
+                  <article class="ownership-node">
+                    <h3>Forms & integrations</h3>
+                    <p><strong>Business:</strong> knows the authoritative system, plan, and data destination.</p>
+                    <p><strong>LDW:</strong> scoped configuration/support access.</p>
+                  </article>
+                  <article class="ownership-node">
+                    <h3>Search & business profiles</h3>
+                    <p><strong>Business:</strong> owner-level relationship to key properties.</p>
+                    <p><strong>LDW:</strong> delegated user/manager access only as needed.</p>
+                  </article>
+                  <article class="ownership-node">
+                    <h3>Recovery, MFA & billing</h3>
+                    <p><strong>Business:</strong> retains recovery and payment authority.</p>
+                    <p><strong>LDW:</strong> named user access; never the only recovery path.</p>
+                  </article>
+                </div>
+                <p class="guide-diagram__boundary"><strong>Exit test:</strong> another qualified provider should be able to take over without needing a former provider's private identity, phone, or hidden account.</p>
+              </div>
+            </figure>
             <div class="guide-control-list">
               <article class="guide-control-item">
                 <div><h3>Domain registrar</h3><p>The business should ordinarily be the registrant/customer controlling the registrar account, renewal, recovery, and transfer process.</p></div>
