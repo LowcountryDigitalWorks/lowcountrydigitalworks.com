@@ -49,5 +49,17 @@
   "quickStart": {
     "title": "A useful first message can be simple.",
     "body": "What are you trying to improve, and what is happening today? If a deadline, platform, ownership issue, or budget constraint already matters, include it. Everything else can be worked through together."
+  },
+  "discovery": {
+    "eyebrow": "Prefer a guided start?",
+    "title": "Tell us what you're trying to improve.",
+    "body": "If a quick text or email is not enough, use the short guided project form. You do not need to know which service or technical solution you need.",
+    "href": "https://app.suitedash.com/frm/23RUmJBYvG5tHNcRm",
+    "label": "Open guided project form",
+    "provider": "SuiteDash",
+    "privacyHref": "/privacy/",
+    "privacyText": "Information you submit is used to review and respond to your request and to administer a potential business relationship.",
+    "safetyText": "Do not submit passwords, MFA or recovery codes, API keys, private keys, payment-card information, protected health information (PHI), CUI or other government-restricted information, or confidential customer/client records.",
+    "expectationText": "Submitting the form is an initial discovery request, not a quote, contract, or commitment to perform work."
   }
 }

@@ -367,9 +367,31 @@ test('Connect is a mobile-first stable contact destination with accessible conta
   await expect(contactCard).toContainText('Contact card');
   await expect(main).not.toContainText('Save vCard');
   await expect(main.locator('.connect-actions .ui-icon')).toHaveCount(4);
+  await expect(main.locator('.connect-actions a')).toHaveCount(4);
   await expect(main.locator('.connect-links .ui-icon')).toHaveCount(2);
   await expect(main.locator('.ui-icon[aria-hidden="true"]')).toHaveCount(6);
-  await expect(main.locator('form')).toHaveCount(0);
+
+  const discovery = main.locator('.connect-discovery');
+  await expect(discovery).toHaveCount(1);
+  await expect(discovery.getByRole('heading', { name: "Tell us what you're trying to improve." })).toBeVisible();
+  const discoveryLink = discovery.getByRole('link', { name: 'Open guided project form' });
+  await expect(discoveryLink).toHaveAttribute('href', 'https://app.suitedash.com/frm/23RUmJBYvG5tHNcRm');
+  await expect(discovery.getByText('Hosted by SuiteDash.', { exact: false })).toBeVisible();
+  await expect(discovery.getByRole('link', { name: 'Read the LDW Privacy Notice.' })).toHaveAttribute('href', '/privacy/');
+  await expect(discovery.getByText('Do not submit passwords', { exact: false })).toBeVisible();
+  await expect(discovery.getByText('not a quote, contract, or commitment', { exact: false })).toBeVisible();
+
+  const disclosurePrecedesCta = await discovery.evaluate((section) => {
+    const disclosure = section.querySelector('.connect-discovery__handoff');
+    const cta = section.querySelector('a[href="https://app.suitedash.com/frm/23RUmJBYvG5tHNcRm"]');
+    if (!disclosure || !cta) return false;
+    const relation = disclosure.compareDocumentPosition(cta);
+    return Boolean(relation & Node.DOCUMENT_POSITION_FOLLOWING);
+  });
+  expect(disclosurePrecedesCta).toBeTruthy();
+
+  await expect(main.locator('.connect-actions a[href*="suitedash"]')).toHaveCount(0);
+  await expect(main.locator('form, iframe')).toHaveCount(0);
 
   const vcard = await page.request.get('/eddie-gugino-lowcountry-digital-works.vcf');
   expect(vcard.ok()).toBeTruthy();

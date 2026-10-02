@@ -6,6 +6,8 @@ All notable repository and website changes are recorded here.
 
 ### Added
 
+- Added an optional SuiteDash-hosted Guided Project Discovery handoff on `/connect/`, while preserving text/call/email/contact-card actions as the primary direct-contact paths.
+- Added browser regression coverage proving the guided form stays secondary, uses the canonical #314 URL, exposes an LDW Privacy link and sensitive-data warning, and is not embedded as a form or iframe.
 - Added a focused Accessibility Statement and narrow Website Terms surface, with the existing Privacy page upgraded into a fuller evidence-aligned Privacy Notice.
 - Added regression coverage and route/sitemap/Worker registration for the legal/accessibility surfaces without introducing a consent manager, tracking, account system, or new runtime dependency.
 - Added the stable mobile-first `/connect/` business-card/QR destination with public business contact actions, verified Facebook/X links, and a portable vCard.
@@ -22,8 +24,9 @@ All notable repository and website changes are recorded here.
 
 ### Security / privacy / cost
 
+- WEB-DISCOVERY-001 adds no form processor, iframe, third-party script, CRM automation, analytics, storage, new dependency, or recurring cost to the LDW website; SuiteDash remains the authoritative raw-intake system.
 - WEB-LEGAL-001 preserves the existing no-nonessential-cookie/no-behavioral-tracking posture and does not add a cookie banner, CMP, analytics, advertising pixel, database, auth, public form processor, or payment collection.
-- Public legal copy remains a review candidate until owner approval; no DNS, email, account, billing, or provider changes are part of the change.
+- WEB-LEGAL-001 public legal copy was owner-approved and merged; it introduced no DNS, email, account, billing, or provider changes.
 - The cache change does not alter HTML caching, CSP/security headers, Worker routing, Secure Share, Cloudflare-managed `/cdn-cgi/*` resources, DNS, or email configuration.
 - Unhashed image URLs intentionally do not use `immutable`; same-path replacements may remain cached for at most 24 hours.
 - New recurring cost: **$0**.

@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import contact from '../data/contact.json';
 import Icon from '../components/Icon.astro';
 ---
-<BaseLayout title="Connect" description="Connect directly with Eddie Gugino at Lowcountry Digital Works by text, phone, email, or contact card.">
+<BaseLayout title="Connect" description="Connect directly with Eddie Gugino at Lowcountry Digital Works by text, phone, email, contact card, or an optional guided project form.">
   <section class="section connect-page">
     <div class="container connect-shell connect-shell--warm">
       <div class="connect-brand">
@@ -38,6 +38,20 @@ import Icon from '../components/Icon.astro';
           <span class="connect-action__copy"><span>Save Eddie</span><strong>Contact card</strong><small>Keep the details handy</small></span>
         </a>
       </div>
+
+      <section class="connect-reassurance connect-discovery" aria-labelledby="guided-discovery-title">
+        <p class="eyebrow">{contact.discovery.eyebrow}</p>
+        <h2 id="guided-discovery-title">{contact.discovery.title}</h2>
+        <p>{contact.discovery.body}</p>
+        <div class="connect-discovery__handoff">
+          <p class="small"><strong>Hosted by {contact.discovery.provider}.</strong> {contact.discovery.privacyText} <a href={contact.discovery.privacyHref}>Read the LDW Privacy Notice.</a></p>
+          <p class="small">{contact.discovery.safetyText}</p>
+          <p class="small"><strong>{contact.discovery.expectationText}</strong></p>
+        </div>
+        <div class="actions">
+          <a class="button button--secondary" href={contact.discovery.href} rel="noopener noreferrer">{contact.discovery.label}</a>
+        </div>
+      </section>
 
       <div class="connect-links">
         <a href="/services/">Find a service →</a>
