@@ -400,6 +400,8 @@ test('privacy page reflects the current no-nonessential-cookie posture without a
   await expect(page.getByText('does not display a cookie banner merely for appearance', { exact: false })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Do Not Track and cross-site collection' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Review, correction, and deletion requests' })).toBeVisible();
+  await expect(page.getByText('Lowcountry Digital Works LLC, operating as Lowcountry Digital Works', { exact: false })).toBeVisible();
+  await expect(page.getByText('Effective date:', { exact: false })).toBeVisible();
   await expect(page.locator('[class*="cookie"], [id*="cookie"], [class*="consent"], [id*="consent"]')).toHaveCount(0);
 });
 
@@ -414,6 +416,7 @@ test('legal and accessibility surfaces preserve narrow public-site boundaries', 
   await expect(page.getByRole('heading', { level: 1, name: 'Website Terms' })).toBeVisible();
   await expect(page.getByText('does not by itself create a client relationship', { exact: false })).toBeVisible();
   await expect(page.getByText('does not by itself certify', { exact: false })).toBeVisible();
+  await expect(page.getByText('Lowcountry Digital Works LLC, operating as Lowcountry Digital Works', { exact: false })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Privacy Notice' })).toHaveAttribute('href', '/privacy/');
   await expect(page.getByRole('link', { name: 'Accessibility Statement' })).toHaveAttribute('href', '/accessibility/');
 
