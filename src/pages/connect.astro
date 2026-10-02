@@ -43,12 +43,14 @@ import Icon from '../components/Icon.astro';
         <p class="eyebrow">{contact.discovery.eyebrow}</p>
         <h2 id="guided-discovery-title">{contact.discovery.title}</h2>
         <p>{contact.discovery.body}</p>
+        <div class="connect-discovery__handoff">
+          <p class="small"><strong>Hosted by {contact.discovery.provider}.</strong> {contact.discovery.privacyText} <a href={contact.discovery.privacyHref}>Read the LDW Privacy Notice.</a></p>
+          <p class="small">{contact.discovery.safetyText}</p>
+          <p class="small"><strong>{contact.discovery.expectationText}</strong></p>
+        </div>
         <div class="actions">
           <a class="button button--secondary" href={contact.discovery.href} rel="noopener noreferrer">{contact.discovery.label}</a>
         </div>
-        <p class="small"><strong>Hosted by {contact.discovery.provider}.</strong> {contact.discovery.privacyText} <a href={contact.discovery.privacyHref}>Read the LDW Privacy Notice.</a></p>
-        <p class="small">{contact.discovery.safetyText}</p>
-        <p class="small"><strong>{contact.discovery.expectationText}</strong></p>
       </section>
 
       <div class="connect-links">
