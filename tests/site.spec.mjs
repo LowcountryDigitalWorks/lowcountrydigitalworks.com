@@ -336,7 +336,10 @@ test('founder structure uses the owner-approved portrait and approved trust fact
 
   await page.goto('/');
   await expect(page.locator('#main-content').getByText('Eddie Gugino', { exact: false })).toBeVisible();
-  await expect(page.locator('#main-content').getByText('service in the U.S. Navy', { exact: false })).toBeVisible();
+  await expect(page.locator('#main-content').getByText('15+ years of technology experience', { exact: false })).toBeVisible();
+  await expect(page.locator('#main-content').getByText('Risk Management Framework (RMF)', { exact: false })).toBeVisible();
+  await expect(page.locator('#main-content').getByText('automation of business systems', { exact: false })).toBeVisible();
+  await expect(page.locator('.hero-owner-card__content').getByText('automation of business systems, digital ownership, and practical technology decisions.', { exact: false })).toBeVisible();
 
   await page.goto('/about/');
   await expect(page.getByRole('heading', { level: 1, name: 'Local, practical, and accountable by design.' })).toBeVisible();
@@ -344,10 +347,27 @@ test('founder structure uses the owner-approved portrait and approved trust fact
   await expect(page.getByRole('heading', { name: 'One accountable point of contact from the first conversation through handoff.' })).toBeVisible();
   await expect(page.locator('[itemtype="https://schema.org/Person"]')).toHaveCount(2);
   await expect(page.getByText('CISSP certification', { exact: false })).toBeVisible();
-  await expect(page.getByText('Utica College', { exact: false })).toBeVisible();
-  await expect(page.getByText('Midlands Technical College', { exact: false })).toBeVisible();
+  await expect(page.getByText('degrees in Cybersecurity and Network Systems Management', { exact: false })).toBeVisible();
+  await expect(page.getByText('Risk Management Framework (RMF) compliance and security assessment', { exact: false })).toBeVisible();
+  await expect(page.getByText('Navy Corpsman', { exact: false })).toBeVisible();
+  await expect(page.getByText('enterprise hospital IT', { exact: false })).toBeVisible();
+  const linkedIn = page.getByRole('link', { name: 'View Eddie on LinkedIn →' });
+  await expect(linkedIn).toHaveAttribute('href', 'https://www.linkedin.com/in/edwin-gugino-3003885a');
+  await expect(linkedIn).toHaveAttribute('rel', /\bme\b/);
+  const linkedInLogo = linkedIn.locator('img[src="/brand/social/linkedin/LI-In-Bug.png"]');
+  await expect(linkedInLogo).toHaveAttribute('alt', '');
+  await expect(linkedInLogo).toHaveAttribute('width', '28');
+  await expect(linkedInLogo).toHaveAttribute('height', '24');
+  await linkedInLogo.scrollIntoViewIfNeeded();
+  await expect.poll(async () => linkedInLogo.evaluate((img) => ({
+    complete: img.complete,
+    naturalWidth: img.naturalWidth,
+    naturalHeight: img.naturalHeight,
+  }))).toEqual({ complete: true, naturalWidth: 635, naturalHeight: 540 });
+  await expect(page.locator('[itemtype="https://schema.org/Person"] link[itemprop="sameAs"][href="https://www.linkedin.com/in/edwin-gugino-3003885a"]')).toHaveCount(1);
   await expect(page.locator('body')).not.toContainText('Coalfire');
   await expect(page.locator('body')).not.toContainText('security clearance');
+  await expect(page.locator('body')).not.toContainText('Authority to Operate');
 });
 
 test('Connect is a mobile-first stable contact destination with accessible contact-card and social iconography', async ({ page }) => {
