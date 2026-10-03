@@ -354,7 +354,7 @@ test('founder structure uses the owner-approved portrait and approved trust fact
   const linkedIn = page.getByRole('link', { name: 'View Eddie on LinkedIn →' });
   await expect(linkedIn).toHaveAttribute('href', 'https://www.linkedin.com/in/edwin-gugino-3003885a');
   await expect(linkedIn).toHaveAttribute('rel', /\bme\b/);
-  const linkedInLogo = linkedIn.locator('img[src="/brand/linkedin/LI-In-Bug.png"]');
+  const linkedInLogo = linkedIn.locator('img[src="/brand/social/linkedin/LI-In-Bug.png"]');
   await expect(linkedInLogo).toHaveAttribute('alt', '');
   await expect(linkedInLogo).toHaveAttribute('width', '28');
   await expect(linkedInLogo).toHaveAttribute('height', '24');
