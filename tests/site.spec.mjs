@@ -339,7 +339,7 @@ test('founder structure uses the owner-approved portrait and approved trust fact
   await expect(page.locator('#main-content').getByText('15+ years of technology experience', { exact: false })).toBeVisible();
   await expect(page.locator('#main-content').getByText('Risk Management Framework (RMF)', { exact: false })).toBeVisible();
   await expect(page.locator('#main-content').getByText('automation of business systems', { exact: false })).toBeVisible();
-  await expect(page.locator('#main-content').getByText('digital ownership', { exact: false })).toBeVisible();
+  await expect(page.locator('.hero-owner-card__content').getByText('automation of business systems, digital ownership, and practical technology decisions.', { exact: false })).toBeVisible();
 
   await page.goto('/about/');
   await expect(page.getByRole('heading', { level: 1, name: 'Local, practical, and accountable by design.' })).toBeVisible();
