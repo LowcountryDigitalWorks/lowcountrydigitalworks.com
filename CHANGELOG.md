@@ -6,7 +6,7 @@ All notable repository and website changes are recorded here.
 
 ### Added
 
-- Added a restrained founder LinkedIn identity link and Person `sameAs` reference without embedding third-party scripts or trackers.
+- Added a restrained founder LinkedIn identity link using LinkedIn’s official self-hosted blue `[in]` logo and a Person `sameAs` reference without embedding third-party scripts or trackers.
 - Added browser regression coverage for the owner-approved 15+ year founder background, Risk Management Framework wording, healthcare/dental perspective, and LinkedIn identity.
 - Added home-page `WebSite` Microdata for the preferred site name `Lowcountry Digital Works` with `LDW` as the alternate name, without adding inline scripts or weakening CSP.
 - Added regression coverage that keeps the site-name entity home-page-only and preserves the no-inline-JSON-LD security posture.
@@ -29,7 +29,7 @@ All notable repository and website changes are recorded here.
 
 ### Security / privacy / cost
 
-- WEB-FOUNDER-001 adds no LinkedIn script, embed, tracker, analytics, authentication, new dependency, runtime service, or recurring cost; the profile is a plain external identity link only.
+- WEB-FOUNDER-001 adds no LinkedIn script, embed, tracker, analytics, authentication, new dependency, runtime service, third-party image request, or recurring cost; the profile link uses LinkedIn’s official self-hosted blue `[in]` logo.
 - WEB-DISCOVERY-001 adds no form processor, iframe, third-party script, CRM automation, analytics, storage, new dependency, or recurring cost to the LDW website; SuiteDash remains the authoritative raw-intake system.
 - WEB-LEGAL-001 preserves the existing no-nonessential-cookie/no-behavioral-tracking posture and does not add a cookie banner, CMP, analytics, advertising pixel, database, auth, public form processor, or payment collection.
 - WEB-LEGAL-001 public legal copy was owner-approved and merged; it introduced no DNS, email, account, billing, or provider changes.

@@ -354,6 +354,16 @@ test('founder structure uses the owner-approved portrait and approved trust fact
   const linkedIn = page.getByRole('link', { name: 'View Eddie on LinkedIn →' });
   await expect(linkedIn).toHaveAttribute('href', 'https://www.linkedin.com/in/edwin-gugino-3003885a');
   await expect(linkedIn).toHaveAttribute('rel', /\bme\b/);
+  const linkedInLogo = linkedIn.locator('img[src="/brand/linkedin/LI-In-Bug.png"]');
+  await expect(linkedInLogo).toHaveAttribute('alt', '');
+  await expect(linkedInLogo).toHaveAttribute('width', '28');
+  await expect(linkedInLogo).toHaveAttribute('height', '24');
+  await linkedInLogo.scrollIntoViewIfNeeded();
+  await expect.poll(async () => linkedInLogo.evaluate((img) => ({
+    complete: img.complete,
+    naturalWidth: img.naturalWidth,
+    naturalHeight: img.naturalHeight,
+  }))).toEqual({ complete: true, naturalWidth: 635, naturalHeight: 540 });
   await expect(page.locator('[itemtype="https://schema.org/Person"] link[itemprop="sameAs"][href="https://www.linkedin.com/in/edwin-gugino-3003885a"]')).toHaveCount(1);
   await expect(page.locator('body')).not.toContainText('Coalfire');
   await expect(page.locator('body')).not.toContainText('security clearance');
