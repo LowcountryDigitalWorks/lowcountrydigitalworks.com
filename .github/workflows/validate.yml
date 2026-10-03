@@ -51,7 +51,7 @@ jobs:
         run: npm run test:e2e
 
       - name: Dependency audit
-        run: npm audit --audit-level=high
+        run: node scripts/dependency-audit-policy.mjs
 
       - name: Upload generated lockfile
         uses: actions/upload-artifact@v4
