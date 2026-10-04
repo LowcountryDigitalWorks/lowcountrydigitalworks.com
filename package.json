@@ -12,16 +12,15 @@
     "preview": "astro preview",
     "test:worker": "node --test tests/worker-unit.mjs",
     "test:smoke": "node --test tests/production-smoke.unit.mjs",
+    "test:dependency-policy": "node --test tests/dependency-audit-policy.unit.mjs",
     "test:e2e": "playwright test",
     "validate": "npm run test:worker && npm run test:smoke && npm run build && python scripts/validate_repository.py"
   },
-  "dependencies": {
-    "@fontsource-variable/manrope": "5.3.0",
-    "astro": "^7.1.6"
-  },
   "devDependencies": {
     "@axe-core/playwright": "^4.12.1",
+    "@fontsource-variable/manrope": "5.3.0",
     "@playwright/test": "^1.62.1",
+    "astro": "^7.1.6",
     "wrangler": "^4.120.1"
   }
 }

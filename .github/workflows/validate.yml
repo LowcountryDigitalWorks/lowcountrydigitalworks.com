@@ -44,13 +44,16 @@ jobs:
       - name: Production smoke unit tests
         run: npm run test:smoke
 
+      - name: Dependency policy unit tests
+        run: npm run test:dependency-policy
+
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
 
       - name: Browser and accessibility tests
         run: npm run test:e2e
 
-      - name: Dependency audit
+      - name: Dependency audits (runtime + full tree)
         run: node scripts/dependency-audit-policy.mjs
 
       - name: Upload generated lockfile
