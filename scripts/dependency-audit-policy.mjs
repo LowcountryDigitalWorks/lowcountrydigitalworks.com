@@ -4,7 +4,11 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 const CONFIG_URL = new URL('../config/dependency-risk-acceptances.json', import.meta.url);
+const AUDIT_REPORT_VERSION = 2;
 const SEVERITIES = ['info', 'low', 'moderate', 'high', 'critical'];
+const RESIDUAL_RISKS = new Set(['informational', 'low', 'moderate', 'high', 'critical']);
+const GHSA_PATTERN = /^GHSA-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}$/;
+const ISSUE_PATTERN = /^https:\/\/github\.com\/LowcountryDigitalWorks\/lowcountrydigitalworks\.com\/issues\/[1-9]\d*$/;
 
 function isPlainObject(value) {
   return value !== null && typeof value === 'object' && !Array.isArray(value);
@@ -14,7 +18,33 @@ function sameStringSet(actual, expected) {
   if (!Array.isArray(actual) || !Array.isArray(expected) || actual.length !== expected.length) {
     return false;
   }
-  return [...actual].sort().every((value, index) => value === [...expected].sort()[index]);
+  const left = [...actual].sort();
+  const right = [...expected].sort();
+  return left.every((value, index) => value === right[index]);
+}
+
+function isCanonicalDate(value) {
+  if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    return false;
+  }
+  const [year, month, day] = value.split('-').map(Number);
+  const date = new Date(Date.UTC(year, month - 1, day));
+  return (
+    date.getUTCFullYear() === year &&
+    date.getUTCMonth() === month - 1 &&
+    date.getUTCDate() === day
+  );
+}
+
+function assertStringArray(value, label) {
+  if (
+    !Array.isArray(value) ||
+    value.length === 0 ||
+    value.some((entry) => typeof entry !== 'string' || entry.trim() === '') ||
+    new Set(value).size !== value.length
+  ) {
+    throw new Error(`${label} must be a non-empty unique string array`);
+  }
 }
 
 export function validateAuditReport(report, label = 'audit') {
@@ -23,6 +53,11 @@ export function validateAuditReport(report, label = 'audit') {
   }
   if (report.error) {
     throw new Error(`${label}: npm audit returned an error payload`);
+  }
+  if (report.auditReportVersion !== AUDIT_REPORT_VERSION) {
+    throw new Error(
+      `${label}: unsupported npm audit report version ${String(report.auditReportVersion)}; expected ${AUDIT_REPORT_VERSION}`,
+    );
   }
   if (!isPlainObject(report.vulnerabilities)) {
     throw new Error(`${label}: missing/invalid vulnerabilities object`);
@@ -36,20 +71,31 @@ export function validateAuditReport(report, label = 'audit') {
       throw new Error(`${label}: invalid metadata count for ${severity}`);
     }
   }
+  if (!Number.isInteger(report.metadata.vulnerabilities.total) || report.metadata.vulnerabilities.total < 0) {
+    throw new Error(`${label}: invalid metadata count for total`);
+  }
 
   const computed = Object.fromEntries(SEVERITIES.map((severity) => [severity, 0]));
+  let computedTotal = 0;
+
   for (const [name, vulnerability] of Object.entries(report.vulnerabilities)) {
     if (!isPlainObject(vulnerability) || !SEVERITIES.includes(vulnerability.severity)) {
       throw new Error(`${label}: invalid vulnerability entry for ${name}`);
     }
+    if (vulnerability.name !== name) {
+      throw new Error(`${label}: vulnerability map key/name mismatch for ${name}`);
+    }
     computed[vulnerability.severity] += 1;
+    computedTotal += 1;
   }
 
-  if (
-    computed.high !== report.metadata.vulnerabilities.high ||
-    computed.critical !== report.metadata.vulnerabilities.critical
-  ) {
-    throw new Error(`${label}: HIGH/CRITICAL metadata does not reconcile with vulnerability entries`);
+  for (const severity of SEVERITIES) {
+    if (computed[severity] !== report.metadata.vulnerabilities[severity]) {
+      throw new Error(`${label}: ${severity.toUpperCase()} metadata does not reconcile with vulnerability entries`);
+    }
+  }
+  if (computedTotal !== report.metadata.vulnerabilities.total) {
+    throw new Error(`${label}: TOTAL metadata does not reconcile with vulnerability entries`);
   }
 
   return report;
@@ -62,7 +108,7 @@ export function validateAcceptanceConfig(config) {
 
   const ids = new Set();
   for (const acceptance of config.acceptances) {
-    if (!isPlainObject(acceptance) || typeof acceptance.id !== 'string' || acceptance.id.length === 0) {
+    if (!isPlainObject(acceptance) || typeof acceptance.id !== 'string' || acceptance.id.trim() === '') {
       throw new Error('acceptance config contains an invalid id');
     }
     if (ids.has(acceptance.id)) {
@@ -74,14 +120,56 @@ export function validateAcceptanceConfig(config) {
       acceptance.scope !== 'build-dev' ||
       acceptance.sourceSeverity !== 'high' ||
       typeof acceptance.finding !== 'string' ||
+      !GHSA_PATTERN.test(acceptance.finding) ||
       typeof acceptance.issue !== 'string' ||
-      typeof acceptance.approvedOn !== 'string' ||
-      typeof acceptance.expiresAfter !== 'string' ||
-      typeof acceptance.residualRisk !== 'string' ||
+      !ISSUE_PATTERN.test(acceptance.issue) ||
+      !isCanonicalDate(acceptance.approvedOn) ||
+      !isCanonicalDate(acceptance.expiresAfter) ||
+      !RESIDUAL_RISKS.has(acceptance.residualRisk) ||
+      typeof acceptance.rationale !== 'string' ||
+      acceptance.rationale.trim() === '' ||
+      acceptance.rationale.length > 2000 ||
       !isPlainObject(acceptance.packages) ||
       Object.keys(acceptance.packages).length === 0
     ) {
       throw new Error(`acceptance ${acceptance.id} is incomplete or outside the supported build-dev HIGH policy`);
+    }
+
+    if (acceptance.approvedOn > acceptance.expiresAfter) {
+      throw new Error(`acceptance ${acceptance.id} expires before it is approved`);
+    }
+
+    let advisoryBindingCount = 0;
+    for (const [packageName, spec] of Object.entries(acceptance.packages)) {
+      if (!isPlainObject(spec) || typeof spec.isDirect !== 'boolean') {
+        throw new Error(`acceptance ${acceptance.id} has invalid package spec for ${packageName}`);
+      }
+      assertStringArray(spec.nodes, `acceptance ${acceptance.id} package ${packageName} nodes`);
+
+      const hasAdvisoryUrl = typeof spec.advisoryUrl === 'string';
+      const hasViaPackages = Array.isArray(spec.viaPackages);
+      if (hasAdvisoryUrl === hasViaPackages) {
+        throw new Error(
+          `acceptance ${acceptance.id} package ${packageName} must define exactly one of advisoryUrl or viaPackages`,
+        );
+      }
+
+      if (hasAdvisoryUrl) {
+        const expectedAdvisoryUrl = `https://github.com/advisories/${acceptance.finding}`;
+        if (spec.advisoryUrl !== expectedAdvisoryUrl) {
+          throw new Error(`acceptance ${acceptance.id} finding/advisory URL mismatch for ${packageName}`);
+        }
+        advisoryBindingCount += 1;
+      } else {
+        assertStringArray(
+          spec.viaPackages,
+          `acceptance ${acceptance.id} package ${packageName} viaPackages`,
+        );
+      }
+    }
+
+    if (advisoryBindingCount !== 1) {
+      throw new Error(`acceptance ${acceptance.id} must bind exactly one package directly to its GHSA advisory`);
     }
   }
 
@@ -122,8 +210,8 @@ export function evaluateAuditPolicy({ runtimeReport, fullReport, config, today }
   validateAuditReport(fullReport, 'full-tree audit');
   validateAcceptanceConfig(config);
 
-  if (typeof today !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(today)) {
-    throw new Error('today must be YYYY-MM-DD');
+  if (!isCanonicalDate(today)) {
+    throw new Error('today must be a real canonical YYYY-MM-DD date');
   }
 
   const runtimeCritical = blockingEntries(runtimeReport, 'critical');
@@ -154,11 +242,25 @@ export function evaluateAuditPolicy({ runtimeReport, fullReport, config, today }
     return { ok: true, message: 'no HIGH or CRITICAL vulnerabilities in runtime or full dependency tree' };
   }
 
+  for (const acceptance of config.acceptances) {
+    if (today < acceptance.approvedOn) {
+      return {
+        ok: false,
+        message: `dependency-risk acceptance is not active before ${acceptance.approvedOn}: ${acceptance.id}`,
+      };
+    }
+    if (today > acceptance.expiresAfter) {
+      return {
+        ok: false,
+        message: `dependency-risk acceptance expired after ${acceptance.expiresAfter}: ${acceptance.id}`,
+      };
+    }
+  }
+
   const matchedAcceptanceIds = new Set();
 
   for (const [name, vulnerability] of fullHigh) {
     const matches = config.acceptances.filter((acceptance) => {
-      if (today > acceptance.expiresAfter) return false;
       const packageSpec = acceptance.packages[name];
       return packageSpec && packageMatches(vulnerability, packageSpec);
     });
@@ -166,21 +268,13 @@ export function evaluateAuditPolicy({ runtimeReport, fullReport, config, today }
     if (matches.length !== 1) {
       return {
         ok: false,
-        message: `unapproved, expired, or drifted build/dev HIGH vulnerability: ${name}`,
+        message: `unapproved or drifted build/dev HIGH vulnerability: ${name}`,
       };
     }
-
     matchedAcceptanceIds.add(matches[0].id);
   }
 
   for (const acceptance of config.acceptances) {
-    if (today > acceptance.expiresAfter) {
-      return {
-        ok: false,
-        message: `dependency-risk acceptance expired after ${acceptance.expiresAfter}: ${acceptance.id}`,
-      };
-    }
-
     if (!matchedAcceptanceIds.has(acceptance.id)) {
       return {
         ok: false,
@@ -216,7 +310,6 @@ export function parseAuditOutput(stdout, label) {
   } catch {
     throw new Error(`${label}: npm audit did not return parseable JSON`);
   }
-
   return validateAuditReport(report, label);
 }
 
