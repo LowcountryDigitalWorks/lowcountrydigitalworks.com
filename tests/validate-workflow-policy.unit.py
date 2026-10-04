@@ -36,6 +36,14 @@ def append_run_step(name: str, command: str) -> str:
     return CURRENT.replace(marker, addition + marker, 1)
 
 
+def append_direct_step_yaml(step_yaml: str) -> str:
+    marker = "      - name: Upload resolved lockfile\n"
+    if marker not in CURRENT:
+        raise AssertionError("upload step marker missing")
+    addition = f"      {step_yaml}\n\n"
+    return CURRENT.replace(marker, addition + marker, 1)
+
+
 def primary_run(workflow: str) -> str:
     matches = [step.run for step in extract_validate_run_steps(workflow) if step.name == PRIMARY]
     if len(matches) != 1:
@@ -74,8 +82,8 @@ class WorkflowInstallPolicyTests(unittest.TestCase):
             1,
         ).replace(
             "        with:\n          python-version: '3.12'\n",
-            "        env:\n          NOTE: npm install is forbidden here\n"
-            "        with:\n          python-version: '3.12'\n",
+            "        with:\n          NOTE: npm install is forbidden here\n"
+            "          python-version: '3.12'\n",
             1,
         )
         self.assertEqual(validate_workflow_install_policy(workflow), [])
@@ -231,6 +239,41 @@ class WorkflowInstallPolicyTests(unittest.TestCase):
     def test_primary_inline_yaml_comment_preserves_semantic_command(self) -> None:
         workflow = replace_run(PRIMARY, "npm ci # deterministic install")
         self.assertEqual(validate_workflow_install_policy(workflow), [])
+
+    def test_flow_style_direct_run_fails_closed(self) -> None:
+        self.assert_blocked(append_direct_step_yaml("- { run: npm install }"))
+
+    def test_flow_style_named_direct_run_fails_closed(self) -> None:
+        self.assert_blocked(
+            append_direct_step_yaml("- { name: Unexpected install, run: npm install }")
+        )
+
+    def test_direct_alias_step_fails_closed(self) -> None:
+        self.assert_blocked(append_direct_step_yaml("- *unexpected-step"))
+
+    def test_bare_direct_sequence_entry_fails_closed(self) -> None:
+        self.assert_blocked(
+            append_direct_step_yaml("-\n        name: Unexpected install\n        run: npm install")
+        )
+
+    def test_quoted_direct_run_key_fails_closed(self) -> None:
+        workflow = CURRENT.replace(
+            "      - name: Install dependencies from committed lockfile\n"
+            "        run: npm ci\n",
+            "      - name: Install dependencies from committed lockfile\n"
+            '        "run": npm install\n',
+            1,
+        )
+        self.assert_blocked(workflow)
+
+    def test_reordered_required_run_steps_block(self) -> None:
+        build = "      - name: Build static site\n        run: npm run build\n\n"
+        validate = (
+            "      - name: Validate repository and built site\n"
+            "        run: python scripts/validate_repository.py\n\n"
+        )
+        self.assertIn(build + validate, CURRENT)
+        self.assert_blocked(CURRENT.replace(build + validate, validate + build, 1))
 
 
 if __name__ == "__main__":
