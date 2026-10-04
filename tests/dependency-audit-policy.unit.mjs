@@ -123,33 +123,83 @@ test('exact reviewed build/dev HIGH chain passes with visible bounded acceptance
 });
 
 test('missing vulnerabilities object fails closed', () => {
-  assert.throws(
-    () => validateAuditReport({ metadata: { vulnerabilities: {} } }, 'fixture'),
-    /missing\/invalid vulnerabilities object/,
-  );
+  const report = auditReport();
+  delete report.vulnerabilities;
+  assert.throws(() => validateAuditReport(report, 'fixture'), /missing\/invalid vulnerabilities object/);
 });
 
 test('npm audit error payload fails closed', () => {
-  assert.throws(
-    () => validateAuditReport({ error: { code: 'EAUDIT' }, vulnerabilities: {}, metadata: { vulnerabilities: {} } }, 'fixture'),
-    /error payload/,
-  );
+  const report = auditReport();
+  report.error = { code: 'EAUDIT' };
+  assert.throws(() => validateAuditReport(report, 'fixture'), /error payload/);
 });
 
 test('missing or invalid metadata fails closed', () => {
-  assert.throws(
-    () => validateAuditReport({ vulnerabilities: {} }, 'fixture'),
-    /metadata\.vulnerabilities/,
-  );
+  const report = auditReport();
+  delete report.metadata;
+  assert.throws(() => validateAuditReport(report, 'fixture'), /metadata\.vulnerabilities/);
 });
 
-test('metadata count drift fails closed', () => {
+test('missing auditReportVersion fails closed', () => {
+  const report = auditReport();
+  delete report.auditReportVersion;
+  assert.throws(() => validateAuditReport(report, 'fixture'), /unsupported npm audit report version/);
+});
+
+test('unsupported auditReportVersion fails closed', () => {
+  const report = auditReport();
+  report.auditReportVersion = 3;
+  assert.throws(() => validateAuditReport(report, 'fixture'), /unsupported npm audit report version/);
+});
+
+test('HIGH metadata count drift fails closed', () => {
   const report = acceptedHighReport();
   report.metadata.vulnerabilities.high = 1;
-  assert.throws(
-    () => validateAuditReport(report, 'fixture'),
-    /does not reconcile/,
-  );
+  assert.throws(() => validateAuditReport(report, 'fixture'), /HIGH metadata does not reconcile/);
+});
+
+test('LOW and MODERATE metadata count drift fail closed', () => {
+  const low = auditReport({
+    helper: {
+      name: 'helper',
+      severity: 'low',
+      isDirect: false,
+      via: [],
+      effects: [],
+      range: '*',
+      nodes: ['node_modules/helper'],
+      fixAvailable: false,
+    },
+  });
+  low.metadata.vulnerabilities.low = 0;
+  assert.throws(() => validateAuditReport(low, 'fixture'), /LOW metadata does not reconcile/);
+
+  const moderate = auditReport({
+    helper: {
+      name: 'helper',
+      severity: 'moderate',
+      isDirect: false,
+      via: [],
+      effects: [],
+      range: '*',
+      nodes: ['node_modules/helper'],
+      fixAvailable: false,
+    },
+  });
+  moderate.metadata.vulnerabilities.moderate = 0;
+  assert.throws(() => validateAuditReport(moderate, 'fixture'), /MODERATE metadata does not reconcile/);
+});
+
+test('TOTAL metadata count drift fails closed', () => {
+  const report = acceptedHighReport();
+  report.metadata.vulnerabilities.total = 1;
+  assert.throws(() => validateAuditReport(report, 'fixture'), /TOTAL metadata does not reconcile/);
+});
+
+test('vulnerability map key/name disagreement fails closed', () => {
+  const report = acceptedHighReport();
+  report.vulnerabilities['http-cache-semantics'].name = 'different-package';
+  assert.throws(() => validateAuditReport(report, 'fixture'), /map key\/name mismatch/);
 });
 
 test('runtime HIGH blocks even when the same finding has a build/dev acceptance', () => {
@@ -275,7 +325,75 @@ test('acceptance is valid through its expiry date and blocks the next day', () =
     today: '2026-10-18',
   });
   assert.equal(afterExpiry.ok, false);
-  assert.match(afterExpiry.message, /expired|unapproved/);
+  assert.match(afterExpiry.message, /expired/);
+});
+
+test('acceptance cannot activate before its approval date', () => {
+  const config = acceptedConfig();
+  config.acceptances[0].approvedOn = '2026-10-05';
+  const result = evaluateAuditPolicy({
+    runtimeReport: auditReport(),
+    fullReport: acceptedHighReport(),
+    config,
+    today: '2026-10-04',
+  });
+  assert.equal(result.ok, false);
+  assert.match(result.message, /not active before/);
+});
+
+test('non-date and impossible expiry values fail closed', () => {
+  const nonDate = acceptedConfig();
+  nonDate.acceptances[0].expiresAfter = 'never';
+  assert.throws(() => validateAcceptanceConfig(nonDate), /incomplete|outside/);
+
+  const impossible = acceptedConfig();
+  impossible.acceptances[0].expiresAfter = '2026-02-30';
+  assert.throws(() => validateAcceptanceConfig(impossible), /incomplete|outside/);
+});
+
+test('expiry before approval fails closed', () => {
+  const config = acceptedConfig();
+  config.acceptances[0].approvedOn = '2026-10-10';
+  config.acceptances[0].expiresAfter = '2026-10-09';
+  assert.throws(() => validateAcceptanceConfig(config), /expires before/);
+});
+
+test('missing or empty rationale fails closed', () => {
+  const missing = acceptedConfig();
+  delete missing.acceptances[0].rationale;
+  assert.throws(() => validateAcceptanceConfig(missing), /incomplete|outside/);
+
+  const empty = acceptedConfig();
+  empty.acceptances[0].rationale = '   ';
+  assert.throws(() => validateAcceptanceConfig(empty), /incomplete|outside/);
+});
+
+test('residual risk must use controlled vocabulary', () => {
+  const config = acceptedConfig();
+  config.acceptances[0].residualRisk = 'whatever';
+  assert.throws(() => validateAcceptanceConfig(config), /incomplete|outside/);
+});
+
+test('finding must match the bound GitHub advisory URL', () => {
+  const config = acceptedConfig();
+  config.acceptances[0].finding = 'GHSA-aaaa-bbbb-cccc';
+  assert.throws(() => validateAcceptanceConfig(config), /finding\/advisory URL mismatch/);
+});
+
+test('malformed canonical issue reference fails closed', () => {
+  const config = acceptedConfig();
+  config.acceptances[0].issue = 'https://example.invalid/issues/52';
+  assert.throws(() => validateAcceptanceConfig(config), /incomplete|outside/);
+});
+
+test('package specs require one exact matching mode and well-formed nodes', () => {
+  const bothModes = acceptedConfig();
+  bothModes.acceptances[0].packages['http-cache-semantics'].viaPackages = ['astro'];
+  assert.throws(() => validateAcceptanceConfig(bothModes), /exactly one/);
+
+  const badNodes = acceptedConfig();
+  badNodes.acceptances[0].packages.astro.nodes = [];
+  assert.throws(() => validateAcceptanceConfig(badNodes), /nodes must be/);
 });
 
 test('stale acceptance blocks after the finding disappears so the exception is removed', () => {
