@@ -26,6 +26,10 @@ VALID = textwrap.dedent(
 )
 
 
+def append_step(workflow: str, step: str) -> str:
+    return workflow + textwrap.indent(textwrap.dedent(step), "      ")
+
+
 class WorkflowInstallPolicyTests(unittest.TestCase):
     def assert_blocked(self, workflow: str) -> None:
         errors = validate_workflow_install_policy(workflow)
@@ -43,23 +47,25 @@ class WorkflowInstallPolicyTests(unittest.TestCase):
         self.assertEqual(validate_workflow_install_policy(VALID), [])
 
     def test_comment_and_non_run_text_do_not_trigger_false_positive(self) -> None:
-        workflow = VALID + textwrap.dedent(
+        workflow = append_step(
+            VALID,
             """\
-              # run: npm install
-              - name: Documentation note
-                env:
-                  NOTE: npm install is forbidden here
-                run: echo ok
-            """
+            # run: npm install
+            - name: Documentation note
+              env:
+                NOTE: npm install is forbidden here
+              run: echo ok
+            """,
         )
         self.assertEqual(validate_workflow_install_policy(workflow), [])
 
     def test_echoed_npm_install_text_is_not_an_executable_install(self) -> None:
-        workflow = VALID + textwrap.dedent(
+        workflow = append_step(
+            VALID,
             """\
-              - name: Explain policy
-                run: echo "npm install is not allowed"
-            """
+            - name: Explain policy
+              run: echo "npm install is not allowed"
+            """,
         )
         self.assertEqual(validate_workflow_install_policy(workflow), [])
 
@@ -69,30 +75,31 @@ class WorkflowInstallPolicyTests(unittest.TestCase):
     def test_literal_block_npm_install_blocks(self) -> None:
         workflow = VALID.replace(
             "run: npm ci",
-            "run: |\n        npm install",
+            "run: |\n          npm install",
         )
         self.assert_blocked(workflow)
 
     def test_folded_block_npm_install_blocks(self) -> None:
         workflow = VALID.replace(
             "run: npm ci",
-            "run: >\n        npm install",
+            "run: >\n          npm install",
         )
         self.assert_blocked(workflow)
 
     def test_additional_step_npm_install_blocks(self) -> None:
-        workflow = VALID + textwrap.dedent(
+        workflow = append_step(
+            VALID,
             """\
-              - name: Another install
-                run: npm install
-            """
+            - name: Another install
+              run: npm install
+            """,
         )
         self.assert_blocked(workflow)
 
     def test_multiline_block_npm_install_after_other_command_blocks(self) -> None:
         workflow = VALID.replace(
             "run: npm ci",
-            "run: |\n        echo preparing\n        npm install",
+            "run: |\n          echo preparing\n          npm install",
         )
         self.assert_blocked(workflow)
 
@@ -103,18 +110,19 @@ class WorkflowInstallPolicyTests(unittest.TestCase):
     def test_folded_split_npm_install_blocks(self) -> None:
         workflow = VALID.replace(
             "run: npm ci",
-            "run: >\n        npm\n        install",
+            "run: >\n          npm\n          install",
         )
         self.assert_blocked(workflow)
 
     def test_shell_comment_inside_run_block_does_not_trigger(self) -> None:
-        workflow = VALID + textwrap.dedent(
+        workflow = append_step(
+            VALID,
             """\
-              - name: Commented example
-                run: |
-                  # npm install
-                  echo ok
-            """
+            - name: Commented example
+              run: |
+                # npm install
+                echo ok
+            """,
         )
         self.assertEqual(validate_workflow_install_policy(workflow), [])
 
