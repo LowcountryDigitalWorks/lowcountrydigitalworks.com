@@ -101,8 +101,50 @@ function acceptedConfig() {
   };
 }
 
+function acceptedLockfile() {
+  return {
+    name: 'lowcountrydigitalworks.com',
+    version: '0.6.0',
+    lockfileVersion: 3,
+    requires: true,
+    packages: {
+      '': {
+        name: 'lowcountrydigitalworks.com',
+        version: '0.6.0',
+        devDependencies: {
+          astro: '^7.1.6',
+        },
+      },
+      'node_modules/astro': {
+        version: '7.3.5',
+        dependencies: {
+          'http-cache-semantics': '^4.2.0',
+        },
+      },
+      'node_modules/http-cache-semantics': {
+        version: '4.2.0',
+      },
+    },
+  };
+}
+
+function currentRepresentationHighReport() {
+  const report = acceptedHighReport();
+  delete report.vulnerabilities.astro;
+  report.metadata.vulnerabilities.high -= 1;
+  report.metadata.vulnerabilities.total -= 1;
+  return report;
+}
+
+function evaluatePolicy(input) {
+  return evaluateAuditPolicy({
+    lockfile: acceptedLockfile(),
+    ...input,
+  });
+}
+
 test('clean runtime and full-tree reports pass without an acceptance', () => {
-  const result = evaluateAuditPolicy({
+  const result = evaluatePolicy({
     runtimeReport: auditReport(),
     fullReport: auditReport(),
     config: { schemaVersion: 1, acceptances: [] },
@@ -111,8 +153,19 @@ test('clean runtime and full-tree reports pass without an acceptance', () => {
   assert.equal(result.ok, true);
 });
 
-test('exact reviewed build/dev HIGH chain passes with visible bounded acceptance', () => {
-  const result = evaluateAuditPolicy({
+test('current npm-audit representation passes when only the advisory-bearing HIGH row remains', () => {
+  const result = evaluatePolicy({
+    runtimeReport: auditReport(),
+    fullReport: currentRepresentationHighReport(),
+    config: acceptedConfig(),
+    today: '2026-10-03',
+  });
+  assert.equal(result.ok, true);
+  assert.match(result.message, /PASS WITH REVIEWED BUILD\/DEV HIGH ACCEPTANCE/);
+});
+
+test('old npm-audit metavulnerability representation passes with exact reviewed acceptance', () => {
+  const result = evaluatePolicy({
     runtimeReport: auditReport(),
     fullReport: acceptedHighReport(),
     config: acceptedConfig(),
@@ -203,7 +256,7 @@ test('vulnerability map key/name disagreement fails closed', () => {
 });
 
 test('runtime HIGH blocks even when the same finding has a build/dev acceptance', () => {
-  const result = evaluateAuditPolicy({
+  const result = evaluatePolicy({
     runtimeReport: acceptedHighReport(),
     fullReport: acceptedHighReport(),
     config: acceptedConfig(),
@@ -214,7 +267,7 @@ test('runtime HIGH blocks even when the same finding has a build/dev acceptance'
 });
 
 test('full-tree CRITICAL blocks', () => {
-  const result = evaluateAuditPolicy({
+  const result = evaluatePolicy({
     runtimeReport: auditReport(),
     fullReport: auditReport({
       dangerous: {
@@ -250,7 +303,7 @@ test('unrelated build/dev HIGH blocks until reviewed and dispositioned', () => {
   report.metadata.vulnerabilities.high += 1;
   report.metadata.vulnerabilities.total += 1;
 
-  const result = evaluateAuditPolicy({
+  const result = evaluatePolicy({
     runtimeReport: auditReport(),
     fullReport: report,
     config: acceptedConfig(),
@@ -263,7 +316,7 @@ test('unrelated build/dev HIGH blocks until reviewed and dispositioned', () => {
 test('advisory identity drift blocks', () => {
   const report = acceptedHighReport();
   report.vulnerabilities['http-cache-semantics'].via[0].url = 'https://example.invalid/different';
-  const result = evaluateAuditPolicy({
+  const result = evaluatePolicy({
     runtimeReport: auditReport(),
     fullReport: report,
     config: acceptedConfig(),
@@ -276,7 +329,7 @@ test('advisory identity drift blocks', () => {
 test('package node/path drift blocks', () => {
   const report = acceptedHighReport();
   report.vulnerabilities['http-cache-semantics'].nodes = ['node_modules/changed'];
-  const result = evaluateAuditPolicy({
+  const result = evaluatePolicy({
     runtimeReport: auditReport(),
     fullReport: report,
     config: acceptedConfig(),
@@ -288,7 +341,7 @@ test('package node/path drift blocks', () => {
 test('directness drift blocks', () => {
   const report = acceptedHighReport();
   report.vulnerabilities['http-cache-semantics'].isDirect = true;
-  const result = evaluateAuditPolicy({
+  const result = evaluatePolicy({
     runtimeReport: auditReport(),
     fullReport: report,
     config: acceptedConfig(),
@@ -297,20 +350,120 @@ test('directness drift blocks', () => {
   assert.equal(result.ok, false);
 });
 
-test('Astro parent-chain drift blocks', () => {
-  const report = acceptedHighReport();
-  report.vulnerabilities.astro.via = ['something-else'];
-  const result = evaluateAuditPolicy({
+test('Astro parent node removal blocks from deterministic lockfile evidence', () => {
+  const lockfile = acceptedLockfile();
+  delete lockfile.packages['node_modules/astro'];
+  const result = evaluatePolicy({
     runtimeReport: auditReport(),
-    fullReport: report,
+    fullReport: currentRepresentationHighReport(),
     config: acceptedConfig(),
+    lockfile,
     today: '2026-10-03',
   });
   assert.equal(result.ok, false);
+  assert.match(result.message, /lockfile node\/path drifted: astro/);
+});
+
+test('Astro parent node path change blocks', () => {
+  const lockfile = acceptedLockfile();
+  lockfile.packages['node_modules/astro-renamed'] = lockfile.packages['node_modules/astro'];
+  delete lockfile.packages['node_modules/astro'];
+  const result = evaluatePolicy({
+    runtimeReport: auditReport(),
+    fullReport: currentRepresentationHighReport(),
+    config: acceptedConfig(),
+    lockfile,
+    today: '2026-10-03',
+  });
+  assert.equal(result.ok, false);
+  assert.match(result.message, /lockfile node\/path drifted: astro/);
+});
+
+test('Astro no longer being a direct root devDependency blocks', () => {
+  const lockfile = acceptedLockfile();
+  delete lockfile.packages[''].devDependencies.astro;
+  const result = evaluatePolicy({
+    runtimeReport: auditReport(),
+    fullReport: currentRepresentationHighReport(),
+    config: acceptedConfig(),
+    lockfile,
+    today: '2026-10-03',
+  });
+  assert.equal(result.ok, false);
+  assert.match(result.message, /lockfile directness drifted: astro/);
+});
+
+test('Astro moving from root devDependencies to runtime dependencies blocks', () => {
+  const lockfile = acceptedLockfile();
+  delete lockfile.packages[''].devDependencies.astro;
+  lockfile.packages[''].dependencies = { astro: '^7.1.6' };
+  const result = evaluatePolicy({
+    runtimeReport: auditReport(),
+    fullReport: currentRepresentationHighReport(),
+    config: acceptedConfig(),
+    lockfile,
+    today: '2026-10-03',
+  });
+  assert.equal(result.ok, false);
+  assert.match(result.message, /moved outside root devDependencies/);
+});
+
+test('Astro no longer depending on http-cache-semantics blocks', () => {
+  const lockfile = acceptedLockfile();
+  delete lockfile.packages['node_modules/astro'].dependencies['http-cache-semantics'];
+  const result = evaluatePolicy({
+    runtimeReport: auditReport(),
+    fullReport: currentRepresentationHighReport(),
+    config: acceptedConfig(),
+    lockfile,
+    today: '2026-10-03',
+  });
+  assert.equal(result.ok, false);
+  assert.match(result.message, /parent chain drifted: astro -> http-cache-semantics/);
+});
+
+test('http-cache-semantics lockfile node removal blocks even when live advisory row still matches', () => {
+  const lockfile = acceptedLockfile();
+  delete lockfile.packages['node_modules/http-cache-semantics'];
+  const result = evaluatePolicy({
+    runtimeReport: auditReport(),
+    fullReport: currentRepresentationHighReport(),
+    config: acceptedConfig(),
+    lockfile,
+    today: '2026-10-03',
+  });
+  assert.equal(result.ok, false);
+  assert.match(result.message, /lockfile node\/path drifted: http-cache-semantics/);
+});
+
+test('malformed lockfile or missing packages root fails closed', () => {
+  assert.throws(
+    () =>
+      evaluatePolicy({
+        runtimeReport: auditReport(),
+        fullReport: currentRepresentationHighReport(),
+        config: acceptedConfig(),
+        lockfile: { lockfileVersion: 3 },
+        today: '2026-10-03',
+      }),
+    /packages must be an object/,
+  );
+
+  assert.throws(
+    () =>
+      evaluatePolicy({
+        runtimeReport: auditReport(),
+        fullReport: currentRepresentationHighReport(),
+        config: acceptedConfig(),
+        lockfile: { lockfileVersion: 3, packages: {} },
+        today: '2026-10-03',
+      }),
+    /root package entry/,
+  );
 });
 
 test('acceptance is valid through its expiry date and blocks the next day', () => {
-  const onExpiry = evaluateAuditPolicy({
+  const onExpiry = evaluatePolicy({
     runtimeReport: auditReport(),
     fullReport: acceptedHighReport(),
     config: acceptedConfig(),
@@ -318,7 +471,7 @@ test('acceptance is valid through its expiry date and blocks the next day', () =
   });
   assert.equal(onExpiry.ok, true);
 
-  const afterExpiry = evaluateAuditPolicy({
+  const afterExpiry = evaluatePolicy({
     runtimeReport: auditReport(),
     fullReport: acceptedHighReport(),
     config: acceptedConfig(),
@@ -331,7 +484,7 @@ test('acceptance is valid through its expiry date and blocks the next day', () =
 test('acceptance cannot activate before its approval date', () => {
   const config = acceptedConfig();
   config.acceptances[0].approvedOn = '2026-10-05';
-  const result = evaluateAuditPolicy({
+  const result = evaluatePolicy({
     runtimeReport: auditReport(),
     fullReport: acceptedHighReport(),
     config,
@@ -397,7 +550,7 @@ test('package specs require one exact matching mode and well-formed nodes', () =
 });
 
 test('stale acceptance blocks after the finding disappears so the exception is removed', () => {
-  const result = evaluateAuditPolicy({
+  const result = evaluatePolicy({
     runtimeReport: auditReport(),
     fullReport: auditReport(),
     config: acceptedConfig(),
