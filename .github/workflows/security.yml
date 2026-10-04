@@ -14,10 +14,11 @@ permissions:
 
 jobs:
   dependency-scan:
-    uses: LowcountryDigitalWorks/.github/.github/workflows/security-dependencies-npm.yml@ede43e90914534c160b92eb316dd4362d047a96d
+    uses: LowcountryDigitalWorks/.github/.github/workflows/security-dependencies-npm.yml@2f38cc69535af5f91cf06048b6412136873270b3
     with:
       online_queries: false
       verify_canary: false
+      accepted_findings_file: config/dependency-risk-acceptances.json
 
   secret-scan:
     if: ${{ github.event_name != 'schedule' }}
