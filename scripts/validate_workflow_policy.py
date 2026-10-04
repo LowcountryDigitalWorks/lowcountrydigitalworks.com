@@ -18,9 +18,10 @@ EXPECTED_VALIDATE_RUN_STEPS = (
 )
 
 _KEY_RE = re.compile(r"^(?P<indent> *)(?P<key>[A-Za-z0-9_-]+):(?P<value>.*)$")
-_STEP_RE = re.compile(r"^(?P<indent> *)-\s+(?P<rest>.*)$")
+_STEP_RE = re.compile(r"^(?P<indent> *)-(?: +(?P<rest>.*))?$")
 _INLINE_ENTRY_RE = re.compile(r"(?P<key>[A-Za-z0-9_-]+):(?P<value>.*)$")
 _BLOCK_MARKER_RE = re.compile(r"^(?P<style>[|>])(?P<chomp>[+-]?)$")
+_SUPPORTED_DIRECT_STEP_KEYS = frozenset({"name", "run", "uses", "with"})
 
 
 @dataclass(frozen=True)
@@ -205,7 +206,7 @@ def _direct_mapping_indent(
 
 
 def extract_validate_run_steps(workflow_text: str) -> list[RunStep]:
-    """Extract only jobs -> validate -> steps -> direct executable run steps."""
+    """Extract jobs -> validate -> steps and fail closed on every direct entry."""
     lines = workflow_text.splitlines()
     for line in lines:
         leading = line[: len(line) - len(line.lstrip())]
@@ -265,30 +266,61 @@ def extract_validate_run_steps(workflow_text: str) -> list[RunStep]:
         start_match = _STEP_RE.match(lines[step_start])
         assert start_match is not None
 
-        entries: list[tuple[str, str, int, int]] = []
-        first = _INLINE_ENTRY_RE.fullmatch(start_match.group("rest"))
-        if first:
-            entries.append(
-                (first.group("key"), first.group("value"), step_start, step_indent)
-            )
+        rest = start_match.group("rest")
+        if rest is None or not rest.strip():
+            raise ValueError("validate job contains unsupported direct step syntax")
+
+        first = _INLINE_ENTRY_RE.fullmatch(rest)
+        if not first:
+            raise ValueError("validate job contains unsupported direct step syntax")
+
+        entries: list[tuple[str, str, int, int]] = [
+            (first.group("key"), first.group("value"), step_start, step_indent)
+        ]
 
         entry_indent = step_indent + 2
         for index in range(step_start + 1, step_end):
-            match = _KEY_RE.match(lines[index])
-            if match and len(match.group("indent")) == entry_indent:
-                entries.append(
-                    (match.group("key"), match.group("value"), index, entry_indent)
+            line = lines[index]
+            if not line.strip() or line.lstrip().startswith("#"):
+                continue
+            if _indent(line) != entry_indent:
+                continue
+            match = _KEY_RE.match(line)
+            if not match:
+                raise ValueError(
+                    "validate job step contains unsupported direct mapping-key syntax"
+                )
+            entries.append(
+                (match.group("key"), match.group("value"), index, entry_indent)
+            )
+
+        seen_keys: set[str] = set()
+        for key, _, _, _ in entries:
+            if key in seen_keys:
+                raise ValueError(f"validate job step contains duplicate {key} keys")
+            seen_keys.add(key)
+            if key not in _SUPPORTED_DIRECT_STEP_KEYS:
+                raise ValueError(
+                    f"validate job step contains unsupported direct key: {key}"
                 )
 
         names = [entry for entry in entries if entry[0] == "name"]
         runs = [entry for entry in entries if entry[0] == "run"]
-        if len(names) > 1:
-            raise ValueError("validate job step contains duplicate name keys")
-        if len(runs) > 1:
-            raise ValueError("validate job step contains duplicate run keys")
+        uses = [entry for entry in entries if entry[0] == "uses"]
+        with_entries = [entry for entry in entries if entry[0] == "with"]
+
+        if runs and uses:
+            raise ValueError("validate job step cannot contain both run and uses")
+        if not runs and not uses:
+            raise ValueError(
+                "validate job direct step must contain exactly one of run or uses"
+            )
+        if runs and with_entries:
+            raise ValueError("validate job run step must not contain with")
 
         name = _decode_inline_scalar(names[0][1]) if names else None
-        if not runs:
+        if uses:
+            _decode_inline_scalar(uses[0][1])
             continue
 
         _, raw_value, absolute_index, key_indent = runs[0]
