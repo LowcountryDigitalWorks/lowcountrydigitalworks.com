@@ -4,6 +4,7 @@ import json, re, sys
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urlparse
+from validate_workflow_policy import validate_workflow_install_policy
 
 ROOT=Path(__file__).resolve().parents[1]
 DIST=ROOT/'dist'
@@ -45,7 +46,8 @@ REQUIRED=[
  'src/pages/contact.astro','src/pages/connect.astro','src/pages/privacy.astro','src/pages/accessibility.astro','src/pages/terms.astro','src/pages/share.astro','src/pages/guides/index.astro','src/pages/guides/website-maintenance-after-launch.astro','src/pages/guides/website-ownership-handoff.astro','src/data/work.json','src/data/service-details.json',
  'public/eddie-gugino-lowcountry-digital-works.vcf','public/technology/github.svg','public/technology/cloudflare.svg','public/technology/astro.svg',
  'public/technology/typescript.svg','public/technology/python.svg','docs/technology-marks.md','public/_headers','public/robots.txt','public/sitemap.xml',
- 'tests/worker-unit.mjs','tests/dependency-audit-policy.unit.mjs','scripts/dependency-audit-policy.mjs','config/dependency-risk-acceptances.json'
+ 'tests/worker-unit.mjs','tests/dependency-audit-policy.unit.mjs','tests/validate-workflow-policy.unit.py',
+ 'scripts/dependency-audit-policy.mjs','scripts/validate_workflow_policy.py','config/dependency-risk-acceptances.json'
 ]
 for rel in REQUIRED:
  if not (ROOT/rel).exists(): error(f'missing required file: {rel}')
@@ -86,12 +88,8 @@ try:
 except Exception as exc: error(f'invalid package/lock dependency metadata: {exc}')
 
 validate_workflow=(ROOT/'.github/workflows/validate.yml').read_text()
-normalized_validate_workflow=re.sub(r'\s+',' ',re.sub(r'(?m)#.*$','',validate_workflow))
-install_step=re.search(r'-\s*name:\s*Install dependencies from committed lockfile\b(?P<body>.*?)(?=-\s*name:|$)',normalized_validate_workflow)
-if not install_step or not re.search(r'\brun:\s*npm ci\b',install_step.group('body')):
- error('Validate primary dependency-install step must use npm ci from the committed lockfile')
-if re.search(r'\brun:\s*npm install\b',normalized_validate_workflow):
- error('Validate primary dependency-install step must not regress to npm install')
+for workflow_policy_error in validate_workflow_install_policy(validate_workflow):
+ error(workflow_policy_error)
 
 wr=(ROOT/'wrangler.jsonc').read_text()
 try:
