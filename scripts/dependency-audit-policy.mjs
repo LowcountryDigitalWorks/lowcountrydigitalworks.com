@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 const CONFIG_URL = new URL('../config/dependency-risk-acceptances.json', import.meta.url);
+const LOCKFILE_URL = new URL('../package-lock.json', import.meta.url);
 const AUDIT_REPORT_VERSION = 2;
 const SEVERITIES = ['info', 'low', 'moderate', 'high', 'critical'];
 const RESIDUAL_RISKS = new Set(['informational', 'low', 'moderate', 'high', 'critical']);
@@ -180,7 +181,108 @@ function blockingEntries(report, severity) {
   return Object.entries(report.vulnerabilities).filter(([, vulnerability]) => vulnerability.severity === severity);
 }
 
-function packageMatches(vulnerability, spec) {
+export function validateLockfile(lockfile) {
+  if (!isPlainObject(lockfile)) {
+    throw new Error('package-lock.json root must be an object');
+  }
+  if (lockfile.lockfileVersion !== 3) {
+    throw new Error('package-lock.json lockfileVersion must equal 3');
+  }
+  if (!isPlainObject(lockfile.packages)) {
+    throw new Error('package-lock.json packages must be an object');
+  }
+  if (!isPlainObject(lockfile.packages[''])) {
+    throw new Error('package-lock.json root package entry is missing or invalid');
+  }
+
+  const root = lockfile.packages[''];
+  for (const field of ['dependencies', 'devDependencies']) {
+    if (root[field] !== undefined && !isPlainObject(root[field])) {
+      throw new Error(`package-lock.json root ${field} must be an object when present`);
+    }
+  }
+
+  return lockfile;
+}
+
+function lockfileNodeMatchesPackage(nodePath, packageName) {
+  const suffix = `node_modules/${packageName}`;
+  return nodePath === suffix || nodePath.endsWith(`/${suffix}`);
+}
+
+function rootDependencyClassification(lockfile, packageName) {
+  const root = lockfile.packages[''];
+  const runtime = Object.prototype.hasOwnProperty.call(root.dependencies ?? {}, packageName);
+  const dev = Object.prototype.hasOwnProperty.call(root.devDependencies ?? {}, packageName);
+  return { runtime, dev, direct: runtime || dev };
+}
+
+function validateLockfilePackageSpec(lockfile, acceptance, packageName, spec) {
+  const classification = rootDependencyClassification(lockfile, packageName);
+  if (classification.runtime && classification.dev) {
+    return {
+      ok: false,
+      message: `accepted package lockfile root classification is ambiguous: ${packageName}`,
+    };
+  }
+  if (classification.direct !== spec.isDirect) {
+    return {
+      ok: false,
+      message: `accepted package lockfile directness drifted: ${packageName}`,
+    };
+  }
+  if (spec.isDirect && acceptance.scope === 'build-dev' && !classification.dev) {
+    return {
+      ok: false,
+      message: `accepted build/dev direct package moved outside root devDependencies: ${packageName}`,
+    };
+  }
+
+  for (const nodePath of spec.nodes) {
+    if (!lockfileNodeMatchesPackage(nodePath, packageName)) {
+      return {
+        ok: false,
+        message: `accepted package lockfile node/package identity drifted: ${packageName}`,
+      };
+    }
+
+    const entry = lockfile.packages[nodePath];
+    if (!isPlainObject(entry) || typeof entry.version !== 'string' || entry.version.trim() === '') {
+      return {
+        ok: false,
+        message: `accepted package lockfile node/path drifted: ${packageName}`,
+      };
+    }
+
+    if (Array.isArray(spec.viaPackages)) {
+      if (!isPlainObject(entry.dependencies)) {
+        return {
+          ok: false,
+          message: `accepted package lockfile parent dependency metadata drifted: ${packageName}`,
+        };
+      }
+
+      for (const viaPackage of spec.viaPackages) {
+        if (typeof entry.dependencies[viaPackage] !== 'string' || entry.dependencies[viaPackage].trim() === '') {
+          return {
+            ok: false,
+            message: `accepted package lockfile parent chain drifted: ${packageName} -> ${viaPackage}`,
+          };
+        }
+        if (!isPlainObject(acceptance.packages[viaPackage])) {
+          return {
+            ok: false,
+            message: `accepted package lockfile parent chain references an unbound package: ${viaPackage}`,
+          };
+        }
+      }
+    }
+  }
+
+  return { ok: true };
+}
+
+function advisoryPackageMatches(vulnerability, spec) {
   if (!isPlainObject(vulnerability) || vulnerability.severity !== 'high') return false;
   if (vulnerability.isDirect !== spec.isDirect) return false;
   if (!sameStringSet(vulnerability.nodes, spec.nodes)) return false;
@@ -189,26 +291,30 @@ function packageMatches(vulnerability, spec) {
   const objectVia = vulnerability.via.filter((value) => isPlainObject(value));
   const packageVia = vulnerability.via.filter((value) => typeof value === 'string');
 
-  if (typeof spec.advisoryUrl === 'string') {
-    return (
-      objectVia.length === 1 &&
-      objectVia[0].url === spec.advisoryUrl &&
-      objectVia[0].severity === 'high' &&
-      packageVia.length === 0
-    );
-  }
-
-  if (Array.isArray(spec.viaPackages)) {
-    return objectVia.length === 0 && sameStringSet(packageVia, spec.viaPackages);
-  }
-
-  return false;
+  return (
+    typeof spec.advisoryUrl === 'string' &&
+    objectVia.length === 1 &&
+    objectVia[0].url === spec.advisoryUrl &&
+    objectVia[0].severity === 'high' &&
+    packageVia.length === 0
+  );
 }
 
-export function evaluateAuditPolicy({ runtimeReport, fullReport, config, today }) {
+function contextAuditRowIsSynthetic(vulnerability, spec) {
+  if (!isPlainObject(vulnerability) || vulnerability.severity !== 'high') return false;
+  if (!Array.isArray(spec.viaPackages) || !Array.isArray(vulnerability.via)) return false;
+  if (vulnerability.isDirect !== spec.isDirect) return false;
+  if (!sameStringSet(vulnerability.nodes, spec.nodes)) return false;
+  if (vulnerability.via.length === 0) return false;
+  if (vulnerability.via.some((value) => typeof value !== 'string')) return false;
+  return sameStringSet(vulnerability.via, spec.viaPackages);
+}
+
+export function evaluateAuditPolicy({ runtimeReport, fullReport, config, lockfile, today }) {
   validateAuditReport(runtimeReport, 'runtime audit');
   validateAuditReport(fullReport, 'full-tree audit');
   validateAcceptanceConfig(config);
+  validateLockfile(lockfile);
 
   if (!isCanonicalDate(today)) {
     throw new Error('today must be a real canonical YYYY-MM-DD date');
@@ -255,14 +361,25 @@ export function evaluateAuditPolicy({ runtimeReport, fullReport, config, today }
         message: `dependency-risk acceptance expired after ${acceptance.expiresAfter}: ${acceptance.id}`,
       };
     }
+
+    for (const [packageName, spec] of Object.entries(acceptance.packages)) {
+      const lockfileResult = validateLockfilePackageSpec(lockfile, acceptance, packageName, spec);
+      if (!lockfileResult.ok) {
+        return lockfileResult;
+      }
+    }
   }
 
   const matchedAcceptanceIds = new Set();
 
   for (const [name, vulnerability] of fullHigh) {
     const matches = config.acceptances.filter((acceptance) => {
-      const packageSpec = acceptance.packages[name];
-      return packageSpec && packageMatches(vulnerability, packageSpec);
+      const spec = acceptance.packages[name];
+      if (!spec) return false;
+      if (typeof spec.advisoryUrl === 'string') {
+        return advisoryPackageMatches(vulnerability, spec);
+      }
+      return contextAuditRowIsSynthetic(vulnerability, spec);
     });
 
     if (matches.length !== 1) {
@@ -275,21 +392,25 @@ export function evaluateAuditPolicy({ runtimeReport, fullReport, config, today }
   }
 
   for (const acceptance of config.acceptances) {
+    const advisoryPackages = Object.entries(acceptance.packages).filter(
+      ([, spec]) => typeof spec.advisoryUrl === 'string',
+    );
+
+    for (const [packageName, spec] of advisoryPackages) {
+      const live = fullHigh.find(([name]) => name === packageName);
+      if (!live || !advisoryPackageMatches(live[1], spec)) {
+        return {
+          ok: false,
+          message: `accepted advisory package identity drifted: ${packageName}`,
+        };
+      }
+    }
+
     if (!matchedAcceptanceIds.has(acceptance.id)) {
       return {
         ok: false,
         message: `dependency-risk acceptance no longer matches the live HIGH findings: ${acceptance.id}`,
       };
-    }
-
-    for (const packageName of Object.keys(acceptance.packages)) {
-      const live = fullHigh.find(([name]) => name === packageName);
-      if (!live || !packageMatches(live[1], acceptance.packages[packageName])) {
-        return {
-          ok: false,
-          message: `accepted package/advisory/path identity drifted: ${packageName}`,
-        };
-      }
     }
   }
 
@@ -338,12 +459,18 @@ function loadConfig() {
   return validateAcceptanceConfig(parsed);
 }
 
+function loadLockfile() {
+  const parsed = JSON.parse(readFileSync(LOCKFILE_URL, 'utf8'));
+  return validateLockfile(parsed);
+}
+
 function main() {
   const today = new Date().toISOString().slice(0, 10);
   const runtimeReport = runNpmAudit(['--omit=dev'], 'runtime audit');
   const fullReport = runNpmAudit([], 'full-tree audit');
   const config = loadConfig();
-  const result = evaluateAuditPolicy({ runtimeReport, fullReport, config, today });
+  const lockfile = loadLockfile();
+  const result = evaluateAuditPolicy({ runtimeReport, fullReport, config, lockfile, today });
 
   if (!result.ok) {
     console.error(`DEPENDENCY AUDIT: FAIL — ${result.message}`);

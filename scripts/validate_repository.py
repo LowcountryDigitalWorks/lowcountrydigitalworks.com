@@ -37,7 +37,7 @@ WORKER_ROUTES=sorted(PUBLIC_ROUTES+['/share/','/share/continue'])
 SITEMAP_ROUTES=[route for route in PUBLIC_ROUTES if route!='/contact/']
 
 REQUIRED=[
- 'README.md','CHANGELOG.md','SECURITY.md','package.json','astro.config.mjs','playwright.config.mjs','wrangler.jsonc','worker.js',
+ 'README.md','CHANGELOG.md','SECURITY.md','package.json','package-lock.json','astro.config.mjs','playwright.config.mjs','wrangler.jsonc','worker.js',
  '.github/workflows/validate.yml','.github/dependabot.yml','brand/colors.json','brand/css/brand-tokens.css',
  'brand/logo/lowcountry-digital-works-logo-horizontal.svg','brand/logo/lowcountry-digital-works-logo-horizontal-white.svg',
  'brand/icons/favicon.svg','brand/social/social-card-1200x630.png','design/brand-production-validation.md','src/pages/index.astro','src/pages/services.astro',
@@ -54,13 +54,44 @@ try:
  pkg=json.loads((ROOT/'package.json').read_text())
  runtime_deps=pkg.get('dependencies',{})
  dev_deps=pkg.get('devDependencies',{})
+ if not isinstance(runtime_deps,dict):
+  error('package.json dependencies must be an object when present')
+  runtime_deps={}
+ if not isinstance(dev_deps,dict):
+  error('package.json devDependencies must be an object')
+  dev_deps={}
  if 'astro' in runtime_deps: error('Astro is build-only for this static deployment and must not be a production/runtime dependency')
  if 'astro' not in dev_deps: error('package.json devDependencies must include build-only Astro')
  if '@fontsource-variable/manrope' in runtime_deps: error('Manrope package is a build input and must not be a production/runtime dependency')
  if '@fontsource-variable/manrope' not in dev_deps: error('package.json devDependencies must include the Manrope build input')
  if pkg.get('scripts',{}).get('test:dependency-policy')!='node --test tests/dependency-audit-policy.unit.mjs': error('dependency policy unit-test script changed unexpectedly')
  if pkg.get('scripts',{}).get('build')!='astro build': error('package.json build script must be astro build')
-except Exception as exc: error(f'invalid package.json: {exc}')
+
+ lock=json.loads((ROOT/'package-lock.json').read_text())
+ if lock.get('lockfileVersion')!=3: error('package-lock.json must use supported lockfileVersion 3')
+ lock_packages=lock.get('packages')
+ if not isinstance(lock_packages,dict):
+  error('package-lock.json packages must be an object')
+ else:
+  lock_root=lock_packages.get('')
+  if not isinstance(lock_root,dict):
+   error('package-lock.json must contain the root package entry')
+  else:
+   lock_runtime_deps=lock_root.get('dependencies',{})
+   lock_dev_deps=lock_root.get('devDependencies',{})
+   if not isinstance(lock_runtime_deps,dict): error('package-lock root dependencies must be an object when present')
+   elif lock_runtime_deps!=runtime_deps: error('package-lock root production dependencies must exactly match package.json dependencies')
+   if not isinstance(lock_dev_deps,dict): error('package-lock root devDependencies must be an object')
+   elif lock_dev_deps!=dev_deps: error('package-lock root devDependencies must exactly match package.json devDependencies')
+except Exception as exc: error(f'invalid package/lock dependency metadata: {exc}')
+
+validate_workflow=(ROOT/'.github/workflows/validate.yml').read_text()
+normalized_validate_workflow=re.sub(r'\s+',' ',re.sub(r'(?m)#.*$','',validate_workflow))
+install_step=re.search(r'-\s*name:\s*Install dependencies from committed lockfile\b(?P<body>.*?)(?=-\s*name:|$)',normalized_validate_workflow)
+if not install_step or not re.search(r'\brun:\s*npm ci\b',install_step.group('body')):
+ error('Validate primary dependency-install step must use npm ci from the committed lockfile')
+if re.search(r'\brun:\s*npm install\b',normalized_validate_workflow):
+ error('Validate primary dependency-install step must not regress to npm install')
 
 wr=(ROOT/'wrangler.jsonc').read_text()
 try:

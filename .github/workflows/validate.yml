@@ -32,8 +32,8 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install dependencies and generate lockfile
-        run: npm install
+      - name: Install dependencies from committed lockfile
+        run: npm ci
 
       - name: Build static site
         run: npm run build
@@ -56,7 +56,7 @@ jobs:
       - name: Dependency audits (runtime + full tree)
         run: node scripts/dependency-audit-policy.mjs
 
-      - name: Upload generated lockfile
+      - name: Upload resolved lockfile
         uses: actions/upload-artifact@v4
         with:
           name: package-lock
