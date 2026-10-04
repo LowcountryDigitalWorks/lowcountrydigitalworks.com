@@ -32,8 +32,8 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install dependencies and generate lockfile
-        run: npm install
+      - name: Install dependencies from committed lockfile
+        run: npm ci
 
       - name: Build static site
         run: npm run build
@@ -44,16 +44,19 @@ jobs:
       - name: Production smoke unit tests
         run: npm run test:smoke
 
+      - name: Dependency policy unit tests
+        run: npm run test:dependency-policy
+
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
 
       - name: Browser and accessibility tests
         run: npm run test:e2e
 
-      - name: Dependency audit
-        run: npm audit --audit-level=high
+      - name: Dependency audits (runtime + full tree)
+        run: node scripts/dependency-audit-policy.mjs
 
-      - name: Upload generated lockfile
+      - name: Upload resolved lockfile
         uses: actions/upload-artifact@v4
         with:
           name: package-lock
