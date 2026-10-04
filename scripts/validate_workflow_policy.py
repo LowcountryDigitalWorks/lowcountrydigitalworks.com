@@ -5,13 +5,22 @@ from dataclasses import dataclass
 import json
 import re
 
-PRIMARY_INSTALL_STEP = "Install dependencies from committed lockfile"
-_BLOCK_SCALAR_RE = re.compile(r"^[|>](?:[1-9][+-]?|[+-][1-9]?|[+-])?$")
-_STEP_START_RE = re.compile(r"^(?P<indent> *)-\s+(?P<rest>.*)$")
+EXPECTED_VALIDATE_RUN_STEPS = (
+    ("Workflow install policy unit tests", "python tests/validate-workflow-policy.unit.py"),
+    ("Install dependencies from committed lockfile", "npm ci"),
+    ("Build static site", "npm run build"),
+    ("Validate repository and built site", "python scripts/validate_repository.py"),
+    ("Production smoke unit tests", "npm run test:smoke"),
+    ("Dependency policy unit tests", "npm run test:dependency-policy"),
+    ("Install Chromium", "npx playwright install --with-deps chromium"),
+    ("Browser and accessibility tests", "npm run test:e2e"),
+    ("Dependency audits (runtime + full tree)", "node scripts/dependency-audit-policy.mjs"),
+)
+
 _KEY_RE = re.compile(r"^(?P<indent> *)(?P<key>[A-Za-z0-9_-]+):(?P<value>.*)$")
-_COMMAND_BOUNDARY = r"(?:^|[\n;]|&&|\|\||\|)"
-_NPM_INSTALL_RE = re.compile(_COMMAND_BOUNDARY + r"[ \t]*npm[ \t\r\n]+install\b", re.IGNORECASE)
-_NPM_CI_RE = re.compile(_COMMAND_BOUNDARY + r"[ \t]*npm[ \t\r\n]+ci\b", re.IGNORECASE)
+_STEP_RE = re.compile(r"^(?P<indent> *)-\s+(?P<rest>.*)$")
+_INLINE_ENTRY_RE = re.compile(r"(?P<key>[A-Za-z0-9_-]+):(?P<value>.*)$")
+_BLOCK_MARKER_RE = re.compile(r"^(?P<style>[|>])(?P<chomp>[+-]?)$")
 
 
 @dataclass(frozen=True)
@@ -24,8 +33,8 @@ def _indent(line: str) -> int:
     return len(line) - len(line.lstrip(" "))
 
 
-def _strip_comment(value: str) -> str:
-    """Strip an unquoted YAML/shell-style # comment from one line."""
+def _strip_yaml_comment(value: str) -> str:
+    """Strip an unquoted YAML comment from a scalar fragment."""
     out: list[str] = []
     single = False
     double = False
@@ -47,162 +56,294 @@ def _strip_comment(value: str) -> str:
             double = not double
             out.append(char)
             continue
-        if char == "#" and not single and not double and (index == 0 or value[index - 1].isspace()):
+        if char == "#" and not single and not double and (
+            index == 0 or value[index - 1].isspace()
+        ):
             break
         out.append(char)
     return "".join(out).rstrip()
 
 
-def _decode_scalar(value: str) -> str:
-    value = _strip_comment(value).strip()
+def _decode_inline_scalar(raw_value: str) -> str:
+    value = _strip_yaml_comment(raw_value).strip()
+    if not value:
+        raise ValueError("run scalar must not be blank")
+    if value.startswith(("|", ">")):
+        raise ValueError("block scalar marker must be decoded structurally")
+    if value[0] in {"[", "{", "&", "*", "!"}:
+        raise ValueError("unsupported inline run scalar form")
     if len(value) >= 2 and value[0] == value[-1] and value[0] in {"'", '"'}:
         if value[0] == "'":
             return value[1:-1].replace("''", "'")
         try:
             decoded = json.loads(value)
-        except json.JSONDecodeError:
-            return value[1:-1]
-        return decoded if isinstance(decoded, str) else value
+        except json.JSONDecodeError as exc:
+            raise ValueError("invalid double-quoted run scalar") from exc
+        if not isinstance(decoded, str):
+            raise ValueError("double-quoted run scalar must decode to text")
+        return decoded
     return value
 
 
-def _block_body(lines: list[str], start: int, end: int, key_indent: int) -> str:
-    body: list[str] = []
+def _apply_chomp(text: str, chomp: str) -> str:
+    if chomp == "-":
+        return text.rstrip("\n")
+    if chomp == "+":
+        return text + "\n"
+    return text.rstrip("\n") + "\n"
+
+
+def _decode_block_scalar(
+    lines: list[str],
+    start: int,
+    end: int,
+    key_indent: int,
+    marker: str,
+) -> str:
+    match = _BLOCK_MARKER_RE.fullmatch(marker)
+    if not match:
+        raise ValueError(f"unsupported run block scalar marker: {marker!r}")
+
+    body: list[tuple[str, int]] = []
     index = start
     while index < end:
         line = lines[index]
         if line.strip() and _indent(line) <= key_indent:
             break
-        body.append(line)
+        body.append((line, _indent(line)))
         index += 1
-    nonblank_indents = [_indent(line) for line in body if line.strip()]
-    content_indent = min(nonblank_indents) if nonblank_indents else key_indent + 2
-    return "\n".join(
-        line[content_indent:] if len(line) >= content_indent else ""
-        for line in body
-    )
+
+    nonblank_indents = [indent for line, indent in body if line.strip()]
+    if not nonblank_indents:
+        return _apply_chomp("", match.group("chomp"))
+
+    content_indent = min(nonblank_indents)
+    if content_indent <= key_indent:
+        raise ValueError("run block scalar content must be indented")
+
+    logical: list[tuple[str, int]] = []
+    for line, indent in body:
+        if not line.strip():
+            logical.append(("", indent))
+            continue
+        logical.append((line[content_indent:], indent))
+
+    if match.group("style") == "|":
+        text = "\n".join(line for line, _ in logical)
+        return _apply_chomp(text, match.group("chomp"))
+
+    pieces: list[str] = []
+    for position, (line, indent) in enumerate(logical):
+        pieces.append(line)
+        if position == len(logical) - 1:
+            continue
+        next_line, next_indent = logical[position + 1]
+        if not line or not next_line:
+            pieces.append("\n")
+        elif indent > content_indent or next_indent > content_indent:
+            pieces.append("\n")
+        else:
+            pieces.append(" ")
+    return _apply_chomp("".join(pieces), match.group("chomp"))
 
 
-def extract_run_steps(workflow_text: str) -> list[RunStep]:
-    """Extract top-level workflow step run values without implementing general YAML parsing."""
-    if any(line.startswith("\t") for line in workflow_text.splitlines()):
-        raise ValueError("workflow indentation must not use tabs")
+def _find_unique_mapping(
+    lines: list[str],
+    start: int,
+    end: int,
+    *,
+    indent: int,
+    key: str,
+) -> int:
+    matches: list[int] = []
+    for index in range(start, end):
+        line = lines[index]
+        if not line.strip() or line.lstrip().startswith("#"):
+            continue
+        match = _KEY_RE.match(line)
+        if not match or len(match.group("indent")) != indent:
+            continue
+        if match.group("key") != key:
+            continue
+        if _strip_yaml_comment(match.group("value")).strip():
+            raise ValueError(f"{key}: must be a block mapping")
+        matches.append(index)
+    if len(matches) != 1:
+        raise ValueError(f"expected exactly one {key}: mapping, found {len(matches)}")
+    return matches[0]
 
-    lines = workflow_text.splitlines()
-    run_steps: list[RunStep] = []
-    index = 0
 
+def _block_end(lines: list[str], start: int, parent_indent: int) -> int:
+    index = start
     while index < len(lines):
-        steps_match = _KEY_RE.match(lines[index])
-        if not steps_match or steps_match.group("key") != "steps" or _strip_comment(steps_match.group("value")).strip():
-            index += 1
+        line = lines[index]
+        if line.strip() and _indent(line) <= parent_indent:
+            break
+        index += 1
+    return index
+
+
+def _direct_mapping_indent(
+    lines: list[str],
+    start: int,
+    end: int,
+    parent_indent: int,
+) -> int:
+    candidates: list[int] = []
+    for index in range(start, end):
+        line = lines[index]
+        if not line.strip() or line.lstrip().startswith("#"):
+            continue
+        match = _KEY_RE.match(line)
+        if match:
+            indent = len(match.group("indent"))
+            if indent > parent_indent:
+                candidates.append(indent)
+    if not candidates:
+        raise ValueError("mapping has no direct child keys")
+    return min(candidates)
+
+
+def extract_validate_run_steps(workflow_text: str) -> list[RunStep]:
+    """Extract only jobs -> validate -> steps -> direct executable run steps."""
+    lines = workflow_text.splitlines()
+    for line in lines:
+        leading = line[: len(line) - len(line.lstrip())]
+        if "\t" in leading:
+            raise ValueError("workflow indentation must not use tabs")
+
+    jobs_line = _find_unique_mapping(lines, 0, len(lines), indent=0, key="jobs")
+    jobs_end = _block_end(lines, jobs_line + 1, 0)
+    job_indent = _direct_mapping_indent(lines, jobs_line + 1, jobs_end, 0)
+    validate_line = _find_unique_mapping(
+        lines,
+        jobs_line + 1,
+        jobs_end,
+        indent=job_indent,
+        key="validate",
+    )
+    validate_end = _block_end(lines, validate_line + 1, job_indent)
+    property_indent = _direct_mapping_indent(
+        lines,
+        validate_line + 1,
+        validate_end,
+        job_indent,
+    )
+    steps_line = _find_unique_mapping(
+        lines,
+        validate_line + 1,
+        validate_end,
+        indent=property_indent,
+        key="steps",
+    )
+    steps_end = _block_end(lines, steps_line + 1, property_indent)
+
+    step_indents = [
+        len(match.group("indent"))
+        for index in range(steps_line + 1, steps_end)
+        if (match := _STEP_RE.match(lines[index]))
+        and len(match.group("indent")) > property_indent
+    ]
+    if not step_indents:
+        raise ValueError("validate job steps: must contain direct list entries")
+    step_indent = min(step_indents)
+
+    step_starts = [
+        index
+        for index in range(steps_line + 1, steps_end)
+        if (match := _STEP_RE.match(lines[index]))
+        and len(match.group("indent")) == step_indent
+    ]
+
+    run_steps: list[RunStep] = []
+    for position, step_start in enumerate(step_starts):
+        step_end = (
+            step_starts[position + 1]
+            if position + 1 < len(step_starts)
+            else steps_end
+        )
+        start_match = _STEP_RE.match(lines[step_start])
+        assert start_match is not None
+
+        entries: list[tuple[str, str, int, int]] = []
+        first = _INLINE_ENTRY_RE.fullmatch(start_match.group("rest"))
+        if first:
+            entries.append(
+                (first.group("key"), first.group("value"), step_start, step_indent)
+            )
+
+        entry_indent = step_indent + 2
+        for index in range(step_start + 1, step_end):
+            match = _KEY_RE.match(lines[index])
+            if match and len(match.group("indent")) == entry_indent:
+                entries.append(
+                    (match.group("key"), match.group("value"), index, entry_indent)
+                )
+
+        names = [entry for entry in entries if entry[0] == "name"]
+        runs = [entry for entry in entries if entry[0] == "run"]
+        if len(names) > 1:
+            raise ValueError("validate job step contains duplicate name keys")
+        if len(runs) > 1:
+            raise ValueError("validate job step contains duplicate run keys")
+
+        name = _decode_inline_scalar(names[0][1]) if names else None
+        if not runs:
             continue
 
-        steps_indent = len(steps_match.group("indent"))
-        index += 1
-        step_indent: int | None = None
-
-        while index < len(lines):
-            current = lines[index]
-            if not current.strip() or current.lstrip().startswith("#"):
-                index += 1
-                continue
-            if _indent(current) <= steps_indent:
-                break
-
-            step_match = _STEP_START_RE.match(current)
-            if not step_match:
-                index += 1
-                continue
-
-            current_step_indent = len(step_match.group("indent"))
-            if step_indent is None:
-                step_indent = current_step_indent
-            if current_step_indent != step_indent:
-                index += 1
-                continue
-
-            step_end = index + 1
-            while step_end < len(lines):
-                candidate = lines[step_end]
-                if candidate.strip():
-                    candidate_indent = _indent(candidate)
-                    candidate_step = _STEP_START_RE.match(candidate)
-                    if candidate_indent <= steps_indent:
-                        break
-                    if candidate_step and len(candidate_step.group("indent")) == step_indent:
-                        break
-                step_end += 1
-
-            entries: list[tuple[str, str, int, int]] = []
-            first_entry = re.match(r"(?P<key>[A-Za-z0-9_-]+):(?P<value>.*)$", step_match.group("rest"))
-            if first_entry:
-                entries.append((first_entry.group("key"), first_entry.group("value"), index, step_indent))
-
-            cursor = index + 1
-            while cursor < step_end:
-                key_match = _KEY_RE.match(lines[cursor])
-                if key_match and len(key_match.group("indent")) == step_indent + 2:
-                    entries.append((key_match.group("key"), key_match.group("value"), cursor, step_indent + 2))
-                cursor += 1
-
-            name: str | None = None
-            run: str | None = None
-            run_seen = 0
-            for key, raw_value, absolute_index, key_indent in entries:
-                if key == "name":
-                    name = _decode_scalar(raw_value)
-                    continue
-                if key != "run":
-                    continue
-                run_seen += 1
-                if run_seen > 1:
-                    raise ValueError(f"workflow step {name or '<unnamed>'} contains multiple run keys")
-                marker = _strip_comment(raw_value).strip()
-                if _BLOCK_SCALAR_RE.fullmatch(marker):
-                    run = _block_body(lines, absolute_index + 1, step_end, key_indent)
-                else:
-                    run = _decode_scalar(raw_value)
-
-            if run is not None:
-                run_steps.append(RunStep(name=name, run=run))
-            index = step_end
+        _, raw_value, absolute_index, key_indent = runs[0]
+        marker = _strip_yaml_comment(raw_value).strip()
+        if marker.startswith(("|", ">")):
+            run = _decode_block_scalar(
+                lines,
+                absolute_index + 1,
+                step_end,
+                key_indent,
+                marker,
+            )
+        else:
+            run = _decode_inline_scalar(raw_value)
+        run_steps.append(RunStep(name=name, run=run))
 
     return run_steps
 
 
-def _without_shell_comments(script: str) -> str:
-    return "\n".join(_strip_comment(line) for line in script.splitlines())
-
-
 def validate_workflow_install_policy(workflow_text: str) -> list[str]:
-    """Return fail-closed install-policy errors for the validation workflow."""
+    """Enforce the exact executable run-command contract for the validate job."""
     try:
-        run_steps = extract_run_steps(workflow_text)
+        actual = extract_validate_run_steps(workflow_text)
     except ValueError as exc:
         return [f"Validate workflow run-command structure is ambiguous: {exc}"]
 
+    expected = [RunStep(name=name, run=run) for name, run in EXPECTED_VALIDATE_RUN_STEPS]
     errors: list[str] = []
-    if not run_steps:
-        return ["Validate workflow must contain executable run steps"]
-
-    primary_steps = [step for step in run_steps if step.name == PRIMARY_INSTALL_STEP]
-    if len(primary_steps) != 1:
+    if len(actual) != len(expected):
         errors.append(
-            f'Validate workflow must contain exactly one primary dependency-install step named "{PRIMARY_INSTALL_STEP}"'
+            "Validate job run-command contract drifted: "
+            f"expected {len(expected)} executable run steps, found {len(actual)}"
         )
-    elif not _NPM_CI_RE.search(_without_shell_comments(primary_steps[0].run)):
-        errors.append("Validate primary dependency-install step must use npm ci from the committed lockfile")
 
-    offenders = [
-        step.name or "<unnamed step>"
-        for step in run_steps
-        if _NPM_INSTALL_RE.search(_without_shell_comments(step.run))
-    ]
-    if offenders:
-        errors.append(
-            "Validate workflow must not contain executable npm install commands: "
-            + ", ".join(offenders)
-        )
+    for index in range(max(len(actual), len(expected))):
+        if index >= len(expected):
+            step = actual[index]
+            errors.append(
+                "Validate job contains an unexpected executable run step at "
+                f"position {index + 1}: name={step.name!r}, run={step.run!r}"
+            )
+            continue
+        if index >= len(actual):
+            step = expected[index]
+            errors.append(
+                "Validate job is missing required executable run step at "
+                f"position {index + 1}: name={step.name!r}, run={step.run!r}"
+            )
+            continue
+        if actual[index] != expected[index]:
+            errors.append(
+                "Validate job run-command contract mismatch at "
+                f"position {index + 1}: expected name={expected[index].name!r}, "
+                f"run={expected[index].run!r}; found name={actual[index].name!r}, "
+                f"run={actual[index].run!r}"
+            )
 
     return errors
