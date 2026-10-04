@@ -303,7 +303,11 @@ function advisoryPackageMatches(vulnerability, spec) {
 function contextAuditRowIsSynthetic(vulnerability, spec) {
   if (!isPlainObject(vulnerability) || vulnerability.severity !== 'high') return false;
   if (!Array.isArray(spec.viaPackages) || !Array.isArray(vulnerability.via)) return false;
-  return vulnerability.via.every((value) => typeof value === 'string');
+  if (vulnerability.isDirect !== spec.isDirect) return false;
+  if (!sameStringSet(vulnerability.nodes, spec.nodes)) return false;
+  if (vulnerability.via.length === 0) return false;
+  if (vulnerability.via.some((value) => typeof value !== 'string')) return false;
+  return sameStringSet(vulnerability.via, spec.viaPackages);
 }
 
 export function evaluateAuditPolicy({ runtimeReport, fullReport, config, lockfile, today }) {

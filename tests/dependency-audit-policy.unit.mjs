@@ -175,6 +175,58 @@ test('old npm-audit metavulnerability representation passes with exact reviewed 
   assert.match(result.message, /PASS WITH REVIEWED BUILD\/DEV HIGH ACCEPTANCE/);
 });
 
+test('old synthetic Astro HIGH with wrong via package blocks', () => {
+  const report = acceptedHighReport();
+  report.vulnerabilities.astro.via = ['different-package'];
+  const result = evaluatePolicy({
+    runtimeReport: auditReport(),
+    fullReport: report,
+    config: acceptedConfig(),
+    today: '2026-10-03',
+  });
+  assert.equal(result.ok, false);
+  assert.match(result.message, /unapproved or drifted build\/dev HIGH vulnerability: astro/);
+});
+
+test('old synthetic Astro HIGH with empty via blocks', () => {
+  const report = acceptedHighReport();
+  report.vulnerabilities.astro.via = [];
+  const result = evaluatePolicy({
+    runtimeReport: auditReport(),
+    fullReport: report,
+    config: acceptedConfig(),
+    today: '2026-10-03',
+  });
+  assert.equal(result.ok, false);
+  assert.match(result.message, /unapproved or drifted build\/dev HIGH vulnerability: astro/);
+});
+
+test('old synthetic Astro HIGH with node drift blocks', () => {
+  const report = acceptedHighReport();
+  report.vulnerabilities.astro.nodes = ['node_modules/astro-drifted'];
+  const result = evaluatePolicy({
+    runtimeReport: auditReport(),
+    fullReport: report,
+    config: acceptedConfig(),
+    today: '2026-10-03',
+  });
+  assert.equal(result.ok, false);
+  assert.match(result.message, /unapproved or drifted build\/dev HIGH vulnerability: astro/);
+});
+
+test('old synthetic Astro HIGH with directness drift blocks', () => {
+  const report = acceptedHighReport();
+  report.vulnerabilities.astro.isDirect = false;
+  const result = evaluatePolicy({
+    runtimeReport: auditReport(),
+    fullReport: report,
+    config: acceptedConfig(),
+    today: '2026-10-03',
+  });
+  assert.equal(result.ok, false);
+  assert.match(result.message, /unapproved or drifted build\/dev HIGH vulnerability: astro/);
+});
+
 test('missing vulnerabilities object fails closed', () => {
   const report = auditReport();
   delete report.vulnerabilities;
