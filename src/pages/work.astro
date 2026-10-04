@@ -2,25 +2,56 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import work from '../data/work.json';
 ---
-<BaseLayout title="Work" description="Selected Lowcountry Digital Works systems with plain-language context, current maturity, real evidence, and explicit boundaries.">
+<BaseLayout title="Work" description="Permissioned client work and Lowcountry Digital Works systems with plain-language context, live proof, current maturity, and explicit boundaries.">
   <section class="page-hero page-hero--warm">
     <div class="container readable">
       <p class="eyebrow">{work.hero.eyebrow}</p>
       <h1>{work.hero.title}</h1>
       <p class="lede">{work.hero.lede}</p>
       <div class="actions">
-        <a class="button" href="#examples">See the examples</a>
+        <a class="button" href="#client-work">See the work</a>
         <a class="text-link" href="/connect/">Talk through a similar problem →</a>
       </div>
     </div>
   </section>
 
-  <section class="section" id="examples">
+  <section class="section" id="client-work" data-client-work>
     <div class="container">
       <div class="section-heading">
-        <p class="eyebrow">Three different kinds of proof</p>
-        <h2>Understand the problem first. Then inspect the evidence.</h2>
-        <p class="lede">The overview stays intentionally plain-language. Each detail page carries the deeper architecture, screenshots, maturity, FAQs, and explicit non-claims.</p>
+        <p class="eyebrow">{work.clientWork.eyebrow}</p>
+        <h2>{work.clientWork.title}</h2>
+        <p class="lede">{work.clientWork.lede}</p>
+      </div>
+
+      <div class="portfolio-grid portfolio-grid--work">
+        {work.clientWork.items.map((client) => (
+          <article class="portfolio-card portfolio-card--work portfolio-card--proof" data-client-proof={client.name}>
+            <div class="portfolio-card__body">
+              <div class="work-row__meta">
+                <span class="status-pill status-pill--live">Client work</span>
+                <span>{client.type}</span>
+              </div>
+              <h3>{client.name}</h3>
+              <p class="lede lede--compact">{client.context}</p>
+              <div class="portfolio-card__context">
+                <p><strong>LDW work</strong>{client.work}</p>
+                <p><strong>Live proof</strong>{client.proof}</p>
+                <p class="portfolio-card__boundary"><strong>Boundary</strong>{client.boundary}</p>
+              </div>
+              <a class="text-link" href={client.href} rel="noopener noreferrer">Visit the live site →</a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--warm" id="internal-proof" data-internal-proof>
+    <div class="container">
+      <div class="section-heading">
+        <p class="eyebrow">{work.internalProof.eyebrow}</p>
+        <h2>{work.internalProof.title}</h2>
+        <p class="lede">{work.internalProof.lede}</p>
       </div>
 
       <div class="portfolio-grid portfolio-grid--work">
@@ -42,7 +73,7 @@ import work from '../data/work.json';
                 <span class={`status-pill ${project.status === 'Live' ? 'status-pill--live' : ''}`}>{project.status}</span>
                 <span>{project.type}</span>
               </div>
-              <h2>{project.name}</h2>
+              <h3>{project.name}</h3>
               <p class="lede lede--compact">{project.homeSummary ?? project.purpose}</p>
               <div class="portfolio-card__context">
                 <p><strong>Why this matters</strong>{project.workWhy}</p>
@@ -54,7 +85,7 @@ import work from '../data/work.json';
         ))}
       </div>
 
-      <p class="portfolio-detail-note">These are LDW-owned examples of method and product development. They are not presented as completed customer case studies.</p>
+      <p class="portfolio-detail-note">These are LDW-owned systems and internal proof, not claims about completed client deployments.</p>
     </div>
   </section>
 
