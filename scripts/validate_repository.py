@@ -54,8 +54,12 @@ try:
  pkg=json.loads((ROOT/'package.json').read_text())
  runtime_deps=pkg.get('dependencies',{})
  dev_deps=pkg.get('devDependencies',{})
- if not isinstance(runtime_deps,dict): error('package.json dependencies must be an object when present'); runtime_deps={}
- if not isinstance(dev_deps,dict): error('package.json devDependencies must be an object'); dev_deps={}
+ if not isinstance(runtime_deps,dict):
+  error('package.json dependencies must be an object when present')
+  runtime_deps={}
+ if not isinstance(dev_deps,dict):
+  error('package.json devDependencies must be an object')
+  dev_deps={}
  if 'astro' in runtime_deps: error('Astro is build-only for this static deployment and must not be a production/runtime dependency')
  if 'astro' not in dev_deps: error('package.json devDependencies must include build-only Astro')
  if '@fontsource-variable/manrope' in runtime_deps: error('Manrope package is a build input and must not be a production/runtime dependency')
@@ -66,10 +70,12 @@ try:
  lock=json.loads((ROOT/'package-lock.json').read_text())
  if lock.get('lockfileVersion')!=3: error('package-lock.json must use supported lockfileVersion 3')
  lock_packages=lock.get('packages')
- if not isinstance(lock_packages,dict): error('package-lock.json packages must be an object')
+ if not isinstance(lock_packages,dict):
+  error('package-lock.json packages must be an object')
  else:
   lock_root=lock_packages.get('')
-  if not isinstance(lock_root,dict): error('package-lock.json must contain the root package entry')
+  if not isinstance(lock_root,dict):
+   error('package-lock.json must contain the root package entry')
   else:
    lock_runtime_deps=lock_root.get('dependencies',{})
    lock_dev_deps=lock_root.get('devDependencies',{})
@@ -80,202 +86,7 @@ try:
 except Exception as exc: error(f'invalid package/lock dependency metadata: {exc}')
 
 validate_workflow=(ROOT/'.github/workflows/validate.yml').read_text()
-normalized_validate_workflow=re.sub(r'\s+',' ',re.sub(r'(?m)#.*
-
-wr=(ROOT/'wrangler.jsonc').read_text()
-try:
- wr_config=json.loads(wr)
- assets=wr_config.get('assets',{})
- if wr_config.get('name')!='lowcountrydigitalworks': error('wrangler Worker name changed unexpectedly')
- if wr_config.get('main')!='./worker.js': error('wrangler must use the bounded Worker entrypoint')
- if assets.get('directory')!='./dist': error('wrangler assets directory must be ./dist')
- if assets.get('binding')!='ASSETS': error('wrangler ASSETS binding missing')
- if assets.get('html_handling')!='auto-trailing-slash': error('wrangler HTML handling changed unexpectedly')
- if assets.get('not_found_handling')!='404-page': error('wrangler 404 handling missing')
- if sorted(assets.get('run_worker_first',[]))!=WORKER_ROUTES: error('wrangler selective Worker-first routes changed unexpectedly')
- if 'SECURE_SHARE_DESTINATION_URL' in wr: error('Secure Share destination must not be persisted in wrangler.jsonc')
-except Exception as exc: error(f'invalid wrangler.jsonc: {exc}')
-
-worker=(ROOT/'worker.js').read_text()
-if "'unsafe-inline'" in worker or "'unsafe-eval'" in worker: error('Worker must not weaken CSP with unsafe-inline/eval')
-
-headers=(ROOT/'public/_headers').read_text()
-for h in ['Content-Security-Policy','Permissions-Policy','Referrer-Policy','X-Content-Type-Options','X-Frame-Options']:
- if h not in headers: error(f'missing security header: {h}')
-if "'unsafe-inline'" in headers or "'unsafe-eval'" in headers: error('CSP must not allow unsafe-inline/eval')
-expected_astro_cache="/_astro/*\n  Cache-Control: public, max-age=31536000, immutable"
-expected_static_image_caches=[
- "/brand/logo/*\n  Cache-Control: public, max-age=86400",
- "/technology/*\n  Cache-Control: public, max-age=86400",
- "/favicon.svg\n  Cache-Control: public, max-age=86400",
- "/favicon.ico\n  Cache-Control: public, max-age=86400",
- "/apple-touch-icon.png\n  Cache-Control: public, max-age=86400",
-]
-if expected_astro_cache not in headers: error('fingerprinted Astro assets must use the approved immutable browser-cache policy')
-for rule in expected_static_image_caches:
- if rule not in headers: error(f'missing approved 24-hour static-image cache rule: {rule.splitlines()[0]}')
-if headers.count('immutable') != 1: error('immutable browser caching must remain scoped only to /_astro/*')
-
-brand=(ROOT/'brand/css/brand-tokens.css').read_text()
-for value in ['#102A3A','#2F766F','#F3EFE6','#F7F8F6']:
- if value not in brand: error(f'brand token missing {value}')
-design_tokens=(ROOT/'design/tokens.css').read_text()
-if '--logo-watermark-' in design_tokens: error('retired logo watermark opacity tokens remain')
-if '../brand/css/brand-tokens.css' not in design_tokens: error('design tokens must reference canonical brand tokens')
-
-site_implementation='\n'.join(p.read_text(errors='ignore') for p in (ROOT/'src').rglob('*') if p.is_file())
-if 'linear-gradient(' in site_implementation: error('marketing site should not use gradients in the approved restrained visual direction')
-if 'backdrop-filter' in site_implementation: error('marketing site should not use decorative glassmorphism/backdrop filtering')
-if 'linkedin.com/company' in site_implementation.lower(): error('unverified LDW LinkedIn company page must not be published')
-if 'https://x.com/LocoDW' not in site_implementation or 'https://www.facebook.com/LowcountryDigitalWorks/' not in site_implementation:
- error('verified Facebook/X canonical links must remain in repository-controlled public content')
-if 'customer SaaS' not in (ROOT/'src/data/work.json').read_text():
- error('G.A.S. public boundary must explicitly reject customer SaaS framing')
-footer_source=(ROOT/'src/components/Footer.astro').read_text()
-if 'schema.org/ProfessionalService' in footer_source: error('deprecated ProfessionalService schema type must not be published')
-if 'itemtype="https://schema.org/Organization"' not in footer_source: error('footer must expose the LDW Organization entity')
-if 'itemid="https://lowcountrydigitalworks.com/#organization"' not in footer_source: error('footer Organization entity id missing')
-guide_source=(ROOT/'src/pages/guides/website-ownership-handoff.astro').read_text()
-for required_guide_source in [
- 'https://www.icann.org/registrants',
- 'https://support.google.com/webmasters/answer/7687615?hl=en',
- 'https://support.google.com/business/answer/3403100?hl=en',
- 'https://docs.github.com/en/organizations/managing-user-access-to-your-organizations-repositories/managing-repository-roles/repository-roles-for-an-organization',
- 'https://developers.cloudflare.com/fundamentals/manage-members/',
-]:
- if required_guide_source not in guide_source: error(f'ownership/handoff guide missing primary-source reference: {required_guide_source}')
-if 'legal advice' not in guide_source: error('ownership/handoff guide must preserve operational-vs-legal boundary')
-if 'Donovan Family Dentistry' in guide_source or 'East Coast Foam' in guide_source:
- error('ownership/handoff guide must not publish gated customer names')
-
-maintenance_guide_source=(ROOT/'src/pages/guides/website-maintenance-after-launch.astro').read_text()
-for required_maintenance_source in [
- 'https://www.w3.org/WAI/standards-guidelines/wcag/',
- 'https://www.w3.org/WAI/test-evaluate/',
- 'https://developers.google.com/search/docs/appearance/page-experience',
- 'https://developers.google.com/search/docs/appearance/core-web-vitals',
- 'https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap',
- 'https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls',
-]:
- if required_maintenance_source not in maintenance_guide_source: error(f'maintenance guide missing primary-source reference: {required_maintenance_source}')
-if 'no tool alone can determine' not in maintenance_guide_source.lower():
- error('maintenance guide must preserve automated-accessibility-tool limitation')
-if 'There is no single honest rule' not in maintenance_guide_source:
- error('maintenance guide must reject universal maintenance cadence claims')
-if 'Static / low-runtime' not in maintenance_guide_source or 'CMS / plugin-heavy' not in maintenance_guide_source:
- error('maintenance guide must preserve static-vs-CMS distinction')
-if 'Donovan Family Dentistry' in maintenance_guide_source or 'East Coast Foam' in maintenance_guide_source:
- error('maintenance guide must not publish gated customer names')
-
-class P(HTMLParser):
- def __init__(self):
-  super().__init__(); self.ids=set(); self.dups=[]; self.links=[]; self.anchors=[]; self.h1=0; self.main=0; self.title=0; self.lang=False; self.viewport=False; self.description=False; self.description_content=None; self.robots_content=None
- def handle_starttag(self,tag,attrs):
-  a=dict(attrs)
-  if tag=='html' and a.get('lang'): self.lang=True
-  if tag=='main': self.main+=1
-  if tag=='h1': self.h1+=1
-  if tag=='title': self.title+=1
-  if tag=='meta' and a.get('name')=='viewport': self.viewport=True
-  if tag=='meta' and a.get('name')=='description': self.description=True; self.description_content=a.get('content')
-  if tag=='meta' and a.get('name')=='robots': self.robots_content=a.get('content')
-  if 'id' in a:
-   if a['id'] in self.ids: self.dups.append(a['id'])
-   self.ids.add(a['id'])
-  if tag in {'a','link','script','img'}:
-   u=a.get('href') or a.get('src')
-   if u:self.links.append(u)
-  if tag=='a' and a.get('href'): self.anchors.append(a['href'])
-
-services_description='Website projects and care, business systems and automation, digital ownership and platform administration, and technology consulting from Lowcountry Digital Works.'
-if not DIST.exists(): error('dist/ missing; run npm run build before validator')
-else:
- built_headers=DIST/'_headers'
- if not built_headers.exists(): error('dist/_headers missing; Workers Static Assets header policy would not deploy')
- else:
-  built_headers_text=built_headers.read_text()
-  if expected_astro_cache not in built_headers_text: error('dist/_headers missing approved /_astro/* immutable cache policy')
-  for rule in expected_static_image_caches:
-   if rule not in built_headers_text: error(f'dist/_headers missing approved 24-hour static-image cache rule: {rule.splitlines()[0]}')
- htmls=sorted(DIST.rglob('*.html'))
- expected_min_html=len(PUBLIC_ROUTES)+2  # public routes + Secure Share + 404
- if len(htmls)<expected_min_html: error(f'expected at least {expected_min_html} built HTML pages, found {len(htmls)}')
- for file in htmls:
-  parser=P(); text=file.read_text(errors='replace'); parser.feed(text)
-  rel=file.relative_to(DIST)
-  if not parser.lang: error(f'{rel}: missing html lang')
-  if parser.title!=1: error(f'{rel}: expected one title, found {parser.title}')
-  if not parser.viewport: error(f'{rel}: missing viewport meta')
-  if not parser.description: error(f'{rel}: missing description meta')
-  if rel.as_posix()=='services/index.html' and parser.description_content!=services_description: error(f'{rel}: services meta description drifted from approved concise copy')
-  if rel.as_posix()=='share/index.html':
-   if parser.robots_content!='noindex,noarchive': error(f'{rel}: Secure Share robots metadata must be noindex,noarchive')
-   if '/share/continue' not in parser.anchors: error(f'{rel}: Secure Share CTA must target /share/continue')
-   if any(u.startswith(('http://','https://')) and 'lowcountrydigitalworks.com' not in u for u in parser.anchors): error(f'{rel}: Secure Share page must not expose an external portal destination')
-  if parser.main!=1: error(f'{rel}: expected one main, found {parser.main}')
-  if parser.h1!=1: error(f'{rel}: expected one h1, found {parser.h1}')
-  if parser.dups: error(f'{rel}: duplicate ids {parser.dups}')
-  for u in parser.links:
-   if u.startswith(('mailto:','tel:','sms:','http://','https://','data:','#')): continue
-   parsed=urlparse(u); path=parsed.path
-   if not path.startswith('/'): continue
-   if path=='/share/continue': continue
-   target=DIST/path.lstrip('/')
-   candidates=[target]
-   if path.endswith('/'): candidates.append(target/'index.html')
-   else: candidates += [Path(str(target)+'.html'), target/'index.html']
-   if not any(c.exists() for c in candidates): error(f'{rel}: broken internal asset/link {u}')
-
- for p in DIST.rglob('*'):
-  if not p.is_file() or p.suffix.lower() not in {'.html','.js','.mjs','.json','.xml','.txt','.css','.vcf'}: continue
-  if 'share.lowcountrydigitalworks.com' in p.read_text(errors='ignore'):
-   error(f'{p.relative_to(DIST)}: built public output must not expose the Secure Share destination hostname')
-
-robots=(ROOT/'public/robots.txt').read_text(); sitemap=(ROOT/'public/sitemap.xml').read_text()
-for icon in ['github.svg','cloudflare.svg','astro.svg','typescript.svg','python.svg']:
- if not (ROOT/'public'/'technology'/icon).read_text(errors='ignore').lstrip().startswith('<svg'): error(f'invalid technology SVG: {icon}')
-if 'https://lowcountrydigitalworks.com/sitemap.xml' not in robots: error('robots must declare production sitemap')
-required_content_signal='Content-Signal: search=yes, ai-input=yes, ai-train=no, use=reference'
-if required_content_signal not in robots: error('robots must preserve approved search/AI-input/training content policy')
-if 'User-agent: GPTBot\nDisallow: /' not in robots: error('robots must explicitly block GPTBot training crawl')
-if 'User-agent: OAI-SearchBot\nDisallow:' in robots: error('robots must not block OAI-SearchBot / ChatGPT Search')
-if 'User-agent: Google-Extended\nDisallow:' in robots: error('robots must not block Google-Extended without a separate owner-approved grounding/training decision')
-if 'Disallow: /share' in robots: error('Secure Share should rely on page noindex metadata, not robots.txt blocking')
-for route in SITEMAP_ROUTES:
- if f'https://lowcountrydigitalworks.com{route}' not in sitemap: error(f'sitemap missing {route}')
-if 'https://lowcountrydigitalworks.com/contact/' in sitemap: error('legacy Contact route must remain omitted from the canonical sitemap')
-if 'https://lowcountrydigitalworks.com/share' in sitemap: error('Secure Share must remain omitted from the marketing sitemap')
-
-for nav_file in ['src/components/Header.astro','src/components/Footer.astro']:
- nav=(ROOT/nav_file).read_text()
- if "'/share/'" in nav or '"/share/"' in nav: error(f'Secure Share must remain omitted from ordinary navigation: {nav_file}')
-share_source=(ROOT/'src/pages/share.astro').read_text()
-if 'share.lowcountrydigitalworks.com' in share_source or 'inprivy' in share_source.lower(): error('Secure Share page source must not expose the vendor destination')
-if 'href="/share/continue"' not in share_source: error('Secure Share source CTA must target /share/continue')
-
-gitignore=(ROOT/'.gitignore').read_text().splitlines()
-if '.dev.vars' not in gitignore or '.dev.vars.*' not in gitignore: error('local Cloudflare secret files must remain ignored')
-
-patterns=[
- ('private key', re.compile(r'-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----')),
- ('github token', re.compile(r'\bgh[pousr]_[A-Za-z0-9._-]{30,}\b')),
- ('github fine-grained token', re.compile(r'\bgithub_pat_[A-Za-z0-9_]{20,}\b')),
- ('openai-style key', re.compile(r'\bsk-[A-Za-z0-9_-]{20,}\b')),
-]
-for p in ROOT.rglob('*'):
- if not p.is_file() or any(x in p.parts for x in {'.git','node_modules','dist','.wrangler'}): continue
- if p.suffix.lower() in {'.png','.ico','.jpg','.jpeg','.webp','.zip'}: continue
- try:text=p.read_text(errors='ignore')
- except Exception:continue
- for name,rx in patterns:
-  if rx.search(text): error(f'possible {name} in {p.relative_to(ROOT)}')
-
-if ERRORS:
- print('Repository validation failed:')
- for e in ERRORS: print(f'- {e}')
- sys.exit(1)
-print('Repository validation passed.')
-,'',validate_workflow))
+normalized_validate_workflow=re.sub(r'\s+',' ',re.sub(r'(?m)#.*$','',validate_workflow))
 install_step=re.search(r'-\s*name:\s*Install dependencies from committed lockfile\b(?P<body>.*?)(?=-\s*name:|$)',normalized_validate_workflow)
 if not install_step or not re.search(r'\brun:\s*npm ci\b',install_step.group('body')):
  error('Validate primary dependency-install step must use npm ci from the committed lockfile')
