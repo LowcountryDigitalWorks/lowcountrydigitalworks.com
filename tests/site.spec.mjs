@@ -264,29 +264,76 @@ test('guide educational diagrams stay semantic, bounded, and mobile-readable', a
   }
 });
 
-test('work page shows three truthful evidence-oriented project entries', async ({ page }) => {
+test('work page separates permissioned client proof from LDW systems and preserves internal routes', async ({ page }) => {
   await page.goto('/work/');
   await expect(page.getByRole('heading', { level: 1, name: 'See the problem, the proof, and the boundary.' })).toBeVisible();
-  await expect(page.locator('.portfolio-grid--work .portfolio-card')).toHaveCount(3);
-  await expect(page.locator('.portfolio-card__context')).toHaveCount(3);
-  await expect(page.getByText('They are not customer case studies.', { exact: false })).toBeVisible();
-  const workThumbs = page.locator('.portfolio-grid--work .portfolio-card__visual img');
+
+  const clientWork = page.locator('[data-client-work]');
+  const internalProof = page.locator('[data-internal-proof]');
+  await expect(clientWork).toHaveCount(1);
+  await expect(internalProof).toHaveCount(1);
+  await expect(clientWork.getByText('Client work', { exact: true })).toBeVisible();
+  await expect(internalProof.getByText('LDW systems & internal proof', { exact: true })).toBeVisible();
+
+  const clientBeforeInternal = await page.evaluate(() => {
+    const client = document.querySelector('[data-client-work]');
+    const internal = document.querySelector('[data-internal-proof]');
+    if (!client || !internal) return false;
+    return Boolean(client.compareDocumentPosition(internal) & Node.DOCUMENT_POSITION_FOLLOWING);
+  });
+  expect(clientBeforeInternal).toBeTruthy();
+
+  const eastCoastFoam = clientWork.locator('[data-client-proof="East Coast Foam"]');
+  await expect(eastCoastFoam.getByRole('heading', { level: 3, name: 'East Coast Foam' })).toBeVisible();
+  await expect(eastCoastFoam.getByText('Website modernization & managed production', { exact: true })).toBeVisible();
+  await expect(eastCoastFoam.getByRole('link', { name: 'Visit the live site →' })).toHaveAttribute('href', 'https://eastcoastfoamllc.com/');
+  await expect(eastCoastFoam).toContainText('Customer owns the production repository and infrastructure');
+  await expect(eastCoastFoam).toContainText('No revenue, lead, ranking, or energy-result claim.');
+
+  const donovan = clientWork.locator('[data-client-proof="Donovan Family Dentistry"]');
+  await expect(donovan.getByRole('heading', { level: 3, name: 'Donovan Family Dentistry' })).toBeVisible();
+  await expect(donovan.getByText('Website modernization & launch hardening', { exact: true })).toBeVisible();
+  await expect(donovan.getByRole('link', { name: 'Visit the live site →' })).toHaveAttribute('href', 'https://donovanfamilydentistry.com/');
+  await expect(donovan).toContainText('Public website work only.');
+  await expect(donovan).toContainText('No patient-growth, treatment-outcome, HIPAA-certification, compliance-certification, or customer-owned-repository claim.');
+
+  await expect(internalProof.locator('.portfolio-card')).toHaveCount(3);
+  await expect(internalProof.locator('.portfolio-card__context')).toHaveCount(3);
+  const workThumbs = internalProof.locator('.portfolio-card__visual img');
   await expect(workThumbs).toHaveCount(3);
   for (let i = 0; i < 3; i += 1) {
     await expect.poll(async () => workThumbs.nth(i).evaluate((img) => [img.complete, img.naturalWidth, img.naturalHeight]))
       .toEqual([true, 720, 450]);
   }
-  await expect(page.getByRole('heading', { name: 'G.A.S. Engine' })).toBeVisible();
-  await expect(page.getByText('Internal service-enabling evidence infrastructure', { exact: true })).toBeVisible();
-  await expect(page.getByText('Internal evidence infrastructure that helps LDW compare website and search-quality findings over time', { exact: false })).toBeVisible();
-  const documentControlCard = page.locator('.portfolio-card').filter({ hasText: 'Document Control' });
-  const secureExchangeCard = page.locator('.portfolio-card').filter({ hasText: 'Secure Exchange' });
-  const gasCard = page.locator('.portfolio-card').filter({ hasText: 'G.A.S. Engine' });
+
+  await expect(internalProof.getByRole('heading', { level: 3, name: 'Document Control' })).toBeVisible();
+  await expect(internalProof.getByRole('heading', { level: 3, name: 'Secure Exchange' })).toBeVisible();
+  await expect(internalProof.getByRole('heading', { level: 3, name: 'G.A.S. Engine' })).toBeVisible();
+  await expect(internalProof.locator('a[href="/work/document-control/"]')).toHaveCount(2);
+  await expect(internalProof.locator('a[href="/work/secure-exchange/"]')).toHaveCount(2);
+  await expect(internalProof.locator('a[href="/work/gas-engine/"]')).toHaveCount(2);
+
+  const documentControlCard = internalProof.locator('.portfolio-card').filter({ hasText: 'Document Control' });
+  const secureExchangeCard = internalProof.locator('.portfolio-card').filter({ hasText: 'Secure Exchange' });
+  const gasCard = internalProof.locator('.portfolio-card').filter({ hasText: 'G.A.S. Engine' });
   await expect(documentControlCard.locator('.portfolio-card__boundary')).toContainText('Active development · not a production customer deployment.');
   await expect(secureExchangeCard.locator('.portfolio-card__boundary')).toContainText('Synthetic/local validation · no regulated-production claim.');
   await expect(gasCard.locator('.portfolio-card__boundary')).toContainText('Internal infrastructure · not customer SaaS.');
-  await expect(page.locator('#main-content')).not.toContainText('Donovan Family Dentistry');
-  await expect(page.locator('#main-content')).not.toContainText('East Coast Foam');
+
+  await expect(page.getByText('They are not customer case studies.', { exact: false })).toHaveCount(0);
+  await expect(page.getByText('These are LDW-owned examples of method and product development. They are not presented as completed customer case studies.', { exact: true })).toHaveCount(0);
+  await expect(page.locator('#main-content')).not.toContainText('increased revenue');
+  await expect(page.locator('#main-content')).not.toContainText('more leads');
+  await expect(page.locator('#main-content')).not.toContainText('improved rankings');
+  await expect(page.locator('#main-content')).not.toContainText('patient growth');
+  await expect(page.locator('#main-content')).not.toContainText('treatment outcomes');
+  await expect(page.locator('#main-content')).not.toContainText('HIPAA certified');
+  await expect(page.locator('#main-content')).not.toContainText('customer-owned source repository');
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/work/');
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1);
+  expect(overflow, '/work/ client proof should not overflow horizontally').toBeFalsy();
 
   await page.goto('/work/gas-engine/');
   await expect(page.getByText('Internal evidence infrastructure that helps LDW compare website and search-quality findings over time', { exact: false })).toBeVisible();
@@ -313,7 +360,6 @@ test('work page shows three truthful evidence-oriented project entries', async (
   await expect(page.locator('.project-visual')).toHaveCount(2);
   await expect(page.locator('img[src="/work-assets/secure-exchange-intake.jpg"]')).toBeVisible();
   await expect(page.getByText('Synthetic staff work item demonstrating resolution', { exact: false })).toBeVisible();
-
 });
 
 test('founder structure uses the owner-approved portrait and approved trust facts', async ({ page }) => {

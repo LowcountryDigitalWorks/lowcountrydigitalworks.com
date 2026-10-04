@@ -2,7 +2,37 @@
   "hero": {
     "eyebrow": "Selected work",
     "title": "See the problem, the proof, and the boundary.",
-    "lede": "These examples show how LDW approaches real workflow and evidence problems. Each one is labeled with its current maturity, real screenshots, and what is deliberately not being claimed. They are not customer case studies."
+    "lede": "This page separates permissioned client work from LDW-owned systems and internal proof. Each example is bounded to what is live, documented, and deliberately not being claimed."
+  },
+  "clientWork": {
+    "eyebrow": "Client work",
+    "title": "Real engagements, bounded to what is live and documented.",
+    "lede": "These permissioned examples show public work LDW has delivered without turning implementation evidence into unsupported outcome claims.",
+    "items": [
+      {
+        "name": "East Coast Foam",
+        "type": "Website modernization & managed production",
+        "context": "A Lowcountry insulation, roofing, and coating contractor needed a clearer, maintainable production site and a controlled path away from the legacy website and infrastructure arrangement.",
+        "work": "Modernized the site structure and content, moved production into the customer-owned GitHub and Cloudflare boundary, preserved mail during the controlled cutover, and added repeatable browser, production-health, validation, and security checks.",
+        "proof": "Current production site with service, recent-work, review, service-area, and estimate/contact journeys.",
+        "boundary": "Customer owns the production repository and infrastructure; LDW provides ongoing managed-site and quality support. No revenue, lead, ranking, or energy-result claim.",
+        "href": "https://eastcoastfoamllc.com/"
+      },
+      {
+        "name": "Donovan Family Dentistry",
+        "type": "Website modernization & launch hardening",
+        "context": "A Beaufort family dental practice needed a current, easier-to-navigate public site for services, dentists, office information, and patient forms.",
+        "work": "Modernized the public site, organized service and provider content, improved patient-facing navigation, and added responsive/browser, accessibility, performance, security, and release/recovery checks.",
+        "proof": "Current production site with dentist profiles, service/procedure information, office hours/contact/directions, and patient-form access.",
+        "boundary": "Public website work only. No patient-growth, treatment-outcome, HIPAA-certification, compliance-certification, or customer-owned-repository claim.",
+        "href": "https://donovanfamilydentistry.com/"
+      }
+    ]
+  },
+  "internalProof": {
+    "eyebrow": "LDW systems & internal proof",
+    "title": "Internal systems stay clearly separate from client engagements.",
+    "lede": "These LDW-owned examples show method, product development, and internal evidence infrastructure. Their existing maturity and boundary statements remain authoritative."
   },
   "projects": [
     {

@@ -6,6 +6,8 @@ All notable repository and website changes are recorded here.
 
 ### Added
 
+- Added a permissioned `Client work` section to `/work/` for East Coast Foam and Donovan Family Dentistry, clearly separated from LDW-owned systems and internal proof with factual live-site and ownership boundaries.
+- Added browser regression coverage for client-first reading order, exact production links, preserved internal project routes/boundaries, prohibited-claim safeguards, accessibility coverage, and mobile overflow.
 - Added a restrained founder LinkedIn identity link using LinkedIn’s official self-hosted blue `[in]` logo and a Person `sameAs` reference without embedding third-party scripts or trackers.
 - Added browser regression coverage for the owner-approved 15+ year founder background, Risk Management Framework wording, healthcare/dental perspective, and LinkedIn identity.
 - Added home-page `WebSite` Microdata for the preferred site name `Lowcountry Digital Works` with `LDW` as the alternate name, without adding inline scripts or weakening CSP.
@@ -29,6 +31,7 @@ All notable repository and website changes are recorded here.
 
 ### Security / privacy / cost
 
+- WEB-PROOF-001 adds no testimonial, logo, screenshot, client tracking, analytics, authentication, runtime processor, new dependency, customer data, PHI/CUI, or recurring cost; client proof is limited to owner-permissioned factual public work and explicit non-claims.
 - WEB-FOUNDER-001 adds no LinkedIn script, embed, tracker, analytics, authentication, new dependency, runtime service, third-party image request, or recurring cost; the profile link uses LinkedIn’s official self-hosted blue `[in]` logo.
 - WEB-DISCOVERY-001 adds no form processor, iframe, third-party script, CRM automation, analytics, storage, new dependency, or recurring cost to the LDW website; SuiteDash remains the authoritative raw-intake system.
 - WEB-LEGAL-001 preserves the existing no-nonessential-cookie/no-behavioral-tracking posture and does not add a cookie banner, CMP, analytics, advertising pixel, database, auth, public form processor, or payment collection.
