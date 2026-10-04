@@ -45,14 +45,20 @@ REQUIRED=[
  'src/pages/contact.astro','src/pages/connect.astro','src/pages/privacy.astro','src/pages/accessibility.astro','src/pages/terms.astro','src/pages/share.astro','src/pages/guides/index.astro','src/pages/guides/website-maintenance-after-launch.astro','src/pages/guides/website-ownership-handoff.astro','src/data/work.json','src/data/service-details.json',
  'public/eddie-gugino-lowcountry-digital-works.vcf','public/technology/github.svg','public/technology/cloudflare.svg','public/technology/astro.svg',
  'public/technology/typescript.svg','public/technology/python.svg','docs/technology-marks.md','public/_headers','public/robots.txt','public/sitemap.xml',
- 'tests/worker-unit.mjs'
+ 'tests/worker-unit.mjs','tests/dependency-audit-policy.unit.mjs','scripts/dependency-audit-policy.mjs','config/dependency-risk-acceptances.json'
 ]
 for rel in REQUIRED:
  if not (ROOT/rel).exists(): error(f'missing required file: {rel}')
 
 try:
  pkg=json.loads((ROOT/'package.json').read_text())
- if 'astro' not in pkg.get('dependencies',{}): error('package.json must include Astro')
+ runtime_deps=pkg.get('dependencies',{})
+ dev_deps=pkg.get('devDependencies',{})
+ if 'astro' in runtime_deps: error('Astro is build-only for this static deployment and must not be a production/runtime dependency')
+ if 'astro' not in dev_deps: error('package.json devDependencies must include build-only Astro')
+ if '@fontsource-variable/manrope' in runtime_deps: error('Manrope package is a build input and must not be a production/runtime dependency')
+ if '@fontsource-variable/manrope' not in dev_deps: error('package.json devDependencies must include the Manrope build input')
+ if pkg.get('scripts',{}).get('test:dependency-policy')!='node --test tests/dependency-audit-policy.unit.mjs': error('dependency policy unit-test script changed unexpectedly')
  if pkg.get('scripts',{}).get('build')!='astro build': error('package.json build script must be astro build')
 except Exception as exc: error(f'invalid package.json: {exc}')
 
