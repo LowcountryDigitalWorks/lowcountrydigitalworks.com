@@ -32,6 +32,9 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Workflow install policy unit tests
+        run: python tests/validate-workflow-policy.unit.py
+
       - name: Install dependencies from committed lockfile
         run: npm ci
 
