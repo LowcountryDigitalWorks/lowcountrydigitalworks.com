@@ -6,6 +6,8 @@ All notable repository and website changes are recorded here.
 
 ### Added
 
+- WEB-TRUST-001 routes the existing permissioned East Coast Foam and Donovan Family Dentistry proof into the homepage and Websites service decision paths using stable client-work identifiers and a data-first service relationship.
+- Added focused browser/data regressions for exact client links, client-before-internal reading order, preserved internal project routes/thumbnails, Websites-service relationship integrity, claim guards, and mobile overflow.
 - Added a permissioned `Client work` section to `/work/` for East Coast Foam and Donovan Family Dentistry, clearly separated from LDW-owned systems and internal proof with factual live-site and ownership boundaries.
 - Added browser regression coverage for client-first reading order, exact production links, preserved internal project routes/boundaries, prohibited-claim safeguards, accessibility coverage, and mobile overflow.
 - Added a restrained founder LinkedIn identity link using LinkedIn’s official self-hosted blue `[in]` logo and a Person `sameAs` reference without embedding third-party scripts or trackers.
@@ -25,12 +27,14 @@ All notable repository and website changes are recorded here.
 
 ### Changed
 
+- WEB-TRUST-001 now labels the homepage’s existing three LDW-owned project cards as `LDW systems & internal proof` immediately after real client proof, preserving the internal/client distinction and existing maturity boundaries.
 - Strengthened founder copy with owner-approved 15+ years of technology experience across IT, system administration, cybersecurity, compliance, DevSecOps, consulting, and technical delivery; added the healthcare/dental perspective while keeping employer chronology off-site.
 - Added a 24-hour browser-cache policy for LDW-owned unhashed logo, technology-mark, favicon, and Apple touch icon assets while preserving the existing one-year immutable policy for content-hashed `/_astro/*` assets.
 - Added repository validation that requires the bounded static-image cache rules in both source and built `_headers` output.
 
 ### Security / privacy / cost
 
+- WEB-TRUST-001 adds no new client claim, testimonial, logo, screenshot, iframe/embed, tracker, analytics, dependency, runtime processor, customer data, PHI/CUI, or recurring cost; the existing WEB-SEC-2026-001 dependency acceptance remains unchanged.
 - WEB-PROOF-001 adds no testimonial, logo, screenshot, client tracking, analytics, authentication, runtime processor, new dependency, customer data, PHI/CUI, or recurring cost; client proof is limited to owner-permissioned factual public work and explicit non-claims.
 - WEB-FOUNDER-001 adds no LinkedIn script, embed, tracker, analytics, authentication, new dependency, runtime service, third-party image request, or recurring cost; the profile link uses LinkedIn’s official self-hosted blue `[in]` logo.
 - WEB-DISCOVERY-001 adds no form processor, iframe, third-party script, CRM automation, analytics, storage, new dependency, or recurring cost to the LDW website; SuiteDash remains the authoritative raw-intake system.
@@ -76,7 +80,7 @@ All notable repository and website changes are recorded here.
 
 - Added a Workers Static Assets browser-cache override only for content-hashed `/_astro/*` assets: `Cache-Control: public, max-age=31536000, immutable`.
 - Tightened the `/services/` meta description while preserving the current service scope and messaging.
-- Added repository validation proving the immutable cache rule is present in both source and built `_headers`, remains limited to the fingerprinted Astro asset path, and the built Services metadata matches the approved concise copy.
+- Added repository validation proving the immutable cache rule is present in both source and built `_headers` output, remains limited to the fingerprinted Astro asset path, and the built Services metadata matches the approved concise copy.
 - Website package version advanced to `0.5.3`.
 
 ### Security / privacy / cost
@@ -228,4 +232,3 @@ All notable repository and website changes are recorded here.
 - Initial static business-site bootstrap.
 - Cloudflare Workers Static Assets configuration.
 - Security headers, robots file, favicon, and custom 404 page.
-- Initial Workers deployment at `lowcountrydigitalworks.eddie-78a.workers.dev`.
