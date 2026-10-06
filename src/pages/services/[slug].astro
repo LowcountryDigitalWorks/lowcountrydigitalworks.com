@@ -14,6 +14,7 @@ export function getStaticPaths() {
 
 const { service } = Astro.props;
 const relatedWork = work.projects.filter((project) => service.relatedWork?.includes(project.slug));
+const relatedClientWork = work.clientWork.items.filter((client) => service.relatedClientWork?.includes(client.id));
 ---
 <BaseLayout title={service.name} description={service.summary}>
   <nav class="breadcrumbs" aria-label="Breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
@@ -101,6 +102,35 @@ const relatedWork = work.projects.filter((project) => service.relatedWork?.inclu
             <p class="lede">{service.proofNote}</p>
             {service.proofHref && <a class="text-link icon-link" href={service.proofHref} rel="noopener"><Icon name="github" size={17} /><span>{service.proofLabel}</span></a>}
           </div>
+        </div>
+      </section>
+    )}
+
+    {relatedClientWork.length > 0 && (
+      <section class="section section--warm" data-related-client-work>
+        <div class="container">
+          <div class="section-heading">
+            <p class="eyebrow">Client work</p>
+            <h2>See the website work in production.</h2>
+            <p class="lede">{work.clientWork.lede}</p>
+          </div>
+          <div class="portfolio-grid portfolio-grid--work">
+            {relatedClientWork.map((client) => (
+              <article class="portfolio-card portfolio-card--work portfolio-card--proof" data-client-proof={client.id}>
+                <div class="portfolio-card__body">
+                  <div class="work-row__meta">
+                    <span class="status-pill status-pill--live">Live client site</span>
+                    <span>{client.type}</span>
+                  </div>
+                  <h3>{client.name}</h3>
+                  <p>{client.context}</p>
+                  <p><strong>Live proof</strong>{client.proof}</p>
+                  <a class="text-link" href={client.href} rel="noopener noreferrer" aria-label={`Visit ${client.name} live site`}>Visit live site →</a>
+                </div>
+              </article>
+            ))}
+          </div>
+          <p class="portfolio-detail-note"><a class="text-link" href="/work/">See full work context & boundaries →</a></p>
         </div>
       </section>
     )}
