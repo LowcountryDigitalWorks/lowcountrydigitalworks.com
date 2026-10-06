@@ -33,6 +33,10 @@
     ],
     "proofNote": "LDW uses the same delivery controls on its own production changes—reviewable source, protected-main review, automated browser/accessibility checks, documented rollback, and explicit ownership. That operating discipline is evidence of the method, not a client case study.",
     "relatedWork": [],
+    "relatedClientWork": [
+      "east-coast-foam",
+      "donovan-family-dentistry"
+    ],
     "outcomes": [
       {
         "title": "A clearer first impression",
