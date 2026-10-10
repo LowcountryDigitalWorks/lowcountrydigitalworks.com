@@ -77,12 +77,39 @@ import work from '../data/work.json';
     </div>
   </section>
 
-  <section class="section">
+  <section class="section" data-home-client-work>
     <div class="container">
       <div class="section-heading">
-        <p class="eyebrow">Selected work</p>
-        <h2>Real systems, with status and boundaries shown plainly.</h2>
-        <p class="lede">A few examples of how LDW approaches practical problems. The detail pages show the evidence, current maturity, and what is deliberately not being claimed.</p>
+        <p class="eyebrow">{work.clientWork.eyebrow}</p>
+        <h2>{work.clientWork.title}</h2>
+        <p class="lede">{work.clientWork.lede}</p>
+      </div>
+      <div class="portfolio-grid portfolio-grid--work">
+        {work.clientWork.items.map((client) => (
+          <article class="portfolio-card portfolio-card--work portfolio-card--proof" data-client-proof={client.id}>
+            <div class="portfolio-card__body">
+              <div class="work-row__meta">
+                <span class="status-pill status-pill--live">Live client site</span>
+                <span>{client.type}</span>
+              </div>
+              <h3>{client.name}</h3>
+              <p>{client.context}</p>
+              <p><strong>Live proof</strong>{client.proof}</p>
+              <a class="text-link" href={client.href} rel="noopener noreferrer" aria-label={`Visit ${client.name} live site`}>Visit live site →</a>
+            </div>
+          </article>
+        ))}
+      </div>
+      <p class="portfolio-detail-note"><a class="text-link" href="/work/">See all work →</a></p>
+    </div>
+  </section>
+
+  <section class="section section--warm" data-home-internal-proof>
+    <div class="container">
+      <div class="section-heading">
+        <p class="eyebrow">{work.internalProof.eyebrow}</p>
+        <h2>{work.internalProof.title}</h2>
+        <p class="lede">{work.internalProof.lede}</p>
       </div>
       <div class="portfolio-grid portfolio-grid--home">
         {work.projects.map((project) => (
