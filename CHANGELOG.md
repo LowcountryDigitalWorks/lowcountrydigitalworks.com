@@ -80,7 +80,7 @@ All notable repository and website changes are recorded here.
 
 - Added a Workers Static Assets browser-cache override only for content-hashed `/_astro/*` assets: `Cache-Control: public, max-age=31536000, immutable`.
 - Tightened the `/services/` meta description while preserving the current service scope and messaging.
-- Added repository validation proving the immutable cache rule is present in both source and built `_headers` output, remains limited to the fingerprinted Astro asset path, and the built Services metadata matches the approved concise copy.
+- Added repository validation proving the immutable cache rule is present in both source and built `_headers`, remains limited to the fingerprinted Astro asset path, and the built Services metadata matches the approved concise copy.
 - Website package version advanced to `0.5.3`.
 
 ### Security / privacy / cost
@@ -232,3 +232,4 @@ All notable repository and website changes are recorded here.
 - Initial static business-site bootstrap.
 - Cloudflare Workers Static Assets configuration.
 - Security headers, robots file, favicon, and custom 404 page.
+- Initial Workers deployment at `lowcountrydigitalworks.eddie-78a.workers.dev`.
