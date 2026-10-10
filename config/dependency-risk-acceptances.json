@@ -1,34 +1,4 @@
 {
   "schemaVersion": 1,
-  "acceptances": [
-    {
-      "id": "WEB-SEC-2026-001",
-      "finding": "GHSA-ch52-4w7c-c8xp",
-      "scope": "build-dev",
-      "sourceSeverity": "high",
-      "issue": "https://github.com/LowcountryDigitalWorks/lowcountrydigitalworks.com/issues/52",
-      "approvedOn": "2026-10-03",
-      "expiresAfter": "2026-10-17",
-      "residualRisk": "low",
-      "rationale": "Astro is build-only for this static site; the deployed Cloudflare Worker imports no npm packages, and the affected http-cache-semantics path is not a demonstrated production-runtime path. The finding remains open for upstream remediation and post-fix verification.",
-      "packages": {
-        "http-cache-semantics": {
-          "nodes": [
-            "node_modules/http-cache-semantics"
-          ],
-          "isDirect": false,
-          "advisoryUrl": "https://github.com/advisories/GHSA-ch52-4w7c-c8xp"
-        },
-        "astro": {
-          "nodes": [
-            "node_modules/astro"
-          ],
-          "isDirect": true,
-          "viaPackages": [
-            "http-cache-semantics"
-          ]
-        }
-      }
-    }
-  ]
+  "acceptances": []
 }
