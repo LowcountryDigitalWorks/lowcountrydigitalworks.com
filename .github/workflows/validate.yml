@@ -41,6 +41,9 @@ jobs:
       - name: Build static site
         run: npm run build
 
+      - name: Validate recovery-readiness contract
+        run: node --test tests/recovery-readiness.unit.mjs && node scripts/recovery-readiness.mjs
+
       - name: Validate repository and built site
         run: python scripts/validate_repository.py
 
