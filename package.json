@@ -14,7 +14,7 @@
     "test:smoke": "node --test tests/production-smoke.unit.mjs tests/recovery-readiness.unit.mjs && node scripts/recovery-readiness.mjs",
     "test:dependency-policy": "node --test tests/dependency-audit-policy.unit.mjs",
     "test:e2e": "playwright test",
-    "validate": "npm run test:worker && npm run test:smoke && npm run build && python scripts/validate_repository.py"
+    "validate": "npm run test:worker && npm run build && npm run test:smoke && python scripts/validate_repository.py"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.12.1",
