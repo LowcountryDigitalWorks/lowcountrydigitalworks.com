@@ -14,6 +14,13 @@ test('extractAnchors preserves hrefs and normalizes nested visible text', () => 
   ]);
 });
 
+test('extractAnchors does not decode arbitrary HTML entities in journey labels', () => {
+  const html = '<a href="/connect/">Talk &amp;amp; learn</a>';
+  assert.deepEqual(extractAnchors(html), [
+    { href: '/connect/', text: 'Talk &amp;amp; learn' },
+  ]);
+});
+
 test('same-origin journey anchor passes with a relative destination', () => {
   const result = assertJourneyAnchor(
     '<a href="/connect/">Talk through your project</a>',
