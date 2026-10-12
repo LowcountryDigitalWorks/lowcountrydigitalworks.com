@@ -16,15 +16,10 @@ function normalizeWhitespace(value) {
 }
 
 function visibleAnchorText(value) {
-  return normalizeWhitespace(
-    value
-      .replace(/<[^>]+>/g, ' ')
-      .replace(/&amp;/gi, '&')
-      .replace(/&quot;/gi, '"')
-      .replace(/&#39;/gi, "'")
-      .replace(/&lt;/gi, '<')
-      .replace(/&gt;/gi, '>'),
-  );
+  // Journey labels are source-controlled ASCII phrases. We only need to remove
+  // nested markup and normalize whitespace; decoding arbitrary HTML entities is
+  // unnecessary and can introduce double-unescaping ambiguity.
+  return normalizeWhitespace(value.replace(/<[^>]+>/g, ' '));
 }
 
 export function extractAnchors(html) {
