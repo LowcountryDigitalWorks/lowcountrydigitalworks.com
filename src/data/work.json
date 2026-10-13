@@ -10,6 +10,7 @@
     "lede": "These permissioned examples show public work LDW has delivered without turning implementation evidence into unsupported outcome claims.",
     "items": [
       {
+        "id": "east-coast-foam",
         "name": "East Coast Foam",
         "type": "Website modernization & managed production",
         "context": "A Lowcountry insulation, roofing, and coating contractor needed a clearer, maintainable production site and a controlled path away from the legacy website and infrastructure arrangement.",
@@ -19,6 +20,7 @@
         "href": "https://eastcoastfoamllc.com/"
       },
       {
+        "id": "donovan-family-dentistry",
         "name": "Donovan Family Dentistry",
         "type": "Website modernization & launch hardening",
         "context": "A Beaufort family dental practice needed a current, easier-to-navigate public site for services, dentists, office information, and patient forms.",
