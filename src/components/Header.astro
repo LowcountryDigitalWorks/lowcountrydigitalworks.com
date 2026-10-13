@@ -16,13 +16,13 @@ const isCurrent = (href) => href === '/' ? current === '/' : current === href ||
     </a>
     <nav class="desktop-nav" aria-label="Primary">
       {links.map(([label,href]) => <a href={href} aria-current={isCurrent(href) ? 'page' : undefined}>{label}</a>)}
-      <a class="nav-cta" href="/connect/">Start a conversation</a>
+      <a class="nav-cta" href="/discovery/">Project discovery</a>
     </nav>
     <details class="mobile-nav">
       <summary>Menu</summary>
       <nav aria-label="Mobile primary">
         {links.map(([label,href]) => <a href={href} aria-current={isCurrent(href) ? 'page' : undefined}>{label}</a>)}
-        <a class="mobile-nav__cta" href="/connect/">Start a conversation</a>
+        <a class="mobile-nav__cta" href="/discovery/">Project discovery</a>
       </nav>
     </details>
   </div>

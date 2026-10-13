@@ -21,6 +21,7 @@ const routes = [
   '/guides/website-ownership-handoff/',
   '/contact/',
   '/connect/',
+  '/discovery/',
   '/privacy/',
   '/terms/',
   '/share/',
@@ -52,6 +53,8 @@ test('primary navigation reflects the accepted consultancy IA and keeps Secure S
   await expect(page.locator('.desktop-nav a[href="/approach/"]')).toHaveText('Approach');
   await expect(page.locator('.desktop-nav a[href="/about/"]')).toHaveText('About');
   await expect(page.locator('.desktop-nav a[href="/connect/"]').first()).toHaveText('Connect');
+  await expect(page.locator('.desktop-nav a[href="/discovery/"]')).toHaveText('Project discovery');
+  await expect(page.locator('footer a[href="/discovery/"]')).toHaveText('Project discovery');
   await expect(page.locator('header a[href="/share/"]')).toHaveCount(0);
   await expect(page.locator('header a[href="/contact/"]')).toHaveCount(0);
   await expect(page.locator('.desktop-nav a[href="/guides/"]')).toHaveCount(0);
@@ -135,10 +138,11 @@ test('desktop three-outcome layout and sticky-header anchors preserve their UX i
   expect(anchorState.targetTop).toBeGreaterThan(anchorState.headerBottom);
 });
 
-test('homepage presents three customer-first entry paths without exposing gated discovery', async ({ page }) => {
+test('homepage presents three customer-first entry paths and keeps discovery on its dedicated route', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByRole('heading', { level: 1, name: 'Websites and business systems that make work easier.' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Talk through your project' })).toHaveAttribute('href', '/connect/');
+  await expect(page.locator('.desktop-nav a[href="/discovery/"]')).toHaveText('Project discovery');
   await expect(page.getByRole('link', { name: 'Find your starting point' })).toHaveAttribute('href', '#start');
   await expect(page.locator('.hero-owner-card')).toHaveCount(1);
   await expect(page.locator('.solution-card')).toHaveCount(3);
@@ -166,6 +170,30 @@ test('homepage presents three customer-first entry paths without exposing gated 
   }
   await expect(page.locator('.faq-item')).toHaveCount(4);
   await expect(page.getByText('Do I need to know which LDW service I need?')).toBeVisible();
+});
+
+test('project discovery is a branded, accessible, privacy-first handoff to the current intake', async ({ page }) => {
+  const response = await page.goto('/discovery');
+  expect(response?.ok()).toBeTruthy();
+  await expect(page.getByRole('heading', { level: 1, name: "Tell us what you're trying to improve." })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'A few useful details, then a human review.' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Privacy Notice' })).toHaveAttribute('href', '/privacy/');
+  await expect(page.getByText(/passwords, MFA or recovery codes, API keys or tokens/i)).toBeVisible();
+  await expect(page.getByText(/you don't need to send the same files again/i)).toBeVisible();
+  await expect(page.locator('iframe, main form')).toHaveCount(0);
+
+  const intakeLinks = page.getByRole('link', { name: /project questions/i });
+  await expect(intakeLinks).toHaveCount(2);
+  for (const link of await intakeLinks.all()) {
+    await expect(link).toHaveAttribute('href', 'https://getaiform.com/r/XAqAsatn7H');
+    await expect(link).toHaveAttribute('target', '_blank');
+    await expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+    await expect(link).toHaveAttribute('referrerpolicy', 'no-referrer');
+  }
+
+  const csp = response?.headers()['content-security-policy'];
+  if (csp) expect(csp).not.toContain('getaiform.com');
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex,nofollow');
 });
 
 test('Approach matches the accepted assess, improve-or-build, handoff-or-care method', async ({ page }) => {
@@ -573,7 +601,11 @@ test('page metadata includes canonical Open Graph and Twitter fields', async ({ 
 test('robots preserves search and AI-answer visibility while opting out of training', async ({ page }) => {
   const response = await page.request.get('/robots.txt');
   expect(response.ok()).toBeTruthy();
-  const robots = await response.text();
+  const robots = (await response.text())
+    .split(/\r?\n/)
+    .map(line => line.trim())
+    .filter(line => line && !line.startsWith('#'))
+    .join('\n');
   expect(robots).toContain('Content-Signal: search=yes, ai-input=yes, ai-train=no, use=reference');
   expect(robots).toContain('User-agent: GPTBot\nDisallow: /');
   expect(robots).toContain('Sitemap: https://lowcountrydigitalworks.com/sitemap.xml');
