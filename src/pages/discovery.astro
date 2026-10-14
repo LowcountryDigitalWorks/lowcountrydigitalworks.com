@@ -1,0 +1,135 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Project Discovery"
+  description="Tell Lowcountry Digital Works what you are trying to improve and what a good result would look like. A clear, private-first starting point for a project conversation."
+  noindex
+>
+  <section class="page-hero page-hero--warm">
+    <div class="container discovery-hero">
+      <div class="discovery-intro">
+        <p class="eyebrow">A clear first step</p>
+        <h1>Tell us what you're trying to improve.</h1>
+        <p class="lede">You don't need to know the technical solution. Share what's happening today, what you'd like to improve, and what a good result would look like. We'll use that context to prepare a useful next step.</p>
+        <div class="discovery-start">
+          <a
+            class="button"
+            href="https://getaiform.com/r/XAqAsatn7H"
+            target="_blank"
+            rel="noopener noreferrer"
+            referrerpolicy="no-referrer"
+          >Start the project questions <span aria-hidden="true">↗</span></a>
+          <p class="small">About 8–12 minutes. The questions open in a new tab.</p>
+        </div>
+      </div>
+      <aside class="discovery-summary" aria-labelledby="discovery-summary-title">
+        <p class="eyebrow">What to expect</p>
+        <h2 id="discovery-summary-title">A few useful details, then a human review.</h2>
+        <ul class="proof-list">
+          <li>Questions adapt to websites, workflows and automation, technology ownership or migration, broader modernization, and other needs.</li>
+          <li>“Not sure” is a useful answer. You don't need to diagnose the problem for us.</li>
+          <li>We'll review your answers with any relevant materials you've already shared, so you shouldn't have to send them again.</li>
+        </ul>
+        <p>We may follow up with a small number of focused questions if something important needs clarification.</p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="discovery-steps-title">
+    <div class="container discovery-content">
+      <div>
+        <p class="eyebrow">After you submit</p>
+        <h2 id="discovery-steps-title">We'll help you find the right next step.</h2>
+        <p>We'll look at what you want to change, how the work or system operates today, who owns the important accounts, and what constraints matter. Then Eddie will review the request and follow up with a practical next step or a few questions.</p>
+      </div>
+      <div class="discovery-details">
+        <h2>Already shared your materials?</h2>
+        <p>If Eddie already has your mission statement, photos, logo, screenshots, or other project materials, just let us know in the form. You don't need to send the same files again.</p>
+        <p>There are no public file uploads here. If we need more, we'll agree on an appropriate private way to share it.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--warm" aria-labelledby="discovery-privacy-title">
+    <div class="container discovery-privacy">
+      <div class="discovery-privacy__mark" aria-hidden="true">!</div>
+      <div>
+        <p class="eyebrow">Please keep sensitive information out</p>
+        <h2 id="discovery-privacy-title">Share the context, not the secrets.</h2>
+        <p>Do not submit passwords, MFA or recovery codes, API keys or tokens, payment-card or bank information, protected health information, CUI or government-restricted information, or confidential customer or client records. If special handling may be needed, say so without including the sensitive details and we'll discuss a suitable channel.</p>
+        <p>Read our <a href="/privacy/">Privacy Notice</a> for more about how Lowcountry Digital Works handles information.</p>
+        <a
+          class="button button--secondary"
+          href="https://getaiform.com/r/XAqAsatn7H"
+          target="_blank"
+          rel="noopener noreferrer"
+          referrerpolicy="no-referrer"
+        >Continue to the project questions <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+.discovery-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(17rem, .8fr);
+  gap: clamp(2rem, 6vw, 5rem);
+  align-items: center;
+}
+
+.discovery-intro h1 { max-width: 13ch; }
+.discovery-start { margin-top: 1.6rem; }
+.discovery-start .small { margin: .7rem 0 0; color: var(--muted); }
+.discovery-summary {
+  padding: clamp(1.4rem, 3vw, 2.2rem);
+  border-left: 4px solid var(--interactive);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  background: var(--surface);
+  box-shadow: 0 16px 38px rgb(16 42 58 / .08);
+}
+.discovery-summary h2, .discovery-content h2, .discovery-privacy h2 {
+  font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+  line-height: 1.2;
+}
+.discovery-summary .proof-list { margin-bottom: 1rem; }
+.discovery-summary > p:last-child { margin-bottom: 0; }
+.discovery-content {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(2rem, 6vw, 5rem);
+}
+.discovery-details {
+  padding: clamp(1.4rem, 3vw, 2rem);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+.discovery-details h2 { margin-top: 0; }
+.discovery-details p:last-child { margin-bottom: 0; }
+.discovery-privacy {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 1.25rem;
+  align-items: start;
+}
+.discovery-privacy__mark {
+  display: grid;
+  width: 2.5rem;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 2px solid var(--interactive);
+  border-radius: 50%;
+  color: var(--interactive);
+  font-weight: 800;
+}
+.discovery-privacy .button { margin-top: .5rem; }
+
+@media (max-width: 760px) {
+  .discovery-hero, .discovery-content { grid-template-columns: 1fr; }
+  .discovery-summary { border-left-width: 3px; }
+  .discovery-privacy { grid-template-columns: 1fr; gap: .75rem; }
+}
+</style>

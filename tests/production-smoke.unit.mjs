@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 
 import {
@@ -23,6 +24,15 @@ function acceptedHeaders(hsts = 'max-age=' + MIN_HSTS_MAX_AGE) {
     'permissions-policy': 'camera=(), microphone=(), geolocation=(), payment=(), usb=()',
   });
 }
+
+test('public policy keeps discovery as a first-party link and blocks external embedding', async () => {
+  const headers = await readFile(new URL('../public/_headers', import.meta.url), 'utf8');
+  const csp = headers.match(/Content-Security-Policy:\s*([^\r\n]+)/i)?.[1] ?? '';
+  assert.match(csp, /default-src 'self'/);
+  assert.match(csp, /form-action 'self'/);
+  assert.match(csp, /frame-ancestors 'none'/);
+  assert.doesNotMatch(csp, /frame-src|frame-ancestors[^;]*getaiform\.com|getaiform\.com/i);
+});
 
 test('accepted production security headers pass', () => {
   const result = assertSecurityHeaders(acceptedHeaders());
