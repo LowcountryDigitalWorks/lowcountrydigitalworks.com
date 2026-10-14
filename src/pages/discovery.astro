@@ -1,0 +1,69 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const intakeUrl = 'https://getaiform.com/r/XAqAsatn7H';
+---
+
+<BaseLayout
+  title="Project Discovery"
+  description="Start a project discovery conversation with Lowcountry Digital Works. Share what you are trying to improve, what is happening today, and what a good result would look like."
+>
+  <section class="hero hero--coastal discovery-hero">
+    <div class="container readable">
+      <p class="eyebrow">Project discovery</p>
+      <h1>Tell us what you’re trying to improve.</h1>
+      <p class="lede">You do not need a polished scope or the right technical terms. A short overview of what is happening today and what you would like to change is enough to begin.</p>
+      <p class="discovery-time">Most people finish the guided intake in about <strong>5–8 minutes</strong>.</p>
+      <div class="actions">
+        <a class="button" href={intakeUrl} target="_blank" rel="noopener noreferrer" aria-describedby="discovery-new-tab-note">
+          Start the discovery intake <span aria-hidden="true">↗</span>
+        </a>
+        <a class="button button--secondary" href="/connect/">Prefer to talk first?</a>
+      </div>
+      <p id="discovery-new-tab-note" class="small discovery-new-tab-note">The intake opens in a new tab. You can return here anytime.</p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="discovery-next-title">
+    <div class="container discovery-grid">
+      <div class="discovery-copy">
+        <p class="eyebrow">What happens next</p>
+        <h2 id="discovery-next-title">We’ll understand the need before recommending a solution.</h2>
+        <p>After you share the basics, Eddie reviews your answers and follows up using the contact details you provide. If a conversation would help, the next step may be a short fit or clarification call. Any deeper review or project work is discussed with you first.</p>
+      </div>
+
+      <aside class="discovery-note" aria-labelledby="discovery-repeat-title">
+        <p class="eyebrow">Keep it simple</p>
+        <h2 id="discovery-repeat-title">Already shared information?</h2>
+        <p>You do not need to repeat details or resend materials you have already shared with Eddie or Lowcountry Digital Works. Just add anything new that would help explain what you want to improve.</p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section section--warm" aria-labelledby="discovery-safety-title">
+    <div class="container readable">
+      <p class="eyebrow">A privacy note</p>
+      <h2 id="discovery-safety-title">Please keep sensitive information out of the intake.</h2>
+      <p>Share only general project context. Do not submit passwords, MFA or recovery codes, API keys or tokens, private keys, payment or bank details, protected health or other regulated information, government-restricted information, or confidential customer and client records.</p>
+      <p>We’ll arrange an appropriate way to handle any additional information if it is needed later. See the <a href="/privacy/">LDW Privacy Notice</a>.</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .discovery-hero { padding: clamp(3.5rem, 8vw, 6.5rem) 0; }
+  .discovery-hero .lede { max-width: 64ch; }
+  .discovery-time { margin: 1rem 0 0; color: var(--muted); }
+  .discovery-time strong { color: var(--text); }
+  .discovery-new-tab-note { margin: .8rem 0 0; color: var(--muted); }
+  .discovery-grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(260px, .8fr); gap: clamp(2rem, 6vw, 5rem); align-items: start; }
+  .discovery-copy, .discovery-note { max-width: 68ch; }
+  .discovery-note { padding: clamp(1.4rem, 3vw, 2rem); border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface); }
+  .discovery-note h2, .discovery-copy h2 { font-size: clamp(1.65rem, 3vw, 2.35rem); }
+  .discovery-note p:last-child, .discovery-copy p:last-child { margin-bottom: 0; }
+  @media (max-width: 760px) {
+    .discovery-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .discovery-hero .actions { align-items: stretch; flex-direction: column; }
+    .discovery-hero .actions .button { width: 100%; }
+  }
+</style>

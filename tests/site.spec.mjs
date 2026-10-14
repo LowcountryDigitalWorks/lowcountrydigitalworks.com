@@ -21,6 +21,7 @@ const routes = [
   '/guides/website-ownership-handoff/',
   '/contact/',
   '/connect/',
+  '/discovery/',
   '/privacy/',
   '/terms/',
   '/share/',
@@ -36,6 +37,33 @@ for (const route of routes) {
     expect(results.violations.filter(v => ['critical','serious'].includes(v.impact ?? ''))).toEqual([]);
   });
 }
+
+test('discovery front door explains the intake and launches the current form accessibly', async ({ page }) => {
+  const response = await page.goto('/discovery');
+  expect(response?.ok()).toBeTruthy();
+  await expect(page.locator('h1')).toHaveText('Tell us what you’re trying to improve.');
+  await expect(page.getByText('5–8 minutes')).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'We’ll understand the need before recommending a solution.' })).toBeVisible();
+  await expect(page.getByText('You do not need to repeat details or resend materials', { exact: false })).toBeVisible();
+  await expect(page.getByText('Do not submit passwords', { exact: false })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'LDW Privacy Notice' })).toHaveAttribute('href', '/privacy/');
+
+  const launch = page.getByRole('link', { name: 'Start the discovery intake' });
+  await expect(launch).toHaveAttribute('href', 'https://getaiform.com/r/XAqAsatn7H');
+  await expect(launch).toHaveAttribute('target', '_blank');
+  await expect(launch).toHaveAttribute('rel', 'noopener noreferrer');
+  await expect(launch).toHaveAttribute('aria-describedby', 'discovery-new-tab-note');
+  await expect(page.locator('form, iframe')).toHaveCount(0);
+  await expect(page.getByText(/Dashform|SuiteDash|pilot|test provider/i)).toHaveCount(0);
+
+  await page.setViewportSize({ width: 375, height: 812 });
+  const dimensions = await page.evaluate(() => ({
+    scrollWidth: document.documentElement.scrollWidth,
+    clientWidth: document.documentElement.clientWidth,
+  }));
+  expect(dimensions.scrollWidth).toBeLessThanOrEqual(dimensions.clientWidth);
+  await expect(launch).toBeVisible();
+});
 
 test('production brand assets remain authoritative in header and footer', async ({ page }) => {
   await page.goto('/');
@@ -440,23 +468,23 @@ test('Connect is a mobile-first stable contact destination with accessible conta
   const discovery = main.locator('.connect-discovery');
   await expect(discovery).toHaveCount(1);
   await expect(discovery.getByRole('heading', { name: "Tell us what you're trying to improve." })).toBeVisible();
-  const discoveryLink = discovery.getByRole('link', { name: 'Open guided project form' });
-  await expect(discoveryLink).toHaveAttribute('href', 'https://app.suitedash.com/frm/23RUmJBYvG5tHNcRm');
-  await expect(discovery.getByText('Hosted by SuiteDash.', { exact: false })).toBeVisible();
+  const discoveryLink = discovery.getByRole('link', { name: 'Learn about project discovery' });
+  await expect(discoveryLink).toHaveAttribute('href', '/discovery/');
+  await expect(discovery.getByText(/provider/i)).toHaveCount(0);
   await expect(discovery.getByRole('link', { name: 'Read the LDW Privacy Notice.' })).toHaveAttribute('href', '/privacy/');
   await expect(discovery.getByText('Do not submit passwords', { exact: false })).toBeVisible();
   await expect(discovery.getByText('not a quote, contract, or commitment', { exact: false })).toBeVisible();
 
   const disclosurePrecedesCta = await discovery.evaluate((section) => {
     const disclosure = section.querySelector('.connect-discovery__handoff');
-    const cta = section.querySelector('a[href="https://app.suitedash.com/frm/23RUmJBYvG5tHNcRm"]');
+    const cta = section.querySelector('a[href="/discovery/"]');
     if (!disclosure || !cta) return false;
     const relation = disclosure.compareDocumentPosition(cta);
     return Boolean(relation & Node.DOCUMENT_POSITION_FOLLOWING);
   });
   expect(disclosurePrecedesCta).toBeTruthy();
 
-  await expect(main.locator('.connect-actions a[href*="suitedash"]')).toHaveCount(0);
+  await expect(main.locator('.connect-actions a[href*="getaiform"]')).toHaveCount(0);
   await expect(main.locator('form, iframe')).toHaveCount(0);
 
   const vcard = await page.request.get('/eddie-gugino-lowcountry-digital-works.vcf');
@@ -573,7 +601,7 @@ test('page metadata includes canonical Open Graph and Twitter fields', async ({ 
 test('robots preserves search and AI-answer visibility while opting out of training', async ({ page }) => {
   const response = await page.request.get('/robots.txt');
   expect(response.ok()).toBeTruthy();
-  const robots = await response.text();
+  const robots = (await response.text()).replace(/\r\n/g, '\n');
   expect(robots).toContain('Content-Signal: search=yes, ai-input=yes, ai-train=no, use=reference');
   expect(robots).toContain('User-agent: GPTBot\nDisallow: /');
   expect(robots).toContain('Sitemap: https://lowcountrydigitalworks.com/sitemap.xml');
