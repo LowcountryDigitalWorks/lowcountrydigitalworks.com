@@ -49,16 +49,16 @@ test('homepage routes permissioned client proof before LDW systems and preserves
   await expect(eastCoastFoam.getByRole('heading', { level: 3, name: 'East Coast Foam' })).toBeVisible();
   await expect(eastCoastFoam.getByText('Live client site', { exact: true })).toBeVisible();
   await expect(eastCoastFoam.getByText(/^Live proof:/)).toBeVisible();
-  await expect(eastCoastFoam.getByRole('link', { name: 'Visit East Coast Foam live site' })).toHaveAttribute('href', 'https://eastcoastfoamllc.com/');
-  await expect(eastCoastFoam.getByRole('link', { name: 'Visit East Coast Foam live site' })).toHaveAttribute('rel', /noopener/);
-  await expect(eastCoastFoam.getByRole('link', { name: 'Visit East Coast Foam live site' })).toHaveAttribute('rel', /noreferrer/);
+  await expect(eastCoastFoam.getByRole('link', { name: 'Visit live site: East Coast Foam' })).toHaveAttribute('href', 'https://eastcoastfoamllc.com/');
+  await expect(eastCoastFoam.getByRole('link', { name: 'Visit live site: East Coast Foam' })).toHaveAttribute('rel', /noopener/);
+  await expect(eastCoastFoam.getByRole('link', { name: 'Visit live site: East Coast Foam' })).toHaveAttribute('rel', /noreferrer/);
 
   const donovan = clientSection.locator('[data-client-proof="donovan-family-dentistry"]');
   await expect(donovan.getByRole('heading', { level: 3, name: 'Donovan Family Dentistry' })).toBeVisible();
   await expect(donovan.getByText('Live client site', { exact: true })).toBeVisible();
-  await expect(donovan.getByRole('link', { name: 'Visit Donovan Family Dentistry live site' })).toHaveAttribute('href', 'https://donovanfamilydentistry.com/');
-  await expect(donovan.getByRole('link', { name: 'Visit Donovan Family Dentistry live site' })).toHaveAttribute('rel', /noopener/);
-  await expect(donovan.getByRole('link', { name: 'Visit Donovan Family Dentistry live site' })).toHaveAttribute('rel', /noreferrer/);
+  await expect(donovan.getByRole('link', { name: 'Visit live site: Donovan Family Dentistry' })).toHaveAttribute('href', 'https://donovanfamilydentistry.com/');
+  await expect(donovan.getByRole('link', { name: 'Visit live site: Donovan Family Dentistry' })).toHaveAttribute('rel', /noopener/);
+  await expect(donovan.getByRole('link', { name: 'Visit live site: Donovan Family Dentistry' })).toHaveAttribute('rel', /noreferrer/);
   await expect(clientSection.getByRole('link', { name: 'See all work →' })).toHaveAttribute('href', '/work/');
 
   await expect(internalSection.locator('.portfolio-grid--home .portfolio-card')).toHaveCount(3);
@@ -106,9 +106,9 @@ test('Websites service renders exactly related client proof before FAQ while oth
   const donovan = clientSection.locator('[data-client-proof="donovan-family-dentistry"]');
   await expect(eastCoastFoam.getByRole('heading', { level: 3, name: 'East Coast Foam' })).toBeVisible();
   await expect(eastCoastFoam.getByText(/^Live proof:/)).toBeVisible();
-  await expect(eastCoastFoam.getByRole('link', { name: 'Visit East Coast Foam live site' })).toHaveAttribute('href', 'https://eastcoastfoamllc.com/');
+  await expect(eastCoastFoam.getByRole('link', { name: 'Visit live site: East Coast Foam' })).toHaveAttribute('href', 'https://eastcoastfoamllc.com/');
   await expect(donovan.getByRole('heading', { level: 3, name: 'Donovan Family Dentistry' })).toBeVisible();
-  await expect(donovan.getByRole('link', { name: 'Visit Donovan Family Dentistry live site' })).toHaveAttribute('href', 'https://donovanfamilydentistry.com/');
+  await expect(donovan.getByRole('link', { name: 'Visit live site: Donovan Family Dentistry' })).toHaveAttribute('href', 'https://donovanfamilydentistry.com/');
   await expect(clientSection.getByRole('link', { name: 'See full work context & boundaries →' })).toHaveAttribute('href', '/work/');
   await expect(clientSection.locator('a[href="/work/east-coast-foam/"]')).toHaveCount(0);
   await expect(clientSection.locator('a[href="/work/donovan-family-dentistry/"]')).toHaveCount(0);

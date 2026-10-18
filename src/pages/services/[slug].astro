@@ -125,7 +125,7 @@ const relatedClientWork = work.clientWork.items.filter((client) => service.relat
                   <h3>{client.name}</h3>
                   <p>{client.context}</p>
                   <p><strong>Live proof:</strong> {client.proof}</p>
-                  <a class="text-link" href={client.href} rel="noopener noreferrer" aria-label={`Visit ${client.name} live site`}>Visit live site →</a>
+                  <a class="text-link" href={client.href} rel="noopener noreferrer">Visit live site: {client.name} →</a>
                 </div>
               </article>
             ))}
