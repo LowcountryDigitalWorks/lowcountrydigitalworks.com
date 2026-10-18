@@ -141,10 +141,9 @@ test('desktop three-outcome layout and sticky-header anchors preserve their UX i
 test('homepage presents three customer-first entry paths and keeps discovery on its dedicated route', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByRole('heading', { level: 1, name: 'Websites and business systems that make work easier.' })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Start with discovery' })).toHaveAttribute('href', '/discovery/');
+  await expect(page.getByRole('link', { name: 'Talk through your project' })).toHaveAttribute('href', '/connect/');
   await expect(page.locator('.desktop-nav a[href="/discovery/"]')).toHaveText('Project discovery');
-  await expect(page.getByRole('link', { name: 'See services' })).toHaveAttribute('href', '#start');
-  await expect(page.getByRole('link', { name: 'See the work' })).toHaveAttribute('href', '#client-work');
+  await expect(page.getByRole('link', { name: 'Find your starting point' })).toHaveAttribute('href', '#start');
   await expect(page.locator('.hero-owner-card')).toHaveCount(1);
   await expect(page.locator('.solution-card')).toHaveCount(3);
   const pathways = page.locator('.pathway');

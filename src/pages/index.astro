@@ -17,14 +17,16 @@ import work from '../data/work.json';
         <p class="eyebrow">{home.hero.eyebrow}</p>
         <h1>{home.hero.title}</h1>
         <p class="lede">{home.hero.lede}</p>
-        <div class="actions hero-actions">
-          <a class="button" href="/discovery/">Start with discovery</a>
-          <a class="button button--secondary" href="#start">See services</a>
+        <div class="actions">
+          <a class="button" href="/connect/">Talk through your project</a>
+          <a class="button button--secondary" href="#start">Find your starting point</a>
         </div>
-        <a class="hero-work-link" href="#client-work">See the work</a>
+        <ul class="trust-strip" aria-label="Lowcountry Digital Works priorities">
+          {home.trustPoints.map((point) => <li>{point}</li>)}
+        </ul>
       </div>
 
-      <aside class="hero-owner-card hero-owner-card--compact" aria-label="Owner-operated by Eddie Gugino" itemscope itemtype="https://schema.org/Person">
+      <aside class="hero-owner-card" aria-label="Work directly with Eddie Gugino" itemscope itemtype="https://schema.org/Person">
         <div class="hero-owner-card__portrait-shell">
           <img
             class="hero-owner-card__portrait"
@@ -38,27 +40,13 @@ import work from '../data/work.json';
           />
         </div>
         <div class="hero-owner-card__content">
-          <p class="eyebrow">Owner-operated</p>
-          <h2>Work directly with Eddie.</h2>
+          <p class="eyebrow">{home.heroProof.eyebrow}</p>
+          <h2>{home.heroProof.title}</h2>
           <p class="hero-owner-card__name"><strong itemprop="name">{home.founder.name}</strong> · <span itemprop="jobTitle">{home.founder.role}</span></p>
           <p>{home.founder.lede}</p>
+          <a class="text-link" href="/about/">Meet Eddie & learn how LDW works →</a>
         </div>
       </aside>
-    </div>
-  </section>
-
-  <section class="service-area section" aria-labelledby="service-area-title">
-    <div class="container service-area__inner">
-      <div class="section-heading">
-        <p class="eyebrow">Local service area</p>
-        <h2 id="service-area-title">Serving the Lowcountry</h2>
-        <p class="lede">Based in Beaufort, South Carolina, LDW works with organizations across these Lowcountry communities.</p>
-      </div>
-      <ul class="service-area__list" aria-label="Lowcountry service areas">
-        <li>Beaufort</li><li>Port Royal</li><li>Habersham</li><li>Lady’s Island</li><li>Burton</li>
-        <li>St. Helena Island</li><li>Fripp Island</li><li>Bluffton</li><li>Okatie</li><li>Ridgeland</li><li>Hardeeville</li>
-      </ul>
-      <p class="service-area__note">The right project may fit elsewhere, too. Hilton Head work is considered case by case.</p>
     </div>
   </section>
 
@@ -89,7 +77,7 @@ import work from '../data/work.json';
     </div>
   </section>
 
-  <section class="section" id="client-work" data-home-client-work>
+  <section class="section" data-home-client-work>
     <div class="container">
       <div class="section-heading">
         <p class="eyebrow">{work.clientWork.eyebrow}</p>

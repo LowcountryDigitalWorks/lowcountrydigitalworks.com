@@ -1,7 +1,6 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import MobileContactBar from '../components/MobileContactBar.astro';
 import '@fontsource-variable/manrope/wght.css';
 import '../styles/global.css';
 const {
@@ -17,7 +16,6 @@ const socialImage = new URL(image, Astro.site ?? Astro.url.origin);
 const fullTitle = title === 'Lowcountry Digital Works' ? title : `${title} | Lowcountry Digital Works`;
 const robotsContent = robots ?? (noindex ? 'noindex,nofollow' : undefined);
 const allowFooterSocialProfiles = Astro.url.pathname !== '/share/';
-const showMobileContactBar = !['/discovery/', '/connect/'].includes(Astro.url.pathname);
 ---
 <!doctype html>
 <html lang="en">
@@ -49,6 +47,5 @@ const showMobileContactBar = !['/discovery/', '/connect/'].includes(Astro.url.pa
   <Header />
   <main id="main-content"><slot /></main>
   <Footer allowSocialProfiles={allowFooterSocialProfiles} />
-  {showMobileContactBar && <MobileContactBar />}
 </body>
 </html>
