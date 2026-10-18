@@ -26,3 +26,9 @@
 
 https://*.workers.dev/*
   X-Robots-Tag: noindex, nofollow
+
+/share/*
+  X-Robots-Tag: noindex, nofollow
+
+/discovery/*
+  X-Robots-Tag: noindex, nofollow
