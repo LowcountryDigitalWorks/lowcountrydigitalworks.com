@@ -410,7 +410,7 @@ p { margin: 0 0 1rem; }
 .service-choice__primary {
   display: inline-flex;
   align-items: center;
-  min-height: 42px;
+  min-height: 44px;
   padding: .5rem .7rem;
   border: 1px solid color-mix(in srgb, var(--interactive) 36%, var(--border));
   border-radius: var(--radius-md);
