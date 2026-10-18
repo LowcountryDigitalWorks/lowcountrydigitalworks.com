@@ -1,0 +1,5 @@
+Contact: mailto:eddie@lowcountrydigitalworks.com
+Expires: 2027-10-17T23:59:59.000Z
+Preferred-Languages: en
+Canonical: https://lowcountrydigitalworks.com/.well-known/security.txt
+Policy: https://github.com/LowcountryDigitalWorks/lowcountrydigitalworks.com/blob/main/SECURITY.md
