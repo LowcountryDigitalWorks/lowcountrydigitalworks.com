@@ -28,7 +28,7 @@ const isCurrent = (href) => href === '/' ? current === '/' : current === href ||
   </div>
 </header>
 <style>
-.site-header { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--ldw-soft-white) 95%, white); border-bottom: 1px solid var(--border); }
+.site-header { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--ldw-soft-white) 95%, white); border-bottom: 1px solid var(--border); padding-top: env(safe-area-inset-top, 0px); }
 .header-row { min-height: 70px; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
 .brand { display: inline-flex; width: clamp(180px, 22vw, 250px); line-height: 0; }
 .desktop-nav { display: flex; align-items: center; gap: clamp(.5rem, 1.2vw, 1rem); }
