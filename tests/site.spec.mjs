@@ -138,23 +138,22 @@ test('desktop three-outcome layout and sticky-header anchors preserve their UX i
   expect(anchorState.targetTop).toBeGreaterThan(anchorState.headerBottom);
 });
 
-test('homepage presents three customer-first entry paths and keeps discovery on its dedicated route', async ({ page }) => {
+test('homepage presents customer-first Rev3 entry paths and keeps discovery on its dedicated route', async ({ page }) => {
   await page.goto('/');
-  await expect(page.getByRole('heading', { level: 1, name: 'Websites and business systems that make work easier.' })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Talk through your project' })).toHaveAttribute('href', '/connect/');
+  await expect(page.getByRole('heading', { level: 1, name: 'Your website should bring in calls, not questions.' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Talk through your project' }).first()).toHaveAttribute('href', '/discovery/');
   await expect(page.locator('.desktop-nav a[href="/discovery/"]')).toHaveText('Project discovery');
-  await expect(page.getByRole('link', { name: 'Find your starting point' })).toHaveAttribute('href', '#start');
-  await expect(page.locator('.hero-owner-card')).toHaveCount(1);
-  await expect(page.locator('.solution-card')).toHaveCount(3);
-  const pathways = page.locator('.pathway');
-  await expect(pathways).toHaveCount(3);
-  await expect(page.getByRole('heading', { name: 'I need a better website.' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: "We waste time doing this manually — or our tools don't work together." })).toBeVisible();
-  await expect(page.getByRole('heading', { name: "I'm not sure what we own, what we need, or what should change." })).toBeVisible();
-  await expect(page.locator('.pathway a[href="/services/websites/"]')).toHaveCount(1);
-  await expect(page.locator('.pathway a[href="/services/business-systems-automation/"]')).toHaveCount(1);
-  await expect(page.locator('.pathway a[href="/services/digital-ownership-platform-administration/"]')).toHaveCount(1);
-  await expect(page.locator('.pathway a[href="/connect/"]')).toHaveCount(3);
+  await expect(page.getByRole('link', { name: 'See the work' })).toHaveAttribute('href', '#client-work');
+  await expect(page.locator('.hero-founder-row')).toHaveCount(1);
+  await expect(page.locator('.problem-choice')).toHaveCount(4);
+  await expect(page.getByText('I need a better website or online presence.', { exact: true })).toBeVisible();
+  await expect(page.getByText("We waste time doing things manually / our tools don't talk.", { exact: true })).toBeVisible();
+  await expect(page.getByText("I'm not sure what we own (domain, hosting, logins).", { exact: true })).toBeVisible();
+  await expect(page.getByText("Something else / I'm not sure.", { exact: true })).toBeVisible();
+  await expect(page.locator('.problem-choice[href="/services/websites/"]')).toHaveCount(1);
+  await expect(page.locator('.problem-choice[href="/services/business-systems-automation/"]')).toHaveCount(1);
+  await expect(page.locator('.problem-choice[href="/services/digital-ownership-platform-administration/"]')).toHaveCount(1);
+  await expect(page.locator('.problem-choice[href="/discovery/"]')).toHaveCount(1);
   await expect(page.locator('#main-content form')).toHaveCount(0);
   await expect(page.locator('a[href*="suitedash"]')).toHaveCount(0);
   await expect(page.locator('.portfolio-grid--home .portfolio-card')).toHaveCount(3);
@@ -300,7 +299,7 @@ test('work page separates permissioned client proof from LDW systems and preserv
   const internalProof = page.locator('[data-internal-proof]');
   await expect(clientWork).toHaveCount(1);
   await expect(internalProof).toHaveCount(1);
-  await expect(clientWork.getByText('Client work', { exact: true })).toBeVisible();
+  await expect(clientWork.getByRole('heading', { level: 2, name: "Local sites we've rebuilt." })).toBeVisible();
   await expect(internalProof.getByText('LDW systems & internal proof', { exact: true })).toBeVisible();
 
   const clientBeforeInternal = await page.evaluate(() => {
@@ -410,10 +409,8 @@ test('founder structure uses the owner-approved portrait and approved trust fact
 
   await page.goto('/');
   await expect(page.locator('#main-content').getByText('Eddie Gugino', { exact: false })).toBeVisible();
-  await expect(page.locator('#main-content').getByText('15+ years of technology experience', { exact: false })).toBeVisible();
-  await expect(page.locator('#main-content').getByText('Risk Management Framework (RMF)', { exact: false })).toBeVisible();
-  await expect(page.locator('#main-content').getByText('automation of business systems', { exact: false })).toBeVisible();
-  await expect(page.locator('.hero-owner-card__content').getByText('automation of business systems, digital ownership, and practical technology decisions.', { exact: false })).toBeVisible();
+  await expect(page.locator('.hero-founder-row').getByText('15+ years across IT, systems, security, and delivery', { exact: false })).toBeVisible();
+  await expect(page.locator('.hero-founder-row').getByText('You work directly with the person doing the work.', { exact: false })).toBeVisible();
 
   await page.goto('/about/');
   await expect(page.getByRole('heading', { level: 1, name: 'Local, practical, and accountable by design.' })).toBeVisible();

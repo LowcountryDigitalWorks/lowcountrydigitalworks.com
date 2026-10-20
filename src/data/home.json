@@ -1,12 +1,12 @@
 {
   "hero": {
-    "eyebrow": "Beaufort, South Carolina · Owner-operated",
-    "title": "Websites and business systems that make work easier.",
-    "lede": "Lowcountry Digital Works helps small organizations fix confusing websites, automate repetitive work, and regain control of the digital systems their business depends on."
+    "eyebrow": "Beaufort, SC · Owner-operated",
+    "title": "Your website should bring in calls, not questions.",
+    "lede": "Lowcountry Digital Works helps Beaufort and nearby Lowcountry businesses fix confusing websites, automate repetitive work, and regain control of the digital systems they depend on."
   },
   "trustPoints": [
-    "Based in Beaufort, South Carolina",
-    "Customer-owned assets where practical",
+    "Based in Beaufort, SC",
+    "You own what we build, where practical",
     "Clear handoff or ongoing care"
   ],
   "heroProof": {
@@ -20,13 +20,13 @@
   },
   "services": {
     "eyebrow": "Where to start",
-    "title": "You do not need to know which service to ask for.",
+    "title": "What sounds most like you?",
     "intro": "Choose the starting point that sounds most like your situation. LDW can map it to the right website, systems, ownership, or consulting work after a short conversation."
   },
   "startingPoints": [
     {
       "number": "01",
-      "title": "I need a better website.",
+      "title": "I need a better website or online presence.",
       "description": "The site may be dated, hard to maintain, unclear, or simply not doing enough for the business.",
       "service": "Websites",
       "serviceHref": "/services/websites/",
@@ -35,21 +35,47 @@
     },
     {
       "number": "02",
-      "title": "We waste time doing this manually — or our tools don't work together.",
+      "title": "We waste time doing things manually / our tools don't talk.",
       "description": "A repeated workflow, handoff, or disconnected toolset may be a better fit for configuration, integration, automation, or a focused internal tool.",
       "service": "Business Systems & Automation",
       "serviceHref": "/services/business-systems-automation/"
     },
     {
       "number": "03",
-      "title": "I'm not sure what we own, what we need, or what should change.",
+      "title": "I'm not sure what we own (domain, hosting, logins).",
       "description": "When ownership, vendors, platforms, costs, or the right next step are unclear, start with a practical review before buying or rebuilding anything.",
       "service": "Digital Ownership & Platform Administration",
       "serviceHref": "/services/digital-ownership-platform-administration/",
       "secondaryService": "Technology Consulting",
       "secondaryHref": "/services/technology-consulting/"
+    },
+    {
+      "number": "04",
+      "title": "Something else / I'm not sure.",
+      "description": "If none of these fit cleanly, start with a short discovery note. You do not need to name a service first.",
+      "service": "Project discovery",
+      "serviceHref": "/discovery/"
     }
   ],
+  "serviceAreas": {
+    "eyebrow": "Local service area",
+    "title": "Serving the Lowcountry",
+    "lede": "Based in Beaufort, South Carolina, LDW works with organizations across these Lowcountry communities.",
+    "items": [
+      "Beaufort",
+      "Port Royal",
+      "Habersham",
+      "Lady’s Island",
+      "Burton",
+      "St. Helena Island",
+      "Fripp Island",
+      "Bluffton",
+      "Okatie",
+      "Ridgeland",
+      "Hardeeville"
+    ],
+    "note": "The right project may fit elsewhere, too. Hilton Head work is considered case by case."
+  },
   "ownership": {
     "eyebrow": "The “yours” part",
     "title": "Your business should own its digital assets.",
@@ -84,7 +110,7 @@
     "title": "Work directly with the person responsible for the work.",
     "name": "Eddie Gugino",
     "role": "Founder",
-    "lede": "Eddie brings 15+ years of technology experience across IT, system administration, cybersecurity, compliance, DevSecOps, consulting, and technical delivery. His work has ranged from hands-on operational support to federal security and Risk Management Framework (RMF) programs, enterprise environments handling sensitive data, and senior technical and consulting roles. He works directly with LDW clients on websites, automation of business systems, digital ownership, and practical technology decisions."
+    "lede": "15+ years across IT, systems, security, and delivery. You work directly with the person doing the work."
   },
   "local": {
     "eyebrow": "Lowcountry roots",
@@ -94,7 +120,10 @@
   "contact": {
     "eyebrow": "Start with what is not working",
     "title": "Tell me what is getting in the way.",
-    "lede": "You do not need a polished scope. A short note about what feels slow, confusing, manual, or hard to maintain is enough to start."
+    "lede": "You do not need a polished scope. A short note about what feels slow, confusing, manual, or hard to maintain is enough to start.",
+    "primaryCta": "Talk through your project",
+    "primaryHref": "/discovery/",
+    "secondaryNote": "A free 15-minute fit call is available when it helps clarify whether LDW is the right next step."
   },
   "faq": {
     "eyebrow": "Common questions",
