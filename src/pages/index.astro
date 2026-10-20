@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import FaqList from '../components/FaqList.astro';
 import home from '../data/home.json';
 import work from '../data/work.json';
+import contact from '../data/contact.json';
 ---
 <BaseLayout description="Owner-operated websites, business systems, automation, digital ownership, and practical technology consulting from Beaufort, South Carolina.">
   <div itemscope itemtype="https://schema.org/WebSite" itemid="https://lowcountrydigitalworks.com/#website">
@@ -11,83 +12,76 @@ import work from '../data/work.json';
     <meta itemprop="alternateName" content="LDW" />
   </div>
 
-  <section class="section hero hero--coastal">
-    <div class="container hero-coastal-grid">
-      <div class="hero-copy hero-copy--coastal">
+  <section class="section hero hero--rev3">
+    <div class="container hero-rev3">
+      <div class="hero-rev3__copy">
         <p class="eyebrow">{home.hero.eyebrow}</p>
         <h1>{home.hero.title}</h1>
         <p class="lede">{home.hero.lede}</p>
         <div class="actions hero-actions">
-          <a class="button" href="/discovery/">Start with discovery</a>
-          <a class="button button--secondary" href="#start">See services</a>
+          <a class="button" href="/discovery/">Talk through your project</a>
+          <a class="text-link hero-secondary-link" href={`sms:${contact.phone.number}`}>or text Eddie, {contact.phone.display}</a>
+        </div>
+        <p class="hero-support">{home.contact.secondaryNote}</p>
+        <ul class="trust-strip trust-strip--plain" aria-label="Lowcountry Digital Works priorities">
+          {home.trustPoints.map((point) => <li>{point}</li>)}
+        </ul>
+        <div class="service-area hero-service-area" aria-labelledby="service-area-title">
+          <h2 id="service-area-title" class="visually-hidden">{home.serviceAreas.title}</h2>
+          <p class="hero-service-area__label">Serving</p>
+          <ul class="service-area__list service-area__list--inline" aria-label="Lowcountry service areas">
+            {home.serviceAreas.items.map((area) => <li>{area}</li>)}
+          </ul>
+          <p class="service-area__note">{home.serviceAreas.note}</p>
         </div>
         <a class="hero-work-link" href="#client-work">See the work</a>
       </div>
 
-      <aside class="hero-owner-card hero-owner-card--compact" aria-label="Owner-operated by Eddie Gugino" itemscope itemtype="https://schema.org/Person">
-        <div class="hero-owner-card__portrait-shell">
-          <img
-            class="hero-owner-card__portrait"
-            data-founder-portrait
-            itemprop="image"
-            src="/founder/eddie-gugino-founder.webp"
-            alt="Eddie Gugino, founder of Lowcountry Digital Works"
-            width="480"
-            height="600"
-            decoding="async"
-          />
-        </div>
-        <div class="hero-owner-card__content">
-          <p class="eyebrow">Owner-operated</p>
-          <h2>Work directly with Eddie.</h2>
-          <p class="hero-owner-card__name"><strong itemprop="name">{home.founder.name}</strong> · <span itemprop="jobTitle">{home.founder.role}</span></p>
+      <aside class="hero-founder-row" aria-label="Owner-operated by Eddie Gugino" itemscope itemtype="https://schema.org/Person">
+        <img
+          class="hero-founder-row__portrait"
+          data-founder-portrait
+          itemprop="image"
+          src="/founder/eddie-gugino-founder.webp"
+          alt="Eddie Gugino, founder of Lowcountry Digital Works"
+          width="480"
+          height="600"
+          decoding="async"
+        />
+        <div class="hero-founder-row__content">
+          <p class="eyebrow">{home.founder.eyebrow}</p>
+          <p class="hero-founder-row__name"><strong itemprop="name">{home.founder.name}</strong> · <span itemprop="jobTitle">{home.founder.role}</span></p>
           <p>{home.founder.lede}</p>
         </div>
       </aside>
     </div>
   </section>
 
-  <section class="service-area section" aria-labelledby="service-area-title">
-    <div class="container service-area__inner">
-      <div class="section-heading">
-        <p class="eyebrow">Local service area</p>
-        <h2 id="service-area-title">Serving the Lowcountry</h2>
-        <p class="lede">Based in Beaufort, South Carolina, LDW works with organizations across these Lowcountry communities.</p>
-      </div>
-      <ul class="service-area__list" aria-label="Lowcountry service areas">
-        <li>Beaufort</li><li>Port Royal</li><li>Habersham</li><li>Lady’s Island</li><li>Burton</li>
-        <li>St. Helena Island</li><li>Fripp Island</li><li>Bluffton</li><li>Okatie</li><li>Ridgeland</li><li>Hardeeville</li>
-      </ul>
-      <p class="service-area__note">The right project may fit elsewhere, too. Hilton Head work is considered case by case.</p>
-    </div>
-  </section>
+  <div class="wave-divider" aria-hidden="true"></div>
 
-  <section class="section section--warm section--tidal" id="start">
+  <section class="section section--warm" id="start">
     <div class="container">
       <div class="section-heading">
         <p class="eyebrow">{home.services.eyebrow}</p>
         <h2>{home.services.title}</h2>
         <p class="lede">{home.services.intro}</p>
       </div>
-      <div class="pathway-list solution-grid">
+      <div class="problem-choice-list">
         {home.startingPoints.map((point) => (
-          <article class="pathway solution-card">
-            <p class="pathway__number">{point.number}</p>
-            <div>
-              <p class="card__kicker">Starting point</p>
-              <h3>{point.title}</h3>
-              <p>{point.description}</p>
-            </div>
-            <div class="pathway__actions">
-              <a href={point.serviceHref}>{point.service} →</a>
-              {point.secondaryHref && <a href={point.secondaryHref}>{point.secondaryService} →</a>}
-              <a href="/connect/">Talk it through →</a>
-            </div>
-          </article>
+          <a class="problem-choice" href={point.serviceHref}>
+            <span class="problem-choice__number" aria-hidden="true">{point.number}</span>
+            <span class="problem-choice__body">
+              <span class="problem-choice__title">{point.title}</span>
+              <span class="problem-choice__desc">{point.description}</span>
+            </span>
+            <span class="problem-choice__arrow" aria-hidden="true">→</span>
+          </a>
         ))}
       </div>
     </div>
   </section>
+
+  <div class="wave-divider" aria-hidden="true"></div>
 
   <section class="section" id="client-work" data-home-client-work>
     <div class="container">
@@ -96,9 +90,23 @@ import work from '../data/work.json';
         <h2>{work.clientWork.title}</h2>
         <p class="lede">{work.clientWork.lede}</p>
       </div>
-      <div class="portfolio-grid portfolio-grid--work">
+      <div class="portfolio-grid portfolio-grid--work portfolio-grid--client-proof">
         {work.clientWork.items.map((client) => (
           <article class="portfolio-card portfolio-card--work portfolio-card--proof" data-client-proof={client.id}>
+            {client.thumbnail && (
+              <a class="portfolio-card__visual" href={client.href} rel="noopener noreferrer" aria-label={`Visit live site: ${client.name}`}>
+                <img
+                  src={client.thumbnail.src}
+                  srcset={client.thumbnail.srcMobile ? `${client.thumbnail.srcMobile} 390w, ${client.thumbnail.src} 1280w` : undefined}
+                  sizes="(max-width: 680px) 100vw, 560px"
+                  alt={client.thumbnail.alt}
+                  width={client.thumbnail.width}
+                  height={client.thumbnail.height}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </a>
+            )}
             <div class="portfolio-card__body">
               <div class="work-row__meta">
                 <span class="status-pill status-pill--live">Live client site</span>
@@ -116,7 +124,9 @@ import work from '../data/work.json';
     </div>
   </section>
 
-  <section class="section section--warm" data-home-internal-proof>
+  <div class="wave-divider" aria-hidden="true"></div>
+
+  <section class="section section--warm section--internal-compact" data-home-internal-proof>
     <div class="container">
       <div class="section-heading">
         <p class="eyebrow">{work.internalProof.eyebrow}</p>
@@ -153,43 +163,24 @@ import work from '../data/work.json';
     </div>
   </section>
 
-  <section class="section">
-    <div class="container principle">
+  <section class="section section--navy section--cta-band">
+    <div class="container final-cta final-cta--single">
       <div>
-        <p class="eyebrow">{home.ownership.eyebrow}</p>
-        <h2>{home.ownership.title}</h2>
-        <p class="lede">{home.ownership.lede}</p>
+        <p class="eyebrow">{home.contact.eyebrow}</p>
+        <h2>{home.contact.title}</h2>
+        <p class="lede">{home.contact.lede}</p>
+        <p class="cta-support">{home.contact.secondaryNote}</p>
       </div>
-      <ul class="principle__list">{home.ownership.items.map((item) => <li>{item}</li>)}</ul>
+      <div class="actions cta-band-actions">
+        <a class="button button--oyster" href={home.contact.primaryHref}>{home.contact.primaryCta}</a>
+        <a class="text-link text-link--light" href={`sms:${contact.phone.number}`}>or text Eddie, {contact.phone.display}</a>
+      </div>
     </div>
   </section>
 
   <section class="section section--warm">
     <div class="container">
-      <div class="section-heading"><p class="eyebrow">{home.process.eyebrow}</p><h2>{home.process.title}</h2></div>
-      <div class="flow">{home.process.steps.map((step) => <article class="flow__step"><h3>{step.title}</h3><p>{step.description}</p></article>)}</div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container">
       <FaqList items={home.faq.items} eyebrow={home.faq.eyebrow} title={home.faq.title} />
-    </div>
-  </section>
-
-  <section class="section section--navy section--invitation">
-    <div class="container final-cta">
-      <div>
-        <p class="eyebrow">{home.local.eyebrow}</p>
-        <h2>{home.local.title}</h2>
-        <p class="lede">{home.local.lede}</p>
-      </div>
-      <div>
-        <p class="eyebrow">{home.contact.eyebrow}</p>
-        <h2>{home.contact.title}</h2>
-        <p>{home.contact.lede}</p>
-        <div class="actions"><a class="button button--secondary" href="/connect/">Connect with Eddie</a></div>
-      </div>
     </div>
   </section>
 </BaseLayout>
