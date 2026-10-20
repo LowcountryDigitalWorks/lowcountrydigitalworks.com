@@ -164,4 +164,7 @@ test('desktop hero keeps founder proof in view and service-area list below the h
   await expect(page.locator('section.service-area .service-area__list li')).toHaveCount(11);
   await expect(founder).toBeVisible();
   await expect(founder).toBeInViewport({ ratio: 0.5 });
+  await page.evaluate(() => document.fonts.ready);
+  const headingBox = await hero.getByRole('heading', { level: 1 }).boundingBox();
+  expect(headingBox.height).toBeLessThan(160);
 });

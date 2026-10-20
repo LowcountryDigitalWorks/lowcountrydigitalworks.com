@@ -1183,11 +1183,15 @@ p { margin: 0 0 1rem; }
 /* WEB-REV3-001: keep the hero compact while preserving the complete service-area list below. */
 .hero-rev3 {
   max-width: 1180px;
-  grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr);
+  grid-template-columns: minmax(0, 1.45fr) minmax(280px, .55fr);
   align-items: center;
-  gap: clamp(2rem, 5vw, 4.5rem);
+  gap: clamp(1.5rem, 3.5vw, 3rem);
 }
-.hero-rev3__copy h1 { max-width: 18ch; }
+.hero-rev3__copy h1 {
+  max-width: 25ch;
+  font-size: clamp(2.8rem, 4.8vw, 4.4rem);
+  line-height: 1.08;
+}
 .hero-service-area {
   margin: 1.15rem 0 0;
   padding: 0;
