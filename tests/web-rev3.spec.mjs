@@ -153,3 +153,15 @@ test('desktop Rev3 composition keeps white hero, Warm Oyster problem band, clien
   const axe = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
   expect(axe.violations.filter(({ impact }) => ['critical', 'serious'].includes(impact))).toEqual([]);
 });
+
+test('desktop hero keeps founder proof in view and service-area list below the hero', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 720 });
+  await page.goto('/');
+
+  const hero = page.locator('.hero--rev3');
+  const founder = page.locator('.hero-founder-row');
+  await expect(hero.locator('.service-area__list')).toHaveCount(0);
+  await expect(page.locator('section.service-area .service-area__list li')).toHaveCount(11);
+  await expect(founder).toBeVisible();
+  await expect(founder).toBeInViewport({ ratio: 0.5 });
+});

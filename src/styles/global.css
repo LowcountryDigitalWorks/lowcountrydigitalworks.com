@@ -1179,3 +1179,42 @@ p { margin: 0 0 1rem; }
   .problem-choice { transition: none; }
   .problem-choice:hover { transform: none; }
 }
+
+/* WEB-REV3-001: keep the hero compact while preserving the complete service-area list below. */
+.hero-rev3 {
+  max-width: 1180px;
+  grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr);
+  align-items: center;
+  gap: clamp(2rem, 5vw, 4.5rem);
+}
+.hero-rev3__copy h1 { max-width: 18ch; }
+.hero-service-area {
+  margin: 1.15rem 0 0;
+  padding: 0;
+  border: 0;
+  color: var(--muted);
+  font-size: .95rem;
+}
+.hero-founder-row {
+  max-width: none;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--surface-warm) 58%, white);
+}
+.service-area .section-heading { max-width: 38rem; }
+@media (max-width: 760px) {
+  .hero-rev3 {
+    max-width: 820px;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .hero-founder-row {
+    max-width: 560px;
+    padding: .9rem 0 0;
+    border: 0;
+    border-top: 1px solid var(--border);
+    border-radius: 0;
+    background: transparent;
+  }
+}

@@ -26,14 +26,7 @@ import contact from '../data/contact.json';
         <ul class="trust-strip trust-strip--plain" aria-label="Lowcountry Digital Works priorities">
           {home.trustPoints.map((point) => <li>{point}</li>)}
         </ul>
-        <div class="service-area hero-service-area" aria-labelledby="service-area-title">
-          <h2 id="service-area-title" class="visually-hidden">{home.serviceAreas.title}</h2>
-          <p class="hero-service-area__label">Serving</p>
-          <ul class="service-area__list service-area__list--inline" aria-label="Lowcountry service areas">
-            {home.serviceAreas.items.map((area) => <li>{area}</li>)}
-          </ul>
-          <p class="service-area__note">{home.serviceAreas.note}</p>
-        </div>
+        <p class="hero-service-area">Beaufort-based &middot; serving the Lowcountry.</p>
         <a class="hero-work-link" href="#client-work">See the work</a>
       </div>
 
@@ -181,6 +174,21 @@ import contact from '../data/contact.json';
   <section class="section section--warm">
     <div class="container">
       <FaqList items={home.faq.items} eyebrow={home.faq.eyebrow} title={home.faq.title} />
+    </div>
+  </section>
+  <section class="section section--warm service-area" aria-labelledby="service-area-title">
+    <div class="container service-area__inner">
+      <div class="section-heading">
+        <p class="eyebrow">{home.serviceAreas.eyebrow}</p>
+        <h2 id="service-area-title">{home.serviceAreas.title}</h2>
+        <p class="lede">{home.serviceAreas.lede}</p>
+      </div>
+      <div>
+        <ul class="service-area__list" aria-label="Lowcountry service areas">
+          {home.serviceAreas.items.map((area) => <li>{area}</li>)}
+        </ul>
+        <p class="service-area__note">{home.serviceAreas.note}</p>
+      </div>
     </div>
   </section>
 </BaseLayout>
