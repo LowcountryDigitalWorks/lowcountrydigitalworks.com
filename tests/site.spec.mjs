@@ -299,7 +299,7 @@ test('work page separates permissioned client proof from LDW systems and preserv
   const internalProof = page.locator('[data-internal-proof]');
   await expect(clientWork).toHaveCount(1);
   await expect(internalProof).toHaveCount(1);
-  await expect(clientWork.getByText('Client work', { exact: true })).toBeVisible();
+  await expect(clientWork.getByRole('heading', { level: 2, name: "Local sites we've rebuilt." })).toBeVisible();
   await expect(internalProof.getByText('LDW systems & internal proof', { exact: true })).toBeVisible();
 
   const clientBeforeInternal = await page.evaluate(() => {
