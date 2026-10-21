@@ -11,14 +11,14 @@ const SAFE_METHOD = 'GET';
 const USER_AGENT = 'LDW-Production-Smoke/1.0 (+https://lowcountrydigitalworks.com/)';
 
 const routeChecks = [
-  ['/', 'Websites and business systems that make work easier.'],
+  ['/', 'Your website should bring in calls, not questions.'],
   ['/services/', 'Start with what your business needs to work better.'],
   ['/services/business-systems-automation/', null],
   ['/work/', 'See the problem, the proof, and the boundary.'],
   ['/work/gas-engine/', 'Internal evidence infrastructure'],
   ['/about/', 'Local, practical, and accountable by design.'],
   ['/connect/', 'Tell me what is getting in the way.'],
-  ['/privacy/', 'does not intentionally set nonessential cookies'],
+  ['/privacy/', 'does not intentionally use advertising trackers, behavioral analytics, nonessential cookies'],
 ];
 
 function fail(message) {
