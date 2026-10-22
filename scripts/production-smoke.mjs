@@ -5,6 +5,14 @@ import { pathToFileURL } from 'node:url';
 export const PRODUCTION_ORIGIN = 'https://lowcountrydigitalworks.com';
 export const MIN_HSTS_MAX_AGE = 15_552_000;
 
+export const ALLOWED_DIAGNOSTIC_HEADERS = Object.freeze([
+  'cf-ray',
+  'cf-mitigated',
+  'server',
+  'content-type',
+  'retry-after',
+]);
+
 const REQUEST_TIMEOUT_MS = 10_000;
 const RETRY_DELAY_MS = 750;
 const SAFE_METHOD = 'GET';
@@ -22,7 +30,7 @@ const routeChecks = [
 ];
 
 function fail(message) {
-  throw new Error(message);
+  assert.fail(message);
 }
 
 function sleep(ms) {
@@ -152,7 +160,7 @@ export function assertSitemap(text) {
   assert.ok(!exposesSecureShare, 'Secure Share must remain excluded from sitemap');
 }
 
-export function assertWwwBehavior({ status, location, body }) {
+export function assertWwwBehavior({ status, location, body, response = null, headers = null }) {
   if ([301, 302, 307, 308].includes(status)) {
     assert.ok(location, 'www redirect must include a Location header');
     const target = new URL(location, 'https://www.lowcountrydigitalworks.com/');
@@ -161,7 +169,14 @@ export function assertWwwBehavior({ status, location, body }) {
     return 'redirect';
   }
 
-  assert.equal(status, 200, 'www must either redirect to apex or serve a canonicalized 200 response');
+  if (status !== 200) {
+    const respObj = response ?? (headers ? { status, headers } : null);
+    const diagText = respObj
+      ? formatEdgeDiagnostics(respObj, 'https://www.lowcountrydigitalworks.com/', { allowWww: true })
+      : 'status=' + status;
+    fail('www must either redirect to apex or serve a canonicalized 200 response [' + diagText + ']');
+  }
+
   assert.equal(
     getCanonicalHref(body),
     PRODUCTION_ORIGIN + '/',
@@ -171,7 +186,7 @@ export function assertWwwBehavior({ status, location, body }) {
 }
 
 export function assertSafeSmokeRequestUrl(value, { allowWww = false } = {}) {
-  const target = value instanceof URL ? value : new URL(value);
+  const target = value instanceof URL ? value : new URL(value, PRODUCTION_ORIGIN);
   const allowedOrigins = allowWww
     ? new Set([PRODUCTION_ORIGIN, 'https://www.lowcountrydigitalworks.com'])
     : new Set([PRODUCTION_ORIGIN]);
@@ -188,6 +203,92 @@ export function assertSafeSmokeRequestUrl(value, { allowWww = false } = {}) {
   }
 
   return target;
+}
+
+export function extractSafePathname(target, { allowWww = false } = {}) {
+  if (!target) return null;
+  const safeUrl = assertSafeSmokeRequestUrl(target, { allowWww });
+  return safeUrl.pathname;
+}
+
+export function extractEdgeDiagnostics(response, target = null, { allowWww = false } = {}) {
+  const status = typeof response?.status === 'number' ? response.status : null;
+  let pathname = null;
+
+  if (target) {
+    pathname = extractSafePathname(target, { allowWww });
+  } else if (response?.url) {
+    try {
+      pathname = extractSafePathname(response.url, { allowWww });
+    } catch {
+      pathname = null;
+    }
+  }
+
+  const headers = {};
+  if (response?.headers) {
+    const getHeader = name => {
+      if (typeof response.headers.get === 'function') {
+        return response.headers.get(name);
+      }
+      const lowerName = name.toLowerCase();
+      for (const [k, v] of Object.entries(response.headers)) {
+        if (k.toLowerCase() === lowerName) return v;
+      }
+      return null;
+    };
+
+    for (const name of ALLOWED_DIAGNOSTIC_HEADERS) {
+      const val = getHeader(name);
+      if (val !== null && val !== undefined && val !== '') {
+        headers[name] = val;
+      }
+    }
+  }
+
+  return { status, pathname, headers };
+}
+
+export function formatEdgeDiagnostics(response, target = null, { allowWww = false } = {}) {
+  const diag = extractEdgeDiagnostics(response, target, { allowWww });
+  const parts = [];
+
+  if (diag.status !== null) {
+    parts.push('status=' + diag.status);
+  }
+  if (diag.pathname !== null) {
+    parts.push('path=' + diag.pathname);
+  }
+
+  for (const name of ALLOWED_DIAGNOSTIC_HEADERS) {
+    if (diag.headers[name]) {
+      parts.push(name + '=' + diag.headers[name]);
+    }
+  }
+
+  return parts.length > 0 ? parts.join(', ') : 'no diagnostics available';
+}
+
+export function assertResponseStatus(
+  response,
+  expectedStatus,
+  target,
+  { allowWww = false, customMessage = null } = {},
+) {
+  if (response.status !== expectedStatus) {
+    const diagText = formatEdgeDiagnostics(response, target, { allowWww });
+    const prefix = customMessage ? customMessage + ': ' : '';
+    fail(
+      prefix +
+        'expected HTTP ' +
+        expectedStatus +
+        ', received HTTP ' +
+        response.status +
+        ' [' +
+        diagText +
+        ']',
+    );
+  }
 }
 
 export async function fetchWithRetry(
@@ -226,11 +327,19 @@ export async function fetchWithRetry(
 }
 
 function assertContentType(response, expected) {
-  const contentType = response.headers.get('content-type') ?? '';
-  assert.ok(
-    contentType.toLowerCase().includes(expected.toLowerCase()),
-    'unexpected content-type for ' + response.url + ': ' + contentType,
-  );
+  const contentType = response.headers?.get?.('content-type') ?? '';
+  if (!contentType.toLowerCase().includes(expected.toLowerCase())) {
+    const diagText = formatEdgeDiagnostics(response);
+    fail(
+      'unexpected content-type for ' +
+        (response.url ?? 'request') +
+        ': ' +
+        contentType +
+        ' [' +
+        diagText +
+        ']',
+    );
+  }
 }
 
 async function writeGithubSummary(results) {
@@ -263,7 +372,7 @@ export async function runProductionSmoke() {
   for (const [path, marker] of routeChecks) {
     const url = new URL(path, configured);
     const response = await fetchWithRetry(url);
-    assert.equal(response.status, 200, path + ' must return HTTP 200');
+    assertResponseStatus(response, 200, path, { customMessage: path + ' must return HTTP 200' });
     assertContentType(response, 'text/html');
     const body = await response.text();
     assertHtmlPage(body, new URL(path, configured).href, marker);
@@ -276,7 +385,7 @@ export async function runProductionSmoke() {
   results.push({ name: 'security headers', detail: 'accepted controls; HSTS max-age=' + security.maxAge });
 
   const shareResponse = await fetchWithRetry(new URL('/share/', configured));
-  assert.equal(shareResponse.status, 200, '/share/ must return HTTP 200');
+  assertResponseStatus(shareResponse, 200, '/share/', { customMessage: '/share/ must return HTTP 200' });
   assertContentType(shareResponse, 'text/html');
   const shareBody = await shareResponse.text();
   assertHtmlPage(shareBody, PRODUCTION_ORIGIN + '/share/', 'Share requested sensitive information.');
@@ -292,32 +401,38 @@ export async function runProductionSmoke() {
   results.push({ name: '/share/', detail: 'HTTP 200 + noindex + fixed same-origin CTA' });
 
   const robotsResponse = await fetchWithRetry(new URL('/robots.txt', configured));
-  assert.equal(robotsResponse.status, 200, '/robots.txt must return HTTP 200');
+  assertResponseStatus(robotsResponse, 200, '/robots.txt', { customMessage: '/robots.txt must return HTTP 200' });
   assertContentType(robotsResponse, 'text/plain');
   const robots = await robotsResponse.text();
   assertRobots(robots);
   results.push({ name: '/robots.txt', detail: 'approved search/AI policy' });
 
   const sitemapResponse = await fetchWithRetry(new URL('/sitemap.xml', configured));
-  assert.equal(sitemapResponse.status, 200, '/sitemap.xml must return HTTP 200');
+  assertResponseStatus(sitemapResponse, 200, '/sitemap.xml', { customMessage: '/sitemap.xml must return HTTP 200' });
   const sitemap = await sitemapResponse.text();
   assertSitemap(sitemap);
   results.push({ name: '/sitemap.xml', detail: 'accepted public routes' });
 
   const vcardResponse = await fetchWithRetry(new URL('/eddie-gugino-lowcountry-digital-works.vcf', configured));
-  assert.equal(vcardResponse.status, 200, 'vCard must return HTTP 200');
+  assertResponseStatus(vcardResponse, 200, '/eddie-gugino-lowcountry-digital-works.vcf', {
+    customMessage: 'vCard must return HTTP 200',
+  });
   const vcard = await vcardResponse.text();
   assert.ok(vcard.includes('FN:Eddie Gugino'), 'vCard must retain Eddie Gugino identity');
   results.push({ name: 'vCard', detail: 'HTTP 200 + expected identity' });
 
   const portraitResponse = await fetchWithRetry(new URL('/founder/eddie-gugino-founder.webp', configured));
-  assert.equal(portraitResponse.status, 200, 'founder portrait must return HTTP 200');
+  assertResponseStatus(portraitResponse, 200, '/founder/eddie-gugino-founder.webp', {
+    customMessage: 'founder portrait must return HTTP 200',
+  });
   assertContentType(portraitResponse, 'image/webp');
   await portraitResponse.body?.cancel();
   results.push({ name: 'founder portrait', detail: 'HTTP 200 image/webp' });
 
   const missingResponse = await fetchWithRetry(new URL('/__ldw-production-smoke-missing__', configured));
-  assert.equal(missingResponse.status, 404, 'definitely-missing route must return HTTP 404');
+  assertResponseStatus(missingResponse, 404, '/__ldw-production-smoke-missing__', {
+    customMessage: 'definitely-missing route must return HTTP 404',
+  });
   await missingResponse.body?.cancel();
   results.push({ name: '404 behavior', detail: 'expected HTTP 404' });
 
@@ -327,6 +442,7 @@ export async function runProductionSmoke() {
     status: wwwResponse.status,
     location: wwwResponse.headers.get('location'),
     body: wwwBody,
+    response: wwwResponse,
   });
   results.push({ name: 'www behavior', detail: wwwMode });
 

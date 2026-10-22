@@ -3,12 +3,17 @@ import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 
 import {
+  ALLOWED_DIAGNOSTIC_HEADERS,
   MIN_HSTS_MAX_AGE,
   PRODUCTION_ORIGIN,
+  assertResponseStatus,
   assertRobots,
   assertSecurityHeaders,
   assertSitemap,
   assertWwwBehavior,
+  extractEdgeDiagnostics,
+  extractSafePathname,
+  formatEdgeDiagnostics,
   fetchWithRetry,
   parseHstsMaxAge,
 } from '../scripts/production-smoke.mjs';
@@ -196,6 +201,118 @@ test('production fetch rejects Secure Share transition before any network reques
   );
 
   assert.equal(networkCalls, 0);
+});
+
+test('ordinary expected response status assertions pass without throwing', () => {
+  const okResponse = new Response('ok', { status: 200 });
+  assert.doesNotThrow(() => assertResponseStatus(okResponse, 200, '/services/'));
+});
+
+test('unexpected status includes status, pathname, and allowed diagnostic headers when supplied', () => {
+  const headers = new Headers({
+    'cf-ray': '8f123456789',
+    'cf-mitigated': 'challenge',
+    server: 'cloudflare',
+    'content-type': 'text/html; charset=UTF-8',
+    'retry-after': '60',
+  });
+  const response = new Response('Forbidden', { status: 403, headers });
+
+  assert.throws(
+    () => assertResponseStatus(response, 200, '/services/'),
+    err => {
+      assert.match(err.message, /expected HTTP 200, received HTTP 403/);
+      assert.match(err.message, /status=403/);
+      assert.match(err.message, /path=\/services\//);
+      assert.match(err.message, /cf-ray=8f123456789/);
+      assert.match(err.message, /cf-mitigated=challenge/);
+      assert.match(err.message, /server=cloudflare/);
+      assert.match(err.message, /content-type=text\/html; charset=UTF-8/);
+      assert.match(err.message, /retry-after=60/);
+      return true;
+    },
+  );
+});
+
+test('missing diagnostic headers are omitted safely without failure', () => {
+  const response = { status: 403, headers: new Headers() };
+  const formatted = formatEdgeDiagnostics(response, '/about/');
+
+  assert.equal(formatted, 'status=403, path=/about/');
+  assert.doesNotMatch(formatted, /undefined|null/);
+});
+
+test('header names not on the explicit allowlist are not emitted', () => {
+  const headers = new Headers({
+    'cf-ray': '7a999999',
+    'x-custom-secret': 'sensitive_header_value',
+    'x-powered-by': 'express',
+    'cache-control': 'no-cache',
+  });
+  const response = new Response('Blocked', { status: 403, headers });
+  const formatted = formatEdgeDiagnostics(response, '/work/');
+
+  assert.match(formatted, /cf-ray=7a999999/);
+  assert.doesNotMatch(formatted, /x-custom-secret|sensitive_header_value|x-powered-by|express|cache-control/);
+});
+
+test('set-cookie, authorization-like headers, and response body never appear in diagnostics', () => {
+  const headers = new Headers({
+    'set-cookie': 'session_token=secret_cookie_val; Secure; HttpOnly',
+    authorization: 'Bearer secret_auth_token',
+    'www-authenticate': 'Basic realm="Secret Area"',
+    cookie: 'user=admin',
+    'cf-ray': 'ray_id_100',
+  });
+  const responseBody = '<html>secret response body text</html>';
+  const response = new Response(responseBody, { status: 403, headers });
+
+  const formatted = formatEdgeDiagnostics(response, '/privacy/');
+  assert.match(formatted, /cf-ray=ray_id_100/);
+  assert.doesNotMatch(formatted, /set-cookie|session_token|secret_cookie_val|authorization|Bearer|secret_auth_token|www-authenticate|Basic|cookie|user=admin/i);
+
+  assert.throws(
+    () => assertResponseStatus(response, 200, '/privacy/'),
+    err => {
+      assert.doesNotMatch(err.message, /set-cookie|session_token|secret_cookie_val|authorization|Bearer|secret_auth_token|www-authenticate|cookie|secret response body text/i);
+      return true;
+    },
+  );
+});
+
+test('no request target can escape the accepted production-origin safety boundary', () => {
+  assert.throws(
+    () => extractSafePathname('https://evil.com/phishing'),
+    /escaped approved origin/,
+  );
+
+  assert.throws(
+    () => extractSafePathname('/share/continue'),
+    /must never request \/share\/continue/,
+  );
+
+  const queryTarget = 'https://lowcountrydigitalworks.com/connect/?secret_token=top_secret_123#fragment';
+  const safePath = extractSafePathname(queryTarget);
+  assert.equal(safePath, '/connect/');
+  assert.doesNotMatch(safePath, /secret_token|top_secret_123|fragment/);
+});
+
+test('www behavior includes edge diagnostics when status is unexpected', () => {
+  const headers = new Headers({
+    'cf-ray': 'www_ray_456',
+    server: 'cloudflare',
+  });
+
+  assert.throws(
+    () => assertWwwBehavior({ status: 403, headers }),
+    err => {
+      assert.match(err.message, /www must either redirect to apex or serve a canonicalized 200 response/);
+      assert.match(err.message, /status=403/);
+      assert.match(err.message, /cf-ray=www_ray_456/);
+      assert.match(err.message, /server=cloudflare/);
+      return true;
+    },
+  );
 });
 
 test('production fetch rejects direct external origins before any network request', async () => {
