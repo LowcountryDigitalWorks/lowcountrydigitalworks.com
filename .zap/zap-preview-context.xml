@@ -4,11 +4,7 @@
     <name>immutable-zap-preview-proof</name>
     <desc>Only the frozen LowcountryDigitalWorks commit preview is in scope.</desc>
     <inscope>true</inscope>
-    <incregexes>
-      <incregex>^https://ff290130-lowcountrydigitalworks\.locodw\.workers\.dev(?:/.*)?$</incregex>
-    </incregexes>
-    <excregexes>
-      <excregex>^https://ff290130-lowcountrydigitalworks\.locodw\.workers\.dev/share/continue(?:[/?#].*)?$</excregex>
-    </excregexes>
+    <incregexes>^https://ff290130-lowcountrydigitalworks\.locodw\.workers\.dev(?:/.*)?$</incregexes>
+    <excregexes>^https://ff290130-lowcountrydigitalworks\.locodw\.workers\.dev/share/continue(?:[/?#].*)?$</excregexes>
   </context>
 </configuration>
