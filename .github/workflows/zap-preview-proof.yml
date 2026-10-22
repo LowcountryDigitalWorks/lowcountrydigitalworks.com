@@ -1,0 +1,78 @@
+name: ZAP preview passive proof
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .github/workflows/zap-preview-proof.yml
+      - .zap/zap-preview-context.xml
+
+permissions:
+  contents: read
+
+jobs:
+  zap-baseline:
+    if: github.event.pull_request.head.ref == 'proof/zap-preview-001'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out proof candidate
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Run ZAP Baseline against the frozen preview
+        id: scan
+        shell: bash
+        run: |
+          mkdir -p artifacts
+          start_epoch="$(date +%s)"
+          set +e
+          docker run --rm \
+            --volume "$PWD:/zap/wrk/:rw" \
+            --tty \
+            zaproxy/zap-stable@sha256:5ccfff9a411743ab2615136a2edd7416bec9ce41572fa94e935df38c14adb2b6 \
+            zap-baseline.py \
+            -t https://ff290130-lowcountrydigitalworks.locodw.workers.dev/ \
+            -n /zap/wrk/.zap/zap-preview-context.xml \
+            -m 5 \
+            -r /zap/wrk/artifacts/zap-report.html \
+            -J /zap/wrk/artifacts/zap-report.json \
+            -w /zap/wrk/artifacts/zap-report.md
+          scan_status="$?"
+          set -e
+          end_epoch="$(date +%s)"
+          echo "scan_seconds=$((end_epoch - start_epoch))" >> "$GITHUB_OUTPUT"
+          echo "scan_status=$scan_status" >> "$GITHUB_OUTPUT"
+          exit "$scan_status"
+
+      - name: Record proof runtime and report sizes
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "## ZAP passive preview proof"
+            echo
+            echo "- Target: https://ff290130-lowcountrydigitalworks.locodw.workers.dev/"
+            echo "- Scanner: zaproxy/zap-stable@sha256:5ccfff9a411743ab2615136a2edd7416bec9ce41572fa94e935df38c14adb2b6"
+            echo "- Scan duration (seconds): ${{ steps.scan.outputs.scan_seconds || 'unavailable' }}"
+            echo "- Baseline exit code: ${{ steps.scan.outputs.scan_status || 'unavailable' }}"
+            echo "- Runner billing/runtime: see this job's elapsed duration in the GitHub Actions run."
+            echo
+            echo "Report sizes (bytes):"
+            if compgen -G 'artifacts/*' > /dev/null; then
+              wc -c artifacts/*
+            else
+              echo "No report files were produced."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Retain ZAP reports
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: zap-preview-proof-reports
+          path: artifacts/
+          if-no-files-found: warn
+          retention-days: 7
