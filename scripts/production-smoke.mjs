@@ -6,10 +6,16 @@ export const PRODUCTION_ORIGIN = 'https://lowcountrydigitalworks.com';
 export const MIN_HSTS_MAX_AGE = 15_552_000;
 
 export const ACCEPTED_CONNECT_TARGET = '/connect/';
+export const ACCEPTED_DISCOVERY_TARGET = '/discovery/';
 export const ACCEPTED_BUSINESS_PHONE_TARGET = 'tel:+18436333123';
 export const ACCEPTED_BUSINESS_EMAIL_TARGET = 'mailto:eddie@lowcountrydigitalworks.com';
 export const ALLOWED_JOURNEY_TARGETS = Object.freeze(
-  new Set([ACCEPTED_CONNECT_TARGET, ACCEPTED_BUSINESS_PHONE_TARGET, ACCEPTED_BUSINESS_EMAIL_TARGET]),
+  new Set([
+    ACCEPTED_CONNECT_TARGET,
+    ACCEPTED_DISCOVERY_TARGET,
+    ACCEPTED_BUSINESS_PHONE_TARGET,
+    ACCEPTED_BUSINESS_EMAIL_TARGET,
+  ]),
 );
 
 const REQUEST_TIMEOUT_MS = 10_000;
@@ -209,8 +215,6 @@ export function assertJourneyLinks(html, requiredTargets, { baseOrigin = PRODUCT
 }
 
 export function assertRobots(text) {
-  const unmanagedText = text.replace(/# BEGIN Cloudflare Managed content[\s\S]*?# END Cloudflare Managed Content/gi, '');
-
   assert.ok(
     text.includes('Content-Signal: search=yes, ai-input=yes, ai-train=no, use=reference'),
     'robots.txt must retain approved Content-Signal policy',
@@ -224,11 +228,11 @@ export function assertRobots(text) {
     'robots.txt must retain production sitemap',
   );
   assert.ok(
-    !unmanagedText.includes('User-agent: OAI-SearchBot\nDisallow:'),
+    !text.includes('User-agent: OAI-SearchBot\nDisallow:'),
     'robots.txt must not block OAI-SearchBot without a separate decision',
   );
   assert.ok(
-    !unmanagedText.includes('User-agent: Google-Extended\nDisallow:'),
+    !text.includes('User-agent: Google-Extended\nDisallow:'),
     'robots.txt must not block Google-Extended without a separate decision',
   );
 }
