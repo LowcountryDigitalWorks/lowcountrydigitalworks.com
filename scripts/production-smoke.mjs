@@ -9,14 +9,19 @@ const REQUEST_TIMEOUT_MS = 10_000;
 const RETRY_DELAY_MS = 750;
 const SAFE_METHOD = 'GET';
 
-const SAFE_DIAGNOSTIC_HEADERS = Object.freeze([
-  'cf-ray',
-  'cf-mitigated',
-  'server',
-  'content-type',
-  'retry-after',
-]);
-const SAFE_DIAGNOSTIC_VALUE = /^[A-Za-z0-9!#$&^_.+\/:;=, -]{1,128}$/;
+const SAFE_DIAGNOSTIC_HEADER_VALUE_PATTERNS = Object.freeze({
+  'cf-ray': /^[A-Fa-f0-9]{12,32}-[A-Za-z0-9]{3,8}$/,
+  'cf-mitigated': /^challenge$/i,
+  server: /^cloudflare$/i,
+  'content-type': /^(?:text|application|image|font|audio|video|multipart|message)\/[A-Za-z0-9!#$&^_.+-]{1,80}(?:;\s*charset=[A-Za-z0-9._-]{1,40})?$/i,
+  'retry-after': /^(?:\d{1,10}|(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun), \d{2} (?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d{4} \d{2}:\d{2}:\d{2} GMT)$/,
+});
+const SAFE_DIAGNOSTIC_HEADERS = Object.freeze(Object.keys(SAFE_DIAGNOSTIC_HEADER_VALUE_PATTERNS));
+
+function sanitizeDiagnosticHeaderValue(name, rawValue) {
+  const value = rawValue.trim().replace(/\s+/g, ' ');
+  return SAFE_DIAGNOSTIC_HEADER_VALUE_PATTERNS[name]?.test(value) ? value : null;
+}
 
 export function formatResponseDiagnostics(response, requestUrl, { allowWww = false } = {}) {
   const target = assertSafeSmokeRequestUrl(requestUrl, { allowWww });
@@ -26,8 +31,8 @@ export function formatResponseDiagnostics(response, requestUrl, { allowWww = fal
     const rawValue = response.headers.get(name);
     if (rawValue === null) continue;
 
-    const value = rawValue.trim().replace(/\s+/g, ' ');
-    if (SAFE_DIAGNOSTIC_VALUE.test(value)) {
+    const value = sanitizeDiagnosticHeaderValue(name, rawValue);
+    if (value !== null) {
       fields.push(name + '=' + value);
     }
   }
