@@ -8,6 +8,46 @@ export const MIN_HSTS_MAX_AGE = 15_552_000;
 const REQUEST_TIMEOUT_MS = 10_000;
 const RETRY_DELAY_MS = 750;
 const SAFE_METHOD = 'GET';
+
+const SAFE_DIAGNOSTIC_HEADER_VALUE_PATTERNS = Object.freeze({
+  'cf-ray': /^[A-Fa-f0-9]{12,32}-[A-Za-z0-9]{3,8}$/,
+  'cf-mitigated': /^challenge$/i,
+  server: /^cloudflare$/i,
+  'content-type': /^(?:text|application|image|font|audio|video|multipart|message)\/[A-Za-z0-9!#$&^_.+-]{1,80}(?:;\s*charset=[A-Za-z0-9._-]{1,40})?$/i,
+  'retry-after': /^(?:\d{1,10}|(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun), \d{2} (?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d{4} \d{2}:\d{2}:\d{2} GMT)$/,
+});
+const SAFE_DIAGNOSTIC_HEADERS = Object.freeze(Object.keys(SAFE_DIAGNOSTIC_HEADER_VALUE_PATTERNS));
+
+function sanitizeDiagnosticHeaderValue(name, rawValue) {
+  const value = rawValue.trim().replace(/\s+/g, ' ');
+  return SAFE_DIAGNOSTIC_HEADER_VALUE_PATTERNS[name]?.test(value) ? value : null;
+}
+
+export function formatResponseDiagnostics(response, requestUrl, { allowWww = false } = {}) {
+  const target = assertSafeSmokeRequestUrl(requestUrl, { allowWww });
+  const fields = ['path=' + target.pathname];
+
+  for (const name of SAFE_DIAGNOSTIC_HEADERS) {
+    const rawValue = response.headers.get(name);
+    if (rawValue === null) continue;
+
+    const value = sanitizeDiagnosticHeaderValue(name, rawValue);
+    if (value !== null) {
+      fields.push(name + '=' + value);
+    }
+  }
+
+  return fields.join('; ');
+}
+
+export function assertExpectedStatus(response, expectedStatuses, requestUrl, message, options = {}) {
+  const statuses = Array.isArray(expectedStatuses) ? expectedStatuses : [expectedStatuses];
+  if (statuses.includes(response.status)) return;
+
+  const expected = statuses.map(status => 'HTTP ' + status).join(' or ');
+  const diagnostics = formatResponseDiagnostics(response, requestUrl, options);
+  fail(message + ': expected ' + expected + ', received HTTP ' + response.status + ' [' + diagnostics + ']');
+}
 const USER_AGENT = 'LDW-Production-Smoke/1.0 (+https://lowcountrydigitalworks.com/)';
 
 const routeChecks = [
@@ -263,7 +303,7 @@ export async function runProductionSmoke() {
   for (const [path, marker] of routeChecks) {
     const url = new URL(path, configured);
     const response = await fetchWithRetry(url);
-    assert.equal(response.status, 200, path + ' must return HTTP 200');
+    assertExpectedStatus(response, 200, url, path + ' must return HTTP 200');
     assertContentType(response, 'text/html');
     const body = await response.text();
     assertHtmlPage(body, new URL(path, configured).href, marker);
@@ -276,7 +316,7 @@ export async function runProductionSmoke() {
   results.push({ name: 'security headers', detail: 'accepted controls; HSTS max-age=' + security.maxAge });
 
   const shareResponse = await fetchWithRetry(new URL('/share/', configured));
-  assert.equal(shareResponse.status, 200, '/share/ must return HTTP 200');
+  assertExpectedStatus(shareResponse, 200, new URL('/share/', configured), '/share/ must return HTTP 200');
   assertContentType(shareResponse, 'text/html');
   const shareBody = await shareResponse.text();
   assertHtmlPage(shareBody, PRODUCTION_ORIGIN + '/share/', 'Share requested sensitive information.');
@@ -292,36 +332,38 @@ export async function runProductionSmoke() {
   results.push({ name: '/share/', detail: 'HTTP 200 + noindex + fixed same-origin CTA' });
 
   const robotsResponse = await fetchWithRetry(new URL('/robots.txt', configured));
-  assert.equal(robotsResponse.status, 200, '/robots.txt must return HTTP 200');
+  assertExpectedStatus(robotsResponse, 200, new URL('/robots.txt', configured), '/robots.txt must return HTTP 200');
   assertContentType(robotsResponse, 'text/plain');
   const robots = await robotsResponse.text();
   assertRobots(robots);
   results.push({ name: '/robots.txt', detail: 'approved search/AI policy' });
 
   const sitemapResponse = await fetchWithRetry(new URL('/sitemap.xml', configured));
-  assert.equal(sitemapResponse.status, 200, '/sitemap.xml must return HTTP 200');
+  assertExpectedStatus(sitemapResponse, 200, new URL('/sitemap.xml', configured), '/sitemap.xml must return HTTP 200');
   const sitemap = await sitemapResponse.text();
   assertSitemap(sitemap);
   results.push({ name: '/sitemap.xml', detail: 'accepted public routes' });
 
   const vcardResponse = await fetchWithRetry(new URL('/eddie-gugino-lowcountry-digital-works.vcf', configured));
-  assert.equal(vcardResponse.status, 200, 'vCard must return HTTP 200');
+  assertExpectedStatus(vcardResponse, 200, new URL('/eddie-gugino-lowcountry-digital-works.vcf', configured), 'vCard must return HTTP 200');
   const vcard = await vcardResponse.text();
   assert.ok(vcard.includes('FN:Eddie Gugino'), 'vCard must retain Eddie Gugino identity');
   results.push({ name: 'vCard', detail: 'HTTP 200 + expected identity' });
 
   const portraitResponse = await fetchWithRetry(new URL('/founder/eddie-gugino-founder.webp', configured));
-  assert.equal(portraitResponse.status, 200, 'founder portrait must return HTTP 200');
+  assertExpectedStatus(portraitResponse, 200, new URL('/founder/eddie-gugino-founder.webp', configured), 'founder portrait must return HTTP 200');
   assertContentType(portraitResponse, 'image/webp');
   await portraitResponse.body?.cancel();
   results.push({ name: 'founder portrait', detail: 'HTTP 200 image/webp' });
 
   const missingResponse = await fetchWithRetry(new URL('/__ldw-production-smoke-missing__', configured));
-  assert.equal(missingResponse.status, 404, 'definitely-missing route must return HTTP 404');
+  assertExpectedStatus(missingResponse, 404, new URL('/__ldw-production-smoke-missing__', configured), 'definitely-missing route must return HTTP 404');
   await missingResponse.body?.cancel();
   results.push({ name: '404 behavior', detail: 'expected HTTP 404' });
 
-  const wwwResponse = await fetchWithRetry('https://www.lowcountrydigitalworks.com/', { allowWww: true });
+  const wwwUrl = 'https://www.lowcountrydigitalworks.com/';
+  const wwwResponse = await fetchWithRetry(wwwUrl, { allowWww: true });
+  assertExpectedStatus(wwwResponse, [200, 301, 302, 307, 308], wwwUrl, 'www must return an accepted response', { allowWww: true });
   const wwwBody = wwwResponse.status === 200 ? await wwwResponse.text() : '';
   const wwwMode = assertWwwBehavior({
     status: wwwResponse.status,

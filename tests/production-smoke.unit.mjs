@@ -4,6 +4,8 @@ import test from 'node:test';
 
 import {
   MIN_HSTS_MAX_AGE,
+  assertExpectedStatus,
+  formatResponseDiagnostics,
   PRODUCTION_ORIGIN,
   assertRobots,
   assertSecurityHeaders,
@@ -211,4 +213,76 @@ test('production fetch rejects direct external origins before any network reques
   );
 
   assert.equal(networkCalls, 0);
+});
+
+
+test('unexpected status reports only a sanitized path and allowlisted response metadata', () => {
+  const response = new Response('PRIVATE_RESPONSE_BODY', {
+    status: 403,
+    headers: {
+      'cf-ray': 'abc123def4567890-LAX',
+      'cf-mitigated': 'challenge',
+      server: 'cloudflare',
+      'content-type': 'text/html; charset=utf-8',
+      'retry-after': '30',
+      authorization: 'Bearer PRIVATE_AUTH',
+      'set-cookie': 'session=PRIVATE_COOKIE',
+      'x-private-header': 'PRIVATE_HEADER',
+    },
+  });
+  const requestUrl = new URL('/?token=PRIVATE_QUERY#PRIVATE_FRAGMENT', PRODUCTION_ORIGIN);
+  let message = '';
+  try {
+    assertExpectedStatus(response, 200, requestUrl, 'home must return HTTP 200');
+  } catch (error) {
+    message = error instanceof Error ? error.message : String(error);
+  }
+
+  assert.match(message, /path=\//);
+  assert.match(message, /cf-ray=abc123def4567890-LAX/);
+  assert.match(message, /cf-mitigated=challenge/);
+  assert.match(message, /server=cloudflare/);
+  assert.match(message, /content-type=text\/html; charset=utf-8/);
+  assert.match(message, /retry-after=30/);
+  for (const privateValue of ['PRIVATE_RESPONSE_BODY', 'PRIVATE_AUTH', 'PRIVATE_COOKIE', 'PRIVATE_HEADER', 'PRIVATE_QUERY', 'PRIVATE_FRAGMENT']) {
+    assert.ok(!message.includes(privateValue), 'diagnostics leaked ' + privateValue);
+  }
+  assert.equal(response.bodyUsed, false, 'diagnostics must not read the response body');
+});
+
+test('unexpected status diagnostics reject structurally unsafe allowlisted header values', () => {
+  const response = new Response(null, {
+    status: 403,
+    headers: {
+      'cf-ray': 'synthetic-canary',
+      'cf-mitigated': 'challenge=synthetic-canary',
+      server: 'edge; cf-ray=spoofed',
+      'content-type': 'Bearer synthetic-canary',
+      'retry-after': '30; server=spoofed',
+    },
+  });
+  const diagnostics = formatResponseDiagnostics(
+    response,
+    new URL('/private?token=PRIVATE_QUERY', PRODUCTION_ORIGIN),
+  );
+  assert.equal(diagnostics, 'path=/private');
+  for (const unsafeValue of ['synthetic-canary', 'cf-ray=spoofed', 'server=spoofed', 'PRIVATE_QUERY']) {
+    assert.ok(!diagnostics.includes(unsafeValue), 'diagnostics leaked or forged ' + unsafeValue);
+  }
+});
+
+test('unexpected status omits missing and malformed allowlisted header values', () => {
+  const response = new Response(null, {
+    status: 403,
+    headers: { 'cf-ray': 'bad%value' },
+  });
+  assert.equal(formatResponseDiagnostics(response, new URL('/private?secret=x', PRODUCTION_ORIGIN)), 'path=/private');
+});
+
+test('unexpected status diagnostics reject a request target outside the allowed production origin', () => {
+  const response = new Response(null, { status: 403 });
+  assert.throws(
+    () => formatResponseDiagnostics(response, 'https://example.com/private'),
+    /escaped approved origin/,
+  );
 });
