@@ -17,7 +17,7 @@
     "validate": "npm run test:worker && npm run build && npm run test:smoke && python scripts/validate_repository.py"
   },
   "devDependencies": {
-    "@axe-core/playwright": "^4.12.1",
+    "@axe-core/playwright": "^4.14.0",
     "@fontsource-variable/manrope": "5.3.0",
     "@playwright/test": "^1.64.1",
     "astro": "^7.4.1",
