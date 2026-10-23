@@ -5,6 +5,13 @@ import { pathToFileURL } from 'node:url';
 export const PRODUCTION_ORIGIN = 'https://lowcountrydigitalworks.com';
 export const MIN_HSTS_MAX_AGE = 15_552_000;
 
+export const ACCEPTED_CONNECT_TARGET = '/connect/';
+export const ACCEPTED_BUSINESS_PHONE_TARGET = 'tel:+18436333123';
+export const ACCEPTED_BUSINESS_EMAIL_TARGET = 'mailto:eddie@lowcountrydigitalworks.com';
+export const ALLOWED_JOURNEY_TARGETS = Object.freeze(
+  new Set([ACCEPTED_CONNECT_TARGET, ACCEPTED_BUSINESS_PHONE_TARGET, ACCEPTED_BUSINESS_EMAIL_TARGET]),
+);
+
 const REQUEST_TIMEOUT_MS = 10_000;
 const RETRY_DELAY_MS = 750;
 const SAFE_METHOD = 'GET';
@@ -53,6 +60,7 @@ const USER_AGENT = 'LDW-Production-Smoke/1.0 (+https://lowcountrydigitalworks.co
 const routeChecks = [
   ['/', 'Your website should bring in calls, not questions.'],
   ['/services/', 'Start with what your business needs to work better.'],
+  ['/services/website-care/', 'Bounded ongoing maintenance and improvement'],
   ['/services/business-systems-automation/', null],
   ['/work/', 'See the problem, the proof, and the boundary.'],
   ['/work/gas-engine/', 'Internal evidence infrastructure'],
@@ -132,7 +140,77 @@ export function assertSecurityHeaders(headers) {
   return { maxAge };
 }
 
+export function normalizeAnchorTarget(rawTarget, { baseOrigin = PRODUCTION_ORIGIN } = {}) {
+  const target = rawTarget.trim();
+  if (!target) return null;
+
+  if (/^tel:/i.test(target)) {
+    const value = target.slice(4).replace(/\s+/g, '');
+    return 'tel:' + value;
+  }
+
+  if (/^mailto:/i.test(target)) {
+    const value = target.slice(7).trim().toLowerCase();
+    return 'mailto:' + value;
+  }
+
+  try {
+    const url = new URL(target, baseOrigin);
+    if (url.origin === baseOrigin) {
+      return url.pathname;
+    }
+    return url.href;
+  } catch {
+    return target;
+  }
+}
+
+export function extractHtmlAnchors(html, { baseOrigin = PRODUCTION_ORIGIN } = {}) {
+  const anchors = [];
+  const tagRegex = /<a\b[^>]*>/gi;
+  let match;
+
+  while ((match = tagRegex.exec(html)) !== null) {
+    const tag = match[0];
+    const hrefMatch = tag.match(/\bhref=(?:"([^"]*)"|'([^']*)'|([^\s>]+))/i);
+    if (!hrefMatch) continue;
+
+    const rawTarget = (hrefMatch[1] ?? hrefMatch[2] ?? hrefMatch[3] ?? '').trim();
+    if (!rawTarget) continue;
+
+    const normalized = normalizeAnchorTarget(rawTarget, { baseOrigin });
+    if (normalized) {
+      anchors.push({ raw: rawTarget, normalized, tag });
+    }
+  }
+
+  return anchors;
+}
+
+export function assertJourneyLinks(html, requiredTargets, { baseOrigin = PRODUCTION_ORIGIN, label = 'journey' } = {}) {
+  const targets = Array.isArray(requiredTargets) ? requiredTargets : [requiredTargets];
+  for (const target of targets) {
+    if (!ALLOWED_JOURNEY_TARGETS.has(target)) {
+      fail(label + ': invalid or unapproved journey requirement: ' + target);
+    }
+  }
+
+  const anchors = extractHtmlAnchors(html, { baseOrigin });
+  const normalizedPresent = new Set(anchors.map(a => a.normalized));
+
+  for (const target of targets) {
+    assert.ok(
+      normalizedPresent.has(target),
+      label + ': required destination "' + target + '" not found in page HTML',
+    );
+  }
+
+  return { label, targets, count: anchors.length };
+}
+
 export function assertRobots(text) {
+  const unmanagedText = text.replace(/# BEGIN Cloudflare Managed content[\s\S]*?# END Cloudflare Managed Content/gi, '');
+
   assert.ok(
     text.includes('Content-Signal: search=yes, ai-input=yes, ai-train=no, use=reference'),
     'robots.txt must retain approved Content-Signal policy',
@@ -146,11 +224,11 @@ export function assertRobots(text) {
     'robots.txt must retain production sitemap',
   );
   assert.ok(
-    !text.includes('User-agent: OAI-SearchBot\nDisallow:'),
+    !unmanagedText.includes('User-agent: OAI-SearchBot\nDisallow:'),
     'robots.txt must not block OAI-SearchBot without a separate decision',
   );
   assert.ok(
-    !text.includes('User-agent: Google-Extended\nDisallow:'),
+    !unmanagedText.includes('User-agent: Google-Extended\nDisallow:'),
     'robots.txt must not block Google-Extended without a separate decision',
   );
 }
@@ -314,6 +392,26 @@ export async function runProductionSmoke() {
   const home = routeResponses.get('/');
   const security = assertSecurityHeaders(home.response.headers);
   results.push({ name: 'security headers', detail: 'accepted controls; HSTS max-age=' + security.maxAge });
+
+  const homeBody = home.body;
+  const websiteCareBody = routeResponses.get('/services/website-care/')?.body;
+  const connectBody = routeResponses.get('/connect/')?.body;
+
+  assertJourneyLinks(homeBody, ACCEPTED_CONNECT_TARGET, { label: 'journey: home -> connect' });
+  results.push({ name: 'journey: home -> connect', detail: 'destination ' + ACCEPTED_CONNECT_TARGET + ' present' });
+
+  assertJourneyLinks(websiteCareBody, ACCEPTED_CONNECT_TARGET, { label: 'journey: website care -> connect' });
+  results.push({ name: 'journey: website care -> connect', detail: 'destination ' + ACCEPTED_CONNECT_TARGET + ' present' });
+
+  assertJourneyLinks(
+    connectBody,
+    [ACCEPTED_BUSINESS_PHONE_TARGET, ACCEPTED_BUSINESS_EMAIL_TARGET],
+    { label: 'journey: public contact semantics' },
+  );
+  results.push({
+    name: 'journey: public contact semantics',
+    detail: 'destinations ' + ACCEPTED_BUSINESS_PHONE_TARGET + ' & ' + ACCEPTED_BUSINESS_EMAIL_TARGET + ' present',
+  });
 
   const shareResponse = await fetchWithRetry(new URL('/share/', configured));
   assertExpectedStatus(shareResponse, 200, new URL('/share/', configured), '/share/ must return HTTP 200');

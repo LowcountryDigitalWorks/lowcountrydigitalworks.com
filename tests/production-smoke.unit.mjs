@@ -3,16 +3,21 @@ import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 
 import {
+  ACCEPTED_BUSINESS_EMAIL_TARGET,
+  ACCEPTED_BUSINESS_PHONE_TARGET,
+  ACCEPTED_CONNECT_TARGET,
   MIN_HSTS_MAX_AGE,
   assertExpectedStatus,
-  formatResponseDiagnostics,
-  PRODUCTION_ORIGIN,
+  assertJourneyLinks,
   assertRobots,
   assertSecurityHeaders,
   assertSitemap,
   assertWwwBehavior,
+  extractHtmlAnchors,
   fetchWithRetry,
+  formatResponseDiagnostics,
   parseHstsMaxAge,
+  PRODUCTION_ORIGIN,
 } from '../scripts/production-smoke.mjs';
 
 function acceptedHeaders(hsts = 'max-age=' + MIN_HSTS_MAX_AGE) {
@@ -284,5 +289,84 @@ test('unexpected status diagnostics reject a request target outside the allowed 
   assert.throws(
     () => formatResponseDiagnostics(response, 'https://example.com/private'),
     /escaped approved origin/,
+  );
+});
+
+test('extractHtmlAnchors parses and normalizes same-origin routes and contact actions without following links', () => {
+  const html = `
+    <nav>
+      <a href="/connect/">Connect</a>
+      <a href="https://lowcountrydigitalworks.com/services/website-care/">Website Care</a>
+      <a href="tel: +1 843 633 3123">Call Us</a>
+      <a href="mailto:EDDIE@lowcountrydigitalworks.com">Email Us</a>
+      <a href="https://example.com/external">External</a>
+    </nav>
+  `;
+
+  const anchors = extractHtmlAnchors(html);
+  const normalized = anchors.map(a => a.normalized);
+
+  assert.deepEqual(normalized, [
+    '/connect/',
+    '/services/website-care/',
+    'tel:+18436333123',
+    'mailto:eddie@lowcountrydigitalworks.com',
+    'https://example.com/external',
+  ]);
+});
+
+test('assertJourneyLinks passes for valid Home -> Connect, Website Care -> Connect, and public contact journeys', () => {
+  const homeHtml = '<header><a href="/connect/">Connect</a></header>';
+  const websiteCareHtml = '<main><a href="https://lowcountrydigitalworks.com/connect/">Talk through your situation</a></main>';
+  const connectHtml = `
+    <main>
+      <a href="tel:+18436333123">Call Eddie</a>
+      <a href="mailto:eddie@lowcountrydigitalworks.com">Email Eddie</a>
+    </main>
+  `;
+
+  assert.doesNotThrow(() =>
+    assertJourneyLinks(homeHtml, ACCEPTED_CONNECT_TARGET, { label: 'journey: home -> connect' }),
+  );
+
+  assert.doesNotThrow(() =>
+    assertJourneyLinks(websiteCareHtml, ACCEPTED_CONNECT_TARGET, { label: 'journey: website care -> connect' }),
+  );
+
+  assert.doesNotThrow(() =>
+    assertJourneyLinks(
+      connectHtml,
+      [ACCEPTED_BUSINESS_PHONE_TARGET, ACCEPTED_BUSINESS_EMAIL_TARGET],
+      { label: 'journey: public contact semantics' },
+    ),
+  );
+});
+
+test('assertJourneyLinks fails closed when a required journey destination is missing or wrong', () => {
+  const missingHtml = '<header><a href="/services/">Services</a></header>';
+  const wrongTargetHtml = '<header><a href="/wrong-destination/">Connect</a></header>';
+
+  assert.throws(
+    () => assertJourneyLinks(missingHtml, ACCEPTED_CONNECT_TARGET, { label: 'journey: home -> connect' }),
+    /required destination "\/connect\/" not found/,
+  );
+
+  assert.throws(
+    () => assertJourneyLinks(wrongTargetHtml, ACCEPTED_CONNECT_TARGET, { label: 'journey: home -> connect' }),
+    /required destination "\/connect\/" not found/,
+  );
+});
+
+test('assertJourneyLinks fails closed when an unapproved or malformed journey requirement is specified', () => {
+  const validHtml = '<a href="/connect/">Connect</a>';
+
+  assert.throws(
+    () => assertJourneyLinks(validHtml, 'https://example.com/unapproved', { label: 'unapproved journey' }),
+    /invalid or unapproved journey requirement/,
+  );
+
+  assert.throws(
+    () => assertJourneyLinks(validHtml, 'javascript:alert(1)', { label: 'malformed journey' }),
+    /invalid or unapproved journey requirement/,
   );
 });
