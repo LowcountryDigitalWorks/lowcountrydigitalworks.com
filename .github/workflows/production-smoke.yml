@@ -26,9 +26,14 @@ jobs:
           node-version: '22'
 
       - name: Prove smoke assertions fail closed on synthetic regressions
-        run: node --test tests/production-smoke.unit.mjs
+        run: node --test tests/production-smoke.unit.mjs tests/web-care-journeys.unit.mjs
 
       - name: Run read-only production smoke
         env:
           PRODUCTION_BASE_URL: https://lowcountrydigitalworks.com
         run: node scripts/production-smoke.mjs
+
+      - name: Run Web Care critical-journey smoke
+        env:
+          PRODUCTION_BASE_URL: https://lowcountrydigitalworks.com
+        run: node scripts/web-care-journeys.mjs
