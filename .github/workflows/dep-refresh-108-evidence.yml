@@ -1,0 +1,88 @@
+name: SECURITY-DEPENDENCY-005 evidence
+
+on:
+  push:
+    branches:
+      - dep-refresh-108-evidence
+
+permissions:
+  contents: read
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+
+      - name: Refresh Wrangler lock graph within existing manifest range
+        run: |
+          set -euo pipefail
+          mkdir -p .dependency-refresh-108
+          npm update wrangler --package-lock-only --ignore-scripts --no-audit --no-fund
+          cp package-lock.json .dependency-refresh-108/package-lock.json
+
+      - name: Verify patched Undici floors
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+          const lock = JSON.parse(fs.readFileSync('package-lock.json', 'utf8'));
+          const packages = lock.packages ?? {};
+          const wrangler = packages['node_modules/wrangler']?.version;
+          const miniflare = packages['node_modules/miniflare']?.version;
+          const nestedUndici = packages['node_modules/miniflare/node_modules/undici']?.version;
+          const rootUndici = packages['node_modules/undici']?.version;
+
+          const atLeast = (actual, floor) => {
+            if (!actual) return false;
+            const a = actual.split('-')[0].split('.').map(Number);
+            const b = floor.split('.').map(Number);
+            for (let i = 0; i < Math.max(a.length, b.length); i += 1) {
+              const av = a[i] ?? 0;
+              const bv = b[i] ?? 0;
+              if (av > bv) return true;
+              if (av < bv) return false;
+            }
+            return true;
+          };
+
+          const lines = [
+            `wrangler=${wrangler ?? 'MISSING'}`,
+            `miniflare=${miniflare ?? 'MISSING'}`,
+            `nested_undici=${nestedUndici ?? 'MISSING'}`,
+            `root_undici=${rootUndici ?? 'MISSING'}`,
+          ];
+          fs.writeFileSync('.dependency-refresh-108/resolved-versions.txt', `${lines.join('\n')}\n`);
+          console.log(lines.join('\n'));
+
+          if (!atLeast(nestedUndici, '7.30.1')) {
+            throw new Error(`Miniflare nested Undici must be >=7.30.1; got ${nestedUndici ?? 'missing'}`);
+          }
+          if (!atLeast(rootUndici, '8.12.2')) {
+            throw new Error(`Root Undici must be >=8.12.2; got ${rootUndici ?? 'missing'}`);
+          }
+          NODE
+
+      - name: Install exact refreshed graph
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
+      - name: Run repository dependency policy
+        run: node scripts/dependency-audit-policy.mjs
+
+      - name: Capture dependency-only diff
+        if: always()
+        run: git diff -- package.json package-lock.json > .dependency-refresh-108/dependency.diff
+
+      - name: Upload generated dependency evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependency-refresh-108
+          path: .dependency-refresh-108/
+          if-no-files-found: error
