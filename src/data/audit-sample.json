@@ -1,33 +1,38 @@
 {
-  "label": "SAMPLE / DEMO",
-  "fixtureDate": "October 20, 2026",
-  "source": "Synthetic example data created for this LDW prototype",
-  "freshness": "Static sample; not live and not refreshed",
-  "coverage": "No domain or website page was checked",
-  "findings": [
-    {
-      "id": "heading-order",
-      "category": "Content structure",
-      "title": "Illustrative heading structure",
-      "summary": "A hypothetical page starts with a level-one heading, then skips to a level-three heading.",
-      "meaning": "Heading levels can help people scan a page and move through it with assistive technology. A skipped level is a prompt to review the structure, not proof that a page is unusable.",
-      "verification": "Inspect the rendered heading outline or browser accessibility tree, then confirm the headings describe the page's sections.",
-      "owner": "Website owner or content editor, with implementation support if needed",
-      "before": "Example before: H1 → H3",
-      "after": "Illustrative update: H1 → H2",
-      "recheck": "No recheck is available. This is a static example; no website was scanned."
-    },
-    {
-      "id": "image-alternative",
-      "category": "Accessibility",
-      "title": "Illustrative image text alternative question",
-      "summary": "A hypothetical informative image has no accessible text alternative.",
-      "meaning": "People who do not see the image may miss its purpose. Decorative images can use an empty alternative so they do not add noise.",
-      "verification": "Inspect the image's accessible name in the browser accessibility tree and decide whether the image is informative or decorative in context.",
-      "owner": "Website owner or implementer",
-      "before": "Example before: informative image with no accessible name",
-      "after": "Illustrative update: a concise alternative, or an empty alternative if decorative",
-      "recheck": "No recheck is available. This is a static example; no website was scanned."
-    }
+  "label": "LDW-OWNED PROOF / PRECOMPUTED",
+  "fixtureState": "Historical accepted evidence",
+  "source": "Website Quality Toolkit (WQT) / SiteOne-derived technical evidence",
+  "evidenceCycle": "Accepted LDW Stage A managed-visibility cycle",
+  "freshness": "Historical accepted evidence; this page does not refresh or re-run the source",
+  "coverage": "One accepted technical finding plus one provider-controlled residual limitation; this is not a complete website assessment",
+  "claimBoundary": "This technical remeasurement does not establish ranking, AI-citation or AI-visibility, traffic, lead, revenue, security, compliance, or overall-site-health impact.",
+  "finding": {
+    "id": "static-assets-short-cache",
+    "category": "Technical quality",
+    "title": "Static asset cache finding",
+    "summary": "Same-source remeasurement observed fewer static-assets-short-cache findings after one bounded LDW-controlled change.",
+    "meaning": "The accepted source observed a narrower technical finding on recheck. That supports describing the measured technical change only; it does not establish broader search, AI, traffic, lead, revenue, security, or business impact.",
+    "action": "LDW made one bounded cache-related change through the accepted website change path, then rechecked with the same source.",
+    "verification": "The accepted Stage A cycle used same-source WQT / SiteOne-derived technical evidence for the before observation and recheck.",
+    "owner": "LDW controlled",
+    "beforeCount": 11,
+    "afterCount": 1,
+    "recheck": "Same-source remeasurement observed 1 remaining static-assets-short-cache finding."
+  },
+  "residual": {
+    "id": "provider-controlled-cache-residual",
+    "category": "Residual limitation",
+    "title": "Provider-controlled cache behavior remained",
+    "status": "MONITOR / NO ACTION",
+    "owner": "Provider controlled",
+    "summary": "A provider-controlled residual cache/noise item remained after the LDW-controlled change. It was deliberately not treated as an LDW-controlled defect or chased merely to make the result look clean.",
+    "limitation": "Because this residual remains provider-controlled and this proof covers only a bounded technical slice, the page must not represent the website as fully healthy or complete."
+  },
+  "notMeasured": [
+    "Search ranking impact",
+    "AI citation or AI visibility impact",
+    "Traffic, lead, or revenue impact",
+    "Security or compliance status",
+    "Overall website health"
   ]
 }
