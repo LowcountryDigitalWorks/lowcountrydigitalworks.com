@@ -62,7 +62,7 @@ Pages CMS is only a future candidate for a friendlier editing UI. It is not curr
 
 ## Development
 
-Requires Node.js 22+ and Python 3.12 for the repository validator.
+Requires Node.js 22.23.4+ and Python 3.12 for the repository validator.
 
 ```bash
 npm install
