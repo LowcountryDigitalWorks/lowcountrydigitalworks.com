@@ -209,9 +209,9 @@
         "Replaceable sensors provide already-normalized or sanitized evidence into provider-specific adapters.",
         "Tenant-scoped persistence preserves canonical observations, provenance, and compatible longitudinal snapshots.",
         "Human-authored review history, measurements, and declared outcomes remain distinct from automated sensing.",
-        "A read-only local operator case view and printable HTML report preview expose accepted evidence without creating a public SaaS portal or action authority."
+        "Accepted internal workspace, service-run, portfolio, portability, external-review, measurement-interpretation, and SERP-validation surfaces remain decision-support only; provider retrieval and any production action stay separately authorized."
       ],
-      "maturity": "Internal validation infrastructure. Accepted releases through 0.9 include evidence contracts, local persistence, bounded ingestion, WQT and ZeroRank adapters, longitudinal comparison, human review/measurement history, and a read-only local operator view. There is no customer portal, runtime AI, scheduler, provider networking, automated prioritization, or deployment.",
+      "maturity": "Internal validation infrastructure with accepted Releases 0.1–0.23 covering provider-neutral evidence/provenance, sanitized search and AI-visibility analysis, human decision/measurement workflows, local operator reporting, repeatable service runs, portfolio operations, portability/recovery readiness, evidence-grounded external review, measurement claim ceilings, and bounded organic SERP result-family validation. There is still no customer portal, provider-polling runtime, autonomous production action, embedded AI runtime, or accepted deployed cloud runtime.",
       "relatedService": null,
       "faqs": [
         {
