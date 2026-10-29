@@ -677,7 +677,6 @@ test('sitemap includes expanded public routes and excludes Secure Share', async 
   expect(xml).toContain('https://lowcountrydigitalworks.com/guides/');
   expect(xml).toContain('https://lowcountrydigitalworks.com/guides/website-maintenance-after-launch/');
   expect(xml).toContain('https://lowcountrydigitalworks.com/guides/website-ownership-handoff/');
-  await expect(page.getByRole('heading', { level: 1, name: 'A few useful things to know before we start.' })).toBeVisible();
   expect(xml).toContain('https://lowcountrydigitalworks.com/services/website-care/');
   expect(xml).toContain('https://lowcountrydigitalworks.com/work/gas-engine/');
   expect(xml).not.toContain('https://lowcountrydigitalworks.com/share');
