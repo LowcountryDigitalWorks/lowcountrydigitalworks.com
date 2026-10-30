@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import re
 import sys
 import unittest
 
@@ -24,6 +25,7 @@ EXPECTED_PR_TRIGGER = (
 )
 EXPECTED_PUSH_TRIGGER = "  push:\n    branches:\n      - main\n"
 EXPECTED_WORKFLOW_DISPATCH = "  workflow_dispatch:\n"
+EXPECTED_PERMISSIONS = "permissions:\n  contents: read\n"
 EXPECTED_CONCURRENCY_GROUP = (
     "  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}\n"
 )
@@ -33,6 +35,7 @@ EXPECTED_CANCEL_POLICY = (
 EXPECTED_VALIDATE_IF = (
     "    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}\n"
 )
+EXPECTED_VALIDATE_RUNS_ON = "    runs-on: ubuntu-latest\n"
 EXPECTED_ACTION_REFS = {
     "actions/checkout": "3d3c42e5aac5ba805825da76410c181273ba90b1",
     "actions/setup-node": "949feb2413d6458794dcd2491c4babbbce0c15c1",
@@ -77,30 +80,76 @@ def primary_run(workflow: str) -> str:
 def validate_workflow_governance(workflow: str) -> list[str]:
     """Enforce #65 invariants after GitHub has parsed the workflow syntax itself."""
     errors: list[str] = []
+    lines = workflow.splitlines()
 
     required_singletons = {
         "pull-request trigger contract": EXPECTED_PR_TRIGGER,
         "main push trigger contract": EXPECTED_PUSH_TRIGGER,
         "manual dispatch contract": EXPECTED_WORKFLOW_DISPATCH,
+        "permissions contract": EXPECTED_PERMISSIONS,
         "concurrency group contract": EXPECTED_CONCURRENCY_GROUP,
         "pull-request-only cancellation contract": EXPECTED_CANCEL_POLICY,
         "draft-skip contract": EXPECTED_VALIDATE_IF,
+        "runner contract": EXPECTED_VALIDATE_RUNS_ON,
     }
     for label, snippet in required_singletons.items():
         count = workflow.count(snippet)
         if count != 1:
             errors.append(f"{label} drifted: expected exactly one accepted form, found {count}")
 
-    if "pull_request_target:" in workflow:
-        errors.append("pull_request_target is not authorized for ordinary validation")
+    for line in lines:
+        if re.match(r'^\s*["\']?pull_request_target["\']?\s*:', line):
+            errors.append("pull_request_target is not authorized for ordinary validation")
+            break
+
+    job_names: list[str] = []
+    in_jobs = False
+    for line in lines:
+        if line == "jobs:":
+            if in_jobs:
+                errors.append("jobs mapping must appear exactly once")
+            in_jobs = True
+            continue
+        if not in_jobs:
+            continue
+        if line and not line.startswith(" "):
+            in_jobs = False
+            continue
+        match = re.match(r'^  ([A-Za-z0-9_-]+):\s*(?:#.*)?$', line)
+        if match:
+            job_names.append(match.group(1))
+    if job_names != ["validate"]:
+        errors.append(f"workflow job surface drifted: expected ['validate'], found {job_names!r}")
+
+    concurrency_keys = [line for line in lines if re.match(r'^\s*concurrency\s*:', line)]
+    if concurrency_keys != ["concurrency:"]:
+        errors.append("concurrency must exist only at workflow scope")
+
+    top_level_env = [line for line in lines if re.match(r'^["\']?env["\']?\s*:', line)]
+    if top_level_env:
+        errors.append("workflow-level env is not authorized")
+
+    branch_policy_lines = [
+        line.strip()
+        for line in lines
+        if re.match(r'^\s*(branches|branches-ignore)\s*:', line)
+    ]
+    if branch_policy_lines != ["branches:"]:
+        errors.append(
+            "branch filter surface drifted: expected only the accepted main push branches block"
+        )
 
     uses_refs: list[str] = []
-    for line in workflow.splitlines():
+    for line in lines:
         stripped = line.strip()
-        if not stripped.startswith("uses: "):
+        if stripped.startswith("#"):
             continue
-        ref = stripped.removeprefix("uses: ").split(" #", 1)[0].strip()
-        uses_refs.append(ref)
+        match = re.match(r'^-?\s*["\']?uses["\']?\s*:\s*([^\s#}]+)', stripped)
+        if match:
+            uses_refs.append(match.group(1))
+            continue
+        if re.search(r'(^|[{,]\s*)["\']?uses["\']?\s*:', stripped):
+            errors.append(f"unsupported uses syntax must fail closed: {stripped!r}")
 
     for action, sha in EXPECTED_ACTION_REFS.items():
         matches = [ref for ref in uses_refs if ref.startswith(f"{action}@")]
@@ -364,6 +413,10 @@ class WorkflowGovernancePolicyTests(unittest.TestCase):
         workflow = CURRENT.replace("  pull_request:\n", "  pull_request_target:\n", 1)
         self.assert_governance_blocked(workflow)
 
+    def test_quoted_pull_request_target_is_rejected(self) -> None:
+        workflow = CURRENT.replace("  pull_request:\n", '  "pull_request_target":\n', 1)
+        self.assert_governance_blocked(workflow)
+
     def test_ready_for_review_event_is_required(self) -> None:
         workflow = CURRENT.replace(", ready_for_review", "", 1)
         self.assert_governance_blocked(workflow)
@@ -382,6 +435,14 @@ class WorkflowGovernancePolicyTests(unittest.TestCase):
 
     def test_manual_dispatch_trigger_is_required(self) -> None:
         workflow = CURRENT.replace(EXPECTED_WORKFLOW_DISPATCH, "", 1)
+        self.assert_governance_blocked(workflow)
+
+    def test_pr_branch_filter_is_rejected(self) -> None:
+        workflow = CURRENT.replace(
+            EXPECTED_PR_TRIGGER,
+            EXPECTED_PR_TRIGGER + "    branches-ignore: ['**']\n",
+            1,
+        )
         self.assert_governance_blocked(workflow)
 
     def test_draft_skip_condition_is_required(self) -> None:
@@ -404,6 +465,17 @@ class WorkflowGovernancePolicyTests(unittest.TestCase):
         )
         self.assert_governance_blocked(workflow)
 
+    def test_job_level_concurrency_is_rejected(self) -> None:
+        workflow = CURRENT.replace(
+            EXPECTED_VALIDATE_RUNS_ON,
+            EXPECTED_VALIDATE_RUNS_ON
+            + "    concurrency:\n"
+            + "      group: validate-${{ github.ref }}\n"
+            + "      cancel-in-progress: true\n",
+            1,
+        )
+        self.assert_governance_blocked(workflow)
+
     def test_mutable_checkout_tag_is_rejected(self) -> None:
         workflow = CURRENT.replace(
             f"actions/checkout@{EXPECTED_ACTION_REFS['actions/checkout']}",
@@ -411,6 +483,18 @@ class WorkflowGovernancePolicyTests(unittest.TestCase):
             1,
         )
         self.assert_governance_blocked(workflow)
+
+    def test_dash_uses_mutable_action_is_rejected(self) -> None:
+        marker = "      - name: Install dependencies from committed lockfile\n"
+        unexpected = "      - uses: actions/checkout@v4\n        with:\n          persist-credentials: true\n"
+        self.assertIn(marker, CURRENT)
+        self.assert_governance_blocked(CURRENT.replace(marker, unexpected + marker, 1))
+
+    def test_dash_uses_docker_action_is_rejected(self) -> None:
+        marker = "      - name: Install dependencies from committed lockfile\n"
+        unexpected = "      - uses: docker://alpine:3\n"
+        self.assertIn(marker, CURRENT)
+        self.assert_governance_blocked(CURRENT.replace(marker, unexpected + marker, 1))
 
     def test_setup_node_pin_drift_is_rejected(self) -> None:
         workflow = CURRENT.replace(
@@ -452,6 +536,31 @@ class WorkflowGovernancePolicyTests(unittest.TestCase):
         )
         self.assertIn(marker, CURRENT)
         self.assert_governance_blocked(CURRENT.replace(marker, unexpected + marker, 1))
+
+    def test_second_job_is_rejected(self) -> None:
+        workflow = CURRENT + (
+            "\n  unexpected:\n"
+            "    runs-on: ubuntu-latest\n"
+            "    steps:\n"
+            "      - uses: actions/checkout@v4\n"
+        )
+        self.assert_governance_blocked(workflow)
+
+    def test_permissions_write_all_is_rejected(self) -> None:
+        workflow = CURRENT.replace(EXPECTED_PERMISSIONS, "permissions: write-all\n", 1)
+        self.assert_governance_blocked(workflow)
+
+    def test_self_hosted_runner_is_rejected(self) -> None:
+        workflow = CURRENT.replace(EXPECTED_VALIDATE_RUNS_ON, "    runs-on: self-hosted\n", 1)
+        self.assert_governance_blocked(workflow)
+
+    def test_workflow_level_env_is_rejected(self) -> None:
+        workflow = CURRENT.replace(
+            "jobs:\n",
+            "env:\n  TOKEN: ${{ secrets.EXAMPLE }}\n\njobs:\n",
+            1,
+        )
+        self.assert_governance_blocked(workflow)
 
 
 if __name__ == "__main__":
