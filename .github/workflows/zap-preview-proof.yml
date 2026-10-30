@@ -1,0 +1,264 @@
+name: ZAP preview passive proof v2
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .github/workflows/zap-preview-proof.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: zap-preview-proof-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  zap-baseline:
+    if: github.event.pull_request.head.ref == 'proof/zap-preview-002' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      ZAP_TARGET: https://ff290130-lowcountrydigitalworks.locodw.workers.dev/
+      ZAP_IMAGE: zaproxy/zap-stable@sha256:241fd55e438fce3b6b092fdb68348581c28e391b094644ef506c1e3be4a31a78
+
+    steps:
+      - name: Prepare bounded scope proof
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts
+          chmod 0777 artifacts
+
+          cat > zap-scope-hook.py <<'PY'
+          import json
+          from urllib.parse import urlsplit
+
+          TARGET = "https://ff290130-lowcountrydigitalworks.locodw.workers.dev/"
+          EXPECTED_SCHEME = "https"
+          EXPECTED_NETLOC = "ff290130-lowcountrydigitalworks.locodw.workers.dev"
+          EXCLUDED_PATH_PREFIX = "/share/continue"
+          EXCLUDED_SPIDER_REGEX = (
+              r"^https://ff290130-lowcountrydigitalworks\.locodw\.workers\.dev"
+              r"/share/continue(?:[/?#].*)?$"
+          )
+
+          def zap_started(zap, target):
+              if target != TARGET:
+                  raise RuntimeError(f"REFUSED_TARGET={target}")
+              zap.spider.set_option_post_form(False)
+              zap.spider.exclude_from_scan(EXCLUDED_SPIDER_REGEX)
+
+          def zap_pre_shutdown(zap):
+              urls = sorted(set(zap.core.urls()))
+              off_origin = []
+              excluded_path_hits = []
+
+              for url in urls:
+                  parsed = urlsplit(url)
+                  if parsed.scheme != EXPECTED_SCHEME or parsed.netloc != EXPECTED_NETLOC:
+                      off_origin.append(url)
+                  if parsed.path == EXCLUDED_PATH_PREFIX or parsed.path.startswith(
+                      EXCLUDED_PATH_PREFIX + "/"
+                  ):
+                      excluded_path_hits.append(url)
+
+              proof = {
+                  "target": TARGET,
+                  "observed_url_count": len(urls),
+                  "off_origin_urls": off_origin,
+                  "excluded_path_hits": excluded_path_hits,
+                  "post_form_enabled": False,
+                  "excluded_spider_regex": EXCLUDED_SPIDER_REGEX,
+              }
+
+              with open(
+                  "/zap/wrk/artifacts/zap-scope-proof.json",
+                  "w",
+                  encoding="utf-8",
+              ) as handle:
+                  json.dump(proof, handle, indent=2, sort_keys=True)
+                  handle.write("\n")
+          PY
+
+          python -m py_compile zap-scope-hook.py
+
+      - name: Pull and verify immutable ZAP image
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker pull "$ZAP_IMAGE"
+
+          architecture="$(docker image inspect "$ZAP_IMAGE" --format '{{.Architecture}}')"
+          if [ "$architecture" != "amd64" ]; then
+            echo "Unexpected scanner architecture: $architecture" >&2
+            exit 1
+          fi
+
+          {
+            echo "## Immutable scanner identity"
+            echo
+            echo "- Image: \`$ZAP_IMAGE\`"
+            echo "- Architecture: \`$architecture\`"
+            echo "- Image ID: \`$(docker image inspect "$ZAP_IMAGE" --format '{{.Id}}')\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Run ZAP Baseline against frozen preview
+        id: scan
+        shell: bash
+        run: |
+          set -uo pipefail
+          start_epoch="$(date +%s)"
+
+          set +e
+          docker run --rm \
+            --volume "$PWD:/zap/wrk/:rw" \
+            "$ZAP_IMAGE" \
+            zap-baseline.py \
+            -t "$ZAP_TARGET" \
+            -m 1 \
+            -T 5 \
+            -r /zap/wrk/artifacts/zap-report.html \
+            -J /zap/wrk/artifacts/zap-report.json \
+            -w /zap/wrk/artifacts/zap-report.md \
+            --autooff \
+            --hook=/zap/wrk/zap-scope-hook.py \
+            -z "-silent" \
+            2>&1 | tee artifacts/zap-console.log
+          scan_status="${PIPESTATUS[0]}"
+          set -e
+
+          end_epoch="$(date +%s)"
+          echo "$scan_status" > artifacts/zap-exit-code.txt
+          echo "scan_status=$scan_status" >> "$GITHUB_OUTPUT"
+          echo "scan_seconds=$((end_epoch - start_epoch))" >> "$GITHUB_OUTPUT"
+
+          # Preserve scanner disposition for the final gate, but allow
+          # scope analysis and report upload to run first.
+          exit 0
+
+      - name: Summarize findings and enforce scope proof
+        if: always()
+        shell: bash
+        env:
+          SCAN_SECONDS: ${{ steps.scan.outputs.scan_seconds }}
+          SCAN_STATUS: ${{ steps.scan.outputs.scan_status }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          from collections import Counter
+          from pathlib import Path
+
+          report_path = Path("artifacts/zap-report.json")
+          scope_path = Path("artifacts/zap-scope-proof.json")
+
+          if not report_path.is_file():
+              raise SystemExit("ZAP_REPORT_MISSING")
+          if not scope_path.is_file():
+              raise SystemExit("ZAP_SCOPE_PROOF_MISSING")
+
+          report = json.loads(report_path.read_text(encoding="utf-8"))
+          scope = json.loads(scope_path.read_text(encoding="utf-8"))
+
+          risk_counts = Counter()
+          confidence_counts = Counter()
+          alert_count = 0
+          instance_count = 0
+
+          for site in report.get("site", []):
+              for alert in site.get("alerts", []):
+                  alert_count += 1
+                  instances = alert.get("instances", [])
+                  instance_count += len(instances)
+
+                  riskdesc = str(alert.get("riskdesc", "Unknown"))
+                  risk, separator, confidence = riskdesc.partition(" (")
+                  risk_counts[risk or "Unknown"] += 1
+                  if separator and confidence.endswith(")"):
+                      confidence = confidence[:-1]
+                  else:
+                      confidence = str(alert.get("confidence", "Unknown"))
+                  confidence_counts[confidence or "Unknown"] += 1
+
+          summary = {
+              "target": scope.get("target"),
+              "scan_seconds": os.environ.get("SCAN_SECONDS", ""),
+              "baseline_exit_code": os.environ.get("SCAN_STATUS", ""),
+              "observed_url_count": scope.get("observed_url_count", 0),
+              "alert_count": alert_count,
+              "alert_instance_count": instance_count,
+              "alerts_by_risk": dict(sorted(risk_counts.items())),
+              "alerts_by_confidence": dict(sorted(confidence_counts.items())),
+              "off_origin_urls": scope.get("off_origin_urls", []),
+              "excluded_path_hits": scope.get("excluded_path_hits", []),
+              "post_form_enabled": scope.get("post_form_enabled"),
+          }
+
+          Path("artifacts/zap-summary.json").write_text(
+              json.dumps(summary, indent=2, sort_keys=True) + "\n",
+              encoding="utf-8",
+          )
+
+          with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as handle:
+              handle.write("\n## ZAP passive preview proof\n\n")
+              handle.write(f"- Target: `{summary['target']}`\n")
+              handle.write(f"- Scan duration: `{summary['scan_seconds']}` seconds\n")
+              handle.write(f"- Baseline exit code: `{summary['baseline_exit_code']}`\n")
+              handle.write(f"- URLs observed by ZAP: `{summary['observed_url_count']}`\n")
+              handle.write(f"- Alert rules: `{summary['alert_count']}`\n")
+              handle.write(f"- Alert instances: `{summary['alert_instance_count']}`\n")
+              handle.write(f"- Alerts by risk: `{summary['alerts_by_risk']}`\n")
+              handle.write(f"- Alerts by confidence: `{summary['alerts_by_confidence']}`\n")
+              handle.write(
+                  f"- Off-origin URLs observed: `{len(summary['off_origin_urls'])}`\n"
+              )
+              handle.write(
+                  f"- `/share/continue` URLs observed: "
+                  f"`{len(summary['excluded_path_hits'])}`\n"
+              )
+              handle.write("- Form POST submission: `disabled`\n")
+
+          if summary["off_origin_urls"]:
+              raise SystemExit("SCOPE_ESCAPE_OFF_ORIGIN")
+          if summary["excluded_path_hits"]:
+              raise SystemExit("SCOPE_ESCAPE_EXCLUDED_PATH")
+          if summary["post_form_enabled"] is not False:
+              raise SystemExit("FORM_POST_BOUNDARY_UNPROVEN")
+          PY
+
+      - name: Retain ZAP proof reports
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: zap-preview-proof-v2
+          path: artifacts/
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Preserve ZAP baseline disposition
+        if: always()
+        shell: bash
+        env:
+          SCAN_STATUS: ${{ steps.scan.outputs.scan_status }}
+        run: |
+          set -euo pipefail
+          case "$SCAN_STATUS" in
+            0)
+              echo "ZAP_BASELINE_DISPOSITION=PASS"
+              ;;
+            1)
+              echo "ZAP_BASELINE_DISPOSITION=FAIL"
+              exit 1
+              ;;
+            2)
+              echo "ZAP_BASELINE_DISPOSITION=WARN"
+              exit 2
+              ;;
+            *)
+              echo "ZAP_BASELINE_DISPOSITION=ERROR status=${SCAN_STATUS:-missing}" >&2
+              exit 3
+              ;;
+          esac
