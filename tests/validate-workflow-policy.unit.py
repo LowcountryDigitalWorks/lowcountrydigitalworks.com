@@ -75,7 +75,7 @@ def primary_run(workflow: str) -> str:
 
 
 def validate_workflow_governance(workflow: str) -> list[str]:
-    """Enforce the repo-local #65 trigger, concurrency, and Action-pin contract."""
+    """Enforce #65 invariants after GitHub has parsed the workflow syntax itself."""
     errors: list[str] = []
 
     required_singletons = {
