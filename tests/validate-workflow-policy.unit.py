@@ -18,6 +18,29 @@ CURRENT = (ROOT / ".github/workflows/validate.yml").read_text()
 COMMANDS = dict(EXPECTED_VALIDATE_RUN_STEPS)
 PRIMARY = "Install dependencies from committed lockfile"
 
+EXPECTED_PR_TRIGGER = (
+    "  pull_request:\n"
+    "    types: [opened, synchronize, reopened, ready_for_review]\n"
+)
+EXPECTED_PUSH_TRIGGER = "  push:\n    branches:\n      - main\n"
+EXPECTED_WORKFLOW_DISPATCH = "  workflow_dispatch:\n"
+EXPECTED_CONCURRENCY_GROUP = (
+    "  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}\n"
+)
+EXPECTED_CANCEL_POLICY = (
+    "  cancel-in-progress: ${{ github.event_name == 'pull_request' }}\n"
+)
+EXPECTED_VALIDATE_IF = (
+    "    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}\n"
+)
+EXPECTED_ACTION_REFS = {
+    "actions/checkout": "3d3c42e5aac5ba805825da76410c181273ba90b1",
+    "actions/setup-node": "949feb2413d6458794dcd2491c4babbbce0c15c1",
+    "actions/setup-python": "6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+    "actions/upload-artifact": "cf430e030ddbb5b0abf93d22962f4752f3646cd9",
+}
+EXPECTED_CHECKOUT_CREDENTIAL_POLICY = "          persist-credentials: false\n"
+
 
 def replace_run(step_name: str, run_yaml: str) -> str:
     current_command = COMMANDS[step_name]
@@ -49,6 +72,59 @@ def primary_run(workflow: str) -> str:
     if len(matches) != 1:
         raise AssertionError(f"expected one primary step, found {len(matches)}")
     return matches[0]
+
+
+def validate_workflow_governance(workflow: str) -> list[str]:
+    """Enforce the repo-local #65 trigger, concurrency, and Action-pin contract."""
+    errors: list[str] = []
+
+    required_singletons = {
+        "pull-request trigger contract": EXPECTED_PR_TRIGGER,
+        "main push trigger contract": EXPECTED_PUSH_TRIGGER,
+        "manual dispatch contract": EXPECTED_WORKFLOW_DISPATCH,
+        "concurrency group contract": EXPECTED_CONCURRENCY_GROUP,
+        "pull-request-only cancellation contract": EXPECTED_CANCEL_POLICY,
+        "draft-skip contract": EXPECTED_VALIDATE_IF,
+    }
+    for label, snippet in required_singletons.items():
+        count = workflow.count(snippet)
+        if count != 1:
+            errors.append(f"{label} drifted: expected exactly one accepted form, found {count}")
+
+    if "pull_request_target:" in workflow:
+        errors.append("pull_request_target is not authorized for ordinary validation")
+
+    uses_refs: list[str] = []
+    for line in workflow.splitlines():
+        stripped = line.strip()
+        if not stripped.startswith("uses: "):
+            continue
+        ref = stripped.removeprefix("uses: ").split(" #", 1)[0].strip()
+        uses_refs.append(ref)
+
+    for action, sha in EXPECTED_ACTION_REFS.items():
+        matches = [ref for ref in uses_refs if ref.startswith(f"{action}@")]
+        expected = f"{action}@{sha}"
+        if matches != [expected]:
+            errors.append(
+                f"{action} ref drifted: expected exactly {expected!r}, found {matches!r}"
+            )
+
+    if len(uses_refs) != len(EXPECTED_ACTION_REFS):
+        errors.append(
+            "validate job Action surface drifted: "
+            f"expected {len(EXPECTED_ACTION_REFS)} uses refs, found {len(uses_refs)}"
+        )
+
+    checkout_marker = (
+        f"        uses: actions/checkout@{EXPECTED_ACTION_REFS['actions/checkout']} # v7.0.1\n"
+        "        with:\n"
+        + EXPECTED_CHECKOUT_CREDENTIAL_POLICY
+    )
+    if workflow.count(checkout_marker) != 1:
+        errors.append("checkout must keep persist-credentials: false on the accepted immutable ref")
+
+    return errors
 
 
 class WorkflowInstallPolicyTests(unittest.TestCase):
@@ -274,6 +350,108 @@ class WorkflowInstallPolicyTests(unittest.TestCase):
         )
         self.assertIn(build + validate, CURRENT)
         self.assert_blocked(CURRENT.replace(build + validate, validate + build, 1))
+
+
+class WorkflowGovernancePolicyTests(unittest.TestCase):
+    def assert_governance_blocked(self, workflow: str) -> None:
+        errors = validate_workflow_governance(workflow)
+        self.assertTrue(errors, "expected governance drift to be rejected")
+
+    def test_current_governance_contract_passes(self) -> None:
+        self.assertEqual(validate_workflow_governance(CURRENT), [])
+
+    def test_pull_request_target_is_rejected(self) -> None:
+        workflow = CURRENT.replace("  pull_request:\n", "  pull_request_target:\n", 1)
+        self.assert_governance_blocked(workflow)
+
+    def test_ready_for_review_event_is_required(self) -> None:
+        workflow = CURRENT.replace(", ready_for_review", "", 1)
+        self.assert_governance_blocked(workflow)
+
+    def test_extra_pull_request_event_is_rejected(self) -> None:
+        workflow = CURRENT.replace(
+            "ready_for_review]",
+            "ready_for_review, edited]",
+            1,
+        )
+        self.assert_governance_blocked(workflow)
+
+    def test_main_push_trigger_is_required(self) -> None:
+        workflow = CURRENT.replace(EXPECTED_PUSH_TRIGGER, "", 1)
+        self.assert_governance_blocked(workflow)
+
+    def test_manual_dispatch_trigger_is_required(self) -> None:
+        workflow = CURRENT.replace(EXPECTED_WORKFLOW_DISPATCH, "", 1)
+        self.assert_governance_blocked(workflow)
+
+    def test_draft_skip_condition_is_required(self) -> None:
+        workflow = CURRENT.replace(EXPECTED_VALIDATE_IF, "", 1)
+        self.assert_governance_blocked(workflow)
+
+    def test_unconditional_cancellation_is_rejected(self) -> None:
+        workflow = CURRENT.replace(
+            EXPECTED_CANCEL_POLICY,
+            "  cancel-in-progress: true\n",
+            1,
+        )
+        self.assert_governance_blocked(workflow)
+
+    def test_concurrency_group_drift_is_rejected(self) -> None:
+        workflow = CURRENT.replace(
+            EXPECTED_CONCURRENCY_GROUP,
+            "  group: validate-${{ github.ref }}\n",
+            1,
+        )
+        self.assert_governance_blocked(workflow)
+
+    def test_mutable_checkout_tag_is_rejected(self) -> None:
+        workflow = CURRENT.replace(
+            f"actions/checkout@{EXPECTED_ACTION_REFS['actions/checkout']}",
+            "actions/checkout@v7",
+            1,
+        )
+        self.assert_governance_blocked(workflow)
+
+    def test_setup_node_pin_drift_is_rejected(self) -> None:
+        workflow = CURRENT.replace(
+            f"actions/setup-node@{EXPECTED_ACTION_REFS['actions/setup-node']}",
+            "actions/setup-node@0000000000000000000000000000000000000000",
+            1,
+        )
+        self.assert_governance_blocked(workflow)
+
+    def test_setup_python_mutable_tag_is_rejected(self) -> None:
+        workflow = CURRENT.replace(
+            f"actions/setup-python@{EXPECTED_ACTION_REFS['actions/setup-python']}",
+            "actions/setup-python@v7",
+            1,
+        )
+        self.assert_governance_blocked(workflow)
+
+    def test_upload_artifact_mutable_tag_is_rejected(self) -> None:
+        workflow = CURRENT.replace(
+            f"actions/upload-artifact@{EXPECTED_ACTION_REFS['actions/upload-artifact']}",
+            "actions/upload-artifact@v7",
+            1,
+        )
+        self.assert_governance_blocked(workflow)
+
+    def test_checkout_credentials_must_not_persist(self) -> None:
+        workflow = CURRENT.replace(
+            EXPECTED_CHECKOUT_CREDENTIAL_POLICY,
+            "          persist-credentials: true\n",
+            1,
+        )
+        self.assert_governance_blocked(workflow)
+
+    def test_unexpected_action_surface_is_rejected(self) -> None:
+        marker = "      - name: Install dependencies from committed lockfile\n"
+        unexpected = (
+            "      - name: Unexpected action\n"
+            "        uses: example/action@0123456789012345678901234567890123456789\n\n"
+        )
+        self.assertIn(marker, CURRENT)
+        self.assert_governance_blocked(CURRENT.replace(marker, unexpected + marker, 1))
 
 
 if __name__ == "__main__":
