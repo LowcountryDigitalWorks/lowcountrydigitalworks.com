@@ -7,6 +7,7 @@ test('project discovery makes the quick request primary while preserving optiona
   const response = await page.goto('/discovery/');
   expect(response?.ok()).toBeTruthy();
 
+  await expect(page.getByRole('heading', { level: 1, name: /Starting from scratch is fine too/i })).toBeVisible();
   await expect(page.getByText('About 2 minutes. The request opens in a new tab.')).toBeVisible();
   await expect(page.getByText(/The longer questionnaire is still available, but it is optional/i)).toBeVisible();
   await expect(page.getByText(/We only ask for a phone number if you choose call or text/i)).toBeVisible();
