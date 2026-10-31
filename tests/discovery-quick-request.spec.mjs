@@ -10,6 +10,8 @@ test('project discovery makes the quick request primary while preserving optiona
   await expect(page.getByText('About 2 minutes. The request opens in a new tab.')).toBeVisible();
   await expect(page.getByText(/The longer questionnaire is still available, but it is optional/i)).toBeVisible();
   await expect(page.getByText(/We only ask for a phone number if you choose call or text/i)).toBeVisible();
+  await expect(page.getByText(/If you're starting fresh, a domain or business-name idea is enough/i)).toBeVisible();
+  await expect(page.getByText(/what already exists or what you're starting from scratch/i)).toBeVisible();
 
   const quickLinks = page.getByRole('link', { name: /quick (project )?request/i });
   await expect(quickLinks).toHaveCount(2);
