@@ -171,24 +171,24 @@ test('homepage presents customer-first Rev3 entry paths and keeps discovery on i
   await expect(page.getByText('Do I need to know which LDW service I need?')).toBeVisible();
 });
 
-test('project discovery is a branded, accessible, privacy-first handoff to the current intake', async ({ page }) => {
+test('project discovery is a branded, accessible, privacy-first handoff to the quick request', async ({ page }) => {
   const response = await page.goto('/discovery');
   expect(response?.ok()).toBeTruthy();
-  await expect(page.getByRole('heading', { level: 1, name: "Tell us what you're trying to improve." })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 1, name: /Starting from scratch is fine too/i })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'A few useful details, then a human review.' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Privacy Notice' })).toHaveAttribute('href', '/privacy/');
   await expect(page.getByText(/passwords, MFA or recovery codes, API keys or tokens/i)).toBeVisible();
   await expect(page.getByText(/you don't need to send the same files again/i)).toBeVisible();
   await expect(page.locator('iframe, main form')).toHaveCount(0);
 
-  const intakeLinks = page.getByRole('link', { name: /project questions/i });
+  const intakeLinks = page.locator('a[href="https://getaiform.com/r/LiY9XI9qKE"]');
   await expect(intakeLinks).toHaveCount(2);
   for (const link of await intakeLinks.all()) {
-    await expect(link).toHaveAttribute('href', 'https://getaiform.com/r/XAqAsatn7H');
     await expect(link).toHaveAttribute('target', '_blank');
     await expect(link).toHaveAttribute('rel', 'noopener noreferrer');
     await expect(link).toHaveAttribute('referrerpolicy', 'no-referrer');
   }
+  await expect(page.locator('a[href="https://getaiform.com/r/XAqAsatn7H"]')).toHaveCount(0);
 
   const csp = response?.headers()['content-security-policy'];
   if (csp) expect(csp).not.toContain('getaiform.com');
