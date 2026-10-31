@@ -36,6 +36,27 @@ EXPECTED_VALIDATE_IF = (
     "    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}\n"
 )
 EXPECTED_VALIDATE_RUNS_ON = "    runs-on: ubuntu-latest\n"
+EXPECTED_VALIDATE_TIMEOUT = "    timeout-minutes: 20\n"
+EXPECTED_GOVERNANCE_PREFIX = (
+    "name: Validate repository\n\n"
+    "on:\n"
+    + EXPECTED_PR_TRIGGER
+    + EXPECTED_PUSH_TRIGGER
+    + EXPECTED_WORKFLOW_DISPATCH
+    + "\n"
+    + EXPECTED_PERMISSIONS
+    + "\n"
+    + "concurrency:\n"
+    + EXPECTED_CONCURRENCY_GROUP
+    + EXPECTED_CANCEL_POLICY
+    + "\n"
+    + "jobs:\n"
+    + "  validate:\n"
+    + EXPECTED_VALIDATE_IF
+    + EXPECTED_VALIDATE_RUNS_ON
+    + EXPECTED_VALIDATE_TIMEOUT
+    + "    steps:\n"
+)
 EXPECTED_ACTION_REFS = {
     "actions/checkout": "3d3c42e5aac5ba805825da76410c181273ba90b1",
     "actions/setup-node": "949feb2413d6458794dcd2491c4babbbce0c15c1",
@@ -43,6 +64,14 @@ EXPECTED_ACTION_REFS = {
     "actions/upload-artifact": "cf430e030ddbb5b0abf93d22962f4752f3646cd9",
 }
 EXPECTED_CHECKOUT_CREDENTIAL_POLICY = "          persist-credentials: false\n"
+EXPECTED_UPLOAD_ARTIFACT_TAIL = (
+    "      - name: Upload resolved lockfile\n"
+    f"        uses: actions/upload-artifact@{EXPECTED_ACTION_REFS['actions/upload-artifact']} # v7.0.2\n"
+    "        with:\n"
+    "          name: package-lock\n"
+    "          path: package-lock.json\n"
+    "          if-no-files-found: error\n"
+)
 
 
 def replace_run(step_name: str, run_yaml: str) -> str:
@@ -81,6 +110,17 @@ def validate_workflow_governance(workflow: str) -> list[str]:
     """Enforce #65 invariants after GitHub has parsed the workflow syntax itself."""
     errors: list[str] = []
     lines = workflow.splitlines()
+    uncommented_workflow = "\n".join(
+        line for line in lines if not line.lstrip().startswith("#")
+    )
+    if workflow.endswith("\n"):
+        uncommented_workflow += "\n"
+
+    if not workflow.startswith(EXPECTED_GOVERNANCE_PREFIX):
+        errors.append(
+            "workflow governance header drifted: expected the exact accepted "
+            "trigger/permission/concurrency/job preamble"
+        )
 
     required_singletons = {
         "pull-request trigger contract": EXPECTED_PR_TRIGGER,
@@ -93,9 +133,20 @@ def validate_workflow_governance(workflow: str) -> list[str]:
         "runner contract": EXPECTED_VALIDATE_RUNS_ON,
     }
     for label, snippet in required_singletons.items():
-        count = workflow.count(snippet)
+        count = uncommented_workflow.count(snippet)
         if count != 1:
             errors.append(f"{label} drifted: expected exactly one accepted form, found {count}")
+
+    top_level_keys: list[str] = []
+    for line in lines:
+        match = re.match(r'^["\']?([A-Za-z0-9_-]+)["\']?\s*:', line)
+        if match:
+            top_level_keys.append(match.group(1))
+    if top_level_keys != ["name", "on", "permissions", "concurrency", "jobs"]:
+        errors.append(
+            "top-level workflow surface drifted: expected only "
+            "name/on/permissions/concurrency/jobs"
+        )
 
     for line in lines:
         if re.match(r'^\s*["\']?pull_request_target["\']?\s*:', line):
@@ -120,6 +171,27 @@ def validate_workflow_governance(workflow: str) -> list[str]:
             job_names.append(match.group(1))
     if job_names != ["validate"]:
         errors.append(f"workflow job surface drifted: expected ['validate'], found {job_names!r}")
+
+    validate_job_keys: list[str] = []
+    in_validate_job = False
+    for line in lines:
+        if line == "  validate:":
+            in_validate_job = True
+            continue
+        if not in_validate_job:
+            continue
+        if line and not line.startswith("    "):
+            in_validate_job = False
+            continue
+        match = re.match(r'^    ["\']?([A-Za-z0-9_-]+)["\']?\s*:', line)
+        if match:
+            validate_job_keys.append(match.group(1))
+    expected_validate_job_keys = ["if", "runs-on", "timeout-minutes", "steps"]
+    if validate_job_keys != expected_validate_job_keys:
+        errors.append(
+            "validate job governance surface drifted: expected "
+            f"{expected_validate_job_keys!r}, found {validate_job_keys!r}"
+        )
 
     concurrency_keys = [line for line in lines if re.match(r'^\s*concurrency\s*:', line)]
     if concurrency_keys != ["concurrency:"]:
@@ -166,12 +238,21 @@ def validate_workflow_governance(workflow: str) -> list[str]:
         )
 
     checkout_marker = (
+        "      - name: Check out repository\n"
         f"        uses: actions/checkout@{EXPECTED_ACTION_REFS['actions/checkout']} # v7.0.1\n"
         "        with:\n"
         + EXPECTED_CHECKOUT_CREDENTIAL_POLICY
+        + "\n"
+        + "      - name: Set up Node.js\n"
     )
     if workflow.count(checkout_marker) != 1:
-        errors.append("checkout must keep persist-credentials: false on the accepted immutable ref")
+        errors.append(
+            "checkout must keep the exact accepted immutable ref and "
+            "persist-credentials-only option surface"
+        )
+
+    if not workflow.endswith(EXPECTED_UPLOAD_ARTIFACT_TAIL):
+        errors.append("upload-artifact must keep the exact accepted evidence/failure contract")
 
     return errors
 
@@ -445,6 +526,38 @@ class WorkflowGovernancePolicyTests(unittest.TestCase):
         )
         self.assert_governance_blocked(workflow)
 
+    def test_schedule_trigger_is_rejected(self) -> None:
+        workflow = CURRENT.replace(
+            "on:\n",
+            "on:\n  schedule:\n    - cron: '0 0 * * *'\n",
+            1,
+        )
+        self.assert_governance_blocked(workflow)
+
+    def test_workflow_run_trigger_is_rejected(self) -> None:
+        workflow = CURRENT.replace(
+            "on:\n",
+            "on:\n  workflow_run:\n    workflows: ['Other']\n    types: [completed]\n",
+            1,
+        )
+        self.assert_governance_blocked(workflow)
+
+    def test_extra_push_branch_is_rejected(self) -> None:
+        workflow = CURRENT.replace(
+            "      - main\n",
+            "      - main\n      - develop\n",
+            1,
+        )
+        self.assert_governance_blocked(workflow)
+
+    def test_push_paths_filter_is_rejected(self) -> None:
+        workflow = CURRENT.replace(
+            EXPECTED_PUSH_TRIGGER,
+            EXPECTED_PUSH_TRIGGER + "    paths:\n      - '**/*.html'\n",
+            1,
+        )
+        self.assert_governance_blocked(workflow)
+
     def test_draft_skip_condition_is_required(self) -> None:
         workflow = CURRENT.replace(EXPECTED_VALIDATE_IF, "", 1)
         self.assert_governance_blocked(workflow)
@@ -528,6 +641,22 @@ class WorkflowGovernancePolicyTests(unittest.TestCase):
         )
         self.assert_governance_blocked(workflow)
 
+    def test_checkout_ref_override_is_rejected(self) -> None:
+        workflow = CURRENT.replace(
+            EXPECTED_CHECKOUT_CREDENTIAL_POLICY,
+            EXPECTED_CHECKOUT_CREDENTIAL_POLICY + "          ref: main\n",
+            1,
+        )
+        self.assert_governance_blocked(workflow)
+
+    def test_checkout_token_override_is_rejected(self) -> None:
+        workflow = CURRENT.replace(
+            EXPECTED_CHECKOUT_CREDENTIAL_POLICY,
+            EXPECTED_CHECKOUT_CREDENTIAL_POLICY + "          token: ${{ secrets.EXAMPLE }}\n",
+            1,
+        )
+        self.assert_governance_blocked(workflow)
+
     def test_unexpected_action_surface_is_rejected(self) -> None:
         marker = "      - name: Install dependencies from committed lockfile\n"
         unexpected = (
@@ -550,6 +679,62 @@ class WorkflowGovernancePolicyTests(unittest.TestCase):
         workflow = CURRENT.replace(EXPECTED_PERMISSIONS, "permissions: write-all\n", 1)
         self.assert_governance_blocked(workflow)
 
+    def test_additional_global_permission_is_rejected(self) -> None:
+        workflow = CURRENT.replace(
+            EXPECTED_PERMISSIONS,
+            EXPECTED_PERMISSIONS + "  id-token: write\n",
+            1,
+        )
+        self.assert_governance_blocked(workflow)
+
+    def test_job_level_permissions_write_all_is_rejected(self) -> None:
+        workflow = CURRENT.replace(
+            EXPECTED_VALIDATE_RUNS_ON,
+            EXPECTED_VALIDATE_RUNS_ON + "    permissions: write-all\n",
+            1,
+        )
+        self.assert_governance_blocked(workflow)
+
+    def test_job_level_contents_write_is_rejected(self) -> None:
+        workflow = CURRENT.replace(
+            EXPECTED_VALIDATE_RUNS_ON,
+            EXPECTED_VALIDATE_RUNS_ON + "    permissions:\n      contents: write\n",
+            1,
+        )
+        self.assert_governance_blocked(workflow)
+
+    def test_job_level_env_is_rejected(self) -> None:
+        workflow = CURRENT.replace(
+            EXPECTED_VALIDATE_RUNS_ON,
+            EXPECTED_VALIDATE_RUNS_ON + "    env:\n      TOKEN: ${{ secrets.EXAMPLE }}\n",
+            1,
+        )
+        self.assert_governance_blocked(workflow)
+
+    def test_job_defaults_are_rejected(self) -> None:
+        workflow = CURRENT.replace(
+            EXPECTED_VALIDATE_RUNS_ON,
+            EXPECTED_VALIDATE_RUNS_ON + "    defaults:\n      run:\n        shell: echo\n",
+            1,
+        )
+        self.assert_governance_blocked(workflow)
+
+    def test_job_continue_on_error_is_rejected(self) -> None:
+        workflow = CURRENT.replace(
+            EXPECTED_VALIDATE_RUNS_ON,
+            EXPECTED_VALIDATE_RUNS_ON + "    continue-on-error: true\n",
+            1,
+        )
+        self.assert_governance_blocked(workflow)
+
+    def test_job_container_is_rejected(self) -> None:
+        workflow = CURRENT.replace(
+            EXPECTED_VALIDATE_RUNS_ON,
+            EXPECTED_VALIDATE_RUNS_ON + "    container: alpine:3\n",
+            1,
+        )
+        self.assert_governance_blocked(workflow)
+
     def test_self_hosted_runner_is_rejected(self) -> None:
         workflow = CURRENT.replace(EXPECTED_VALIDATE_RUNS_ON, "    runs-on: self-hosted\n", 1)
         self.assert_governance_blocked(workflow)
@@ -558,6 +743,14 @@ class WorkflowGovernancePolicyTests(unittest.TestCase):
         workflow = CURRENT.replace(
             "jobs:\n",
             "env:\n  TOKEN: ${{ secrets.EXAMPLE }}\n\njobs:\n",
+            1,
+        )
+        self.assert_governance_blocked(workflow)
+
+    def test_upload_artifact_must_fail_on_missing_file(self) -> None:
+        workflow = CURRENT.replace(
+            "          if-no-files-found: error\n",
+            "          if-no-files-found: ignore\n",
             1,
         )
         self.assert_governance_blocked(workflow)
