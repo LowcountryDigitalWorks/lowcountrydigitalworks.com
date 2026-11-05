@@ -1,5 +1,7 @@
 {
+  "publicationMode": "ldw-owned-precomputed",
   "label": "LDW-OWNED PROOF / PRECOMPUTED",
+  "checkIntent": "What did the accepted WQT recheck show about LDW-owned static-asset cache findings, and what remained outside LDW control?",
   "fixtureState": "Historical accepted evidence",
   "source": "Website Quality Toolkit (WQT) / SiteOne-derived technical evidence",
   "evidenceCycle": "Accepted LDW Stage A managed-visibility cycle",
