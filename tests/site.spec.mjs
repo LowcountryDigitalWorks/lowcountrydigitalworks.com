@@ -701,6 +701,41 @@ test('shared footer contact stays visible and unclipped across mobile and tablet
   }
 });
 
+test('footer contact remains readable without clipping at 125 percent root text size', async ({ page }) => {
+  // Reproduce text enlargement, not device-pixel zoom. Keep the browser's
+  // CSS viewport fixed while increasing rem-based layout and text by 25%.
+  for (const width of [320, 375, 761, 768, 900, 1001, 1024, 1280]) {
+    await page.setViewportSize({ width, height: 900 });
+    for (const route of ['/', '/services/website-care/']) {
+      await page.goto(route);
+      const result = await page.evaluate(() => {
+        document.documentElement.style.fontSize = '125%';
+        const link = document.querySelector('footer .footer-contact a[itemprop="email"]');
+        const span = link?.querySelector('span');
+        const bounds = link?.getBoundingClientRect();
+        return {
+          rootFontPx: Number.parseFloat(getComputedStyle(document.documentElement).fontSize),
+          clientWidth: document.documentElement.clientWidth,
+          scrollWidth: document.documentElement.scrollWidth,
+          left: bounds?.left,
+          right: bounds?.right,
+          linkWidth: bounds?.width,
+          text: span?.textContent?.trim(),
+          wrap: span ? getComputedStyle(span).overflowWrap : null,
+        };
+      });
+      const context = `${route} at ${width}px, 125% root text`;
+      expect(result.rootFontPx, context).toBeGreaterThanOrEqual(19.5);
+      expect(result.text?.length, context).toBeGreaterThan(0);
+      expect(result.wrap, context).toBe('anywhere');
+      expect(result.linkWidth, context).toBeGreaterThan(0);
+      expect(result.left, context).toBeGreaterThanOrEqual(-1);
+      expect(result.right, context).toBeLessThanOrEqual(result.clientWidth + 1);
+      expect(result.scrollWidth, context).toBeLessThanOrEqual(result.clientWidth + 1);
+    }
+  }
+});
+
 test('homepage internal navigation targets resolve', async ({ page }) => {
   await page.goto('/');
   const hrefs = await page.locator('a[href^="/"]').evaluateAll(as => [...new Set(as.map(a => a.getAttribute('href')).filter(Boolean))]);
