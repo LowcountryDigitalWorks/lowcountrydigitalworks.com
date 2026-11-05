@@ -1,0 +1,106 @@
+{
+  "schema": "ldw.evidence-local-sample-presentation.v1",
+  "label": "LDW-OWNED HISTORICAL EVIDENCE / PRECOMPUTED",
+  "intent": "Was Lowcountry Digital Works returned for the exact Google Maps query 'website designer' at nine sampled points on October 21, 2026?",
+  "subject": "Lowcountry Digital Works (LDW-owned business)",
+  "region": "Beaufort–Port Royal corridor, South Carolina",
+  "source": "DataForSEO",
+  "surface": "Google Maps",
+  "observationDate": "2026-10-21",
+  "method": {
+    "query": "website designer",
+    "priority": "Standard / normal",
+    "language": "en",
+    "device": "desktop",
+    "os": "Windows",
+    "depth": 100,
+    "zoom": "14z",
+    "searchPlaces": false,
+    "searchThisArea": true
+  },
+  "geometry": "3×3 sampled coordinates, not an interpolated region",
+  "resultSummary": "LDW was not found in the returned Google Maps result set at any of the nine observed points.",
+  "costStatement": "Historical nine-task provider charge: $0.0054, paid from previously authorized existing account credit; no scan runs from this page.",
+  "points": [
+    {
+      "id": "BPR-NW",
+      "latitude": "32.440300",
+      "longitude": "-80.728462",
+      "observationState": "complete",
+      "targetState": "not_found_in_returned_set",
+      "nativeRank": null
+    },
+    {
+      "id": "BPR-NC",
+      "latitude": "32.440300",
+      "longitude": "-80.689062",
+      "observationState": "complete",
+      "targetState": "not_found_in_returned_set",
+      "nativeRank": null
+    },
+    {
+      "id": "BPR-NE",
+      "latitude": "32.440300",
+      "longitude": "-80.649662",
+      "observationState": "complete",
+      "targetState": "not_found_in_returned_set",
+      "nativeRank": null
+    },
+    {
+      "id": "BPR-CW",
+      "latitude": "32.407406",
+      "longitude": "-80.728462",
+      "observationState": "complete",
+      "targetState": "not_found_in_returned_set",
+      "nativeRank": null
+    },
+    {
+      "id": "BPR-CC",
+      "latitude": "32.407406",
+      "longitude": "-80.689062",
+      "observationState": "complete",
+      "targetState": "not_found_in_returned_set",
+      "nativeRank": null
+    },
+    {
+      "id": "BPR-CE",
+      "latitude": "32.407406",
+      "longitude": "-80.649662",
+      "observationState": "complete",
+      "targetState": "not_found_in_returned_set",
+      "nativeRank": null
+    },
+    {
+      "id": "BPR-SW",
+      "latitude": "32.374511",
+      "longitude": "-80.728462",
+      "observationState": "complete",
+      "targetState": "not_found_in_returned_set",
+      "nativeRank": null
+    },
+    {
+      "id": "BPR-SC",
+      "latitude": "32.374511",
+      "longitude": "-80.689062",
+      "observationState": "complete",
+      "targetState": "not_found_in_returned_set",
+      "nativeRank": null
+    },
+    {
+      "id": "BPR-SE",
+      "latitude": "32.374511",
+      "longitude": "-80.649662",
+      "observationState": "complete",
+      "targetState": "not_found_in_returned_set",
+      "nativeRank": null
+    }
+  ],
+  "limitations": [
+    "These are nine point-in-time provider observations, not a continuous heat field, a guarantee of Google Maps visibility between points, or a current live ranking.",
+    "Not found in the returned result set does not mean rank zero, no Google visibility, an unavailable measurement, or a confirmed business/profile defect.",
+    "Google Maps, Local Finder, Organic, Apple Maps, and AI recommendation surfaces are distinct. This proof measures Google Maps only.",
+    "This evidence does not establish the cause of absence or justify a particular Google Business Profile, website, citation, or category change.",
+    "No search traffic, leads, revenue, AI citations, accessibility, cybersecurity, or overall-site-health outcome was measured."
+  ],
+  "nextStep": "If an authorized change is later chosen, recheck the same source, nine exact coordinates, query, device, language, zoom, depth, and method; report source changes and unavailable points explicitly."
+}

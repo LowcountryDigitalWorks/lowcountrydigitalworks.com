@@ -1,0 +1,204 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import sample from '../data/local-visibility-sample.json';
+
+const points = sample.points;
+const positionName = Object.freeze({
+  'BPR-NW': 'Northwest', 'BPR-NC': 'North', 'BPR-NE': 'Northeast',
+  'BPR-CW': 'West', 'BPR-CC': 'Center', 'BPR-CE': 'East',
+  'BPR-SW': 'Southwest', 'BPR-SC': 'South', 'BPR-SE': 'Southeast',
+});
+const observed = points.filter((point) => point.observationState === 'complete');
+const notFound = observed.filter((point) => point.targetState === 'not_found_in_returned_set');
+const coordinates = (point) => `${point.latitude},${point.longitude},${sample.method.zoom}`;
+if (points.length !== 9 || new Set(points.map((point) => point.id)).size !== 9 ||
+    observed.length !== 9 || notFound.length !== 9 ||
+    points.some((point) => point.nativeRank !== null)) {
+  throw new Error('The historical local visibility proof must retain all nine accepted not-found observations.');
+}
+---
+
+<BaseLayout
+  title="Local Visibility Map — historical LDW evidence example"
+  description="A historical, precomputed nine-point Google Maps sample from the Beaufort–Port Royal corridor. This page performs no website scan, location lookup, or provider request."
+  noindex
+>
+  <div class="local-proof">
+    <section class="local-proof__hero">
+      <div class="container">
+        <p class="local-proof__tag">{sample.label}</p>
+        <h1>Local Visibility Map</h1>
+        <p class="local-proof__lead">Nine exact observations. No invented rankings between them.</p>
+        <p class="local-proof__intent"><strong>Question checked:</strong> {sample.intent}</p>
+        <p class="local-proof__warning"><strong>This is not a live check.</strong> It shows historical, precomputed LDW-owned evidence from October 21, 2026. No visitor location, domain, or contact details are requested, and no search provider is contacted by this page.</p>
+      </div>
+    </section>
+
+    <section class="container local-proof__section" aria-labelledby="local-summary">
+      <p class="eyebrow">What was actually observed</p>
+      <h2 id="local-summary">No LDW result in nine sampled Maps result sets</h2>
+      <p>{sample.resultSummary}</p>
+      <dl class="local-proof__summary">
+        <div><dt>Observed sample points</dt><dd>{observed.length} of {points.length}</dd></div>
+        <div><dt>LDW not found in returned set</dt><dd>{notFound.length} of {points.length}</dd></div>
+        <div><dt>Unavailable / failed points</dt><dd>{points.length - observed.length}</dd></div>
+      </dl>
+      <p class="local-proof__caution"><strong>Not found is not rank zero.</strong> This result does not establish LDW's position beyond the returned result set, nor any current rank or business impact.</p>
+    </section>
+
+    <section class="local-proof__map-section" aria-labelledby="local-map-title">
+      <div class="container">
+        <div class="local-proof__map-heading">
+          <div>
+            <p class="eyebrow">Discrete sample-point view</p>
+            <h2 id="local-map-title">Beaufort–Port Royal sample frame</h2>
+          </div>
+          <p class="local-proof__date">Observed: <time datetime={sample.observationDate}>{sample.observationDate}</time></p>
+        </div>
+        <p class="local-proof__region">{sample.region}. North is at the top; west is to the left. This is a schematic arrangement of the nine observed coordinates, <strong>not</strong> a street map, interpolated heatmap, municipal boundary, or unsampled-area measurement.</p>
+
+        <div class="local-proof__figure" role="group" aria-label="Schematic three by three grid of nine exact Google Maps observations">
+          <p class="local-proof__north">North ↑</p>
+          <ol class="local-proof__grid" aria-label="Nine sample points, north-west to south-east">
+            {points.map((point) => (
+              <li class="local-proof__point" data-point={point.id} data-state={point.targetState}>
+                <strong class="local-proof__point-id">{positionName[point.id]}</strong>
+                <span class="local-proof__point-symbol" aria-hidden="true">∅</span>
+                <span class="local-proof__point-state">Not found<span class="local-proof__point-state-detail"> in returned set</span></span>
+                <code>{point.latitude}, {point.longitude}</code>
+              </li>
+            ))}
+          </ol>
+          <div class="local-proof__compass"><span>← West</span><span>East →</span></div>
+          <p class="local-proof__legend"><strong>Symbol ∅:</strong> target not found in returned result set at this point. The symbol never means rank 0, no demand, or that collection failed.</p>
+        </div>
+
+        <details class="local-proof__detail">
+          <summary>View every exact point and its evidence state in a table</summary>
+          <p id="local-visibility-table-caption" class="local-proof__table-intro">All nine exact sampled coordinates and source states. The table scrolls sideways on small screens; keyboard users can focus the table area and use the arrow keys.</p>
+          <div class="local-proof__table-scroll" tabindex="0" role="region" aria-label="Sample point evidence table, scrolls horizontally">
+            <table aria-labelledby="local-visibility-table-caption">
+              <thead><tr><th scope="col">Sample point</th><th scope="col">Latitude</th><th scope="col">Longitude</th><th scope="col">Collection</th><th scope="col">LDW result state</th><th scope="col">Rank</th></tr></thead>
+              <tbody>
+                {points.map((point) => (
+                  <tr data-table-point={point.id}>
+                    <th scope="row"><code>{point.id}</code></th>
+                    <td><code>{point.latitude}</code></td>
+                    <td><code>{point.longitude}</code></td>
+                    <td>Complete</td>
+                    <td>Not found in returned set</td>
+                    <td>Not observed</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="container local-proof__section" aria-labelledby="local-method-title">
+      <p class="eyebrow">Where the observations came from</p>
+      <h2 id="local-method-title">Source, method, and comparability</h2>
+      <dl class="local-proof__method">
+        <div><dt>Provider / surface</dt><dd>{sample.source} / {sample.surface}</dd></div>
+        <div><dt>Exact query</dt><dd><code>{sample.method.query}</code></dd></div>
+        <div><dt>Collection mode</dt><dd>{sample.method.priority}</dd></div>
+        <div><dt>Language / device / OS</dt><dd>{sample.method.language} / {sample.method.device} / {sample.method.os}</dd></div>
+        <div><dt>Depth / zoom</dt><dd>{sample.method.depth} / {sample.method.zoom}</dd></div>
+        <div><dt>Search settings</dt><dd><code>search_places: {String(sample.method.searchPlaces)}</code> · <code>search_this_area: {String(sample.method.searchThisArea)}</code></dd></div>
+        <div><dt>Sample geometry</dt><dd>{sample.geometry}</dd></div>
+        <div><dt>Cost provenance</dt><dd>{sample.costStatement}</dd></div>
+      </dl>
+      <p><strong>Recheck rule:</strong> {sample.nextStep}</p>
+      <p class="local-proof__provider-note">The original source is an accepted, bounded LDW-owned DataForSEO evidence cycle. These are provider-returned observations, not LDW conclusions about competitors or causes. Google Maps, Local Finder, organic search, and AI answers cannot be substituted for one another.</p>
+    </section>
+
+    <section class="local-proof__limits" aria-labelledby="local-limits-title">
+      <div class="container">
+        <p class="eyebrow">What this example cannot establish</p>
+        <h2 id="local-limits-title">Evidence boundaries</h2>
+        <ul>{sample.limitations.map((limitation) => <li>{limitation}</li>)}</ul>
+      </div>
+    </section>
+
+    <section class="container local-proof__section local-proof__next" aria-labelledby="local-next-title">
+      <div>
+        <p class="eyebrow">A bounded next step</p>
+        <h2 id="local-next-title">Need help understanding a real local search question?</h2>
+        <p>This historical example is not a current result for your business, not a scan offer, and not a recommendation to change a listing. LDW can discuss what evidence would be useful and whether a separately scoped review makes sense.</p>
+      </div>
+      <a class="button" href="/discovery/">Start a project conversation <span aria-hidden="true">→</span></a>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .local-proof { color: var(--text); }
+  .local-proof__hero { padding: clamp(3rem, 7vw, 5rem) 0; background: var(--surface-warm); }
+  .local-proof__hero h1 { max-width: 22ch; margin: 0; font-size: clamp(2.1rem, 6vw, 4rem); line-height: 1.1; }
+  .local-proof__tag { display: inline-block; border: 1px solid var(--interactive); border-radius: var(--radius-sm); padding: .35rem .6rem; font-weight: 800; font-size: .8rem; letter-spacing: .05em; }
+  .local-proof__lead { font-size: clamp(1.15rem, 2.5vw, 1.45rem); max-width: 65ch; }
+  .local-proof__intent { max-width: 74ch; }
+  .local-proof__warning, .local-proof__caution { border-left: 4px solid var(--interactive); padding: 1rem 1.15rem; background: var(--surface); max-width: 80ch; }
+  .local-proof__section { padding-block: clamp(2.5rem, 6vw, 4rem); }
+  .local-proof h2 { margin-top: 0; font-size: clamp(1.5rem, 3.1vw, 2.15rem); line-height: 1.25; }
+  .local-proof__summary { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .8rem; margin: 1.5rem 0; }
+  .local-proof__summary > div { border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1rem; min-width: 0; }
+  .local-proof__summary dt { color: var(--muted); font-size: .85rem; }
+  .local-proof__summary dd { margin: .3rem 0 0; font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 800; }
+  .local-proof__map-section { background: var(--surface); padding-block: clamp(2.5rem, 6vw, 4rem); }
+  .local-proof__map-heading { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 1rem; }
+  .local-proof__date { color: var(--muted); }
+  .local-proof__region { max-width: 85ch; }
+  .local-proof__figure { border: 1px solid var(--border); border-radius: var(--radius-lg); padding: clamp(.7rem, 3vw, 1.5rem); background: var(--bg); margin: 1.5rem 0; }
+  .local-proof__north { text-align: center; margin: 0 0 .75rem; font-weight: 800; }
+  .local-proof__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(.35rem, 1.4vw, 1rem); padding: 0; margin: 0; list-style: none; }
+  .local-proof__point { display: grid; place-items: center; text-align: center; gap: .4rem; padding: clamp(.65rem, 2vw, 1.2rem) .35rem; border: 2px solid var(--border); border-radius: var(--radius-md); min-width: 0; background: var(--surface-warm); }
+  .local-proof__point-id { font-size: clamp(.8rem, 1.7vw, 1rem); }
+  .local-proof__point-symbol { font-size: clamp(1.5rem, 5vw, 2.5rem); line-height: 1; color: var(--interactive); font-weight: 700; }
+  .local-proof__point-state { font-size: clamp(.67rem, 1.4vw, .9rem); line-height: 1.3; font-weight: 700; max-width: 17ch; }
+  .local-proof__point code { font-size: clamp(.55rem, 1vw, .76rem); line-height: 1.5; overflow-wrap: anywhere; }
+  .local-proof__compass { display: flex; justify-content: space-between; font-weight: 700; margin-top: .6rem; }
+  .local-proof__legend { border-top: 1px solid var(--border); margin: 1rem 0 0; padding-top: 1rem; }
+  .local-proof__detail { border: 1px solid var(--border); padding: 1rem; border-radius: var(--radius-md); }
+  .local-proof__detail summary { cursor: pointer; color: var(--interactive); font-weight: 800; }
+  .local-proof__table-intro { margin: 1rem 0 .5rem; color: var(--muted); }
+  .local-proof__table-scroll { overflow-x: auto; max-width: 100%; margin-top: .5rem; }
+  .local-proof__table-scroll:focus-visible { outline: 3px solid var(--interactive); outline-offset: 3px; }
+  .local-proof__detail table { width: 100%; border-collapse: collapse; font-size: .85rem; min-width: 660px; }
+   .local-proof__detail th, .local-proof__detail td { border-bottom: 1px solid var(--border); padding: .65rem .4rem; text-align: left; }
+  .local-proof__method { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin: 1.4rem 0; }
+  .local-proof__method > div { border-bottom: 1px solid var(--border); padding-bottom: .6rem; min-width: 0; }
+  .local-proof__method dt { font-weight: 750; }
+  .local-proof__method dd { margin: .3rem 0 0; overflow-wrap: anywhere; }
+  .local-proof__provider-note { color: var(--muted); max-width: 85ch; }
+  .local-proof__limits { padding-block: clamp(2.5rem, 6vw, 4rem); background: var(--surface-warm); }
+  .local-proof__limits ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .7rem; margin: 1rem 0 0; padding: 0; list-style: none; }
+  .local-proof__limits li { padding: 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); }
+  .local-proof__next { display: flex; justify-content: space-between; flex-wrap: wrap; align-items: center; gap: 1.5rem; }
+  .local-proof__next > div { max-width: 68ch; }
+  @media (max-width: 700px) {
+    .local-proof__method, .local-proof__limits ul { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 900px) {
+    .local-proof__point { padding: .9rem .1rem; gap: .45rem; }
+    .local-proof__point-state { font-size: .8rem; max-width: none; }
+    /* The point table supplies the visible full coordinates at phone/tablet widths.
+       Keep complete source strings in the grid's accessible text. */
+    .local-proof__point-state-detail, .local-proof__point code {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+  }
+  @media (max-width: 420px) {
+    .local-proof__summary { grid-template-columns: 1fr; }
+  }
+</style>
