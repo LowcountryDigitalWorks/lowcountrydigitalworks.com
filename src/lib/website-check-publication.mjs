@@ -127,7 +127,22 @@ export function projectPublicationSafeWebsiteCheck(raw) {
   if (!Array.isArray(raw.notMeasured) || raw.notMeasured.length < 1 || raw.notMeasured.length > 12) {
     throw new TypeError('Website Check requires explicit unmeasured coverage');
   }
-  const notMeasured = raw.notMeasured.map((item) => publicText(item, 160));
+  // Do not trigger accessor side effects on a supplied array or silently strip
+  // extra array properties; this is a publication gate, not a provider parser.
+  if (Object.getPrototypeOf(raw.notMeasured) !== Array.prototype) {
+    throw new TypeError('Invalid Website Check coverage list prototype');
+  }
+  const coverageDescriptors = Object.getOwnPropertyDescriptors(raw.notMeasured);
+  const coverageKeys = Reflect.ownKeys(coverageDescriptors);
+  if (coverageKeys.length !== raw.notMeasured.length + 1 ||
+    coverageKeys.some((key) => key !== 'length' &&
+      (typeof key !== 'string' || !/^(?:0|[1-9][0-9]*)$/u.test(key) ||
+        Number(key) >= raw.notMeasured.length ||
+        !Object.hasOwn(coverageDescriptors[key], 'value')))) {
+    throw new TypeError('Invalid Website Check coverage list elements');
+  }
+  const notMeasured = Array.from({ length: raw.notMeasured.length },
+    (_, index) => publicText(coverageDescriptors[String(index)].value, 160));
   if (new Set(notMeasured).size !== notMeasured.length) {
     throw new TypeError('Duplicate Website Check unmeasured coverage');
   }
