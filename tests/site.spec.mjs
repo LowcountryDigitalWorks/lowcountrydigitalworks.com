@@ -658,19 +658,45 @@ test('mobile layout has no horizontal overflow across all public and utility rou
   }
 });
 
-test('shared footer contact does not cause horizontal overflow around the tablet breakpoint', async ({ page }) => {
-  for (const width of [320, 375, 768, 900, 1000, 1024]) {
+test('shared footer contact stays visible and unclipped across mobile and tablet breakpoints', async ({ page }) => {
+  // Explicitly straddle the two responsive transitions and the observed
+  // production overflow range. Page scrollWidth alone misses overflow:hidden.
+  for (const width of [320, 375, 760, 761, 768, 820, 900, 1000, 1001, 1024, 1280]) {
     await page.setViewportSize({ width, height: 900 });
     for (const route of ['/', '/services/website-care/']) {
       await page.goto(route);
-      const geometry = await page.evaluate(() => ({
-        width: document.documentElement.clientWidth,
-        scrollWidth: document.documentElement.scrollWidth,
-      }));
-      expect(geometry.scrollWidth, `footer overflow at ${route} / ${width}px`)
-        .toBeLessThanOrEqual(geometry.width + 1);
-      await expect(page.locator('footer .footer-contact a[itemprop="email"]')).toHaveCount(1);
-      await expect(page.locator('footer .footer-contact a[itemprop="telephone"]')).toHaveCount(1);
+      const geometry = await page.evaluate(() => {
+        const clientWidth = document.documentElement.clientWidth;
+        const footerLinks = ['email', 'telephone'].map((itemprop) => {
+          const anchor = document.querySelector(`footer .footer-contact a[itemprop="${itemprop}"]`);
+          if (!anchor) return { itemprop, present: false };
+          const rect = anchor.getBoundingClientRect();
+          return {
+            itemprop,
+            present: true,
+            width: rect.width,
+            left: rect.left,
+            right: rect.right,
+            visible: getComputedStyle(anchor).visibility === 'visible',
+          };
+        });
+        return {
+          clientWidth,
+          scrollWidth: document.documentElement.scrollWidth,
+          footerLinks,
+        };
+      });
+      expect(geometry.scrollWidth, `document overflow at ${route} / ${width}px`)
+        .toBeLessThanOrEqual(geometry.clientWidth + 1);
+      for (const link of geometry.footerLinks) {
+        const context = `${link.itemprop} at ${route} / ${width}px`;
+        expect(link.present, `${context}: contact link missing`).toBe(true);
+        expect(link.visible, `${context}: contact link hidden`).toBe(true);
+        expect(link.width, `${context}: contact link collapsed`).toBeGreaterThan(0);
+        expect(link.left, `${context}: contact clipped on the left`).toBeGreaterThanOrEqual(-1);
+        expect(link.right, `${context}: contact clipped on the right`)
+          .toBeLessThanOrEqual(geometry.clientWidth + 1);
+      }
     }
   }
 });
