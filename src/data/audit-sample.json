@@ -18,6 +18,7 @@
     "verification": "The accepted Stage A cycle used same-source WQT / SiteOne-derived technical evidence for the before observation and recheck.",
     "owner": "LDW controlled",
     "beforeCount": 11,
+    "comparisonBasis": "accepted_same_source_remeasurement",
     "afterCount": 1,
     "recheck": "Same-source remeasurement observed 1 remaining static-assets-short-cache finding."
   },
