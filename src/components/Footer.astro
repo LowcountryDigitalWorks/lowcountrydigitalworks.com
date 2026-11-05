@@ -56,6 +56,10 @@ const { allowSocialProfiles = true } = Astro.props;
 .site-footer nav { display: grid; gap: .45rem; }
 .site-footer a { color: white; }
 .footer-contact { min-width: 0; }
+/* Keep the email usable when text is enlarged: the flex link must stay inside
+   its grid track, and the text may wrap without clipping or hiding content. */
+.footer-contact a[itemprop="email"] { max-width: 100%; }
+.footer-contact a[itemprop="email"] > span { min-width: 0; overflow-wrap: anywhere; }
 .footer-socials { display: flex; gap: 1rem; flex-wrap: wrap; }
 .footer-social-link { gap: .5rem; text-decoration-thickness: .08em; }
 .social-mark { width: 1.75rem; height: 1.75rem; display: inline-grid; place-items: center; flex: 0 0 auto; border-radius: .5rem; }
