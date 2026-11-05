@@ -3,6 +3,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import sample from '../data/local-visibility-sample.json';
 
 const points = sample.points;
+const positionName = Object.freeze({
+  'BPR-NW': 'Northwest', 'BPR-NC': 'North', 'BPR-NE': 'Northeast',
+  'BPR-CW': 'West', 'BPR-CC': 'Center', 'BPR-CE': 'East',
+  'BPR-SW': 'Southwest', 'BPR-SC': 'South', 'BPR-SE': 'Southeast',
+});
 const observed = points.filter((point) => point.observationState === 'complete');
 const notFound = observed.filter((point) => point.targetState === 'not_found_in_returned_set');
 const coordinates = (point) => `${point.latitude},${point.longitude},${sample.method.zoom}`;
@@ -57,7 +62,7 @@ if (points.length !== 9 || new Set(points.map((point) => point.id)).size !== 9 |
           <ol class="local-proof__grid" aria-label="Nine sample points, north-west to south-east">
             {points.map((point) => (
               <li class="local-proof__point" data-point={point.id} data-state={point.targetState}>
-                <strong class="local-proof__point-id">{point.id}</strong>
+                <strong class="local-proof__point-id">{positionName[point.id]}</strong>
                 <span class="local-proof__point-symbol" aria-hidden="true">∅</span>
                 <span class="local-proof__point-state">Not found<span class="local-proof__point-state-detail"> in returned set</span></span>
                 <code>{point.latitude}, {point.longitude}</code>
@@ -70,9 +75,9 @@ if (points.length !== 9 || new Set(points.map((point) => point.id)).size !== 9 |
 
         <details class="local-proof__detail">
           <summary>View every exact point and its evidence state in a table</summary>
-          <div class="local-proof__table-scroll">
-            <table>
-              <caption>Nine provider-observed sample coordinates with explicit target state; rank was not observed for LDW</caption>
+          <p id="local-visibility-table-caption" class="local-proof__table-intro">All nine exact sampled coordinates and source states. The table scrolls sideways on small screens; keyboard users can focus the table area and use the arrow keys.</p>
+          <div class="local-proof__table-scroll" tabindex="0" role="region" aria-label="Sample point evidence table, scrolls horizontally">
+            <table aria-labelledby="local-visibility-table-caption">
               <thead><tr><th scope="col">Sample point</th><th scope="col">Latitude</th><th scope="col">Longitude</th><th scope="col">Collection</th><th scope="col">LDW result state</th><th scope="col">Rank</th></tr></thead>
               <tbody>
                 {points.map((point) => (
@@ -158,10 +163,11 @@ if (points.length !== 9 || new Set(points.map((point) => point.id)).size !== 9 |
   .local-proof__legend { border-top: 1px solid var(--border); margin: 1rem 0 0; padding-top: 1rem; }
   .local-proof__detail { border: 1px solid var(--border); padding: 1rem; border-radius: var(--radius-md); }
   .local-proof__detail summary { cursor: pointer; color: var(--interactive); font-weight: 800; }
-  .local-proof__table-scroll { overflow-x: auto; max-width: 100%; margin-top: 1rem; }
+  .local-proof__table-intro { margin: 1rem 0 .5rem; color: var(--muted); }
+  .local-proof__table-scroll { overflow-x: auto; max-width: 100%; margin-top: .5rem; }
+  .local-proof__table-scroll:focus-visible { outline: 3px solid var(--interactive); outline-offset: 3px; }
   .local-proof__detail table { width: 100%; border-collapse: collapse; font-size: .85rem; min-width: 660px; }
-  .local-proof__detail caption { text-align: left; color: var(--muted); margin-bottom: .6rem; }
-  .local-proof__detail th, .local-proof__detail td { border-bottom: 1px solid var(--border); padding: .65rem .4rem; text-align: left; }
+   .local-proof__detail th, .local-proof__detail td { border-bottom: 1px solid var(--border); padding: .65rem .4rem; text-align: left; }
   .local-proof__method { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin: 1.4rem 0; }
   .local-proof__method > div { border-bottom: 1px solid var(--border); padding-bottom: .6rem; min-width: 0; }
   .local-proof__method dt { font-weight: 750; }
@@ -175,12 +181,11 @@ if (points.length !== 9 || new Set(points.map((point) => point.id)).size !== 9 |
   @media (max-width: 700px) {
     .local-proof__method, .local-proof__limits ul { grid-template-columns: 1fr; }
   }
-  @media (max-width: 420px) {
-    .local-proof__summary { grid-template-columns: 1fr; }
+  @media (max-width: 900px) {
     .local-proof__point { padding: .9rem .1rem; gap: .45rem; }
     .local-proof__point-state { font-size: .8rem; max-width: none; }
-    /* Preserve full exact source state and coordinates for assistive technology;
-       the expandable point table is the readable visual coordinate ledger on mobile. */
+    /* The point table supplies the visible full coordinates at phone/tablet widths.
+       Keep complete source strings in the grid's accessible text. */
     .local-proof__point-state-detail, .local-proof__point code {
       position: absolute;
       width: 1px;
@@ -192,5 +197,8 @@ if (points.length !== 9 || new Set(points.map((point) => point.id)).size !== 9 |
       white-space: nowrap;
       border: 0;
     }
+  }
+  @media (max-width: 420px) {
+    .local-proof__summary { grid-template-columns: 1fr; }
   }
 </style>
