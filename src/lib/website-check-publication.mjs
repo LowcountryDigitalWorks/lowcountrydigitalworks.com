@@ -35,10 +35,17 @@ function exactFields(record, required) {
   }
 }
 
+// The Stage 1 publication fixture is manually approved narrative, never a URL,
+// contact point, markup fragment, or arbitrary provider string. Restrict the
+// allowable alphabet rather than trying to blacklist every Unicode spoofing
+// character or new URL scheme. New language/punctuation requires explicit review.
+const PUBLIC_NARRATIVE = /^[A-Za-z0-9][A-Za-z0-9 .,;:?!()&/'\u2013\u2014-]*$/u;
+const LINK_OR_HOST_HINT = /(?:\b(?:https?|ftp|file|data|javascript|vbscript|mailto):|\bwww\.|\/\/|\b(?:[a-z0-9-]+\.)+[a-z]{2,24}\b|\b(?:\d{1,3}\.){3}\d{1,3}\b)/iu;
+
 function publicText(value, maxLength = 600) {
-  if (typeof value !== 'string' || value.trim().length === 0 ||
-    value.length > maxLength || /[\u0000-\u001f\u007f]/u.test(value) ||
-    /(?:https?:\/\/|data:|javascript:|file:|ftp:)/iu.test(value)) {
+  if (typeof value !== 'string' || value.length === 0 ||
+    value.length > maxLength || value.trim() !== value ||
+    !PUBLIC_NARRATIVE.test(value) || LINK_OR_HOST_HINT.test(value)) {
     throw new TypeError('Invalid Website Check publication text');
   }
   return value;
@@ -63,8 +70,21 @@ function projectFinding(value) {
   if (value.comparisonBasis !== 'accepted_same_source_remeasurement') {
     throw new TypeError('Website Check comparison lacks an accepted same-source basis');
   }
+  const id = publicId(value.id);
+  const beforeCount = observedCount(value.beforeCount);
+  const afterCount = observedCount(value.afterCount);
+  // This fixed historical publication explicitly claims an observed reduction.
+  // Changed/increased counts require a separately reviewed publication narrative.
+  if (afterCount >= beforeCount) {
+    throw new TypeError('Website Check finding no longer supports the reduction claim');
+  }
+  const recheck = publicText(value.recheck);
+  const expectedRecheck = `Same-source remeasurement observed ${afterCount} remaining ${id} ${afterCount === 1 ? 'finding' : 'findings'}.`;
+  if (recheck !== expectedRecheck) {
+    throw new TypeError('Website Check recheck text disagrees with the observed count');
+  }
   return Object.freeze({
-    id: publicId(value.id),
+    id,
     category: publicText(value.category, 120),
     title: publicText(value.title, 160),
     summary: publicText(value.summary),
@@ -73,9 +93,9 @@ function projectFinding(value) {
     verification: publicText(value.verification, 1000),
     owner: publicText(value.owner, 120),
     comparisonBasis: value.comparisonBasis,
-    beforeCount: observedCount(value.beforeCount),
-    afterCount: observedCount(value.afterCount),
-    recheck: publicText(value.recheck),
+    beforeCount,
+    afterCount,
+    recheck,
   });
 }
 
