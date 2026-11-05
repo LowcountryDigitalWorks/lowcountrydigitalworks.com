@@ -12,7 +12,7 @@ const TOP_LEVEL = [
 ];
 const FINDING = [
   'id', 'category', 'title', 'summary', 'meaning', 'action',
-  'verification', 'owner', 'beforeCount', 'afterCount', 'recheck',
+  'verification', 'owner', 'comparisonBasis', 'beforeCount', 'afterCount', 'recheck',
 ];
 const RESIDUAL = ['id', 'category', 'title', 'status', 'owner', 'summary', 'limitation'];
 
@@ -60,6 +60,9 @@ function observedCount(value) {
 
 function projectFinding(value) {
   exactFields(value, FINDING);
+  if (value.comparisonBasis !== 'accepted_same_source_remeasurement') {
+    throw new TypeError('Website Check comparison lacks an accepted same-source basis');
+  }
   return Object.freeze({
     id: publicId(value.id),
     category: publicText(value.category, 120),
@@ -69,6 +72,7 @@ function projectFinding(value) {
     action: publicText(value.action, 1000),
     verification: publicText(value.verification, 1000),
     owner: publicText(value.owner, 120),
+    comparisonBasis: value.comparisonBasis,
     beforeCount: observedCount(value.beforeCount),
     afterCount: observedCount(value.afterCount),
     recheck: publicText(value.recheck),
