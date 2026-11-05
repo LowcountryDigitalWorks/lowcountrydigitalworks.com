@@ -136,6 +136,7 @@ test('website publication projection rejects missing source, comparison authorit
   }
   const observedZero = structuredClone(fixture);
   observedZero.finding.afterCount = 0;
+  observedZero.finding.recheck = 'Same-source remeasurement observed 0 remaining static-assets-short-cache findings.';
   expect(projectPublicationSafeWebsiteCheck(observedZero).finding.afterCount).toBe(0);
 
   const unsupportedComparison = structuredClone(fixture);
@@ -167,4 +168,129 @@ test('website publication projection requires the residual and unmeasured catego
   const duplicateIds = structuredClone(fixture);
   duplicateIds.residual.id = duplicateIds.finding.id;
   expect(() => projectPublicationSafeWebsiteCheck(duplicateIds)).toThrow();
+});
+
+
+test('publication rejects accessor-backed records and coverage lists before executing getters', () => {
+  for (const path of ['source', 'finding.summary', 'residual.summary', 'notMeasured.0']) {
+    const changed = structuredClone(fixture);
+    const [record, key] = path === 'notMeasured.0'
+      ? [changed.notMeasured, '0']
+      : path.startsWith('finding.') ? [changed.finding, 'summary']
+      : path.startsWith('residual.') ? [changed.residual, 'summary']
+      : [changed, 'source'];
+    let getterCalls = 0;
+    Object.defineProperty(record, key, {
+      enumerable: true,
+      configurable: true,
+      get() { getterCalls += 1; return 'Spoofed source data'; },
+    });
+    expect(() => projectPublicationSafeWebsiteCheck(changed)).toThrow();
+    expect(getterCalls).toBe(0);
+  }
+
+  const nonPlain = structuredClone(fixture);
+  Object.setPrototypeOf(nonPlain.finding, { inherited: 'not public' });
+  expect(() => projectPublicationSafeWebsiteCheck(nonPlain)).toThrow();
+
+  const extraArrayField = structuredClone(fixture);
+  extraArrayField.notMeasured.internalField = 'private';
+  expect(() => projectPublicationSafeWebsiteCheck(extraArrayField)).toThrow();
+
+  const sparse = structuredClone(fixture);
+  delete sparse.notMeasured[1];
+  expect(() => projectPublicationSafeWebsiteCheck(sparse)).toThrow();
+});
+
+test('publication rejects contact, URL, markup, invisible Unicode, controls and unsupported narratives', () => {
+  const unsafeTexts = [
+    'https://example.invalid/private',
+    'http://example.invalid/',
+    '//host.example',
+    'www.example.invalid',
+    'mailto:example',
+    'vbscript:message',
+    'user:pass@host',
+    'contact@example.invalid',
+    '192.168.1.1',
+    '<script>alert(1)</script>',
+    '<a href=example>click</a>',
+    'text\u202eetadpu',
+    'text\u200bhidden',
+    'text\u0085hidden',
+    'text\u2028hidden',
+    'text\ud800',
+    'line\nline',
+    'x'.repeat(601),
+    '   ',
+    ' Leading space',
+  ];
+  for (const value of unsafeTexts) {
+    const changed = structuredClone(fixture);
+    changed.coverage = value;
+    expect(() => projectPublicationSafeWebsiteCheck(changed), JSON.stringify(value)).toThrow();
+  }
+  const tooLongOwner = structuredClone(fixture);
+  tooLongOwner.finding.owner = 'x'.repeat(121);
+  expect(() => projectPublicationSafeWebsiteCheck(tooLongOwner)).toThrow();
+  const empty = structuredClone(fixture);
+  empty.residual.title = '';
+  expect(() => projectPublicationSafeWebsiteCheck(empty)).toThrow();
+});
+
+test('publication enforces bounded IDs, counts, coverage and both explicit owners', () => {
+  for (const id of ['bad_id', 'A', 'a'.repeat(81), 'missing source', '']) {
+    const changed = structuredClone(fixture);
+    changed.finding.id = id;
+    expect(() => projectPublicationSafeWebsiteCheck(changed)).toThrow();
+  }
+  for (const count of [100_001, Number.MAX_SAFE_INTEGER, -1, 0.25, '11']) {
+    const changed = structuredClone(fixture);
+    changed.finding.beforeCount = count;
+    expect(() => projectPublicationSafeWebsiteCheck(changed)).toThrow();
+  }
+  const tooMany = structuredClone(fixture);
+  tooMany.notMeasured = Array.from({ length: 13 }, (_, i) => `Unmeasured area ${i}`);
+  expect(() => projectPublicationSafeWebsiteCheck(tooMany)).toThrow();
+
+  for (const ownerPath of ['finding', 'residual']) {
+    const changed = structuredClone(fixture);
+    delete changed[ownerPath].owner;
+    expect(() => projectPublicationSafeWebsiteCheck(changed)).toThrow();
+  }
+});
+
+test('publication proves structured counts and recheck text cannot contradict the reduction narrative', () => {
+  const changedCount = structuredClone(fixture);
+  changedCount.finding.afterCount = 5;
+  expect(() => projectPublicationSafeWebsiteCheck(changedCount)).toThrow();
+
+  const inverted = structuredClone(fixture);
+  inverted.finding.beforeCount = 1;
+  inverted.finding.afterCount = 11;
+  inverted.finding.recheck = 'Same-source remeasurement observed 11 remaining static-assets-short-cache findings.';
+  expect(() => projectPublicationSafeWebsiteCheck(inverted)).toThrow();
+
+  const unchanged = structuredClone(fixture);
+  unchanged.finding.afterCount = unchanged.finding.beforeCount;
+  unchanged.finding.recheck = 'Same-source remeasurement observed 11 remaining static-assets-short-cache findings.';
+  expect(() => projectPublicationSafeWebsiteCheck(unchanged)).toThrow();
+
+  const mismatchedWording = structuredClone(fixture);
+  mismatchedWording.finding.recheck = 'Same-source remeasurement observed 5 remaining static-assets-short-cache findings.';
+  expect(() => projectPublicationSafeWebsiteCheck(mismatchedWording)).toThrow();
+});
+
+test('publication does not alias mutable input records or arrays', () => {
+  const input = structuredClone(fixture);
+  const view = projectPublicationSafeWebsiteCheck(input);
+  expect(view).not.toBe(input);
+  expect(view.finding).not.toBe(input.finding);
+  expect(view.residual).not.toBe(input.residual);
+  expect(view.notMeasured).not.toBe(input.notMeasured);
+  input.notMeasured[0] = 'Changed after validation';
+  input.finding.title = 'Changed after validation';
+  expect(view.notMeasured[0]).toBe(fixture.notMeasured[0]);
+  expect(view.finding.title).toBe(fixture.finding.title);
+  expect(() => view.notMeasured.push('Mutated')).toThrow();
 });
