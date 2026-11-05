@@ -658,6 +658,23 @@ test('mobile layout has no horizontal overflow across all public and utility rou
   }
 });
 
+test('shared footer contact does not cause horizontal overflow around the tablet breakpoint', async ({ page }) => {
+  for (const width of [320, 375, 768, 900, 1000, 1024]) {
+    await page.setViewportSize({ width, height: 900 });
+    for (const route of ['/', '/services/website-care/']) {
+      await page.goto(route);
+      const geometry = await page.evaluate(() => ({
+        width: document.documentElement.clientWidth,
+        scrollWidth: document.documentElement.scrollWidth,
+      }));
+      expect(geometry.scrollWidth, `footer overflow at ${route} / ${width}px`)
+        .toBeLessThanOrEqual(geometry.width + 1);
+      await expect(page.locator('footer .footer-contact a[itemprop="email"]')).toHaveCount(1);
+      await expect(page.locator('footer .footer-contact a[itemprop="telephone"]')).toHaveCount(1);
+    }
+  }
+});
+
 test('homepage internal navigation targets resolve', async ({ page }) => {
   await page.goto('/');
   const hrefs = await page.locator('a[href^="/"]').evaluateAll(as => [...new Set(as.map(a => a.getAttribute('href')).filter(Boolean))]);
