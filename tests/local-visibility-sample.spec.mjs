@@ -106,8 +106,16 @@ test('local map remains page-overflow-free at 320px mobile width', async ({ page
   }));
   expect(dimensions.content).toBeLessThanOrEqual(dimensions.viewport);
   await expect(page.locator('[data-point]')).toHaveCount(9);
+  const point = page.locator('[data-point="BPR-NW"]');
+  const state = point.locator('.local-proof__point-state');
+  await expect(state).toContainText('Not found in returned set');
+  const labelPx = await state.evaluate((element) => Number.parseFloat(getComputedStyle(element).fontSize));
+  expect(labelPx).toBeGreaterThanOrEqual(12);
   await page.getByText('View every exact point and its evidence state in a table').click();
   await expect(page.getByRole('table')).toBeVisible();
+  const exactRow = page.locator('[data-table-point="BPR-NW"]');
+  await expect(exactRow.getByText('32.440300', { exact: true })).toBeVisible();
+  await expect(exactRow.getByText('-80.728462', { exact: true })).toBeVisible();
   const afterTable = await page.evaluate(() => ({
     viewport: document.documentElement.clientWidth,
     content: document.documentElement.scrollWidth,
