@@ -122,3 +122,37 @@ test('local map remains page-overflow-free at 320px mobile width', async ({ page
   }));
   expect(afterTable.content).toBeLessThanOrEqual(afterTable.viewport);
 });
+
+
+test('sample-point table is keyboard-scrollable and understandable on narrow viewports', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 900 });
+  await page.goto('/local-visibility-sample/');
+  await expect(page.locator('[data-point="BPR-NW"]').getByText('Northwest')).toBeVisible();
+  await page.getByText('View every exact point and its evidence state in a table').click();
+  const scrollRegion = page.getByRole('region', { name: 'Sample point evidence table, scrolls horizontally' });
+  await expect(scrollRegion).toBeVisible();
+  await expect(scrollRegion).toHaveAttribute('tabindex', '0');
+  const widths = await scrollRegion.evaluate((element) => ({
+    scroll: element.scrollWidth,
+    visible: element.clientWidth,
+  }));
+  expect(widths.scroll).toBeGreaterThan(widths.visible);
+  await scrollRegion.focus();
+  await expect(scrollRegion).toBeFocused();
+  await page.keyboard.press('ArrowRight');
+  await expect.poll(() => scrollRegion.evaluate((element) => element.scrollLeft)).toBeGreaterThan(0);
+  await expect(page.locator('[data-table-point="BPR-NW"]').getByText('-80.728462', { exact: true })).toHaveCount(1);
+});
+
+test('tablet-width point labels are legible and full source detail remains accessible in the table', async ({ page }) => {
+  await page.setViewportSize({ width: 768, height: 900 });
+  await page.goto('/local-visibility-sample/');
+  const point = page.locator('[data-point="BPR-NW"]');
+  await expect(point.getByText('Northwest')).toBeVisible();
+  const state = point.locator('.local-proof__point-state');
+  await expect(state).toContainText('Not found in returned set');
+  const fontPx = await state.evaluate((element) => Number.parseFloat(getComputedStyle(element).fontSize));
+  expect(fontPx).toBeGreaterThanOrEqual(12);
+  await page.getByText('View every exact point and its evidence state in a table').click();
+  await expect(page.locator('[data-table-point="BPR-NW"]').getByText('32.440300', { exact: true })).toBeVisible();
+});
