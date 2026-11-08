@@ -1,6 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import sample from '../data/audit-sample.json';
+import rawSample from '../data/audit-sample.json';
+import { projectPublicationSafeWebsiteCheck } from '../lib/website-check-publication.mjs';
+
+const sample = projectPublicationSafeWebsiteCheck(rawSample);
 
 const evidenceCardCount = [sample.finding, sample.residual].filter(Boolean).length;
 ---
@@ -16,6 +19,7 @@ const evidenceCardCount = [sample.finding, sample.residual].filter(Boolean).leng
         <p class="audit-demo__label">{sample.label}</p>
         <h1 id="audit-title">See how LDW turns evidence into a bounded decision.</h1>
         <p class="audit-demo__lede">This proof uses one accepted LDW-owned technical evidence cycle to show the before observation, bounded action, same-source recheck, and what remained outside LDW control.</p>
+        <p class="audit-demo__intent"><strong>Question answered:</strong> {sample.checkIntent}</p>
         <p class="audit-demo__notice">
           <strong>This page does not scan a website.</strong> It displays precomputed evidence from an already accepted LDW-owned cycle. No domain is requested, no provider is contacted, and no live check runs from this page.
         </p>
@@ -147,6 +151,7 @@ const evidenceCardCount = [sample.finding, sample.residual].filter(Boolean).leng
   .audit-demo__label { display: inline-block; margin: 0 0 1rem; padding: .35rem .7rem; border: 2px solid var(--interactive); border-radius: var(--radius-sm); font-size: .82rem; font-weight: 800; letter-spacing: .08em; }
   .audit-demo h1 { max-width: 18ch; margin: 0; font-size: clamp(2.2rem, 6vw, 4.3rem); line-height: 1.08; }
   .audit-demo__lede { max-width: 62ch; margin: 1.2rem 0; font-size: clamp(1.1rem, 2.3vw, 1.35rem); }
+  .audit-demo__intent { max-width: 72ch; margin: 0 0 1.4rem; font-size: 1rem; line-height: 1.6; }
   .audit-demo__notice { max-width: 70ch; margin: 1.5rem 0 0; padding: 1rem 1.15rem; border-left: 4px solid var(--interactive); background: var(--surface); }
   .audit-demo__section { padding-block: clamp(2.5rem, 6vw, 4rem); }
   .audit-demo__section-heading { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 1rem 2rem; }
