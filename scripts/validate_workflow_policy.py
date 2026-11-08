@@ -11,6 +11,8 @@ EXPECTED_VALIDATE_RUN_STEPS = (
     ("Build static site", "npm run build"),
     ("Privacy-negative source and built-asset contract", "npm run test:clarity-privacy"),
     ("Validate repository and built site", "python scripts/validate_repository.py"),
+    ("Inline-style CSP guard unit tests", "python tests/test_inline_style_guard.py"),
+    ("Reject CSP-blocked inline style attributes in built pages", "python scripts/validate_inline_style_attrs.py"),
     ("Production smoke unit tests", "npm run test:smoke"),
     ("Dependency policy unit tests", "npm run test:dependency-policy"),
     ("Install Chromium", "npx playwright install --with-deps chromium"),

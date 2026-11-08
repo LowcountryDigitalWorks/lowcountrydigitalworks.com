@@ -14,7 +14,7 @@
     "test:smoke": "node --test tests/production-smoke.unit.mjs tests/recovery-readiness.unit.mjs && node scripts/recovery-readiness.mjs",
     "test:dependency-policy": "node --test tests/dependency-audit-policy.unit.mjs",
     "test:e2e": "playwright test",
-    "validate": "npm run test:worker && npm run build && npm run test:clarity-privacy && npm run test:smoke && python scripts/validate_repository.py",
+    "validate": "npm run test:worker && npm run build && npm run test:clarity-privacy && npm run test:smoke && python scripts/validate_repository.py && python tests/test_inline_style_guard.py && python scripts/validate_inline_style_attrs.py",
     "test:clarity-privacy": "node --test tests/clarity-no-tracking.unit.mjs"
   },
   "devDependencies": {

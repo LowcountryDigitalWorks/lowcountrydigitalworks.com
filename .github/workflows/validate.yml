@@ -51,6 +51,12 @@ jobs:
       - name: Validate repository and built site
         run: python scripts/validate_repository.py
 
+      - name: Inline-style CSP guard unit tests
+        run: python tests/test_inline_style_guard.py
+
+      - name: Reject CSP-blocked inline style attributes in built pages
+        run: python scripts/validate_inline_style_attrs.py
+
       - name: Production smoke unit tests
         run: npm run test:smoke
 
