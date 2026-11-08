@@ -56,6 +56,10 @@ const { allowSocialProfiles = true } = Astro.props;
 .site-footer nav { display: grid; gap: .45rem; }
 .site-footer a { color: white; }
 .footer-contact { min-width: 0; }
+/* Keep the email usable when text is enlarged: the flex link must stay inside
+   its grid track, and the text may wrap without clipping or hiding content. */
+.footer-contact a[itemprop="email"] { max-width: 100%; }
+.footer-contact a[itemprop="email"] > span { min-width: 0; overflow-wrap: anywhere; }
 .footer-socials { display: flex; gap: 1rem; flex-wrap: wrap; }
 .footer-social-link { gap: .5rem; text-decoration-thickness: .08em; }
 .social-mark { width: 1.75rem; height: 1.75rem; display: inline-grid; place-items: center; flex: 0 0 auto; border-radius: .5rem; }
@@ -63,5 +67,11 @@ const { allowSocialProfiles = true } = Astro.props;
 .social-mark--x { background: #fff; color: #000; border: 1px solid rgb(255 255 255 / .8); }
 .footer-social-link:hover .social-mark { transform: translateY(-1px); }
 .small { font-size: .88rem; }
+/* The third desktop track is narrower than the contact email at tablet widths.
+   Give contact its own full-width row before switching to the phone stack. */
+@media(min-width:761px) and (max-width:1000px){
+  .footer-grid { grid-template-columns: minmax(0,1.5fr) minmax(0,1fr); gap: 1.75rem; }
+  .footer-contact { grid-column: 1 / -1; }
+}
 @media(max-width:760px){ .footer-grid { grid-template-columns: 1fr; gap: 1.5rem; } }
 </style>
