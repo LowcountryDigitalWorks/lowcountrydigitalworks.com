@@ -42,7 +42,7 @@ class InlineStyleGuardTests(unittest.TestCase):
             (base / "pages" / "bad.html").write_text('<div style="background:url(secret)">Bad</div>', encoding="utf-8")
             errors = validate_built_pages(base)
             self.assertEqual(len(errors), 1)
-            self.assertIn("pages/bad.html:1", errors[0])
+            self.assertIn("pages/bad.html:1", errors[0].replace("\\", "/"))
             self.assertIn("prohibited inline style attribute", errors[0])
             self.assertNotIn("secret", errors[0])
 
