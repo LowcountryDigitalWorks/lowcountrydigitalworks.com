@@ -7,7 +7,7 @@ test('Services hub presents factual local service metadata without changing cano
   await expect(page).toHaveTitle('Website & Automation Services in Beaufort, SC | Lowcountry Digital Works');
   await expect(page.locator('meta[name="description"]')).toHaveAttribute(
     'content',
-    'Beaufort-based website projects and care, business automation, digital ownership, and practical technology consulting for Lowcountry businesses.',
+    'Website projects and care, business systems and automation, digital ownership and platform administration, and technology consulting from Lowcountry Digital Works.',
   );
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://lowcountrydigitalworks.com/services/');
   await expect(page.locator('meta[name="robots"]')).toHaveCount(0);
