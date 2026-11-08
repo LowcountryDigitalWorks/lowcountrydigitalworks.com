@@ -45,6 +45,9 @@ jobs:
       - name: Build static site
         run: npm run build
 
+      - name: Privacy-negative source and built-asset contract
+        run: npm run test:clarity-privacy
+
       - name: Validate repository and built site
         run: python scripts/validate_repository.py
 
