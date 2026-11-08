@@ -474,12 +474,24 @@ class WorkflowInstallPolicyTests(unittest.TestCase):
 
     def test_reordered_required_run_steps_block(self) -> None:
         build = "      - name: Build static site\n        run: npm run build\n\n"
+        privacy = (
+            "      - name: Privacy-negative source and built-asset contract\n"
+            "        run: npm run test:clarity-privacy\n\n"
+        )
         validate = (
             "      - name: Validate repository and built site\n"
             "        run: python scripts/validate_repository.py\n\n"
         )
-        self.assertIn(build + validate, CURRENT)
-        self.assert_blocked(CURRENT.replace(build + validate, validate + build, 1))
+        self.assertIn(build + privacy + validate, CURRENT)
+        self.assert_blocked(CURRENT.replace(build + privacy + validate, build + validate + privacy, 1))
+
+    def test_removing_privacy_negative_check_is_blocked(self) -> None:
+        privacy = (
+            "      - name: Privacy-negative source and built-asset contract\n"
+            "        run: npm run test:clarity-privacy\n\n"
+        )
+        self.assertIn(privacy, CURRENT)
+        self.assert_blocked(CURRENT.replace(privacy, "", 1))
 
 
 class WorkflowGovernancePolicyTests(unittest.TestCase):

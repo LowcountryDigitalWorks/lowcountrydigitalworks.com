@@ -9,6 +9,7 @@ EXPECTED_VALIDATE_RUN_STEPS = (
     ("Workflow install policy unit tests", "python tests/validate-workflow-policy.unit.py"),
     ("Install dependencies from committed lockfile", "npm ci"),
     ("Build static site", "npm run build"),
+    ("Privacy-negative source and built-asset contract", "npm run test:clarity-privacy"),
     ("Validate repository and built site", "python scripts/validate_repository.py"),
     ("Production smoke unit tests", "npm run test:smoke"),
     ("Dependency policy unit tests", "npm run test:dependency-policy"),
