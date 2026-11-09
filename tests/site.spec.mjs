@@ -88,8 +88,8 @@ test('services page presents four problem-led service families and detail routes
   await expect(page.getByText('Will the automation become another system we have to maintain as the source of truth?')).toBeVisible();
   await expect(page.locator('.related-work-card')).toHaveCount(2);
   await expect(page.getByRole('heading', { name: 'Document Control' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Owner Console' })).toBeVisible();
-  await expect(page.getByText('Document Control and Secure Exchange show how LDW explores real workflow gaps', { exact: false })).toHaveCount(0);
+  await expect(page.getByRole('heading', { name: 'Secure Exchange' })).toBeVisible();
+  await expect(page.getByText('Document Control and Secure Exchange show how LDW explores real workflow gaps', { exact: false })).toBeVisible();
 
   await page.goto('/services/website-care/');
   await expect(page.locator('.outcome-card')).toHaveCount(3);
@@ -349,7 +349,7 @@ test('work page separates permissioned client proof from LDW systems and preserv
   await expect(gasCard.locator('.portfolio-card__boundary')).toContainText('Internal infrastructure · not customer SaaS.');
   await expect(reputationCard.locator('.portfolio-card__boundary')).toContainText('Active product research · no working app or customer service.');
   await expect(internalProof).toContainText('Owner Console');
-  await expect(internalProof).toContainText('sample information only');
+  await expect(internalProof).toContainText('Sample information only');
 
   await expect(page.getByText('They are not customer case studies.', { exact: false })).toHaveCount(0);
   await expect(page.getByText('These are LDW-owned examples of method and product development. They are not presented as completed customer case studies.', { exact: true })).toHaveCount(0);
@@ -371,7 +371,7 @@ test('work page separates permissioned client proof from LDW systems and preserv
   expect(overflow, '/work/ client proof should not overflow horizontally').toBeFalsy();
 
   await page.goto('/work/gas-engine/');
-  await expect(page.getByText("LDW's custom-developed SEO research tool", { exact: false })).toBeVisible();
+  await expect(page.locator('.project-detail-grid .lede')).toContainText("G.A.S. is LDW's custom-developed SEO research tool");
   await expect(page.getByText('Current boundary:', { exact: false })).toBeVisible();
   await expect(page.getByRole('link', { name: 'See the evidence' })).toHaveAttribute('href', '#proof');
   await expect(page.locator('#proof')).toHaveCount(1);
