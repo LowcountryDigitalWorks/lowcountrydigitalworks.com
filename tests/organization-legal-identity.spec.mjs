@@ -14,7 +14,7 @@ for (const route of ['/', '/services/', '/about/', '/contact/']) {
       'itemid',
       'https://lowcountrydigitalworks.com/#organization',
     );
-    await expect(organization.locator('[itemprop="name"]')).toHaveText('Lowcountry Digital Works');
+    await expect(organization.locator('strong[itemprop="name"]')).toHaveText('Lowcountry Digital Works');
     await expect(organization.locator('meta[itemprop="legalName"]')).toHaveAttribute(
       'content',
       'Lowcountry Digital Works LLC',
