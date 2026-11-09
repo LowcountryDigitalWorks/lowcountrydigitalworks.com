@@ -110,7 +110,6 @@
       ],
       "thumbnail": {
         "src": "/work-assets/document-control-overview-thumb.jpg",
-        "alt": "Document Control synthetic workspace overview",
         "width": 720,
         "height": 450
       },
@@ -178,7 +177,6 @@
       ],
       "thumbnail": {
         "src": "/work-assets/secure-exchange-intake-thumb.jpg",
-        "alt": "Secure Exchange synthetic message and document intake workspace",
         "width": 720,
         "height": 450
       },
@@ -236,7 +234,6 @@
       ],
       "thumbnail": {
         "src": "/work-assets/gas-engine-operator-view-thumb.jpg",
-        "alt": "G.A.S. Engine synthetic operator case and evidence view",
         "width": 720,
         "height": 450
       },
