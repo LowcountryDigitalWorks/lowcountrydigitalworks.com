@@ -94,7 +94,7 @@
           "src": "/work-assets/gas-workbench-current.png",
           "alt": "Current G.A.S. Workbench synthetic review workspace showing website evidence and human review status",
           "width": 1440,
-          "height": 1000,
+          "height": 900,
           "caption": "Current Workbench synthetic demo. It uses example data to show how LDW reviews website and search findings; it is not connected to a customer's live accounts."
         }
       ],
