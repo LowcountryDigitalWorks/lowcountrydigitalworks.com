@@ -160,12 +160,13 @@ test('homepage presents customer-first Rev3 entry paths and keeps discovery on i
   await expect(page.getByText("LDW's custom-developed SEO research tool helps our team compare website findings", { exact: false })).toBeVisible();
   await expect(page.getByText('An internal dashboard prototype for bringing an owner’s priorities', { exact: false })).toBeVisible();
   const homeWorkThumbs = page.locator('.portfolio-grid--home .portfolio-card__visual img');
-  await expect(homeWorkThumbs).toHaveCount(2);
-  for (let i = 0; i < 2; i += 1) {
+  const expectedWorkImageDimensions = [[720, 450], [720, 450], [1846, 1009], [1828, 1008]];
+  await expect(homeWorkThumbs).toHaveCount(expectedWorkImageDimensions.length);
+  for (let i = 0; i < expectedWorkImageDimensions.length; i += 1) {
     await expect(homeWorkThumbs.nth(i)).toHaveAttribute('loading', 'lazy');
     await homeWorkThumbs.nth(i).scrollIntoViewIfNeeded();
     await expect.poll(async () => homeWorkThumbs.nth(i).evaluate((img) => [img.complete, img.naturalWidth, img.naturalHeight]))
-      .toEqual([true, 720, 450]);
+      .toEqual([true, ...expectedWorkImageDimensions[i]]);
   }
   await expect(page.locator('.faq-item')).toHaveCount(4);
   await expect(page.getByText('Do I need to know which LDW service I need?')).toBeVisible();
@@ -327,10 +328,11 @@ test('work page separates permissioned client proof from LDW systems and preserv
   await expect(internalProof.locator('.portfolio-card')).toHaveCount(5);
   await expect(internalProof.locator('.portfolio-card__context')).toHaveCount(5);
   const workThumbs = internalProof.locator('.portfolio-card__visual img');
-  await expect(workThumbs).toHaveCount(2);
-  for (let i = 0; i < 2; i += 1) {
+  const expectedWorkImageDimensions = [[720, 450], [720, 450], [1846, 1009], [1828, 1008]];
+  await expect(workThumbs).toHaveCount(expectedWorkImageDimensions.length);
+  for (let i = 0; i < expectedWorkImageDimensions.length; i += 1) {
     await expect.poll(async () => workThumbs.nth(i).evaluate((img) => [img.complete, img.naturalWidth, img.naturalHeight]))
-      .toEqual([true, 720, 450]);
+      .toEqual([true, ...expectedWorkImageDimensions[i]]);
   }
 
   await expect(internalProof.getByRole('heading', { level: 3, name: 'Document Control' })).toBeVisible();

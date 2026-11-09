@@ -77,12 +77,13 @@ test('homepage routes permissioned client proof before LDW systems and preserves
   await expect(internalSection.locator('a[href="/work/gas-engine/"]')).toHaveCount(2);
 
   const homeWorkThumbs = internalSection.locator('.portfolio-card__visual img');
-  await expect(homeWorkThumbs).toHaveCount(2);
-  for (let i = 0; i < 2; i += 1) {
+  const expectedWorkImageDimensions = [[720, 450], [720, 450], [1846, 1009], [1828, 1008]];
+  await expect(homeWorkThumbs).toHaveCount(expectedWorkImageDimensions.length);
+  for (let i = 0; i < expectedWorkImageDimensions.length; i += 1) {
     await expect(homeWorkThumbs.nth(i)).toHaveAttribute('loading', 'lazy');
     await homeWorkThumbs.nth(i).scrollIntoViewIfNeeded();
     await expect.poll(async () => homeWorkThumbs.nth(i).evaluate((img) => [img.complete, img.naturalWidth, img.naturalHeight]))
-      .toEqual([true, 720, 450]);
+      .toEqual([true, ...expectedWorkImageDimensions[i]]);
   }
 
   const main = page.locator('#main-content');
