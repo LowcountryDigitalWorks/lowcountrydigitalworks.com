@@ -7,7 +7,7 @@ const cases = [
   {
     slug: 'websites',
     heading: 'Websites',
-    title: 'Website Design & Modernization in Beaufort, SC | Lowcountry Digital Works',
+    title: 'Websites: Design & Modernization in Beaufort, SC | Lowcountry Digital Works',
     description: 'Website design and modernization for Beaufort and Lowcountry businesses, with accessible pages, maintainable technology, and clear ownership and handoff.',
   },
   {
