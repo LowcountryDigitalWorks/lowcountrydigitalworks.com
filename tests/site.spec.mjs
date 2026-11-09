@@ -328,6 +328,9 @@ test('work page separates permissioned client proof from LDW systems and preserv
   await expect(internalProof.locator('.portfolio-card__context')).toHaveCount(3);
   const workThumbs = internalProof.locator('.portfolio-card__visual img');
   await expect(workThumbs).toHaveCount(3);
+  await expect(workThumbs.nth(0)).toHaveAttribute('alt', 'Document Control synthetic workspace overview');
+  await expect(workThumbs.nth(1)).toHaveAttribute('alt', 'Secure Exchange synthetic message and document intake workspace');
+  await expect(workThumbs.nth(2)).toHaveAttribute('alt', 'G.A.S. Engine synthetic operator case and evidence view');
   for (let i = 0; i < 3; i += 1) {
     await expect.poll(async () => workThumbs.nth(i).evaluate((img) => [img.complete, img.naturalWidth, img.naturalHeight]))
       .toEqual([true, 720, 450]);
@@ -359,6 +362,12 @@ test('work page separates permissioned client proof from LDW systems and preserv
 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/work/');
+  const mobileClearance = await page.evaluate(() => ({
+    bodyPadding: Number.parseFloat(getComputedStyle(document.body).paddingBottom),
+    firstSectionPadding: Number.parseFloat(getComputedStyle(document.querySelector('#main-content')?.firstElementChild).paddingBottom),
+  }));
+  expect(mobileClearance.bodyPadding).toBeGreaterThanOrEqual(80);
+  expect(mobileClearance.firstSectionPadding).toBeGreaterThanOrEqual(80);
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1);
   expect(overflow, '/work/ client proof should not overflow horizontally').toBeFalsy();
 
@@ -451,6 +460,7 @@ test('Connect is a mobile-first stable contact destination with accessible conta
   await expect(main.locator('a[href="sms:+18436333123"]')).toBeVisible();
   await expect(main.locator('a[href="tel:+18436333123"]')).toBeVisible();
   await expect(main.locator('a[href="mailto:eddie@lowcountrydigitalworks.com"]')).toBeVisible();
+  await expect(main.locator('a[href="mailto:eddie@lowcountrydigitalworks.com"]')).toHaveCSS('grid-column', '1 / -1');
   await expect(main.locator('a[href="https://www.facebook.com/LowcountryDigitalWorks/"]')).toBeVisible();
   await expect(main.locator('a[href="https://x.com/LocoDW"]')).toBeVisible();
   const contactCard = main.locator('a[href="/eddie-gugino-lowcountry-digital-works.vcf"]');
