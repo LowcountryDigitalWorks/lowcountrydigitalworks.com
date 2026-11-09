@@ -1,0 +1,22 @@
+{
+  "websites": {
+    "title": "Websites: Design & Modernization in Beaufort, SC",
+    "description": "Website design and modernization for Beaufort and Lowcountry businesses, with accessible pages, maintainable technology, and clear ownership and handoff."
+  },
+  "website-care": {
+    "title": "Website Maintenance & Care in Beaufort, SC",
+    "description": "Website maintenance for Beaufort and Lowcountry businesses: planned fixes, accessibility and performance checks, and security upkeep within an agreed scope."
+  },
+  "business-systems-automation": {
+    "title": "Business Workflow Automation in Beaufort, SC",
+    "description": "Improve repetitive business workflows using existing tools, supported integrations, APIs, and focused automation when a real operational gap remains."
+  },
+  "digital-ownership-platform-administration": {
+    "title": "Domain & Platform Administration in Beaufort, SC",
+    "description": "Clarify domain and website ownership, provider access, recovery, vendor handoff, and platform administration without unnecessary vendor dependence."
+  },
+  "technology-consulting": {
+    "title": "IT Consulting & Technology Planning in Beaufort, SC",
+    "description": "Practical IT consulting for Beaufort and Lowcountry businesses: troubleshoot systems, compare platforms, and plan around security, cost, and maintainability."
+  }
+}
