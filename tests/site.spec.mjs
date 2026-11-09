@@ -156,16 +156,17 @@ test('homepage presents customer-first Rev3 entry paths and keeps discovery on i
   await expect(page.locator('.problem-choice[href="/discovery/"]')).toHaveCount(1);
   await expect(page.locator('#main-content form')).toHaveCount(0);
   await expect(page.locator('a[href*="suitedash"]')).toHaveCount(0);
-  await expect(page.locator('.portfolio-grid--home .portfolio-card')).toHaveCount(3);
-  await expect(page.getByText('A structured way to keep reviews, approvals, versions, and evidence', { exact: false })).toBeVisible();
-  await expect(page.getByText('Internal evidence infrastructure that helps LDW compare website and search-quality findings', { exact: false })).toBeVisible();
+  await expect(page.locator('.portfolio-grid--home .portfolio-card')).toHaveCount(5);
+  await expect(page.getByText("LDW's custom-developed SEO research tool helps our team compare website findings", { exact: false })).toBeVisible();
+  await expect(page.getByText('An internal dashboard prototype for bringing an owner’s priorities', { exact: false })).toBeVisible();
   const homeWorkThumbs = page.locator('.portfolio-grid--home .portfolio-card__visual img');
-  await expect(homeWorkThumbs).toHaveCount(3);
-  for (let i = 0; i < 3; i += 1) {
+  const expectedWorkImageDimensions = [[720, 450], [720, 450], [1846, 1009], [1828, 1008]];
+  await expect(homeWorkThumbs).toHaveCount(expectedWorkImageDimensions.length);
+  for (let i = 0; i < expectedWorkImageDimensions.length; i += 1) {
     await expect(homeWorkThumbs.nth(i)).toHaveAttribute('loading', 'lazy');
     await homeWorkThumbs.nth(i).scrollIntoViewIfNeeded();
     await expect.poll(async () => homeWorkThumbs.nth(i).evaluate((img) => [img.complete, img.naturalWidth, img.naturalHeight]))
-      .toEqual([true, 720, 450]);
+      .toEqual([true, ...expectedWorkImageDimensions[i]]);
   }
   await expect(page.locator('.faq-item')).toHaveCount(4);
   await expect(page.getByText('Do I need to know which LDW service I need?')).toBeVisible();
@@ -324,32 +325,33 @@ test('work page separates permissioned client proof from LDW systems and preserv
   await expect(donovan).toContainText('Public website work only.');
   await expect(donovan).toContainText('No patient-growth, treatment-outcome, HIPAA-certification, compliance-certification, or customer-owned-repository claim.');
 
-  await expect(internalProof.locator('.portfolio-card')).toHaveCount(3);
-  await expect(internalProof.locator('.portfolio-card__context')).toHaveCount(3);
+  await expect(internalProof.locator('.portfolio-card')).toHaveCount(5);
+  await expect(internalProof.locator('.portfolio-card__context')).toHaveCount(5);
   const workThumbs = internalProof.locator('.portfolio-card__visual img');
-  await expect(workThumbs).toHaveCount(3);
-  for (const [index, name] of ['Document Control', 'Secure Exchange', 'G.A.S. Engine'].entries()) {
-    await expect(workThumbs.nth(index)).toHaveAttribute('alt', '');
-    await expect(internalProof.getByRole('link', { name: `View ${name} project details` })).toBeVisible();
-  }
-  for (let i = 0; i < 3; i += 1) {
+  const expectedWorkImageDimensions = [[720, 450], [720, 450], [1846, 1009], [1828, 1008]];
+  await expect(workThumbs).toHaveCount(expectedWorkImageDimensions.length);
+  for (let i = 0; i < expectedWorkImageDimensions.length; i += 1) {
     await expect.poll(async () => workThumbs.nth(i).evaluate((img) => [img.complete, img.naturalWidth, img.naturalHeight]))
-      .toEqual([true, 720, 450]);
+      .toEqual([true, ...expectedWorkImageDimensions[i]]);
   }
 
   await expect(internalProof.getByRole('heading', { level: 3, name: 'Document Control' })).toBeVisible();
-  await expect(internalProof.getByRole('heading', { level: 3, name: 'Secure Exchange' })).toBeVisible();
   await expect(internalProof.getByRole('heading', { level: 3, name: 'G.A.S. Engine' })).toBeVisible();
+  await expect(internalProof.getByRole('heading', { level: 3, name: 'Owner Console' })).toBeVisible();
+  await expect(internalProof.getByRole('heading', { level: 3, name: 'Reputation / MGR' })).toBeVisible();
+  await expect(internalProof.getByRole('heading', { level: 3, name: 'Interview Facilitator' })).toBeVisible();
   await expect(internalProof.locator('a[href="/work/document-control/"]')).toHaveCount(2);
-  await expect(internalProof.locator('a[href="/work/secure-exchange/"]')).toHaveCount(2);
+  await expect(internalProof.locator('a[href="/work/secure-exchange/"]')).toHaveCount(0);
   await expect(internalProof.locator('a[href="/work/gas-engine/"]')).toHaveCount(2);
 
   const documentControlCard = internalProof.locator('.portfolio-card').filter({ hasText: 'Document Control' });
-  const secureExchangeCard = internalProof.locator('.portfolio-card').filter({ hasText: 'Secure Exchange' });
   const gasCard = internalProof.locator('.portfolio-card').filter({ hasText: 'G.A.S. Engine' });
+  const reputationCard = internalProof.locator('.portfolio-card').filter({ hasText: 'Reputation / MGR' });
   await expect(documentControlCard.locator('.portfolio-card__boundary')).toContainText('Active development · not a production customer deployment.');
-  await expect(secureExchangeCard.locator('.portfolio-card__boundary')).toContainText('Synthetic/local validation · no regulated-production claim.');
   await expect(gasCard.locator('.portfolio-card__boundary')).toContainText('Internal infrastructure · not customer SaaS.');
+  await expect(reputationCard.locator('.portfolio-card__boundary')).toContainText('Active product research · no working app or customer service.');
+  await expect(internalProof).toContainText('Owner Console');
+  await expect(internalProof).toContainText('Sample information only');
 
   await expect(page.getByText('They are not customer case studies.', { exact: false })).toHaveCount(0);
   await expect(page.getByText('These are LDW-owned examples of method and product development. They are not presented as completed customer case studies.', { exact: true })).toHaveCount(0);
@@ -371,18 +373,18 @@ test('work page separates permissioned client proof from LDW systems and preserv
   expect(overflow, '/work/ client proof should not overflow horizontally').toBeFalsy();
 
   await page.goto('/work/gas-engine/');
-  await expect(page.getByText('Internal evidence infrastructure that helps LDW compare website and search-quality findings over time', { exact: false })).toBeVisible();
+  await expect(page.locator('.project-detail-grid .lede')).toContainText("G.A.S. is LDW's custom-developed SEO research tool");
   await expect(page.getByText('Current boundary:', { exact: false })).toBeVisible();
   await expect(page.getByRole('link', { name: 'See the evidence' })).toHaveAttribute('href', '#proof');
   await expect(page.locator('#proof')).toHaveCount(1);
-  await expect(page.locator('.project-detail-grid .lede').filter({ hasText: 'not customer SaaS' })).toBeVisible();
+  await expect(page.locator('.project-detail-grid .lede')).toContainText("LDW's custom-developed SEO research tool");
   await expect(page.locator('.project-process__step')).toHaveCount(4);
   await expect(page.locator('.faq-item')).toHaveCount(2);
   await expect(page.getByText('Can a customer buy G.A.S. Engine as standalone software?')).toBeVisible();
   await expect(page.getByRole('link', { name: 'View source' })).toHaveAttribute('href', 'https://github.com/LowcountryDigitalWorks/gas-engine');
   await expect(page.locator('.project-visual')).toHaveCount(1);
-  await expect(page.locator('img[src="/work-assets/gas-engine-operator-view.jpg"]')).toBeVisible();
-  await expect(page.getByText('Release 0.9 read-only synthetic operator case/report preview', { exact: false })).toBeVisible();
+  await expect(page.locator('img[src="/work-assets/gas-workbench-current.png"]')).toBeVisible();
+  await expect(page.getByText('Current Workbench synthetic demo', { exact: false })).toBeVisible();
 
   await page.goto('/work/document-control/');
   await expect(page.getByText('It is not a production customer deployment', { exact: false })).toBeVisible();

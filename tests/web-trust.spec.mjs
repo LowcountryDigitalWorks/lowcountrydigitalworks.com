@@ -14,7 +14,7 @@ const assertNoHorizontalOverflow = async (page, label) => {
 test('WEB-TRUST-001 keeps client proof data-first and separate from internal projects', async () => {
   expect(work.clientWork.items.map((client) => client.id)).toEqual(clientIds);
   expect(work.clientWork.items.map((client) => client.name)).toEqual(['East Coast Foam', 'Donovan Family Dentistry']);
-  expect(work.projects.map((project) => project.slug)).toEqual(['document-control', 'secure-exchange', 'gas-engine']);
+  expect(work.projects.map((project) => project.slug)).toEqual(['gas-engine', 'document-control', 'secure-exchange', 'owner-console', 'reputation', 'interview-facilitator']);
 
   const websites = serviceDetails.find((service) => service.slug === 'websites');
   expect(websites?.relatedClientWork).toEqual(clientIds);
@@ -35,7 +35,7 @@ test('homepage routes permissioned client proof before LDW systems and preserves
   await expect(clientSection.getByText('Recent client work', { exact: true })).toBeVisible();
   await expect(clientSection.getByRole('heading', { level: 2, name: "Local sites we've rebuilt." })).toBeVisible();
   await expect(internalSection.getByText('LDW systems & internal proof', { exact: true })).toBeVisible();
-  await expect(internalSection.getByRole('heading', { level: 2, name: 'Internal systems stay clearly separate from client engagements.' })).toBeVisible();
+  await expect(internalSection.getByRole('heading', { level: 2, name: 'Tools we build to make the work clearer.' })).toBeVisible();
   await expect(clientSection.locator('[data-client-proof="east-coast-foam"] img[src*="east-coast-foam"]')).toBeVisible();
   await expect(clientSection.locator('[data-client-proof="donovan-family-dentistry"] img[src*="donovan-family-dentistry"]')).toBeVisible();
 
@@ -65,21 +65,25 @@ test('homepage routes permissioned client proof before LDW systems and preserves
   await expect(donovanLink).toHaveAttribute('rel', /noreferrer/);
   await expect(clientSection.getByRole('link', { name: 'See all work →' })).toHaveAttribute('href', '/work/');
 
-  await expect(internalSection.locator('.portfolio-grid--home .portfolio-card')).toHaveCount(3);
+  await expect(internalSection.locator('.portfolio-grid--home .portfolio-card')).toHaveCount(5);
   await expect(internalSection.getByRole('heading', { level: 3, name: 'Document Control' })).toBeVisible();
-  await expect(internalSection.getByRole('heading', { level: 3, name: 'Secure Exchange' })).toBeVisible();
+  await expect(internalSection.getByRole('heading', { level: 3, name: 'Secure Exchange' })).toHaveCount(0);
   await expect(internalSection.getByRole('heading', { level: 3, name: 'G.A.S. Engine' })).toBeVisible();
+  await expect(internalSection.getByRole('heading', { level: 3, name: 'Owner Console' })).toBeVisible();
+  await expect(internalSection.getByRole('heading', { level: 3, name: 'Reputation / MGR' })).toBeVisible();
+  await expect(internalSection.getByRole('heading', { level: 3, name: 'Interview Facilitator' })).toBeVisible();
   await expect(internalSection.locator('a[href="/work/document-control/"]')).toHaveCount(2);
-  await expect(internalSection.locator('a[href="/work/secure-exchange/"]')).toHaveCount(2);
+  await expect(internalSection.locator('a[href="/work/secure-exchange/"]')).toHaveCount(0);
   await expect(internalSection.locator('a[href="/work/gas-engine/"]')).toHaveCount(2);
 
   const homeWorkThumbs = internalSection.locator('.portfolio-card__visual img');
-  await expect(homeWorkThumbs).toHaveCount(3);
-  for (let i = 0; i < 3; i += 1) {
+  const expectedWorkImageDimensions = [[720, 450], [720, 450], [1846, 1009], [1828, 1008]];
+  await expect(homeWorkThumbs).toHaveCount(expectedWorkImageDimensions.length);
+  for (let i = 0; i < expectedWorkImageDimensions.length; i += 1) {
     await expect(homeWorkThumbs.nth(i)).toHaveAttribute('loading', 'lazy');
     await homeWorkThumbs.nth(i).scrollIntoViewIfNeeded();
     await expect.poll(async () => homeWorkThumbs.nth(i).evaluate((img) => [img.complete, img.naturalWidth, img.naturalHeight]))
-      .toEqual([true, 720, 450]);
+      .toEqual([true, ...expectedWorkImageDimensions[i]]);
   }
 
   const main = page.locator('#main-content');

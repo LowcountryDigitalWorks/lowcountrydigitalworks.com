@@ -4,7 +4,7 @@ test('homepage internal project text links preserve their visible label in the a
   await page.goto('/');
 
   const links = page.locator('[data-home-internal-proof] .portfolio-card__body > a.text-link');
-  await expect(links).toHaveCount(3);
+  await expect(links).toHaveCount(5);
 
   for (const link of await links.all()) {
     await expect(link).toContainText('Explore the work');

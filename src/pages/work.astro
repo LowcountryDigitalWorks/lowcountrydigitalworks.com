@@ -69,7 +69,7 @@ import work from '../data/work.json';
       </div>
 
       <div class="portfolio-grid portfolio-grid--work">
-        {work.projects.map((project) => (
+        {work.projects.filter((project) => project.featured !== false).map((project) => (
           <article class="portfolio-card portfolio-card--work portfolio-card--proof">
             {project.thumbnail && (
               <a class="portfolio-card__visual" href={`/work/${project.slug}/`} aria-label={`View ${project.name} project details`}>

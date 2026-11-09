@@ -149,7 +149,7 @@ test('desktop Rev3 composition keeps white hero, Warm Oyster problem band, clien
     await expect.poll(async () => img.evaluate((node) => node.complete && node.naturalWidth > 0)).toBeTruthy();
   }
 
-  await expect(internalSection.locator('.portfolio-card')).toHaveCount(3);
+  await expect(internalSection.locator('.portfolio-card')).toHaveCount(5);
   const axe = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
   expect(axe.violations.filter(({ impact }) => ['critical', 'serious'].includes(impact))).toEqual([]);
 });

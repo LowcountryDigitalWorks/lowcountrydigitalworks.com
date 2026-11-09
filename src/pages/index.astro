@@ -134,7 +134,7 @@ import contact from '../data/contact.json';
         <p class="lede">{work.internalProof.lede}</p>
       </div>
       <div class="portfolio-grid portfolio-grid--home">
-        {work.projects.map((project) => (
+        {work.projects.filter((project) => project.featured !== false).map((project) => (
           <article class="portfolio-card">
             {project.thumbnail && (
               <a class="portfolio-card__visual" href={`/work/${project.slug}/`} aria-label={`View ${project.name} project details`}>

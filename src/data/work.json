@@ -47,14 +47,71 @@
   },
   "internalProof": {
     "eyebrow": "LDW systems & internal proof",
-    "title": "Internal systems stay clearly separate from client engagements.",
-    "lede": "These LDW-owned examples show method, product development, and internal evidence infrastructure. Their existing maturity and boundary statements remain authoritative."
+    "title": "Tools we build to make the work clearer.",
+    "lede": "A few current examples show how LDW builds practical tools around real business tasks. They are internal development examples, not products available for purchase."
   },
   "projects": [
     {
+      "slug": "gas-engine",
+      "name": "G.A.S. Engine",
+      "type": "Custom-developed SEO research tool",
+      "status": "Internal / Validation",
+      "purpose": "Bring website and search findings together so our team can see what changed, where each finding came from, and what deserves a closer look.",
+      "description": "G.A.S. is LDW's custom-developed SEO research tool. It helps our team review website and search findings over time and explain the evidence behind a next step. It is an internal tool, not software customers can buy or use on their own.",
+      "evidence": [
+        "Longitudinal normalized evidence and provenance",
+        "Provider-neutral typed facts within accepted boundaries",
+        "Human-reviewed recommendation and outcome lineage",
+        "Supports service-first Search + AI Visibility validation"
+      ],
+      "boundary": "G.A.S. remains internal infrastructure; customer-facing service claims and pricing remain governed by the separate Managed Search + AI Visibility gate.",
+      "whyItMatters": "For a small business owner, an SEO report should make it easier to understand what was noticed and why it matters. G.A.S. helps LDW bring findings together, check where they came from, compare like with like over time, and have a person review what to investigate next instead of relying on a mystery score.",
+      "fit": [
+        "LDW's internal SEO research and review work.",
+        "Human reviewers who need to see where a website finding came from and how it compares with earlier evidence.",
+        "Internal validation of whether stronger evidence handling reduces recurring reconciliation and reporting work."
+      ],
+      "howItWorks": [
+        "Replaceable sensors provide already-normalized or sanitized evidence into provider-specific adapters.",
+        "Tenant-scoped persistence preserves canonical observations, provenance, and compatible longitudinal snapshots.",
+        "Human-authored review history, measurements, and declared outcomes remain distinct from automated sensing.",
+        "Accepted internal workspace, service-run, portfolio, portability, external-review, measurement-interpretation, and SERP-validation surfaces remain decision-support only; provider retrieval and any production action stay separately authorized."
+      ],
+      "maturity": "An actively developed internal tool with a current synthetic Workbench for reviewing website and search evidence. The demo uses example data; it is not connected to a customer's live website or search accounts. There is no customer login, automatic website change, or standalone product release.",
+      "relatedService": null,
+      "faqs": [
+        {
+          "question": "Can a customer buy G.A.S. Engine as standalone software?",
+          "answer": "No. G.A.S. is LDW's internal SEO research tool. We use it to help our team review website and search findings; it is not software customers can buy or operate themselves."
+        },
+        {
+          "question": "Does G.A.S. automatically prioritize recommendations or change customer websites?",
+          "answer": "No. A person reviews the findings and decides what to investigate. G.A.S. does not change a customer's website or promise a particular search ranking."
+        }
+      ],
+      "visuals": [
+        {
+          "src": "/work-assets/gas-workbench-current.png",
+          "alt": "Current G.A.S. Workbench synthetic review workspace showing website evidence and human review status",
+          "width": 1440,
+          "height": 900,
+          "caption": "Current Workbench synthetic demo. It uses example data to show how LDW reviews website and search findings; it is not connected to a customer's live accounts."
+        }
+      ],
+      "thumbnail": {
+        "src": "/work-assets/gas-workbench-current-thumb.png",
+        "width": 720,
+        "height": 450
+      },
+      "sourceHref": "https://github.com/LowcountryDigitalWorks/gas-engine",
+      "homeSummary": "LDW's custom-developed SEO research tool helps our team compare website findings over time, see where they came from, and explain what a person recommends looking at next.",
+      "workWhy": "The aim is to make an SEO review easier to follow: show what was found, where it came from, and why a person thinks it deserves a closer look.",
+      "cardBoundary": "Internal infrastructure · not customer SaaS."
+    },
+    {
       "slug": "document-control",
       "name": "Document Control",
-      "type": "Workflow application",
+      "type": "Document review app",
       "status": "Active Development",
       "purpose": "Explore structured document workflow, review, accountability, audit history, search, and export without claiming a completed customer deployment.",
       "description": "A configurable LDW workflow application being developed service-first around controlled document lifecycle needs.",
@@ -114,14 +171,15 @@
         "height": 450
       },
       "sourceHref": "https://github.com/LowcountryDigitalWorks/document-control",
-      "homeSummary": "A structured way to keep reviews, approvals, versions, and evidence around important documents from becoming a guessing game.",
-      "workWhy": "Useful when important documents need clear version, review, approval, and audit history instead of relying on memory or scattered files.",
+      "homeSummary": "A tool in development to keep important documents, the latest version, and review decisions together, so people can see what needs attention and who approved it.",
+      "workWhy": "For example, a team can see which version is under review, who still needs to respond, and what was approved.",
       "cardBoundary": "Active development · not a production customer deployment."
     },
     {
       "slug": "secure-exchange",
+      "featured": false,
       "name": "Secure Exchange",
-      "type": "Secure workflow product",
+      "type": "Message and file demo",
       "status": "Active Development",
       "purpose": "Develop a provider-neutral pattern for protected message and document exchange with clear queue ownership, retention, and accountability.",
       "description": "Current foundation work uses a customer-owned isolated-deployment direction with an AWS-first reference architecture; production customer infrastructure is not yet provisioned.",
@@ -181,66 +239,165 @@
         "height": 450
       },
       "sourceHref": "https://github.com/LowcountryDigitalWorks/secure-exchange",
-      "homeSummary": "A secure workflow pattern for receiving sensitive messages and files, routing the work clearly, and keeping responsibility visible.",
-      "workWhy": "Useful when sensitive messages or files need a clear intake and handling workflow without losing responsibility for what happens next.",
+      "homeSummary": "A test version of a tool for receiving messages and files, routing each request to the right person, and tracking what happens next.",
+      "workWhy": "For example, staff can review a request, assign the next step, and record when it is done. The demo uses test data only.",
       "cardBoundary": "Synthetic/local validation · no regulated-production claim."
     },
     {
-      "slug": "gas-engine",
-      "name": "G.A.S. Engine",
-      "type": "Internal service-enabling evidence infrastructure",
-      "status": "Internal / Validation",
-      "purpose": "Preserve normalized website-quality and visibility evidence so human-reviewed recommendations can be compared over time.",
-      "description": "G.A.S. is LDW-operated internal evidence and measurement infrastructure supporting managed-service validation. It is not customer SaaS, a standalone commercial product, or a self-service SEO platform.",
+      "slug": "owner-console",
+      "name": "Owner Console",
+      "type": "Internal business dashboard prototype",
+      "status": "Prototype",
+      "purpose": "Explore a clear home for an owner to see priorities and business updates in one place.",
+      "description": "Owner Console is an internal dashboard prototype for bringing day-to-day priorities and business updates together in a way an owner can scan quickly.",
       "evidence": [
-        "Longitudinal normalized evidence and provenance",
-        "Provider-neutral typed facts within accepted boundaries",
-        "Human-reviewed recommendation and outcome lineage",
-        "Supports service-first Search + AI Visibility validation"
+        "Responsive dashboard interface",
+        "Synthetic example business information",
+        "Clear views for priorities and business areas"
       ],
-      "boundary": "G.A.S. remains internal infrastructure; customer-facing service claims and pricing remain governed by the separate Managed Search + AI Visibility gate.",
-      "whyItMatters": "Website and search-visibility work can produce evidence from several replaceable tools over time. G.A.S. exists so LDW can normalize that evidence, preserve provenance, compare compatible observations, record human review, and measure outcomes without turning any single sensor or score into the source of truth.",
+      "boundary": "Fixture-only prototype using sample information. It is not connected to live business accounts, and it cannot perform business actions.",
+      "whyItMatters": "Small business owners often have to check several places to understand what needs attention. A single, readable dashboard can make the next step easier to spot.",
       "fit": [
-        "LDW's internal managed-service delivery where evidence needs to be compared longitudinally.",
-        "Human reviewers who need normalized observations, provenance, recommendation history, measurements, and outcomes in one bounded case view.",
-        "Internal validation of whether stronger evidence handling reduces recurring reconciliation and reporting work."
+        "Owners who want a clearer view of current priorities.",
+        "Teams exploring how separate business updates could be organized in one place."
       ],
       "howItWorks": [
-        "Replaceable sensors provide already-normalized or sanitized evidence into provider-specific adapters.",
-        "Tenant-scoped persistence preserves canonical observations, provenance, and compatible longitudinal snapshots.",
-        "Human-authored review history, measurements, and declared outcomes remain distinct from automated sensing.",
-        "Accepted internal workspace, service-run, portfolio, portability, external-review, measurement-interpretation, and SERP-validation surfaces remain decision-support only; provider retrieval and any production action stay separately authorized."
+        "The prototype groups example updates into a home view and focused business areas.",
+        "All displayed information is synthetic sample data.",
+        "No accounts, providers, or business operations are connected."
       ],
-      "maturity": "Internal validation infrastructure with accepted Releases 0.1–0.23 covering provider-neutral evidence/provenance, sanitized search and AI-visibility analysis, human decision/measurement workflows, local operator reporting, repeatable service runs, portfolio operations, portability/recovery readiness, evidence-grounded external review, measurement claim ceilings, and bounded organic SERP result-family validation. There is still no customer portal, provider-polling runtime, autonomous production action, embedded AI runtime, or accepted deployed cloud runtime.",
+      "maturity": "A fixture-only, non-production prototype. The current public-safe view uses synthetic information and does not connect to live business accounts.",
       "relatedService": null,
       "faqs": [
         {
-          "question": "Can a customer buy G.A.S. Engine as standalone software?",
-          "answer": "No. G.A.S. is LDW-operated internal service-enabling infrastructure, not customer SaaS, a self-service SEO product, or a standalone commercial platform."
-        },
-        {
-          "question": "Does G.A.S. automatically prioritize recommendations or change customer websites?",
-          "answer": "No. Current releases preserve evidence and human review history. Recommendations remain human-authored, and accepted recommendations create no execution authority. Any action path is separately authorized."
+          "question": "Does Owner Console show live company information?",
+          "answer": "No. The public example is a prototype with synthetic sample information and no live connections."
         }
       ],
+      "homeSummary": "An internal dashboard prototype for bringing an owner’s priorities and business updates together in one easy-to-scan place.",
+      "workWhy": "The idea is to make it easier to see what needs attention without checking a stack of separate tools.",
+      "cardBoundary": "Sample information only · no live accounts or actions.",
+      "sourceHref": "https://github.com/LowcountryDigitalWorks/owner-console",
       "visuals": [
         {
-          "src": "/work-assets/gas-engine-operator-view.jpg",
-          "alt": "G.A.S. Engine Release 0.9 synthetic operator case view showing evidence changes, human review history, measurements and outcomes",
-          "width": 1440,
-          "height": 3239,
-          "caption": "Release 0.9 read-only synthetic operator case/report preview generated from the accepted G.A.S. local proof."
+          "src": "/work-assets/owner-console-light-desktop.png",
+          "alt": "Owner Console light-theme dashboard with a synthetic no-action overview and next commitment",
+          "width": 1846,
+          "height": 1009,
+          "caption": "Light-theme desktop view using a synthetic fixture. The dashboard shows a clear owner queue and an example next commitment; no live accounts or business records are connected."
+        },
+        {
+          "src": "/work-assets/owner-console-light-mobile.png",
+          "alt": "Owner Console light-theme mobile dashboard with sample owner priorities",
+          "width": 903,
+          "height": 1000,
+          "caption": "Mobile view of the same synthetic prototype, showing its compact navigation and readable owner summary."
+        },
+        {
+          "src": "/work-assets/owner-console-dark-desktop.png",
+          "alt": "Owner Console dark-theme dashboard showing a sample owner action and next commitment",
+          "width": 1816,
+          "height": 1000,
+          "caption": "Dark-theme desktop view with a synthetic example action. It is a prototype screen only and cannot reauthorize providers or perform business actions."
         }
       ],
       "thumbnail": {
-        "src": "/work-assets/gas-engine-operator-view-thumb.jpg",
-        "width": 720,
-        "height": 450
-      },
-      "sourceHref": "https://github.com/LowcountryDigitalWorks/gas-engine",
-      "homeSummary": "Internal evidence infrastructure that helps LDW compare website and search-quality findings over time instead of relying on one tool or one score.",
-      "workWhy": "Useful when website and search-quality work needs evidence that can be compared over time instead of relying on one-off scores.",
-      "cardBoundary": "Internal infrastructure · not customer SaaS."
+        "src": "/work-assets/owner-console-light-desktop.png",
+        "width": 1846,
+        "height": 1009,
+        "alt": "Owner Console synthetic dashboard in light theme"
+      }
+    },
+    {
+      "slug": "reputation",
+      "name": "Reputation / MGR",
+      "type": "Small-business review follow-up concept",
+      "status": "Active Development",
+      "purpose": "Explore a fair, simple way for small businesses to invite customers to leave honest reviews.",
+      "description": "Reputation / MGR is an active product-development effort exploring how a small business could make review follow-up clear and neutral, while using its existing business tools wherever they already do the job.",
+      "evidence": [
+        "Product and service approach under development",
+        "Review-policy and privacy boundaries documented",
+        "Current research tracked in the project roadmap"
+      ],
+      "boundary": "There is no working app or live customer service yet. Active development currently means product and service research; it does not mean a customer-ready tool, review sending, or connected accounts.",
+      "whyItMatters": "Owners need a straightforward way to ask customers for honest feedback without pressuring anyone or risking their standing with review sites.",
+      "fit": [
+        "Small businesses considering a fair and consistent review follow-up process.",
+        "Businesses where existing scheduling, point-of-sale, or customer-management tools do not cover a demonstrated need."
+      ],
+      "howItWorks": [
+        "The active work is evaluating what small businesses actually need and what their existing tools already provide.",
+        "The product direction rules out filtering customers based on whether they are likely to leave a positive review.",
+        "Any future software or customer service would require separate readiness and authorization."
+      ],
+      "maturity": "Active product and service development, currently focused on research and defining the right role for a review follow-up service. No functional runtime exists.",
+      "relatedService": null,
+      "faqs": [
+        {
+          "question": "Can I use or buy this tool today?",
+          "answer": "No. It is in active development at the research and product-definition stage; there is no working app or customer-ready service."
+        },
+        {
+          "question": "Does it help businesses filter for positive reviews?",
+          "answer": "No. The product direction is neutral review requests and does not support review gating."
+        }
+      ],
+      "homeSummary": "Active development exploring a simple, fair way for small businesses to invite honest customer reviews. There is no working app yet.",
+      "workWhy": "The goal is a clear, neutral follow-up process that respects customer choice and review-site rules.",
+      "cardBoundary": "Active product research · no working app or customer service.",
+      "sourceHref": "https://github.com/LowcountryDigitalWorks/reputation"
+    },
+    {
+      "slug": "interview-facilitator",
+      "name": "Interview Facilitator",
+      "type": "Guided discovery workspace",
+      "status": "Active Development",
+      "purpose": "Help a person run a consistent business or project discovery conversation and keep useful notes organized.",
+      "description": "Interview Facilitator is an internal workspace for preparing and guiding discovery interviews, capturing notes, and turning what a person learns into an organized follow-up.",
+      "evidence": [
+        "Guided interview and discovery flow",
+        "Synthetic example content",
+        "Local-first working model"
+      ],
+      "boundary": "An internal development tool, not a public customer service. It is human-led and does not record conversations or make decisions about people.",
+      "whyItMatters": "A good discovery conversation helps an owner explain what is happening in their business. A guided workspace helps the interviewer listen consistently and keep the next steps straight.",
+      "fit": [
+        "Human-led business and project discovery conversations.",
+        "Teams that want a repeatable way to prepare questions and organize follow-up notes."
+      ],
+      "howItWorks": [
+        "The interviewer follows a structured conversation guide.",
+        "Notes and next steps stay organized for human review.",
+        "The tool does not record audio or autonomously assess a person."
+      ],
+      "maturity": "An active internal tool with a guided interview workflow and synthetic example content. Notes stay in the current browser/app context; offline use is not ready. It is not a CRM, recorder, chatbot, or automated qualification system.",
+      "relatedService": null,
+      "faqs": [
+        {
+          "question": "Does it record or score the person being interviewed?",
+          "answer": "No. It supports a human-led conversation and note organization; it does not record audio or make automated decisions about people."
+        }
+      ],
+      "homeSummary": "A guided workspace for discovery conversations that helps keep notes and follow-up organized in the current browser.",
+      "workWhy": "It helps the interviewer stay present in the conversation and keep useful next steps from getting lost.",
+      "cardBoundary": "Internal development · notes stay in this browser; synthetic examples.",
+      "sourceHref": "https://github.com/LowcountryDigitalWorks/interview-facilitator",
+      "visuals": [
+        {
+          "src": "/work-assets/interview-facilitator-prepare.png",
+          "alt": "Interview Facilitator guided interview preparation screen with sample project label and interview mode",
+          "width": 1828,
+          "height": 1008,
+          "caption": "Current guided preparation screen. The example label is placeholder text; use the tool with care and follow its data-handling boundaries."
+        }
+      ],
+      "thumbnail": {
+        "src": "/work-assets/interview-facilitator-prepare.png",
+        "width": 1828,
+        "height": 1008,
+        "alt": "Interview Facilitator preparation screen"
+      }
     }
   ],
   "technology": {
