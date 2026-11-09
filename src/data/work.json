@@ -47,8 +47,8 @@
   },
   "internalProof": {
     "eyebrow": "LDW systems & internal proof",
-    "title": "Internal systems stay clearly separate from client engagements.",
-    "lede": "These LDW-owned examples show method, product development, and internal evidence infrastructure. Their existing maturity and boundary statements remain authoritative."
+    "title": "Tools we build to make the work clearer.",
+    "lede": "A small selection of LDW-built tools shows how we organize complex work and explain what the evidence means. These are internal tools, not products available for purchase."
   },
   "projects": [
     {
@@ -120,6 +120,7 @@
     },
     {
       "slug": "secure-exchange",
+      "featured": false,
       "name": "Secure Exchange",
       "type": "Message and file demo",
       "status": "Active Development",
@@ -188,10 +189,10 @@
     {
       "slug": "gas-engine",
       "name": "G.A.S. Engine",
-      "type": "Internal comparison tool",
+      "type": "Custom-developed SEO research tool",
       "status": "Internal / Validation",
-      "purpose": "Preserve normalized website-quality and visibility evidence so human-reviewed recommendations can be compared over time.",
-      "description": "G.A.S. is LDW-operated internal evidence and measurement infrastructure supporting managed-service validation. It is not customer SaaS, a standalone commercial product, or a self-service SEO platform.",
+      "purpose": "Bring website and search findings together so our team can see what changed, where each finding came from, and what deserves a closer look.",
+      "description": "G.A.S. is LDW's custom-developed SEO research tool. It helps our team review website and search findings over time and explain the evidence behind a next step. It is an internal tool, not software customers can buy or use on their own.",
       "evidence": [
         "Longitudinal normalized evidence and provenance",
         "Provider-neutral typed facts within accepted boundaries",
@@ -199,10 +200,10 @@
         "Supports service-first Search + AI Visibility validation"
       ],
       "boundary": "G.A.S. remains internal infrastructure; customer-facing service claims and pricing remain governed by the separate Managed Search + AI Visibility gate.",
-      "whyItMatters": "Website and search-visibility work can produce evidence from several replaceable tools over time. G.A.S. exists so LDW can normalize that evidence, preserve provenance, compare compatible observations, record human review, and measure outcomes without turning any single sensor or score into the source of truth.",
+      "whyItMatters": "For a small business owner, an SEO report should make it easier to understand what was noticed and why it matters. G.A.S. helps LDW bring findings together, check where they came from, compare like with like over time, and have a person review what to investigate next instead of relying on a mystery score.",
       "fit": [
-        "LDW's internal managed-service delivery where evidence needs to be compared longitudinally.",
-        "Human reviewers who need normalized observations, provenance, recommendation history, measurements, and outcomes in one bounded case view.",
+        "LDW's internal SEO research and review work.",
+        "Human reviewers who need to see where a website finding came from and how it compares with earlier evidence.",
         "Internal validation of whether stronger evidence handling reduces recurring reconciliation and reporting work."
       ],
       "howItWorks": [
@@ -211,35 +212,35 @@
         "Human-authored review history, measurements, and declared outcomes remain distinct from automated sensing.",
         "Accepted internal workspace, service-run, portfolio, portability, external-review, measurement-interpretation, and SERP-validation surfaces remain decision-support only; provider retrieval and any production action stay separately authorized."
       ],
-      "maturity": "Internal validation infrastructure with accepted Releases 0.1–0.23 covering provider-neutral evidence/provenance, sanitized search and AI-visibility analysis, human decision/measurement workflows, local operator reporting, repeatable service runs, portfolio operations, portability/recovery readiness, evidence-grounded external review, measurement claim ceilings, and bounded organic SERP result-family validation. There is still no customer portal, provider-polling runtime, autonomous production action, embedded AI runtime, or accepted deployed cloud runtime.",
+      "maturity": "An actively developed internal tool with a current synthetic Workbench for reviewing website and search evidence. The demo uses example data; it is not connected to a customer's live website or search accounts. There is no customer login, automatic website change, or standalone product release.",
       "relatedService": null,
       "faqs": [
         {
           "question": "Can a customer buy G.A.S. Engine as standalone software?",
-          "answer": "No. G.A.S. is LDW-operated internal service-enabling infrastructure, not customer SaaS, a self-service SEO product, or a standalone commercial platform."
+          "answer": "No. G.A.S. is LDW's internal SEO research tool. We use it to help our team review website and search findings; it is not software customers can buy or operate themselves."
         },
         {
           "question": "Does G.A.S. automatically prioritize recommendations or change customer websites?",
-          "answer": "No. Current releases preserve evidence and human review history. Recommendations remain human-authored, and accepted recommendations create no execution authority. Any action path is separately authorized."
+          "answer": "No. A person reviews the findings and decides what to investigate. G.A.S. does not change a customer's website or promise a particular search ranking."
         }
       ],
       "visuals": [
         {
-          "src": "/work-assets/gas-engine-operator-view.jpg",
-          "alt": "G.A.S. Engine Release 0.9 synthetic operator case view showing evidence changes, human review history, measurements and outcomes",
+          "src": "/work-assets/gas-workbench-current.png",
+          "alt": "Current G.A.S. Workbench synthetic review workspace showing website evidence and human review status",
           "width": 1440,
-          "height": 3239,
-          "caption": "Release 0.9 read-only synthetic operator case/report preview generated from the accepted G.A.S. local proof."
+          "height": 1000,
+          "caption": "Current Workbench synthetic demo. It uses example data to show how LDW reviews website and search findings; it is not connected to a customer's live accounts."
         }
       ],
       "thumbnail": {
-        "src": "/work-assets/gas-engine-operator-view-thumb.jpg",
+        "src": "/work-assets/gas-workbench-current-thumb.png",
         "width": 720,
         "height": 450
       },
       "sourceHref": "https://github.com/LowcountryDigitalWorks/gas-engine",
-      "homeSummary": "An internal tool that helps LDW compare website findings from different sources over time and review what they mean before anyone acts.",
-      "workWhy": "For example, LDW can compare reports over time, check where a finding came from, and record a person's review instead of relying on one score.",
+      "homeSummary": "LDW's custom-developed SEO research tool helps our team compare website findings over time, see where they came from, and explain what a person recommends looking at next.",
+      "workWhy": "The aim is to make an SEO review easier to follow: show what was found, where it came from, and why a person thinks it deserves a closer look.",
       "cardBoundary": "Internal infrastructure · not customer SaaS."
     }
   ],
