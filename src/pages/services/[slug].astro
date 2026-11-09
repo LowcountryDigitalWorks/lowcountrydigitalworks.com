@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import FaqList from '../../components/FaqList.astro';
 import Icon from '../../components/Icon.astro';
 import serviceDetails from '../../data/service-details.json';
+import serviceSearch from '../../data/service-search.json';
 import work from '../../data/work.json';
 
 export function getStaticPaths() {
@@ -13,10 +14,12 @@ export function getStaticPaths() {
 }
 
 const { service } = Astro.props;
+const search = serviceSearch[service.slug];
+if (!search?.title || !search?.description) throw new Error(`Missing approved search metadata for service: ${service.slug}`);
 const relatedWork = work.projects.filter((project) => service.relatedWork?.includes(project.slug));
 const relatedClientWork = work.clientWork.items.filter((client) => service.relatedClientWork?.includes(client.id));
 ---
-<BaseLayout title={service.name} description={service.summary}>
+<BaseLayout title={search.title} description={search.description}>
   <nav class="breadcrumbs" aria-label="Breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
     <div class="container">
       <ol>
