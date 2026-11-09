@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { test, expect } from '@playwright/test';
+import AxeBuilder from '@axe-core/playwright';
 
 // Existing lead path only: do not dial/text, record visitor data, or infer conversions.
 const contact = JSON.parse(readFileSync(new URL('../src/data/contact.json', import.meta.url), 'utf8'));
@@ -29,6 +30,17 @@ for (const route of paths) {
     await expect(text).toHaveAttribute('href', `sms:${contact.phone.number}`);
     await expect(call).toBeVisible();
     await expect(text).toBeVisible();
+
+    // Lighthouse surfaced a hidden-weight axe 4.14 Label in Name failure even
+    // when the overall accessibility score was 100. The visible words must be
+    // separated in DOM text (not only by CSS flex gap) so each complete label
+    // remains a substring of its longer spoken aria-label.
+    expect((await text.textContent())?.replace(/\s+/g, ' ').trim()).toBe('Text Eddie');
+    expect((await call.textContent())?.replace(/\s+/g, ' ').trim()).toBe('Call Eddie');
+    const labelAudit = await new AxeBuilder({ page })
+      .withRules(['label-content-name-mismatch'])
+      .analyze();
+    expect(labelAudit.violations, route + ': mobile Label in Name failures').toEqual([]);
 
     const callBox = await call.boundingBox();
     const textBox = await text.boundingBox();
