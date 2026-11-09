@@ -31,7 +31,15 @@ test('the public sitemap is a unique set of intentional apex HTTPS routes', () =
 for (const route of paths) {
   test(`public sitemap route ${route} responds with index-eligible HTML and its self-canonical`, async ({ page }) => {
     const response = await page.goto(route);
-    expect(response?.status(), route).toBe(200);
+    const expectedLocalUrl = `http://127.0.0.1:4321${route}`;
+
+    // A successful production redirect does NOT prove the local Worker serves this URL.
+    // Require the exact preview origin and reject all HTTP redirect predecessors.
+    expect(response).not.toBeNull();
+    expect(response.url(), route).toBe(expectedLocalUrl);
+    expect(page.url(), route).toBe(expectedLocalUrl);
+    expect(response.request().redirectedFrom(), route).toBeNull();
+    expect(response.status(), route).toBe(200);
 
     const headers = response.headers();
     expect(headers['content-type'] ?? '', route).toMatch(/text\/html/i);
