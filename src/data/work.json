@@ -277,7 +277,36 @@
       "homeSummary": "An internal dashboard prototype for bringing an owner’s priorities and business updates together in one easy-to-scan place.",
       "workWhy": "The idea is to make it easier to see what needs attention without checking a stack of separate tools.",
       "cardBoundary": "Sample information only · no live accounts or actions.",
-      "sourceHref": "https://github.com/LowcountryDigitalWorks/owner-console"
+      "sourceHref": "https://github.com/LowcountryDigitalWorks/owner-console",
+      "visuals": [
+        {
+          "src": "/work-assets/owner-console-light-desktop.png",
+          "alt": "Owner Console light-theme dashboard with a synthetic no-action overview and next commitment",
+          "width": 1846,
+          "height": 1009,
+          "caption": "Light-theme desktop view using a synthetic fixture. The dashboard shows a clear owner queue and an example next commitment; no live accounts or business records are connected."
+        },
+        {
+          "src": "/work-assets/owner-console-light-mobile.png",
+          "alt": "Owner Console light-theme mobile dashboard with sample owner priorities",
+          "width": 903,
+          "height": 1000,
+          "caption": "Mobile view of the same synthetic prototype, showing its compact navigation and readable owner summary."
+        },
+        {
+          "src": "/work-assets/owner-console-dark-desktop.png",
+          "alt": "Owner Console dark-theme dashboard showing a sample owner action and next commitment",
+          "width": 1816,
+          "height": 1000,
+          "caption": "Dark-theme desktop view with a synthetic example action. It is a prototype screen only and cannot reauthorize providers or perform business actions."
+        }
+      ],
+      "thumbnail": {
+        "src": "/work-assets/owner-console-light-desktop.png",
+        "width": 1846,
+        "height": 1009,
+        "alt": "Owner Console synthetic dashboard in light theme"
+      }
     },
     {
       "slug": "reputation",
@@ -353,7 +382,22 @@
       "homeSummary": "A guided workspace for discovery conversations that helps keep notes and follow-up organized in the current browser.",
       "workWhy": "It helps the interviewer stay present in the conversation and keep useful next steps from getting lost.",
       "cardBoundary": "Internal development · notes stay in this browser; synthetic examples.",
-      "sourceHref": "https://github.com/LowcountryDigitalWorks/interview-facilitator"
+      "sourceHref": "https://github.com/LowcountryDigitalWorks/interview-facilitator",
+      "visuals": [
+        {
+          "src": "/work-assets/interview-facilitator-prepare.png",
+          "alt": "Interview Facilitator guided interview preparation screen with sample project label and interview mode",
+          "width": 1828,
+          "height": 1008,
+          "caption": "Current guided preparation screen. The example label is placeholder text; use the tool with care and follow its data-handling boundaries."
+        }
+      ],
+      "thumbnail": {
+        "src": "/work-assets/interview-facilitator-prepare.png",
+        "width": 1828,
+        "height": 1008,
+        "alt": "Interview Facilitator preparation screen"
+      }
     }
   ],
   "technology": {
