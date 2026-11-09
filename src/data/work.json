@@ -54,7 +54,7 @@
     {
       "slug": "document-control",
       "name": "Document Control",
-      "type": "Workflow application",
+      "type": "Document review app",
       "status": "Active Development",
       "purpose": "Explore structured document workflow, review, accountability, audit history, search, and export without claiming a completed customer deployment.",
       "description": "A configurable LDW workflow application being developed service-first around controlled document lifecycle needs.",
@@ -114,14 +114,14 @@
         "height": 450
       },
       "sourceHref": "https://github.com/LowcountryDigitalWorks/document-control",
-      "homeSummary": "A structured way to keep reviews, approvals, versions, and evidence around important documents from becoming a guessing game.",
-      "workWhy": "Useful when important documents need clear version, review, approval, and audit history instead of relying on memory or scattered files.",
+      "homeSummary": "A tool in development to keep important documents, the latest version, and review decisions together, so people can see what needs attention and who approved it.",
+      "workWhy": "For example, a team can see which version is under review, who still needs to respond, and what was approved.",
       "cardBoundary": "Active development · not a production customer deployment."
     },
     {
       "slug": "secure-exchange",
       "name": "Secure Exchange",
-      "type": "Secure workflow product",
+      "type": "Message and file demo",
       "status": "Active Development",
       "purpose": "Develop a provider-neutral pattern for protected message and document exchange with clear queue ownership, retention, and accountability.",
       "description": "Current foundation work uses a customer-owned isolated-deployment direction with an AWS-first reference architecture; production customer infrastructure is not yet provisioned.",
@@ -181,14 +181,14 @@
         "height": 450
       },
       "sourceHref": "https://github.com/LowcountryDigitalWorks/secure-exchange",
-      "homeSummary": "A secure workflow pattern for receiving sensitive messages and files, routing the work clearly, and keeping responsibility visible.",
-      "workWhy": "Useful when sensitive messages or files need a clear intake and handling workflow without losing responsibility for what happens next.",
+      "homeSummary": "A test version of a tool for receiving messages and files, routing each request to the right person, and tracking what happens next.",
+      "workWhy": "For example, staff can review a request, assign the next step, and record when it is done. The demo uses test data only.",
       "cardBoundary": "Synthetic/local validation · no regulated-production claim."
     },
     {
       "slug": "gas-engine",
       "name": "G.A.S. Engine",
-      "type": "Internal service-enabling evidence infrastructure",
+      "type": "Internal comparison tool",
       "status": "Internal / Validation",
       "purpose": "Preserve normalized website-quality and visibility evidence so human-reviewed recommendations can be compared over time.",
       "description": "G.A.S. is LDW-operated internal evidence and measurement infrastructure supporting managed-service validation. It is not customer SaaS, a standalone commercial product, or a self-service SEO platform.",
@@ -238,8 +238,8 @@
         "height": 450
       },
       "sourceHref": "https://github.com/LowcountryDigitalWorks/gas-engine",
-      "homeSummary": "Internal evidence infrastructure that helps LDW compare website and search-quality findings over time instead of relying on one tool or one score.",
-      "workWhy": "Useful when website and search-quality work needs evidence that can be compared over time instead of relying on one-off scores.",
+      "homeSummary": "An internal tool that helps LDW compare website findings from different sources over time and review what they mean before anyone acts.",
+      "workWhy": "For example, LDW can compare reports over time, check where a finding came from, and record a person's review instead of relying on one score.",
       "cardBoundary": "Internal infrastructure · not customer SaaS."
     }
   ],
