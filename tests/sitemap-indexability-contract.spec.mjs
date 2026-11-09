@@ -7,6 +7,19 @@ const sitemapXml = readFileSync(new URL('../public/sitemap.xml', import.meta.url
 const sitemapUrls = [...sitemapXml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => new URL(match[1]));
 const paths = sitemapUrls.map((url) => url.pathname);
 
+// Google treats the complete directive token "none" as noindex + nofollow.
+// Match complete delimiter-separated tokens, not e.g. "noimageindex".
+const blocksIndexing = /(?:^|[\s,;])(?:noindex|none)(?=$|[\s,;])/i;
+
+test('robots directives guard both noindex and its none alias', () => {
+  for (const blocked of ['noindex', 'NOINDEX', 'none', 'nofollow, none', 'googlebot: none']) {
+    expect(blocksIndexing.test(blocked), blocked).toBe(true);
+  }
+  for (const permitted of ['index, follow', 'nofollow', 'max-snippet:20', 'noimageindex', 'nonetheless']) {
+    expect(blocksIndexing.test(permitted), permitted).toBe(false);
+  }
+});
+
 test('the public sitemap is a unique set of intentional apex HTTPS routes', () => {
   expect(sitemapXml).toContain('<urlset');
   expect(sitemapUrls).toHaveLength(20);
@@ -43,7 +56,7 @@ for (const route of paths) {
 
     const headers = response.headers();
     expect(headers['content-type'] ?? '', route).toMatch(/text\/html/i);
-    expect(headers['x-robots-tag'] ?? '', route).not.toMatch(/\bnoindex\b/i);
+    expect(headers['x-robots-tag'] ?? '', route).not.toMatch(blocksIndexing);
 
     await expect(page.locator('link[rel="canonical"]')).toHaveCount(1);
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
@@ -52,7 +65,7 @@ for (const route of paths) {
     );
 
     for (const directive of await page.locator('meta[name="robots"], meta[name="googlebot"]').all()) {
-      expect((await directive.getAttribute('content')) ?? '', route).not.toMatch(/\bnoindex\b/i);
+      expect((await directive.getAttribute('content')) ?? '', route).not.toMatch(blocksIndexing);
     }
   });
 }
