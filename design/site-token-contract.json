@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.0",
+  "authority_issue": "LowcountryDigitalWorks/lowcountrydigitalworks.com#160",
+  "purpose": "Render-parity contract for Coastal design-system prep; Phase A verifies source alignment without changing built CSS output.",
+  "brand_literals": {
+    "source_files": [
+      "brand/colors.json",
+      "brand/css/brand-tokens.css"
+    ],
+    "colors": {
+      "--ldw-estuary-navy": "#102A3A",
+      "--ldw-cypress-teal": "#2F766F",
+      "--ldw-warm-oyster": "#F3EFE6",
+      "--ldw-soft-white": "#F7F8F6",
+      "--ldw-white": "#FFFFFF",
+      "--ldw-black": "#000000"
+    }
+  },
+  "design_application_literals": {
+    "source_file": "design/tokens.css",
+    "values": {
+      "--color-text-muted": "#55656D",
+      "--color-border": "#D6DEDA",
+      "--color-interactive-hover": "#275F5A",
+      "--color-interactive-active": "#204E4A",
+      "--color-focus": "#2F766F",
+      "--radius-sm": "6px",
+      "--radius-md": "10px",
+      "--radius-lg": "16px",
+      "--layout-max": "1200px",
+      "--content-readable": "720px"
+    },
+    "aliases_to_brand": {
+      "--color-brand-navy": "--ldw-estuary-navy",
+      "--color-brand-teal": "--ldw-cypress-teal",
+      "--color-brand-oyster": "--ldw-warm-oyster",
+      "--color-bg": "--ldw-soft-white",
+      "--color-surface": "--ldw-white",
+      "--color-surface-warm": "--ldw-warm-oyster",
+      "--color-text": "--ldw-estuary-navy",
+      "--color-interactive": "--ldw-cypress-teal",
+      "--font-sans": "--ldw-font-sans"
+    }
+  },
+  "site_runtime_aliases": {
+    "source_file": "src/styles/global.css",
+    "import_brand_tokens": "brand/css/brand-tokens.css",
+    "aliases_to_brand": {
+      "--bg": "--ldw-soft-white",
+      "--surface": "--ldw-white",
+      "--surface-warm": "--ldw-warm-oyster",
+      "--text": "--ldw-estuary-navy",
+      "--interactive": "--ldw-cypress-teal"
+    },
+    "literals": {
+      "--muted": "#55656D",
+      "--border": "#D6DEDA",
+      "--interactive-hover": "#275F5A",
+      "--max": "1200px",
+      "--readable": "720px",
+      "--radius-sm": "6px",
+      "--radius-md": "10px",
+      "--radius-lg": "16px"
+    },
+    "intentional_drift": {
+      "--focus": {
+        "literal": "#235D8C",
+        "note": "Marketing-site focus ring remains on production blue until owner-approved Coastal preview (Phase B). Differs from design/tokens.css --color-focus (#2F766F)."
+      }
+    }
+  }
+}

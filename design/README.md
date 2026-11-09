@@ -13,6 +13,10 @@ The system is intentionally small and maintainable. It provides shared visual DN
 - consistent button, input, navigation, and semantic-state language
 - ownership, maintainability, portability, and clear handoff as recurring product principles
 
+## Token contract (Coastal prep)
+
+Phase A render-parity for forthcoming site-wide design-system work is documented in `design/site-token-contract.md` with machine checks in `design/site-token-contract.json` and `scripts/validate_design_token_contract.mjs` (issue **#160**). Phase A does not change production CSS output.
+
 ## Intentional differences
 
 ### Public website
