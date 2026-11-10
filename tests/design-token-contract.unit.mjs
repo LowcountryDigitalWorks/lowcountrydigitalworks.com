@@ -47,16 +47,31 @@ test('conflicting duplicate :root declarations fail closed', () => {
   assert.equal(conflicts.length, 1);
 });
 
-test('url() with // does not truncate :root body; later override surfaces conflict', () => {
+test('url() with // preserves value text and duplicate --bg in same block is a conflict', () => {
   const css = `
     :root {
       --bg: url(https://example.test/a);
       --bg: #111111;
     }
   `;
-  const { props, conflicts } = parseRootCustomProperties(css);
-  assert.equal(props.get('--bg'), '#111111');
+  const { conflicts } = parseRootCustomProperties(css);
+  assert.equal(conflicts.length, 1);
+  assert.equal(conflicts[0].name, '--bg');
+  assert.equal(conflicts[0].scope, 'block');
+});
+
+test('conflicting duplicate custom properties within one :root block fail closed', () => {
+  const css = `:root { --bg: var(--ldw-soft-white); --bg: #000000; }`;
+  const { conflicts } = parseRootCustomProperties(css);
+  assert.equal(conflicts.length, 1);
+  assert.equal(conflicts[0].scope, 'block');
+});
+
+test('repeated identical custom property in one :root block is not a conflict', () => {
+  const css = `:root { --bg: #111; --bg: #111; }`;
+  const { conflicts, props } = parseRootCustomProperties(css);
   assert.equal(conflicts.length, 0);
+  assert.equal(props.get('--bg'), '#111');
 });
 
 test('unclosed block comment fails closed', () => {
@@ -107,6 +122,11 @@ test('design/tokens.css url() import resolves to brand tokens exactly', () => {
   const css = `@import url("../brand/css/brand-tokens.css");\n:root { --bg: white; }`;
   assert.equal(hasActiveCssImport(css, 'design/tokens.css', BRAND), true);
   assert.deepEqual(listActiveCssImports(css, 'design/tokens.css'), [BRAND]);
+});
+
+test('design/tokens.css bare unquoted url() import resolves to brand tokens', () => {
+  const css = `@import url(../brand/css/brand-tokens.css);\n:root { --bg: white; }`;
+  assert.equal(hasActiveCssImport(css, 'design/tokens.css', BRAND), true);
 });
 
 test('global.css bare relative import resolves to brand tokens exactly', () => {

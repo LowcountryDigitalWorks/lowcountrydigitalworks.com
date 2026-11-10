@@ -203,6 +203,7 @@ function readDeclarationValue(css, i) {
 
 function parseDeclarationsInBody(body) {
   const props = new Map();
+  const conflicts = [];
   let i = skipCommentsAndWhitespace(body, 0);
   while (i < body.length) {
     i = skipCommentsAndWhitespace(body, i);
@@ -222,10 +223,14 @@ function parseDeclarationsInBody(body) {
     i += 1;
     i = skipCommentsAndWhitespace(body, i);
     const { value, next } = readDeclarationValue(body, i);
-    props.set(name, value.replace(/\s+/g, ' '));
+    const normalized = value.replace(/\s+/g, ' ');
+    if (props.has(name) && props.get(name) !== normalized) {
+      conflicts.push({ name, first: props.get(name), second: normalized, scope: 'block' });
+    }
+    props.set(name, normalized);
     i = next;
   }
-  return props;
+  return { props, conflicts };
 }
 
 /**
@@ -247,18 +252,19 @@ export function parseRootCustomProperties(css) {
   const merged = new Map();
   const conflicts = [];
   for (const body of bodies) {
-    let blockProps;
+    let blockResult;
     try {
-      blockProps = parseDeclarationsInBody(body);
+      blockResult = parseDeclarationsInBody(body);
     } catch (err) {
       if (err instanceof CssSyntaxError) {
         return { props: null, conflicts: [], error: err.message };
       }
       throw err;
     }
-    for (const [name, value] of blockProps) {
+    conflicts.push(...blockResult.conflicts);
+    for (const [name, value] of blockResult.props) {
       if (merged.has(name) && merged.get(name) !== value) {
-        conflicts.push({ name, first: merged.get(name), second: value });
+        conflicts.push({ name, first: merged.get(name), second: value, scope: 'blocks' });
       }
       merged.set(name, value);
     }
@@ -306,13 +312,12 @@ function parseImportPathFromStatement(stmt) {
     if (stmt[i] !== '(') throw new CssSyntaxError('malformed @import url()', i);
     i += 1;
     i = skipCommentsAndWhitespace(stmt, i);
+    const contentStart = i;
     if (stmt[i] === '"' || stmt[i] === "'") {
       const start = i + 1;
-      const quote = stmt[i];
       i = consumeQuotedString(stmt, i);
       raw = stmt.slice(start, i - 1);
     } else {
-      const start = i;
       let depth = 1;
       while (i < stmt.length && depth > 0) {
         const ch = stmt[i];
@@ -327,12 +332,12 @@ function parseImportPathFromStatement(stmt) {
         }
         i += 1;
       }
-      if (depth !== 0) throw new CssSyntaxError('unclosed url() in @import', start);
-      raw = stmt.slice(start, i).trim();
-      i += 1;
+      if (depth !== 0) throw new CssSyntaxError('unclosed url() in @import', contentStart);
+      raw = stmt.slice(contentStart, i).trim();
     }
     i = skipCommentsAndWhitespace(stmt, i);
     if (stmt[i] !== ')') throw new CssSyntaxError('malformed @import url()', i);
+    i += 1;
   } else {
     const start = i;
     while (i < stmt.length && stmt[i] !== ';' && !isWhitespace(stmt[i])) i += 1;

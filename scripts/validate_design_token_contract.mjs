@@ -41,9 +41,13 @@ function loadRootProps(cssText, label, report) {
     return null;
   }
   for (const conflict of parsed.conflicts) {
+    const where = conflict.scope === 'block' ? 'within :root block' : 'across :root blocks';
     report(
-      `${label} conflicting declarations for ${conflict.name}: ${conflict.first} vs ${conflict.second}`
+      `${label} conflicting declarations for ${conflict.name} (${where}): ${conflict.first} vs ${conflict.second}`
     );
+  }
+  if (parsed.conflicts.length > 0) {
+    return null;
   }
   return parsed.props;
 }
