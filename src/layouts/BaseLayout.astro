@@ -4,6 +4,7 @@ import Footer from '../components/Footer.astro';
 import MobileContactBar from '../components/MobileContactBar.astro';
 import '@fontsource-variable/manrope/wght.css';
 import '../styles/global.css';
+import '../styles/coastal-v2c-preview.css';
 const {
   title = 'Lowcountry Digital Works',
   description = 'Practical websites, business systems, automation, digital ownership, and technology consulting built for maintainability and customer ownership.',
@@ -11,6 +12,7 @@ const {
   noindex = false,
   robots,
   canonicalPath,
+  coastalV2cPreview = true,
 } = Astro.props;
 const canonical = new URL(canonicalPath ?? Astro.url.pathname, Astro.site ?? Astro.url.origin);
 const socialImage = new URL(image, Astro.site ?? Astro.url.origin);
@@ -44,7 +46,7 @@ const showMobileContactBar = !['/discovery/', '/connect/'].includes(Astro.url.pa
   <meta name="twitter:image" content={socialImage} />
   <title>{fullTitle}</title>
 </head>
-<body>
+<body class:list={coastalV2cPreview && 'site--coastal-v2c'}>
   <a class="skip-link" href="#main-content">Skip to content</a>
   <Header />
   <main id="main-content"><slot /></main>

@@ -15,9 +15,9 @@ import contact from '../data/contact.json';
     <meta itemprop="alternateName" content="LDW" />
   </div>
 
-  <section class="section hero hero--rev3">
-    <div class="container hero-rev3">
-      <div class="hero-rev3__copy">
+  <section class="section hero hero--coastal coastal-v2c-route">
+    <div class="container hero-coastal-grid">
+      <div class="hero-copy hero-copy--coastal">
         <p class="eyebrow">{home.hero.eyebrow}</p>
         <h1>{home.hero.title}</h1>
         <p class="lede">{home.hero.lede}</p>
@@ -33,20 +33,22 @@ import contact from '../data/contact.json';
         <a class="hero-work-link" href="#client-work">See the work</a>
       </div>
 
-      <aside class="hero-founder-row" aria-label="Owner-operated by Eddie Gugino" itemscope itemtype="https://schema.org/Person">
-        <img
-          class="hero-founder-row__portrait"
-          data-founder-portrait
-          itemprop="image"
-          src="/founder/eddie-gugino-founder.webp"
-          alt="Eddie Gugino, founder of Lowcountry Digital Works"
-          width="480"
-          height="600"
-          decoding="async"
-        />
-        <div class="hero-founder-row__content">
+      <aside class="hero-owner-card hero-owner-card--compact" aria-label="Owner-operated by Eddie Gugino" itemscope itemtype="https://schema.org/Person">
+        <div class="hero-owner-card__portrait-shell">
+          <img
+            class="hero-owner-card__portrait"
+            data-founder-portrait
+            itemprop="image"
+            src="/founder/eddie-gugino-founder.webp"
+            alt="Eddie Gugino, founder of Lowcountry Digital Works"
+            width="480"
+            height="600"
+            decoding="async"
+          />
+        </div>
+        <div class="hero-owner-card__content">
           <p class="eyebrow">{home.founder.eyebrow}</p>
-          <p class="hero-founder-row__name"><strong itemprop="name">{home.founder.name}</strong> · <span itemprop="jobTitle">{home.founder.role}</span></p>
+          <p class="hero-owner-card__name"><strong itemprop="name">{home.founder.name}</strong> · <span itemprop="jobTitle">{home.founder.role}</span></p>
           <p>{home.founder.lede}</p>
         </div>
       </aside>

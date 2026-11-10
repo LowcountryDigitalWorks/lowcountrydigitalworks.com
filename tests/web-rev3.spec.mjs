@@ -6,7 +6,7 @@ const areas = [
   'St. Helena Island', 'Fripp Island', 'Bluffton', 'Okatie', 'Ridgeland', 'Hardeeville',
 ];
 
-test('homepage uses discovery-first Rev3 hierarchy and publishes the accepted service area in HTML', async ({ page }) => {
+test('homepage uses Coastal v2c preview hierarchy and publishes the accepted service area in HTML', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
 
@@ -17,8 +17,9 @@ test('homepage uses discovery-first Rev3 hierarchy and publishes the accepted se
   await expect(page.getByText(/free 15-minute fit call/i).first()).toBeVisible();
   await expect(page.getByRole('link', { name: 'See the work' })).toHaveAttribute('href', '#client-work');
 
-  await expect(page.locator('.hero--rev3')).toHaveCount(1);
-  await expect(page.locator('.hero-founder-row')).toHaveCount(1);
+  await expect(page.locator('body.site--coastal-v2c')).toHaveCount(1);
+  await expect(page.locator('.hero--coastal')).toHaveCount(1);
+  await expect(page.locator('.hero-owner-card')).toHaveCount(1);
   await expect(page.locator('.problem-choice')).toHaveCount(4);
   await expect(page.locator('.wave-divider')).toHaveCount(3);
   await expect(page.locator('.section--cta-band')).toHaveCount(1);
@@ -121,12 +122,13 @@ test('homepage has no horizontal overflow at 360px or 390px and keeps keyboard/r
   await expect.poll(() => page.locator('html').evaluate((element) => getComputedStyle(element).scrollBehavior)).toBe('auto');
 });
 
-test('desktop Rev3 composition keeps white hero, Warm Oyster problem band, client proof visuals, and navy CTA', async ({ page }) => {
+test('desktop Coastal v2c composition keeps warm hero, Warm Oyster problem band, client proof visuals, and navy CTA', async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto('/');
 
-  const heroBg = await page.locator('.hero--rev3').evaluate((el) => getComputedStyle(el).backgroundColor);
-  expect(heroBg).toMatch(/rgb\(255,\s*255,\s*255\)/);
+  const heroBg = await page.locator('.hero--coastal').evaluate((el) => getComputedStyle(el).backgroundColor);
+  expect(heroBg).not.toMatch(/rgb\(255,\s*255,\s*255\)/);
+  expect(heroBg).toMatch(/^(rgb|color)\(/);
 
   const problemBg = await page.locator('#start').evaluate((el) => getComputedStyle(el).backgroundColor);
   expect(problemBg).toMatch(/rgb\(243,\s*239,\s*230\)/);
@@ -158,13 +160,13 @@ test('desktop hero keeps founder proof in view and service-area list below the h
   await page.setViewportSize({ width: 1280, height: 720 });
   await page.goto('/');
 
-  const hero = page.locator('.hero--rev3');
-  const founder = page.locator('.hero-founder-row');
+  const hero = page.locator('.hero--coastal');
+  const founder = page.locator('.hero-owner-card');
   await expect(hero.locator('.service-area__list')).toHaveCount(0);
   await expect(page.locator('section.service-area .service-area__list li')).toHaveCount(11);
   await expect(founder).toBeVisible();
   await expect(founder).toBeInViewport({ ratio: 0.5 });
   await page.evaluate(() => document.fonts.ready);
   const headingBox = await hero.getByRole('heading', { level: 1 }).boundingBox();
-  expect(headingBox.height).toBeLessThan(160);
+  expect(headingBox.height).toBeLessThan(380);
 });

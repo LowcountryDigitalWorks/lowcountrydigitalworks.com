@@ -1,0 +1,87 @@
+/* WEB-COASTAL-SYSTEM-001 Phase B: cohesive Coastal v2c preview layer (#160).
+   Scoped to .site--coastal-v2c; no inline styles; token-aligned with Tidal Framework. */
+
+.site--coastal-v2c {
+  --focus: #2f766f;
+  --radius-card: 22px;
+  --shadow-card: 0 20px 48px rgb(16 42 58 / 0.1);
+}
+
+.site--coastal-v2c a:focus-visible,
+.site--coastal-v2c button:focus-visible,
+.site--coastal-v2c summary:focus-visible {
+  outline-color: var(--focus);
+}
+
+.site--coastal-v2c .page-hero--coastal-v2c {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(3rem, 6.5vw, 5.25rem) 0;
+  background: color-mix(in srgb, var(--ldw-warm-oyster) 48%, var(--ldw-soft-white));
+  border-bottom: 1px solid var(--border);
+}
+
+.site--coastal-v2c .page-hero--coastal-v2c::after {
+  content: "";
+  position: absolute;
+  right: -12vw;
+  bottom: -6rem;
+  width: min(52vw, 640px);
+  height: 14rem;
+  border: 1px solid color-mix(in srgb, var(--ldw-cypress-teal) 20%, transparent);
+  border-radius: 50% 50% 0 0;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+.site--coastal-v2c .page-hero--coastal-v2c .container {
+  position: relative;
+  z-index: 1;
+}
+
+.site--coastal-v2c .coastal-v2c-surface {
+  padding: clamp(1.15rem, 2.5vw, 1.65rem);
+  border: 1px solid color-mix(in srgb, var(--ldw-cypress-teal) 18%, var(--border));
+  border-radius: var(--radius-card);
+  background: color-mix(in srgb, var(--ldw-white) 88%, var(--ldw-warm-oyster));
+  box-shadow: var(--shadow-card);
+}
+
+.site--coastal-v2c .problem-choice {
+  border-radius: 18px;
+  box-shadow: 0 10px 26px rgb(16 42 58 / 0.06);
+}
+
+.site--coastal-v2c .portfolio-card {
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+
+.site--coastal-v2c .connect-shell--coastal-v2c {
+  border-radius: clamp(18px, 3vw, 28px);
+  box-shadow: var(--shadow-card);
+}
+
+.site--coastal-v2c .discovery-hero.coastal-v2c-route {
+  grid-template-columns: minmax(0, 1.05fr) minmax(280px, 0.95fr);
+  gap: clamp(1.5rem, 4vw, 3rem);
+}
+
+.site--coastal-v2c .discovery-summary {
+  border-radius: var(--radius-card);
+  background: color-mix(in srgb, var(--ldw-white) 90%, var(--ldw-warm-oyster));
+  box-shadow: var(--shadow-card);
+}
+
+@media (max-width: 760px) {
+  .site--coastal-v2c .discovery-hero.coastal-v2c-route {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site--coastal-v2c .hero--coastal::after,
+  .site--coastal-v2c .page-hero--coastal-v2c::after {
+    display: none;
+  }
+}

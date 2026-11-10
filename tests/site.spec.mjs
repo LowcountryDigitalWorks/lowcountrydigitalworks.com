@@ -138,13 +138,13 @@ test('desktop three-outcome layout and sticky-header anchors preserve their UX i
   expect(anchorState.targetTop).toBeGreaterThan(anchorState.headerBottom);
 });
 
-test('homepage presents customer-first Rev3 entry paths and keeps discovery on its dedicated route', async ({ page }) => {
+test('homepage presents customer-first Coastal v2c entry paths and keeps discovery on its dedicated route', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByRole('heading', { level: 1, name: 'Your website should bring in calls, not questions.' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Talk through your project' }).first()).toHaveAttribute('href', '/discovery/');
   await expect(page.locator('.desktop-nav a[href="/discovery/"]')).toHaveText('Project discovery');
   await expect(page.getByRole('link', { name: 'See the work' })).toHaveAttribute('href', '#client-work');
-  await expect(page.locator('.hero-founder-row')).toHaveCount(1);
+  await expect(page.locator('.hero-owner-card')).toHaveCount(1);
   await expect(page.locator('.problem-choice')).toHaveCount(4);
   await expect(page.getByText('I need a better website or online presence.', { exact: true })).toBeVisible();
   await expect(page.getByText("We waste time doing things manually / our tools don't talk.", { exact: true })).toBeVisible();
@@ -419,8 +419,8 @@ test('founder structure uses the owner-approved portrait and approved trust fact
 
   await page.goto('/');
   await expect(page.locator('#main-content').getByText('Eddie Gugino', { exact: false })).toBeVisible();
-  await expect(page.locator('.hero-founder-row').getByText('15+ years across IT, systems, security, and delivery', { exact: false })).toBeVisible();
-  await expect(page.locator('.hero-founder-row').getByText('You work directly with the person doing the work.', { exact: false })).toBeVisible();
+  await expect(page.locator('.hero-owner-card').getByText('15+ years across IT, systems, security, and delivery', { exact: false })).toBeVisible();
+  await expect(page.locator('.hero-owner-card').getByText('You work directly with the person doing the work.', { exact: false })).toBeVisible();
 
   await page.goto('/about/');
   await expect(page.getByRole('heading', { level: 1, name: 'Local, practical, and accountable by design.' })).toBeVisible();

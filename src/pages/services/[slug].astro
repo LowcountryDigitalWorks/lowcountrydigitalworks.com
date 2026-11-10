@@ -18,6 +18,7 @@ const search = serviceSearch[service.slug];
 if (!search?.title || !search?.description) throw new Error(`Missing approved search metadata for service: ${service.slug}`);
 const relatedWork = work.projects.filter((project) => service.relatedWork?.includes(project.slug));
 const relatedClientWork = work.clientWork.items.filter((client) => service.relatedClientWork?.includes(client.id));
+const coastalV2cRoute = service.slug === 'websites';
 ---
 <BaseLayout title={search.title} description={search.description}>
   <nav class="breadcrumbs" aria-label="Breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
@@ -36,7 +37,7 @@ const relatedClientWork = work.clientWork.items.filter((client) => service.relat
   </nav>
 
   <article itemscope itemtype="https://schema.org/Service">
-    <section class="page-hero page-hero--warm">
+    <section class:list={['page-hero', coastalV2cRoute ? 'page-hero--coastal-v2c coastal-v2c-route' : 'page-hero--warm']}>
       <div class="container readable">
         <p class="eyebrow">{service.kicker}</p>
         <h1 itemprop="name">{service.name}</h1>
