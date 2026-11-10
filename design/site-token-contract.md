@@ -24,7 +24,7 @@ node scripts/validate_design_token_contract.mjs
 node --test tests/design-token-contract.unit.mjs
 ```
 
-Parsing uses comment-aware helpers in `scripts/design_token_contract_lib.mjs` (no new npm dependencies): active `@import` statements only, comment-stripped `:root` declarations, and fail-closed detection of conflicting duplicate custom properties.
+Parsing uses bounded helpers in `scripts/design_token_contract_lib.mjs` (no new npm dependencies): only block comments `/* … */` are stripped outside quoted strings (CSS has no `//` comments); `:root` bodies respect strings, URLs, and brace balance; active `@import` paths resolve to an exact canonical repo-relative file (no substring matching; remote/absolute/traversal rejected); conflicting duplicate custom properties fail closed.
 
 `scripts/validate_repository.py` invokes the contract validator and unit tests during hosted `validate` CI.
 

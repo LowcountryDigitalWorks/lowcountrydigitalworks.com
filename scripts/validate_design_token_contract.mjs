@@ -32,6 +32,10 @@ function read(rel) {
 
 function loadRootProps(cssText, label, report) {
   const parsed = parseRootCustomProperties(cssText);
+  if (parsed.error) {
+    report(`${label} CSS parse error: ${parsed.error}`);
+    return null;
+  }
   if (!parsed.props) {
     report(`${label} must define at least one :root block`);
     return null;
@@ -90,8 +94,8 @@ function main() {
   }
 
   const designCss = read(contract.design_application_literals.source_file);
-  const brandImportPath = '../brand/css/brand-tokens.css';
-  if (!hasActiveCssImport(designCss, brandImportPath)) {
+  const brandCanonical = 'brand/css/brand-tokens.css';
+  if (!hasActiveCssImport(designCss, contract.design_application_literals.source_file, brandCanonical)) {
     report('design/tokens.css must actively @import brand/css/brand-tokens.css');
   }
   const designProps = loadRootProps(designCss, contract.design_application_literals.source_file, report);
@@ -117,7 +121,13 @@ function main() {
   }
 
   const globalCss = read(contract.site_runtime_aliases.source_file);
-  if (!hasActiveCssImport(globalCss, contract.site_runtime_aliases.import_brand_tokens)) {
+  if (
+    !hasActiveCssImport(
+      globalCss,
+      contract.site_runtime_aliases.source_file,
+      contract.site_runtime_aliases.import_brand_tokens
+    )
+  ) {
     report('src/styles/global.css must actively import brand/css/brand-tokens.css');
   }
   const siteProps = loadRootProps(globalCss, contract.site_runtime_aliases.source_file, report);

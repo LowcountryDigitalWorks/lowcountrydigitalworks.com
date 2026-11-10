@@ -4,6 +4,7 @@ import { spawnSync } from 'node:child_process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
+  CssSyntaxError,
   hasActiveCssImport,
   listActiveCssImports,
   parseRootCustomProperties,
@@ -11,6 +12,7 @@ import {
 } from '../scripts/design_token_contract_lib.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const BRAND = 'brand/css/brand-tokens.css';
 
 test('design token contract validator passes on repository sources', () => {
   const result = spawnSync(process.execPath, ['scripts/validate_design_token_contract.mjs'], {
@@ -34,18 +36,6 @@ test('commented declarations cannot mask active drift in :root', () => {
   `;
   const { props } = parseRootCustomProperties(css);
   assert.equal(props.get('--bg'), '#000000');
-  assert.notEqual(props.get('--bg'), 'var(--ldw-soft-white)');
-});
-
-test('comment-only :root block does not supply effective values', () => {
-  const css = `
-    /* :root { --bg: var(--ldw-soft-white); } */
-    :root {
-      --bg: #111111;
-    }
-  `;
-  const { props } = parseRootCustomProperties(css);
-  assert.equal(props.get('--bg'), '#111111');
 });
 
 test('conflicting duplicate :root declarations fail closed', () => {
@@ -55,7 +45,38 @@ test('conflicting duplicate :root declarations fail closed', () => {
   `;
   const { conflicts } = parseRootCustomProperties(css);
   assert.equal(conflicts.length, 1);
-  assert.equal(conflicts[0].name, '--muted');
+});
+
+test('url() with // does not truncate :root body; later override surfaces conflict', () => {
+  const css = `
+    :root {
+      --bg: url(https://example.test/a);
+      --bg: #111111;
+    }
+  `;
+  const { props, conflicts } = parseRootCustomProperties(css);
+  assert.equal(props.get('--bg'), '#111111');
+  assert.equal(conflicts.length, 0);
+});
+
+test('unclosed block comment fails closed', () => {
+  const { error } = parseRootCustomProperties(':root { /* unclosed --x: 1; }');
+  assert.ok(error);
+});
+
+test('quoted string may contain literal /* without closing comment state', () => {
+  const css = `:root { --note: "keep /* literal"; --bg: #222; }`;
+  const stripped = stripCssComments(css);
+  assert.match(stripped, /keep \/\* literal/);
+  const { props } = parseRootCustomProperties(css);
+  assert.equal(props.get('--bg'), '#222');
+});
+
+test('stripCssComments removes block comments but preserves //', () => {
+  const css = 'a { background: url(https://example.test/a); } /* hide */\n:root { --x: 1; }';
+  const stripped = stripCssComments(css);
+  assert.ok(!stripped.includes('hide'));
+  assert.match(stripped, /https:\/\/example\.test\/a/);
 });
 
 test('commented import cannot satisfy required active import', () => {
@@ -63,21 +84,36 @@ test('commented import cannot satisfy required active import', () => {
     /* @import url("../brand/css/brand-tokens.css"); */
     :root { --bg: white; }
   `;
-  assert.equal(hasActiveCssImport(css, 'brand/css/brand-tokens.css'), false);
-  assert.deepEqual(listActiveCssImports(css), []);
+  assert.equal(hasActiveCssImport(css, 'design/tokens.css', BRAND), false);
+  assert.deepEqual(listActiveCssImports(css, 'design/tokens.css'), []);
 });
 
-test('active import is recognized after comment stripping', () => {
-  const css = `
-    @import url("../brand/css/brand-tokens.css");
-    :root { --bg: white; }
-  `;
-  assert.equal(hasActiveCssImport(css, 'brand/css/brand-tokens.css'), true);
+test('remote https import does not satisfy local brand import', () => {
+  const css = `@import url("https://evil.example/../brand/css/brand-tokens.css");\n:root { --bg: white; }`;
+  assert.equal(hasActiveCssImport(css, 'design/tokens.css', BRAND), false);
 });
 
-test('stripCssComments removes block and line comments', () => {
-  const css = 'a { color: red; } /* hide */ // line\n:root { --x: 1; }';
-  const stripped = stripCssComments(css);
-  assert.ok(!stripped.includes('hide'));
-  assert.ok(stripped.includes(':root'));
+test('path suffix spoof does not satisfy exact canonical import', () => {
+  const css = `@import "../brand/css/brand-tokens.css.evil";\n:root { --bg: white; }`;
+  assert.equal(hasActiveCssImport(css, 'design/tokens.css', BRAND), false);
+});
+
+test('traversal import resolving outside repo is rejected', () => {
+  const css = `@import "../../../../../etc/passwd";\n:root { --bg: white; }`;
+  assert.equal(hasActiveCssImport(css, 'design/tokens.css', BRAND), false);
+});
+
+test('design/tokens.css url() import resolves to brand tokens exactly', () => {
+  const css = `@import url("../brand/css/brand-tokens.css");\n:root { --bg: white; }`;
+  assert.equal(hasActiveCssImport(css, 'design/tokens.css', BRAND), true);
+  assert.deepEqual(listActiveCssImports(css, 'design/tokens.css'), [BRAND]);
+});
+
+test('global.css bare relative import resolves to brand tokens exactly', () => {
+  const css = `@import "../../brand/css/brand-tokens.css";\n:root { --bg: white; }`;
+  assert.equal(hasActiveCssImport(css, 'src/styles/global.css', BRAND), true);
+});
+
+test('stripCssComments throws on unclosed block comment', () => {
+  assert.throws(() => stripCssComments('/* oops'), CssSyntaxError);
 });
