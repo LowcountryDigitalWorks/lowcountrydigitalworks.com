@@ -6,6 +6,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import {
+  hasActiveCssImport,
+  parseRootCustomProperties
+} from './design_token_contract_lib.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const CONTRACT_PATH = path.join(ROOT, 'design', 'site-token-contract.json');
@@ -22,20 +26,22 @@ function normalizeHex(value) {
   return trimmed.toUpperCase();
 }
 
-function parseRootCustomProperties(cssText) {
-  const rootMatch = cssText.match(/:root\s*\{([^}]*)\}/);
-  if (!rootMatch) return null;
-  const props = new Map();
-  const re = /(--[a-zA-Z0-9_-]+)\s*:\s*([^;]+);/g;
-  let match;
-  while ((match = re.exec(rootMatch[1])) !== null) {
-    props.set(match[1], match[2].trim());
-  }
-  return props;
-}
-
 function read(rel) {
   return fs.readFileSync(path.join(ROOT, rel), 'utf8');
+}
+
+function loadRootProps(cssText, label, report) {
+  const parsed = parseRootCustomProperties(cssText);
+  if (!parsed.props) {
+    report(`${label} must define at least one :root block`);
+    return null;
+  }
+  for (const conflict of parsed.conflicts) {
+    report(
+      `${label} conflicting declarations for ${conflict.name}: ${conflict.first} vs ${conflict.second}`
+    );
+  }
+  return parsed.props;
 }
 
 function main() {
@@ -53,10 +59,9 @@ function main() {
 
   const colorsJson = JSON.parse(read('brand/colors.json'));
   const brandCss = read('brand/css/brand-tokens.css');
-  const brandProps = parseRootCustomProperties(brandCss);
+  const brandProps = loadRootProps(brandCss, 'brand/css/brand-tokens.css', report);
   if (!brandProps) {
-    report('brand/css/brand-tokens.css must define a :root block');
-    process.exit(errors > 0 ? 1 : 0);
+    process.exit(1);
   }
 
   for (const [varName, hex] of Object.entries(contract.brand_literals.colors)) {
@@ -85,13 +90,12 @@ function main() {
   }
 
   const designCss = read(contract.design_application_literals.source_file);
-  if (!designCss.includes(contract.brand_literals.source_files[1].replace('brand/', '../brand/'))) {
-    report('design/tokens.css must import brand/css/brand-tokens.css');
+  const brandImportPath = '../brand/css/brand-tokens.css';
+  if (!hasActiveCssImport(designCss, brandImportPath)) {
+    report('design/tokens.css must actively @import brand/css/brand-tokens.css');
   }
-  const designProps = parseRootCustomProperties(designCss);
-  if (!designProps) {
-    report('design/tokens.css must define a :root block');
-  } else {
+  const designProps = loadRootProps(designCss, contract.design_application_literals.source_file, report);
+  if (designProps) {
     for (const [name, hex] of Object.entries(contract.design_application_literals.values)) {
       const actual = designProps.get(name);
       const isHex = hex.startsWith('#');
@@ -113,13 +117,11 @@ function main() {
   }
 
   const globalCss = read(contract.site_runtime_aliases.source_file);
-  if (!globalCss.includes(contract.site_runtime_aliases.import_brand_tokens)) {
-    report('src/styles/global.css must import brand/css/brand-tokens.css');
+  if (!hasActiveCssImport(globalCss, contract.site_runtime_aliases.import_brand_tokens)) {
+    report('src/styles/global.css must actively import brand/css/brand-tokens.css');
   }
-  const siteProps = parseRootCustomProperties(globalCss);
-  if (!siteProps) {
-    report('src/styles/global.css must define a :root block');
-  } else {
+  const siteProps = loadRootProps(globalCss, contract.site_runtime_aliases.source_file, report);
+  if (siteProps) {
     for (const [alias, brandVar] of Object.entries(contract.site_runtime_aliases.aliases_to_brand)) {
       const actual = siteProps.get(alias);
       const expected = `var(${brandVar})`;

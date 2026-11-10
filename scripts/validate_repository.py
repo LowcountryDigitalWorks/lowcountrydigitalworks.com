@@ -49,7 +49,7 @@ REQUIRED=[
  'tests/worker-unit.mjs','tests/dependency-audit-policy.unit.mjs','tests/validate-workflow-policy.unit.py',
  'scripts/dependency-audit-policy.mjs','scripts/validate_workflow_policy.py','config/dependency-risk-acceptances.json',
  'design/site-token-contract.json','design/site-token-contract.md','scripts/validate_design_token_contract.mjs',
- 'tests/design-token-contract.unit.mjs'
+ 'scripts/design_token_contract_lib.mjs','tests/design-token-contract.unit.mjs'
 ]
 for rel in REQUIRED:
  if not (ROOT/rel).exists(): error(f'missing required file: {rel}')
@@ -137,6 +137,8 @@ if '../brand/css/brand-tokens.css' not in design_tokens: error('design tokens mu
 import subprocess
 contract = subprocess.run(['node','scripts/validate_design_token_contract.mjs'], cwd=ROOT, capture_output=True, text=True)
 if contract.returncode: error(f'design token contract failed: {contract.stderr or contract.stdout}'.strip())
+contract_unit = subprocess.run(['node','--test','tests/design-token-contract.unit.mjs'], cwd=ROOT, capture_output=True, text=True)
+if contract_unit.returncode: error(f'design token contract unit tests failed: {contract_unit.stderr or contract_unit.stdout}'.strip())
 
 site_implementation='\n'.join(p.read_text(errors='ignore') for p in (ROOT/'src').rglob('*') if p.is_file())
 if 'linear-gradient(' in site_implementation: error('marketing site should not use gradients in the approved restrained visual direction')

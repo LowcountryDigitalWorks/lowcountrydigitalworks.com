@@ -24,7 +24,9 @@ node scripts/validate_design_token_contract.mjs
 node --test tests/design-token-contract.unit.mjs
 ```
 
-`scripts/validate_repository.py` invokes the contract validator during hosted `validate` CI.
+Parsing uses comment-aware helpers in `scripts/design_token_contract_lib.mjs` (no new npm dependencies): active `@import` statements only, comment-stripped `:root` declarations, and fail-closed detection of conflicting duplicate custom properties.
+
+`scripts/validate_repository.py` invokes the contract validator and unit tests during hosted `validate` CI.
 
 ## Phase B+ (not in scope here)
 
