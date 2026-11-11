@@ -15,30 +15,56 @@ import services from '../data/services.json';
     </div>
   </section>
 
-  <section class="section">
+  <section class="section section--warm" id="start">
     <div class="container">
       <div class="section-heading">
         <p class="eyebrow">Find your starting point</p>
         <h2>Which of these sounds most like what is happening now?</h2>
+        <p class="lede">Four service categories—distinct from website package shapes below.</p>
       </div>
 
-      <div class="service-family-list service-choice-list">
+      <div class="service-hub-grid service-choice-list service-choice-list--hub">
         {services.families.map((family) => (
-          <article class="service-family service-choice">
-            <div class="service-family__index">
-              <span>{family.number}</span>
-              <span class="service-family__icon"><Icon name={family.icon} size={28} /></span>
+          <article class="service-hub-card service-family service-choice">
+            <a class="service-hub-card__surface" href={family.primaryHref}>
+              <div class="service-hub-card__index service-family__index">
+                <span class="service-hub-card__number" aria-hidden="true">{family.number}</span>
+                <span class="service-hub-card__icon service-family__icon"><Icon name={family.icon} size={28} /></span>
+              </div>
               <p class="card__kicker">{family.kicker}</p>
-            </div>
-            <div class="service-family__body">
               <p class="service-choice__prompt">{family.prompt}</p>
-              <h2>{family.name}</h2>
+              <h2 class="service-hub-card__title">{family.name}</h2>
               <p>{family.description}</p>
-            </div>
-            <div class="service-family__links">
-              <a class="service-choice__primary" href={family.primaryHref}>{family.primaryLabel} →</a>
+              <span class="service-hub-card__cta">{family.primaryLabel} →</span>
+            </a>
+            <div class="service-hub-card__links">
               {family.secondaryHref && <a href={family.secondaryHref}>{family.secondaryLabel} →</a>}
               <a href="/connect/">Talk it through →</a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="plans" aria-labelledby="website-plans-title">
+    <div class="container">
+      <div class="section-heading">
+        <p class="eyebrow">{services.websitePlans.eyebrow}</p>
+        <h2 id="website-plans-title">{services.websitePlans.title}</h2>
+        <p class="lede">{services.websitePlans.intro}</p>
+        <p class="portfolio-detail-note">{services.websitePlans.quoteNote}</p>
+      </div>
+      <div class="website-plan-grid">
+        {services.websitePlans.plans.map((plan) => (
+          <article class="website-plan-card coastal-v2c-surface">
+            <p class="website-plan-card__slot" aria-label="Future approved price slot">{plan.priceSlotLabel}</p>
+            <h3>{plan.name}</h3>
+            <p>{plan.summary}</p>
+            <p class="website-plan-card__scope"><strong>Typical scope:</strong> {plan.scope}</p>
+            <div class="actions">
+              <a class="button button--secondary" href="/connect/">Request a written scope quote</a>
+              <a class="text-link" href="/services/websites/">Website service details →</a>
             </div>
           </article>
         ))}

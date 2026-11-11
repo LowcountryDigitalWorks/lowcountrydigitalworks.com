@@ -12,6 +12,7 @@ export function getStaticPaths() {
 }
 
 const { project } = Astro.props;
+const coastalV2cRoute = project.featured !== false;
 ---
 <BaseLayout title={project.name} description={project.homeSummary ?? project.purpose}>
   <nav class="breadcrumbs" aria-label="Breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
@@ -29,7 +30,7 @@ const { project } = Astro.props;
     </div>
   </nav>
 
-  <section class="page-hero page-hero--project">
+  <section class:list={['page-hero', coastalV2cRoute ? 'page-hero--coastal-v2c coastal-v2c-route' : 'page-hero--project']}>
     <div class="container project-hero-grid">
       <div class="readable">
         <div class="work-row__meta">

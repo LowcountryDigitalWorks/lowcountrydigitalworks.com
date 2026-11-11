@@ -15,7 +15,8 @@ Bounded design-direction candidate on branch `feature/web-160-coastal-v2c-previe
 | Source | Result |
 |--------|--------|
 | Owner Drive folder `142_tEYsADNkKUcKQ8ktvasULmRJa7tEC` | **Not inspected** (no Drive bridge this pass; repo/source-true only) |
-| GM24 slice (ORCH08 pass) | Home problem cards + icons, founder CTA, service-area South of Broad 2×2, Connect LinkedIn, vCard city/state, internal thumb balance (preview CSS) |
+| GM24 slice 1 (ORCH08) | Home problem cards + icons, founder CTA, service-area South of Broad 2×2, Connect LinkedIn, vCard city/state, internal thumb balance (preview CSS) |
+| GM24 slice 2 (ORCH08) | Services #start R4-A hub cards, #plans Launch/Business/Growth/Custom (quote-only slots), About coastal + timeline, Work balanced internal thumbs, featured work detail coastal hero, vCard CRLF |
 | Repo design docs + existing `hero--coastal` CSS | **Used** |
 | **VISUAL_FIDELITY_TO_V2C** | **UNVERIFIED** |
 

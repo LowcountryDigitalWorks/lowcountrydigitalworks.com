@@ -68,7 +68,7 @@ import work from '../data/work.json';
         <p class="lede">{work.internalProof.lede}</p>
       </div>
 
-      <div class="portfolio-grid portfolio-grid--work">
+      <div class="portfolio-grid portfolio-grid--work portfolio-grid--work-balanced">
         {work.projects.filter((project) => project.featured !== false).map((project) => (
           <article class="portfolio-card portfolio-card--work portfolio-card--proof">
             {project.thumbnail && (

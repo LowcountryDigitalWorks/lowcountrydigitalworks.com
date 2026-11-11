@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import about from '../data/about.json';
 ---
 <BaseLayout title="About" description="About Eddie Gugino and Lowcountry Digital Works, an owner-operated technology consultancy based in Beaufort, South Carolina.">
-  <section class="page-hero page-hero--warm">
+  <section class="page-hero page-hero--coastal-v2c coastal-v2c-route">
     <div class="container about-hero-grid">
       <div class="readable">
         <p class="eyebrow">{about.hero.eyebrow}</p>
@@ -18,13 +18,13 @@ import about from '../data/about.json';
       <aside class="about-owner-card" itemscope itemtype="https://schema.org/Person" aria-label="Eddie Gugino, founder of Lowcountry Digital Works">
         <link itemprop="sameAs" href="https://www.linkedin.com/in/edwin-gugino-3003885a" />
         <img
-          class="about-owner-card__photo"
+          class="about-owner-card__photo about-owner-card__photo--square"
           data-founder-portrait
           itemprop="image"
           src="/founder/eddie-gugino-founder.webp"
           alt="Eddie Gugino, founder of Lowcountry Digital Works"
           width="480"
-          height="600"
+          height="480"
           decoding="async"
         />
         <div>
@@ -55,7 +55,24 @@ import about from '../data/about.json';
     </div>
   </section>
 
-  <section class="section section--warm">
+  <section class="section section--warm" aria-labelledby="about-timeline-title">
+    <div class="container">
+      <div class="section-heading">
+        <p class="eyebrow">Background timeline</p>
+        <h2 id="about-timeline-title">Experience that informs the work.</h2>
+      </div>
+      <ol class="about-timeline">
+        {about.timeline.map((item) => (
+          <li class="about-timeline__item">
+            <p class="about-timeline__period">{item.period}</p>
+            <p>{item.detail}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
     <div class="container editorial-list">
       {about.principles.map((item, index) => (
         <article class="editorial-row">

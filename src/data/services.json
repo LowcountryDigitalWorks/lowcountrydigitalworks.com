@@ -65,5 +65,41 @@
   "platformNote": {
     "title": "Still not sure where your situation fits?",
     "body": "That is normal. A short description of what feels slow, confusing, outdated, manual, expensive, unreliable, or hard to own is enough to start. LDW can help map the problem before prescribing a solution."
+  },
+  "websitePlans": {
+    "eyebrow": "Website project shapes",
+    "title": "Common website engagement scopes",
+    "intro": "These four website packages are separate from the service categories above. They describe typical website project shapes LDW quotes after discovery—not list prices or binding promises.",
+    "quoteNote": "Every engagement is scoped in writing after a conversation. Price fields are reserved for future approved publication; today they route to a quote request only.",
+    "plans": [
+      {
+        "id": "launch",
+        "name": "Launch",
+        "summary": "Straightforward new sites with customer-supplied content.",
+        "scope": "Provisional scope: about 3–5 pages and one structured review cycle.",
+        "priceSlotLabel": "Quote after discovery"
+      },
+      {
+        "id": "business",
+        "name": "Business",
+        "summary": "Broader business sites that need clearer structure and a bounded migration from an existing presence.",
+        "scope": "Provisional scope: about 5–8 pages and two review cycles with bounded migration assistance.",
+        "priceSlotLabel": "Quote after discovery"
+      },
+      {
+        "id": "growth",
+        "name": "Growth",
+        "summary": "Larger tailored builds with multiple templates or scoped integration work.",
+        "scope": "Multi-template or integration-heavy scopes defined in writing. No ranking, traffic, or SEO outcome guarantees.",
+        "priceSlotLabel": "Quote after discovery"
+      },
+      {
+        "id": "custom",
+        "name": "Custom",
+        "summary": "Work that does not fit a standard shape until discovery clarifies constraints, ownership, and handoff.",
+        "scope": "Scoped after discovery interview and written agreement. Custom does not imply unlimited change.",
+        "priceSlotLabel": "Quote after discovery"
+      }
+    ]
   }
 }
