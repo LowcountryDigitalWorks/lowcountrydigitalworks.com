@@ -26,6 +26,7 @@
   "startingPoints": [
     {
       "number": "01",
+      "icon": "website",
       "title": "I need a better website or online presence.",
       "description": "The site may be dated, hard to maintain, unclear, or simply not doing enough for the business.",
       "service": "Websites",
@@ -35,6 +36,7 @@
     },
     {
       "number": "02",
+      "icon": "automation",
       "title": "We waste time doing things manually / our tools don't talk.",
       "description": "A repeated workflow, handoff, or disconnected toolset may be a better fit for configuration, integration, automation, or a focused internal tool.",
       "service": "Business Systems & Automation",
@@ -42,6 +44,7 @@
     },
     {
       "number": "03",
+      "icon": "ownership",
       "title": "I'm not sure what we own (domain, hosting, logins).",
       "description": "When ownership, vendors, platforms, costs, or the right next step are unclear, start with a practical review before buying or rebuilding anything.",
       "service": "Digital Ownership & Platform Administration",
@@ -51,6 +54,7 @@
     },
     {
       "number": "04",
+      "icon": "consulting",
       "title": "Something else / I'm not sure.",
       "description": "If none of these fit cleanly, start with a short discovery note. You do not need to name a service first.",
       "service": "Project discovery",
@@ -61,19 +65,22 @@
     "eyebrow": "Local service area",
     "title": "Serving the Lowcountry",
     "lede": "Based in Beaufort, South Carolina, LDW works with organizations across these Lowcountry communities.",
-    "items": [
+    "northCommunities": [
       "Beaufort",
       "Port Royal",
       "Habersham",
       "Lady’s Island",
       "Burton",
       "St. Helena Island",
-      "Fripp Island",
-      "Bluffton",
-      "Okatie",
-      "Ridgeland",
-      "Hardeeville"
+      "Fripp Island"
     ],
+    "southOfBroad": {
+      "label": "South of Broad",
+      "rows": [
+        ["Bluffton", "Okatie"],
+        ["Ridgeland", "Hardeeville"]
+      ]
+    },
     "note": "The right project may fit elsewhere, too. Hilton Head work is considered case by case."
   },
   "ownership": {
@@ -116,6 +123,14 @@
     "eyebrow": "Lowcountry roots",
     "title": "Built in the Lowcountry. Useful wherever the fit is right.",
     "lede": "Lowcountry Digital Works is based in Beaufort, South Carolina. The work is personal, practical, and designed to leave your business with clearer ownership—not another layer of mystery."
+  },
+  "founderCta": {
+    "eyebrow": "Owner-operated",
+    "title": "Work with Eddie",
+    "lede": "You work directly with the person planning, building, and handing off the work—not a handoff queue.",
+    "primaryCta": "Talk through your project",
+    "primaryHref": "/discovery/",
+    "secondaryNote": "A free 15-minute fit call is available when it helps clarify whether LDW is the right next step."
   },
   "contact": {
     "eyebrow": "Start with what is not working",

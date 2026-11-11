@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import FaqList from '../components/FaqList.astro';
+import Icon from '../components/Icon.astro';
 import home from '../data/home.json';
 import work from '../data/work.json';
 import contact from '../data/contact.json';
@@ -64,10 +65,13 @@ import contact from '../data/contact.json';
         <h2>{home.services.title}</h2>
         <p class="lede">{home.services.intro}</p>
       </div>
-      <div class="problem-choice-list">
+      <div class="problem-choice-list problem-choice-list--premium">
         {home.startingPoints.map((point) => (
-          <a class="problem-choice" href={point.serviceHref}>
-            <span class="problem-choice__number" aria-hidden="true">{point.number}</span>
+          <a class="problem-choice problem-choice--premium" href={point.serviceHref}>
+            <span class="problem-choice__lead" aria-hidden="true">
+              <span class="problem-choice__number">{point.number}</span>
+              <span class="problem-choice__icon"><Icon name={point.icon} size={26} /></span>
+            </span>
             <span class="problem-choice__body">
               <span class="problem-choice__title">{point.title}</span>
               <span class="problem-choice__desc">{point.description}</span>
@@ -165,17 +169,26 @@ import contact from '../data/contact.json';
     </div>
   </section>
 
-  <section class="section section--navy section--cta-band">
-    <div class="container final-cta final-cta--single">
-      <div>
-        <p class="eyebrow">{home.contact.eyebrow}</p>
-        <h2>{home.contact.title}</h2>
-        <p class="lede">{home.contact.lede}</p>
-        <p class="cta-support">{home.contact.secondaryNote}</p>
-      </div>
-      <div class="actions cta-band-actions">
-        <a class="button button--oyster" href={home.contact.primaryHref}>{home.contact.primaryCta}</a>
-        <a class="text-link text-link--light" href={`sms:${contact.phone.number}`}>or text Eddie, {contact.phone.display}</a>
+  <section class="section section--navy section--cta-band section--founder-cta">
+    <div class="container founder-cta-band">
+      <img
+        class="founder-cta-band__portrait"
+        src="/founder/eddie-gugino-founder.webp"
+        alt=""
+        width="320"
+        height="320"
+        decoding="async"
+        loading="lazy"
+      />
+      <div class="founder-cta-band__copy">
+        <p class="eyebrow">{home.founderCta.eyebrow}</p>
+        <h2>{home.founderCta.title}</h2>
+        <p class="lede">{home.founderCta.lede}</p>
+        <p class="cta-support">{home.founderCta.secondaryNote}</p>
+        <div class="actions cta-band-actions">
+          <a class="button button--oyster" href={home.founderCta.primaryHref}>{home.founderCta.primaryCta}</a>
+          <a class="text-link text-link--light" href={`sms:${contact.phone.number}`}>or text Eddie, {contact.phone.display}</a>
+        </div>
       </div>
     </div>
   </section>
@@ -192,10 +205,18 @@ import contact from '../data/contact.json';
         <h2 id="service-area-title">{home.serviceAreas.title}</h2>
         <p class="lede">{home.serviceAreas.lede}</p>
       </div>
-      <div>
-        <ul class="service-area__list" aria-label="Lowcountry service areas">
-          {home.serviceAreas.items.map((area) => <li>{area}</li>)}
+      <div class="service-area__grids">
+        <ul class="service-area__list" aria-label="Northern Lowcountry communities">
+          {home.serviceAreas.northCommunities.map((area) => <li>{area}</li>)}
         </ul>
+        <div class="service-area__south">
+          <p class="service-area__south-label">{home.serviceAreas.southOfBroad.label}</p>
+          {home.serviceAreas.southOfBroad.rows.map((row) => (
+            <ul class="service-area__list service-area__list--pair" aria-label={home.serviceAreas.southOfBroad.label}>
+              {row.map((area) => <li>{area}</li>)}
+            </ul>
+          ))}
+        </div>
         <p class="service-area__note">{home.serviceAreas.note}</p>
       </div>
     </div>

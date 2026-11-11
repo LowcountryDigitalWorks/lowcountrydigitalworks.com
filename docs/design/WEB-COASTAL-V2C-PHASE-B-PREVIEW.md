@@ -14,7 +14,8 @@ Bounded design-direction candidate on branch `feature/web-160-coastal-v2c-previe
 
 | Source | Result |
 |--------|--------|
-| Owner Drive folder `142_tEYsADNkKUcKQ8ktvasULmRJa7tEC` | **Not inspected** (no new connection authorized this pass) |
+| Owner Drive folder `142_tEYsADNkKUcKQ8ktvasULmRJa7tEC` | **Not inspected** (no Drive bridge this pass; repo/source-true only) |
+| GM24 slice (ORCH08 pass) | Home problem cards + icons, founder CTA, service-area South of Broad 2×2, Connect LinkedIn, vCard city/state, internal thumb balance (preview CSS) |
 | Repo design docs + existing `hero--coastal` CSS | **Used** |
 | **VISUAL_FIDELITY_TO_V2C** | **UNVERIFIED** |
 

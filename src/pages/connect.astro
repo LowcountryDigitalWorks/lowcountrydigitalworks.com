@@ -57,8 +57,12 @@ import Icon from '../components/Icon.astro';
         <a href="/services/">Find a service →</a>
         <a href="/work/">See how LDW works →</a>
         {contact.socials.map((social) => (
-          <a class="icon-link" href={social.href} rel="me noopener">
-            <Icon name={social.name === 'Facebook' ? 'facebook' : 'x'} size={18} />
+          <a class="icon-link" href={social.href} rel="me noopener noreferrer">
+            {social.name === 'LinkedIn' ? (
+              <img src="/brand/social/linkedin/LI-In-Bug.png" alt="" width="20" height="18" decoding="async" />
+            ) : (
+              <Icon name={social.name === 'Facebook' ? 'facebook' : 'x'} size={18} />
+            )}
             <span>{social.name}</span>
           </a>
         ))}

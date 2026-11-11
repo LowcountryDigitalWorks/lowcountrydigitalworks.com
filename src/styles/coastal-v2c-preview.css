@@ -47,9 +47,99 @@
   box-shadow: var(--shadow-card);
 }
 
-.site--coastal-v2c .problem-choice {
-  border-radius: 18px;
-  box-shadow: 0 10px 26px rgb(16 42 58 / 0.06);
+.site--coastal-v2c .problem-choice-list--premium {
+  gap: 1rem;
+}
+
+.site--coastal-v2c .problem-choice--premium {
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: start;
+  padding: 1.35rem 1.4rem;
+  border-radius: 20px;
+  border-color: color-mix(in srgb, var(--ldw-cypress-teal) 22%, var(--border));
+  background: color-mix(in srgb, var(--ldw-white) 92%, var(--ldw-warm-oyster));
+  box-shadow: var(--shadow-card);
+}
+
+.site--coastal-v2c .problem-choice__lead {
+  display: grid;
+  gap: 0.65rem;
+  justify-items: center;
+  min-width: 3.25rem;
+}
+
+.site--coastal-v2c .problem-choice__icon {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 14px;
+  color: var(--ldw-cypress-teal);
+  background: color-mix(in srgb, var(--ldw-cypress-teal) 12%, var(--ldw-soft-white));
+  border: 1px solid color-mix(in srgb, var(--ldw-cypress-teal) 22%, transparent);
+}
+
+.site--coastal-v2c .founder-cta-band {
+  display: grid;
+  grid-template-columns: minmax(140px, 220px) minmax(0, 1fr);
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: center;
+}
+
+.site--coastal-v2c .founder-cta-band__portrait {
+  width: 100%;
+  max-width: 220px;
+  aspect-ratio: 1;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: 22px;
+  border: 2px solid color-mix(in srgb, var(--ldw-cypress-teal) 35%, rgb(255 255 255 / 0.2));
+  box-shadow: 0 18px 40px rgb(0 0 0 / 0.22);
+}
+
+.site--coastal-v2c .section--founder-cta {
+  background: var(--ldw-estuary-navy);
+  border-top: 3px solid color-mix(in srgb, var(--ldw-cypress-teal) 55%, transparent);
+}
+
+.site--coastal-v2c .service-area__south-label {
+  margin: 1.25rem 0 0.55rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--interactive);
+}
+
+.site--coastal-v2c .service-area__list--pair {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-bottom: 0.55rem;
+}
+
+.site--coastal-v2c .service-area__grids .service-area__note {
+  grid-column: 1;
+  margin-top: 1rem;
+}
+
+.site--coastal-v2c .portfolio-grid--home .portfolio-card__visual {
+  aspect-ratio: 1;
+  max-height: 220px;
+}
+
+.site--coastal-v2c .portfolio-grid--home .portfolio-card__visual img {
+  object-fit: cover;
+  object-position: top center;
+}
+
+@media (max-width: 760px) {
+  .site--coastal-v2c .founder-cta-band {
+    grid-template-columns: 1fr;
+    justify-items: start;
+  }
+
+  .site--coastal-v2c .founder-cta-band__portrait {
+    max-width: 160px;
+  }
 }
 
 .site--coastal-v2c .portfolio-card {
