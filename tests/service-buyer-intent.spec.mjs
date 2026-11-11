@@ -7,7 +7,7 @@ test('indexed Services hub explains operating web design and redesign scope with
 
   const family = page.locator('.service-family').first();
   await expect(family.getByRole('heading', { name: 'Websites & Website Care' })).toBeVisible();
-  await expect(family.locator('.service-family__body > p').last()).toHaveText(
+  await expect(family.locator('a.service-hub-card__surface')).toContainText(
     'Web design and website redesign for small businesses: clear, accessible pages, customer-owned assets, and bounded Website Care when needed.',
   );
   await expect(page.locator('.service-family')).toHaveCount(4);
@@ -24,7 +24,7 @@ test('new Services buyer description stays readable on a 360px mobile screen', a
   await page.goto('/services/');
   const family = page.locator('.service-family').first();
   await expect(family.getByRole('heading', { name: 'Websites & Website Care' })).toBeVisible();
-  await expect(family.locator('.service-family__body > p').last()).toContainText('website redesign');
+  await expect(family.locator('a.service-hub-card__surface')).toContainText('website redesign');
   const width = await page.evaluate(() => ({
     viewport: document.documentElement.clientWidth,
     scroll: document.documentElement.scrollWidth,
