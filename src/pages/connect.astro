@@ -3,9 +3,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import contact from '../data/contact.json';
 import home from '../data/home.json';
 import Icon from '../components/Icon.astro';
+import RequestFlowSteps from '../components/RequestFlowSteps.astro';
 ---
 <BaseLayout title="Connect" description="Connect directly with Eddie Gugino at Lowcountry Digital Works by text, phone, email, contact card, or an optional guided project form.">
-  <section class="page-hero" aria-labelledby="connect-heading">
+  <section class="page-hero page-hero--fit" aria-labelledby="connect-heading">
     <div class="container">
       <div class="page-hero-plate">
         <p class="eyebrow">{contact.hero.eyebrow}</p>
@@ -45,12 +46,21 @@ import Icon from '../components/Icon.astro';
           <div class="section-heading">
             <p class="eyebrow">What happens next</p>
             <h2>How a first note moves.</h2>
+            <p class="lede">Text, call, email, or the optional guided form—all ordinary channels, read by a person before any scope is written.</p>
           </div>
-          <picture>
+          <RequestFlowSteps />
+          <picture class="request-flow__diagram request-flow__diagram--connect">
             <source media="(max-width: 899px)" srcset="/r5/assets/diagrams/how-a-request-moves-phone.svg" />
-            <img class="diagram diagram--lg" src="/r5/assets/diagrams/how-a-request-moves-lg.svg" alt="Illustration: how a first note moves from you to Eddie, who reviews and replies." width="680" height="420" loading="lazy" />
+            <img
+              class="diagram diagram--lg"
+              src="/r5/assets/diagrams/how-a-request-moves-lg.svg"
+              alt=""
+              width="680"
+              height="420"
+              loading="lazy"
+              aria-hidden="true"
+            />
           </picture>
-          <p class="caption">Illustration: how a first note moves</p>
         </div>
       </div>
 
@@ -66,10 +76,6 @@ import Icon from '../components/Icon.astro';
         <a class="connect-action" href={`mailto:${contact.email.address}`}>
           <span class="connect-action__icon"><Icon name="mail" size={22} /></span>
           <span class="connect-action__copy"><span>Email Eddie</span><strong>{contact.email.address}</strong><small>Share a little context</small></span>
-        </a>
-        <a class="connect-action" href="/eddie-gugino-lowcountry-digital-works.vcf" download>
-          <span class="connect-action__icon"><Icon name="contact" size={22} /></span>
-          <span class="connect-action__copy"><span>Save Eddie</span><strong>Contact card</strong><small>Keep the details handy</small></span>
         </a>
       </div>
 

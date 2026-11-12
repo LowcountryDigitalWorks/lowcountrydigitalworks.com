@@ -68,37 +68,78 @@
   },
   "websitePlans": {
     "eyebrow": "Website project shapes",
-    "title": "Common website engagement scopes",
-    "intro": "These four website packages are separate from the service categories above. They describe typical website project shapes LDW quotes after discovery—not list prices or binding promises.",
-    "quoteNote": "Every engagement is scoped in writing after a conversation. Price fields are reserved for future approved publication; today they route to a quote request only.",
+    "title": "Four common website scopes—how they differ",
+    "intro": "These packages are separate from the four service categories above. They describe typical website project shapes, not list prices. Every engagement is written after discovery.",
+    "quoteNote": "All plans are quoted in writing after a conversation. Website Care is optional and separate—not bundled into a website project unless you choose it.",
+    "ownershipNote": "You keep the domain, hosting access, content, and code where practical, with documented handoff.",
     "plans": [
       {
         "id": "launch",
         "name": "Launch",
-        "summary": "Straightforward new sites with customer-supplied content.",
-        "scope": "Provisional scope: about 3–5 pages and one structured review cycle.",
-        "priceSlotLabel": "Quote after discovery"
+        "bestFor": "A new or very small site with customer-supplied content and no legacy migration.",
+        "whenToChoose": "You need a clear first impression and a bounded first build—not a large content migration.",
+        "includes": [
+          "A focused set of core pages (typical small-business shape)",
+          "Structured review cycle before launch",
+          "Customer-owned assets and written handoff"
+        ],
+        "addsOverPrior": null,
+        "notIncluded": [
+          "Large-scale migration from a complex existing site",
+          "Ongoing Website Care (optional, separate agreement)",
+          "Guaranteed traffic, rankings, or marketing outcomes"
+        ]
       },
       {
         "id": "business",
         "name": "Business",
-        "summary": "Broader business sites that need clearer structure and a bounded migration from an existing presence.",
-        "scope": "Provisional scope: about 5–8 pages and two review cycles with bounded migration assistance.",
-        "priceSlotLabel": "Quote after discovery"
+        "bestFor": "An established business site that needs clearer structure and a bounded move from what exists today.",
+        "whenToChoose": "Visitors need clearer paths through services, locations, or proof—and some content already lives on an older site.",
+        "includes": [
+          "Broader information architecture than Launch",
+          "Bounded migration assistance from an existing public site",
+          "Two structured review cycles before launch"
+        ],
+        "addsOverPrior": "More pages, clearer journeys, and bounded migration help beyond Launch.",
+        "notIncluded": [
+          "Unlimited pages or open-ended redesign",
+          "Website Care unless added separately",
+          "SEO or advertising outcome guarantees"
+        ]
       },
       {
         "id": "growth",
         "name": "Growth",
-        "summary": "Larger tailored builds with multiple templates or scoped integration work.",
-        "scope": "Multi-template or integration-heavy scopes defined in writing. No ranking, traffic, or SEO outcome guarantees.",
-        "priceSlotLabel": "Quote after discovery"
+        "bestFor": "Larger builds with multiple templates, richer content areas, or scoped integration touchpoints.",
+        "whenToChoose": "The public site needs more depth—multiple content types, service areas, or a defined integration—without treating SEO as a product guarantee.",
+        "includes": [
+          "Multi-template or multi-section scope defined in writing",
+          "Scoped integration or structured content work when agreed in scope",
+          "Review cycles matched to written scope"
+        ],
+        "addsOverPrior": "Larger written scope, templates, and optional scoped integration—not just more pages.",
+        "notIncluded": [
+          "Ongoing SEO, ads, or ranking guarantees",
+          "Open-ended change after scope is signed",
+          "Website Care unless added separately"
+        ]
       },
       {
         "id": "custom",
         "name": "Custom",
-        "summary": "Work that does not fit a standard shape until discovery clarifies constraints, ownership, and handoff.",
-        "scope": "Scoped after discovery interview and written agreement. Custom does not imply unlimited change.",
-        "priceSlotLabel": "Quote after discovery"
+        "bestFor": "Work that does not fit Launch, Business, or Growth until discovery clarifies constraints and handoff.",
+        "whenToChoose": "The need mixes website, systems, ownership, or integration in a way that requires a fully custom written scope.",
+        "includes": [
+          "Discovery-led written scope and boundaries",
+          "Ownership and handoff plan before build starts",
+          "Deliverables defined per agreement—not a preset page count"
+        ],
+        "addsOverPrior": "Individually scoped; not a bigger tier of the three standard shapes.",
+        "notIncluded": [
+          "Implied unlimited revisions or pages",
+          "Preset hourly or page guarantees",
+          "Care or marketing programs unless scoped separately"
+        ]
       }
     ]
   }

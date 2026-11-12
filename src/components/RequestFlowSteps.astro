@@ -1,0 +1,34 @@
+---
+/** Shared four-step first-contact flow (Connect-grade detail). */
+const steps = [
+  {
+    num: '01',
+    title: 'You send a note',
+    body: 'Text, call, or email—or use the guided project form if you want more structure. No passwords or sensitive secrets in ordinary channels.',
+  },
+  {
+    num: '02',
+    title: 'Optional external form',
+    body: 'Discovery uses a hosted form outside this site. It is not embedded here and is not a contract or quote by itself.',
+  },
+  {
+    num: '03',
+    title: 'Eddie reviews',
+    body: 'A person reads what you sent, checks fit and constraints, and may ask a clarifying question before scoping.',
+  },
+  {
+    num: '04',
+    title: 'A reply',
+    body: 'You hear back by text, call, or email with a sensible next step—often a written scope outline when a project is in view.',
+  },
+];
+---
+<div class="request-flow-steps" role="list">
+  {steps.map((step) => (
+    <article class="request-flow-steps__card" role="listitem">
+      <p class="request-flow-steps__num" aria-hidden="true">{step.num}</p>
+      <h3>{step.title}</h3>
+      <p>{step.body}</p>
+    </article>
+  ))}
+</div>

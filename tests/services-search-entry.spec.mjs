@@ -15,7 +15,7 @@ test('Services hub presents factual local service metadata without changing cano
   await expect(page.locator('.service-family')).toHaveCount(4);
   await expect(page.locator('.service-family a[href="/services/websites/"]')).toHaveCount(1);
   await expect(page.locator('.service-family a[href="/services/website-care/"]')).toHaveCount(1);
-  await expect(page.locator('.service-family a[href="/connect/"]')).toHaveCount(4);
+  await expect(page.locator('.service-family a[href="/connect/"]')).toHaveCount(0);
 });
 
 test('Services metadata change does not overwrite accepted homepage search title', async ({ page }) => {

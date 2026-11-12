@@ -10,6 +10,7 @@ import '../styles/r5/base.css';
 import '../styles/r5/r4.css';
 import '../styles/r5/l.css';
 import '../styles/r5/overrides.css';
+import '../styles/r5/owner-revise.css';
 const {
   title = 'Lowcountry Digital Works',
   description = 'Practical websites, business systems, automation, digital ownership, and technology consulting built for maintainability and customer ownership.',
@@ -26,7 +27,8 @@ const robotsContent = robots ?? (noindex ? 'noindex,nofollow' : undefined);
 const allowFooterSocialProfiles = Astro.url.pathname !== '/share/';
 const path = Astro.url.pathname;
 const r5Paths = new Set(['/', '/about/', '/connect/', '/discovery/', '/work/', '/services/', '/work/document-control/']);
-const isR5 = r5Paths.has(path);
+const isServiceDetail = /^\/services\/[^/]+\/$/.test(path);
+const isR5 = r5Paths.has(path) || isServiceDetail;
 const showMobileContactBar = !['/discovery/', '/connect/'].includes(path);
 ---
 <!doctype html>

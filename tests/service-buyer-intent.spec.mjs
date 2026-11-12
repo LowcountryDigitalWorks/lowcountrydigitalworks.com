@@ -13,7 +13,7 @@ test('indexed Services hub explains operating web design and redesign scope with
   await expect(page.locator('.service-family')).toHaveCount(4);
   await expect(page.locator('.service-family a[href="/services/websites/"]')).toHaveCount(1);
   await expect(page.locator('.service-family a[href="/services/website-care/"]')).toHaveCount(1);
-  await expect(page.locator('.service-family a[href="/connect/"]')).toHaveCount(4);
+  await expect(page.locator('.service-family a[href="/connect/"]')).toHaveCount(0);
   await expect(page).toHaveTitle('Website & Automation Services in Beaufort, SC | Lowcountry Digital Works');
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://lowcountrydigitalworks.com/services/');
   await expect(page.locator('meta[name="robots"]')).toHaveCount(0);

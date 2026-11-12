@@ -85,7 +85,7 @@ test('services page presents four problem-led service families and detail routes
   await expect(page.getByRole('heading', { level: 1, name: 'Start with what your business needs to work better.' })).toBeVisible();
   await expect(page.getByText('Our website feels dated, confusing, hard to maintain', { exact: false })).toBeVisible();
   await expect(page.getByText('We keep repeating the same work', { exact: false })).toBeVisible();
-  await expect(page.locator('.service-family a[href="/connect/"]')).toHaveCount(4);
+  await expect(page.locator('.service-family a[href="/connect/"]')).toHaveCount(0);
   await expect(page.getByRole('heading', { name: 'Websites & Website Care' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Business Systems & Automation' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Digital Ownership & Platform Administration' })).toBeVisible();
@@ -481,7 +481,7 @@ test('Connect is a mobile-first stable contact destination with accessible conta
   await expect(main.locator('a[href="sms:+18436333123"]')).toBeVisible();
   await expect(main.locator('a[href="tel:+18436333123"]')).toBeVisible();
   await expect(main.locator('a[href="mailto:eddie@lowcountrydigitalworks.com"]')).toBeVisible();
-  await expect(main.locator('a[href="mailto:eddie@lowcountrydigitalworks.com"]')).toHaveCSS('grid-column', '1 / -1');
+  await expect(main.locator('a[href="mailto:eddie@lowcountrydigitalworks.com"]')).not.toHaveCSS('grid-column', '1 / -1');
   for (const width of [390, 320]) {
     await page.setViewportSize({ width, height: 844 });
     const emailWithinViewport = await main.locator('a[href="mailto:eddie@lowcountrydigitalworks.com"]').evaluate((link) => {
@@ -494,14 +494,14 @@ test('Connect is a mobile-first stable contact destination with accessible conta
   }
   await expect(main.locator('a[href="https://www.facebook.com/LowcountryDigitalWorks/"]')).toBeVisible();
   await expect(main.locator('a[href="https://x.com/LocoDW"]')).toBeVisible();
-  const contactCard = main.locator('a[href="/eddie-gugino-lowcountry-digital-works.vcf"]');
+  const contactCard = main.locator('a[href^="/eddie-gugino-lowcountry-digital-works.vcf"]');
   await expect(contactCard).toBeVisible();
-  await expect(contactCard).toContainText('Contact card');
+  await expect(contactCard).toContainText('Save contact');
   await expect(main).not.toContainText('Save vCard');
-  await expect(main.locator('.connect-actions .ui-icon')).toHaveCount(4);
-  await expect(main.locator('.connect-actions a')).toHaveCount(4);
+  await expect(main.locator('.connect-actions .ui-icon')).toHaveCount(3);
+  await expect(main.locator('.connect-actions a')).toHaveCount(3);
   await expect(main.locator('.connect-links .ui-icon')).toHaveCount(2);
-  await expect(main.locator('.ui-icon[aria-hidden="true"]')).toHaveCount(6);
+  await expect(main.locator('.ui-icon[aria-hidden="true"]')).toHaveCount(5);
 
   const discovery = main.locator('.connect-discovery');
   await expect(discovery).toHaveCount(1);
@@ -525,7 +525,7 @@ test('Connect is a mobile-first stable contact destination with accessible conta
   await expect(main.locator('a[href*="suitedash"]')).toHaveCount(0);
   await expect(main.locator('form, iframe')).toHaveCount(0);
 
-  const contactCardLink = main.locator('a[href="/eddie-gugino-lowcountry-digital-works.vcf"]');
+  const contactCardLink = main.locator('a.biz-card__save[href^="/eddie-gugino-lowcountry-digital-works.vcf"]');
   await expect(contactCardLink).toHaveAttribute('download', '');
   await contactCardLink.focus();
   await expect(contactCardLink).toBeFocused();

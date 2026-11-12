@@ -6,6 +6,7 @@ import ProofCollage from '../components/ProofCollage.astro';
 import ProblemChoiceList from '../components/ProblemChoiceList.astro';
 import ClientProofGrid from '../components/ClientProofGrid.astro';
 import FounderCtaBand from '../components/FounderCtaBand.astro';
+import RequestFlowSteps from '../components/RequestFlowSteps.astro';
 import ServiceAreaTowns from '../components/ServiceAreaTowns.astro';
 import home from '../data/home.json';
 import work from '../data/work.json';
@@ -143,24 +144,26 @@ import contact from '../data/contact.json';
       <div class="section-heading">
         <p class="eyebrow">How a request moves</p>
         <h2 id="request-heading">You write, Eddie reviews, then a reply.</h2>
+        <p class="lede">Start with text, call, or email—or use the guided project form when you want more structure. A person reads what you sent and replies with a sensible next step.</p>
       </div>
-      <picture>
+      <RequestFlowSteps />
+      <picture class="request-flow__diagram">
         <source media="(max-width: 899px)" srcset="/r5/assets/diagrams/how-a-request-moves-phone.svg" />
         <img
           class="diagram"
           src="/r5/assets/diagrams/how-a-request-moves.svg"
-          alt="Diagram: how a request moves from you to an external Quick Project Request, then Eddie reviews and replies."
+          alt=""
           width="960"
           height="240"
           loading="lazy"
           decoding="async"
+          aria-hidden="true"
         />
       </picture>
     </div>
   </section>
 
   <FounderCtaBand
-    eyebrow="Work with Eddie"
     title={home.founderCta.title}
     lede={home.contact.lede}
     note={home.founderCta.secondaryNote}

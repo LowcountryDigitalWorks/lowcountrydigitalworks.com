@@ -587,7 +587,7 @@ p { margin: 0 0 1rem; }
 .connect-action__icon { width: 42px; height: 42px; display: grid; place-items: center; flex: 0 0 auto; border-radius: 999px; background: var(--surface-warm); color: var(--interactive); }
 .connect-action--primary .connect-action__icon { background: rgb(255 255 255 / .12); color: white; }
 .connect-action__copy { min-width: 0; display: flex; flex-direction: column; }
-.connect-actions > a[href^="mailto:"] { grid-column: 1 / -1; }
+.connect-actions:not(.action-grid--under) > a[href^="mailto:"] { grid-column: 1 / -1; }
 .connect-action__copy > span { color: var(--muted); font-size: .78rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .connect-action--primary .connect-action__copy > span { color: #cbdadc; }
 .connect-action strong { overflow-wrap: anywhere; }
