@@ -1,0 +1,48 @@
+---
+import ResponsivePicture from './ResponsivePicture.astro';
+const blank = { src: '/r5/assets/art/blank.png', width: 1, height: 1, maxWidth: 899 };
+const items = [
+  {
+    href: 'https://eastcoastfoamllc.com/',
+    url: 'eastcoastfoamllc.com',
+    cap: 'Example: live client site · East Coast Foam',
+    alt: 'East Coast Foam public website. Example: live client site.',
+    src: '/r5/assets/clients/east-coast-foam-1280.jpg',
+    avif: '/r5/assets/clients/east-coast-foam-1280.avif',
+    webp: '/r5/assets/clients/east-coast-foam-1280.webp',
+  },
+  {
+    href: 'https://donovanfamilydentistry.com/',
+    url: 'donovanfamilydentistry.com',
+    cap: 'Example: live client site · Donovan Family Dentistry',
+    alt: 'Donovan Family Dentistry public website. Example: live client site.',
+    src: '/r5/assets/clients/donovan-family-dentistry-1280.jpg',
+    avif: '/r5/assets/clients/donovan-family-dentistry-1280.avif',
+    webp: '/r5/assets/clients/donovan-family-dentistry-1280.webp',
+  },
+];
+---
+<div class="proof-collage" aria-label="Live client sites">
+  {items.map((item) => (
+    <a class="proof-card" href={item.href} rel="noopener noreferrer" target="_blank">
+      <span class="browser-frame">
+        <span class="browser-frame__bar">
+          <span class="browser-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="browser-frame__url">{item.url}</span>
+        </span>
+        <span class="browser-frame__screen">
+          <ResponsivePicture
+            alt={item.alt}
+            width={1280}
+            height={800}
+            loading="eager"
+            mobile={blank}
+            desktop={{ avif: item.avif, webp: item.webp }}
+            src={item.src}
+          />
+        </span>
+      </span>
+      <span class="proof-card__cap">{item.cap}</span>
+    </a>
+  ))}
+</div>

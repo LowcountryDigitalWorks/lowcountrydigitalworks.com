@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 420" role="img" aria-labelledby="map-title map-desc">
+  <title id="map-title">Diagram: example small-business setup</title>
+  <desc id="map-desc">Illustrative map of a website, email, booking, payments, and files.</desc>
+  <rect width="360" height="420" fill="#F7F4EC"/>
+  <text x="16" y="28" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="16" font-weight="800">Current setup map</text>
+  <text x="16" y="48" fill="#3A4A44" font-family="Manrope, system-ui, sans-serif" font-size="14">Example of how the pieces connect.</text>
+  <rect x="16" y="66" width="328" height="52" rx="12" fill="#15241F" stroke="#15241F" stroke-width="1.5"/>
+  <text x="180" y="98" text-anchor="middle" fill="#EFE9DD" font-family="Manrope, system-ui, sans-serif" font-size="16" font-weight="750">Website</text>
+  <rect x="16" y="130" width="328" height="52" rx="12" fill="#FFFFFF" stroke="#15241F" stroke-width="1.5"/>
+  <text x="180" y="162" text-anchor="middle" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="16" font-weight="750">Email</text>
+  <rect x="16" y="194" width="328" height="52" rx="12" fill="#FFFFFF" stroke="#15241F" stroke-width="1.5"/>
+  <text x="180" y="226" text-anchor="middle" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="16" font-weight="750">Booking</text>
+  <rect x="16" y="258" width="328" height="52" rx="12" fill="#FFFFFF" stroke="#15241F" stroke-width="1.5"/>
+  <text x="180" y="290" text-anchor="middle" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="16" font-weight="750">Payments</text>
+  <rect x="16" y="322" width="328" height="52" rx="12" fill="#FFFFFF" stroke="#15241F" stroke-width="1.5"/>
+  <text x="180" y="354" text-anchor="middle" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="16" font-weight="750">Files</text>
+  <text x="16" y="400" fill="#3A4A44" font-family="Manrope, system-ui, sans-serif" font-size="14">Original LDW diagram · illustrative</text>
+</svg>

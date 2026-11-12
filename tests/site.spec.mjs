@@ -14,7 +14,7 @@ export function assertVcard3CrlfBytes(raw) {
   const text = raw.toString('utf8');
   expect(text).toContain('VERSION:3.0');
   expect(text).toContain('FN:Eddie Gugino');
-  expect(text).toContain('ADR;TYPE=WORK:;;Beaufort;SC;;United States');
+  expect(text).toContain('ADR;TYPE=WORK:;;;Beaufort;SC;;United States');
 }
 
 const routes = [

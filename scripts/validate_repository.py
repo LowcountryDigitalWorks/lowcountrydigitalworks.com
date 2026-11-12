@@ -64,10 +64,11 @@ def validate_vcard_crlf_bytes(raw: bytes, label: str) -> None:
    error(f'{label}: vCard 3.0 requires CRLF line endings (bare CR at byte {i})')
  if b'BEGIN:VCARD' not in raw or b'VERSION:3.0' not in raw or b'FN:Eddie Gugino' not in raw:
   error(f'{label}: vCard must preserve VERSION 3.0 and public FN identity')
- if b'ADR;TYPE=WORK:;;Beaufort;SC;;United States' not in raw:
+ # vCard 3.0 ADR = PO box; extended; street; locality; region; postal code; country.
+ if b'ADR;TYPE=WORK:;;;Beaufort;SC;;United States' not in raw:
   error(f'{label}: vCard ADR must remain city/state only (no street line)')
- if b'ADR;TYPE=WORK:;;' not in raw:
-  error(f'{label}: vCard ADR must keep the street field empty (;;; city)')
+ if b'ADR;TYPE=WORK:;;;' not in raw:
+  error(f'{label}: vCard ADR must keep the PO box, extended, and street fields empty (;;; city)')
 
 vcard_source=(ROOT/VCARD_REL).read_bytes()
 validate_vcard_crlf_bytes(vcard_source, VCARD_REL)
@@ -158,7 +159,33 @@ if contract.returncode: error(f'design token contract failed: {contract.stderr o
 contract_unit = subprocess.run(['node','--test','tests/design-token-contract.unit.mjs'], cwd=ROOT, capture_output=True, text=True)
 if contract_unit.returncode: error(f'design token contract unit tests failed: {contract_unit.stderr or contract_unit.stdout}'.strip())
 
-site_implementation='\n'.join(p.read_text(errors='ignore') for p in (ROOT/'src').rglob('*') if p.is_file())
+# R5 exemption is token-scoped, not file-scoped. Only these exact declarations
+# are removed before the restrained-direction scan; every other byte of every
+# src/ file (including the rest of theme.css and base.css) is still scanned.
+import re as _re
+R5_ALLOWED_PATTERNS = {
+  'src/styles/r5/theme.css': [
+    # Marsh hero veil token (4 declarations: default, color-mix, desktop, desktop color-mix).
+    (_re.compile(r'--hero-veil:\s*linear-gradient\((?:[^;])*\);'), 4),
+  ],
+  'src/styles/r5/base.css': [
+    # Header / cta-plate glass inside @supports, plus reduced-transparency "none" resets.
+    (_re.compile(r'^\s*(?:-webkit-)?backdrop-filter:\s*var\(--(?:header|plate)-blur\);\s*$', _re.M), 4),
+    (_re.compile(r'^\s*(?:-webkit-)?backdrop-filter:\s*none;\s*$', _re.M), 2),
+    (_re.compile(r'^@supports \(backdrop-filter: blur\(1px\)\) \{\s*$', _re.M), 1),
+    (_re.compile(r'^@supports not \(\(backdrop-filter: blur\(1px\)\) or \(-webkit-backdrop-filter: blur\(1px\)\)\) \{\s*$', _re.M), 1),
+  ],
+}
+def _scan_text(p):
+  text = p.read_text(errors='ignore')
+  rel = p.relative_to(ROOT).as_posix()
+  for pattern, expected in R5_ALLOWED_PATTERNS.get(rel, []):
+    text, count = pattern.subn('/* r5-allowed */', text)
+    if count != expected:
+      error(f'{rel}: expected exactly {expected} allowed R5 veil/blur declarations for {pattern.pattern!r}, found {count}')
+  return text
+site_files=[p for p in (ROOT/'src').rglob('*') if p.is_file()]
+site_implementation='\n'.join(_scan_text(p) for p in site_files)
 if 'linear-gradient(' in site_implementation: error('marketing site should not use gradients in the approved restrained visual direction')
 if 'backdrop-filter' in site_implementation: error('marketing site should not use decorative glassmorphism/backdrop filtering')
 if 'linkedin.com/company' in site_implementation.lower(): error('unverified LDW LinkedIn company page must not be published')

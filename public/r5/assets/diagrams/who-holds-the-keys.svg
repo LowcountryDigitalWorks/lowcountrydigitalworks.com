@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 280" role="img" aria-labelledby="keys-title keys-desc">
+  <title id="keys-title">Diagram: example setup — who holds the keys</title>
+  <desc id="keys-desc">Illustrative diagram of domain, DNS, hosting, email, and logins pointing to the business owner.</desc>
+  <rect width="960" height="280" fill="#F7F4EC"/>
+  <text x="24" y="36" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="16" font-weight="800">Who holds the keys</text>
+  <text x="24" y="58" fill="#3A4A44" font-family="Manrope, system-ui, sans-serif" font-size="13">Diagram: example setup. The owner should hold the accounts that control the business.</text>
+<rect x="24" y="96" width="140" height="72" rx="10" fill="#FFFFFF" stroke="#15241F" stroke-width="1.5"/>
+<text x="94" y="138" text-anchor="middle" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="16" font-weight="750">Domain</text>
+<path d="M168 132 H172" stroke="#15241F" stroke-width="2"/>
+<path d="M172 132 l8 -5 v10 z" fill="#15241F"/>
+<rect x="176" y="96" width="140" height="72" rx="10" fill="#FFFFFF" stroke="#15241F" stroke-width="1.5"/>
+<text x="246" y="138" text-anchor="middle" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="16" font-weight="750">DNS</text>
+<path d="M320 132 H324" stroke="#15241F" stroke-width="2"/>
+<path d="M324 132 l8 -5 v10 z" fill="#15241F"/>
+<rect x="328" y="96" width="140" height="72" rx="10" fill="#FFFFFF" stroke="#15241F" stroke-width="1.5"/>
+<text x="398" y="138" text-anchor="middle" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="16" font-weight="750">Hosting</text>
+<path d="M472 132 H476" stroke="#15241F" stroke-width="2"/>
+<path d="M476 132 l8 -5 v10 z" fill="#15241F"/>
+<rect x="480" y="96" width="140" height="72" rx="10" fill="#FFFFFF" stroke="#15241F" stroke-width="1.5"/>
+<text x="550" y="138" text-anchor="middle" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="16" font-weight="750">Email</text>
+<path d="M624 132 H628" stroke="#15241F" stroke-width="2"/>
+<path d="M628 132 l8 -5 v10 z" fill="#15241F"/>
+<rect x="632" y="96" width="140" height="72" rx="10" fill="#FFFFFF" stroke="#15241F" stroke-width="1.5"/>
+<text x="702" y="138" text-anchor="middle" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="16" font-weight="750">Logins</text>
+<path d="M776 132 H780" stroke="#15241F" stroke-width="2"/>
+<path d="M780 132 l8 -5 v10 z" fill="#15241F"/>
+<rect x="784" y="96" width="140" height="72" rx="10" fill="#1E6B66" stroke="#15241F" stroke-width="1.5"/>
+<text x="854" y="138" text-anchor="middle" fill="#EFE9DD" font-family="Manrope, system-ui, sans-serif" font-size="16" font-weight="750">Owner</text>
+  <text x="24" y="210" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="13">Each box is an account someone can lock you out of. LDW’s default is that those accounts stay in your name.</text>
+  <text x="24" y="236" fill="#3A4A44" font-family="Manrope, system-ui, sans-serif" font-size="12">Original LDW diagram · illustrative · not a screenshot of a client system</text>
+</svg>

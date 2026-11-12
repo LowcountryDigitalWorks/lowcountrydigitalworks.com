@@ -1,0 +1,31 @@
+---
+const { serviceAreas } = Astro.props;
+---
+<section class="section section--plain service-area" aria-labelledby="service-area-title">
+  <div class="container service-area__inner">
+    <div class="section-heading">
+      <p class="eyebrow">{serviceAreas.eyebrow}</p>
+      <h2 id="service-area-title">{serviceAreas.title}</h2>
+      <p class="lede">Based in Beaufort, South Carolina, LDW works with organizations across these Lowcountry communities. Towns are listed equally, grouped by which side of the Broad River they sit on.</p>
+    </div>
+    <div class="service-area__grids town-groups">
+      <div>
+        <h3>North of the Broad River</h3>
+        <ul class="service-area__list town-list" aria-label="Towns north of the Broad River">
+          {serviceAreas.northCommunities.map((area) => <li>{area}</li>)}
+        </ul>
+      </div>
+      <div class="service-area__south">
+        <h3>South of the Broad River</h3>
+        <p class="service-area__south-label">{serviceAreas.southOfBroad.label}</p>
+        {serviceAreas.southOfBroad.rows.map((row) => (
+          <ul class="service-area__list service-area__list--pair town-list town-list--south" aria-label={serviceAreas.southOfBroad.label}>
+            {row.map((area) => <li>{area}</li>)}
+          </ul>
+        ))}
+      </div>
+      <p class="service-area__note">{serviceAreas.note}</p>
+    </div>
+    <p class="art-credit">The marsh artwork on this page is original illustration, not a client site or a photograph of a specific property.</p>
+  </div>
+</section>

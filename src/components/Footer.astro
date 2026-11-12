@@ -38,7 +38,7 @@ const { allowSocialProfiles = true } = Astro.props;
             <a class="icon-link footer-social-link" itemprop="sameAs" href={social.href} rel="me noopener">
               <span class={`social-mark social-mark--${social.name === 'Facebook' ? 'facebook' : social.name === 'X' ? 'x' : 'linkedin'}`}>
                 {social.name === 'LinkedIn' ? (
-                  <img src="/brand/social/linkedin/LI-In-Bug.png" alt="" width="16" height="14" decoding="async" />
+                  <img src="/brand/social/linkedin/LI-In-Bug.png" alt="" width="34" height="34" decoding="async" />
                 ) : (
                   <Icon name={social.name === 'Facebook' ? 'facebook' : 'x'} size={16} />
                 )}
@@ -71,7 +71,7 @@ const { allowSocialProfiles = true } = Astro.props;
 .social-mark--facebook { background: #1877f2; color: #fff; }
 .social-mark--x { background: #fff; color: #000; border: 1px solid rgb(255 255 255 / .8); }
 .social-mark--linkedin { background: #fff; color: #0a66c2; border: 1px solid rgb(255 255 255 / .8); }
-.social-mark--linkedin img { display: block; width: 14px; height: auto; }
+.social-mark--linkedin img { display: block; width: 18px; height: auto; }
 .footer-social-link:hover .social-mark { transform: translateY(-1px); }
 .small { font-size: .88rem; }
 /* The third desktop track is narrower than the contact email at tablet widths.

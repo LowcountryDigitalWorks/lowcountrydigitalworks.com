@@ -1,0 +1,19 @@
+---
+import Icon from './Icon.astro';
+const { items } = Astro.props;
+---
+<div class="problem-choice-list">
+  {items.map((point) => (
+    <a class="problem-choice" href={point.serviceHref}>
+      <span class="problem-choice__lead" aria-hidden="true">
+        <span class="problem-choice__icon"><Icon name={point.icon} size={22} /></span>
+        <span class="problem-choice__number">{point.number}</span>
+      </span>
+      <span class="problem-choice__body">
+        <span class="problem-choice__title">{point.title}</span>
+        <span class="problem-choice__desc">{point.description}</span>
+      </span>
+      <span class="problem-choice__arrow" aria-hidden="true">→</span>
+    </a>
+  ))}
+</div>

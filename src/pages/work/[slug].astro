@@ -40,6 +40,12 @@ const coastalV2cRoute = project.featured !== false;
         <h1>{project.name}</h1>
         <p class="lede">{project.homeSummary ?? project.purpose}</p>
         <p class="project-quick-boundary"><strong>Current boundary:</strong> {project.cardBoundary ?? project.boundary}</p>
+        {project.slug === 'document-control' && (
+          <div class="chip-row">
+            <a class="chip" href="/services/">If this is your problem: repeating review work by hand</a>
+            <a class="chip" href="/services/business-systems-automation/">Systems and automation</a>
+          </div>
+        )}
         <div class="actions">
           <a class="button" href="#proof">See the evidence</a>
           {project.relatedService && <a class="button button--secondary" href={project.relatedService.href}>{project.relatedService.name}</a>}
@@ -58,6 +64,30 @@ const coastalV2cRoute = project.featured !== false;
       </aside>
     </div>
   </section>
+
+  {project.slug === 'document-control' && (
+    <section class="section section--plain dc-overview-band" aria-label="Document Control application surface">
+      <div class="container">
+        <picture>
+          <source type="image/avif" media="(max-width: 899px)" srcset="/r5/assets/internal/document-control-overview-phone.avif" />
+          <source type="image/webp" media="(max-width: 899px)" srcset="/r5/assets/internal/document-control-overview-phone.webp" />
+          <source media="(max-width: 899px)" srcset="/r5/assets/internal/document-control-overview-phone.jpg" />
+          <source type="image/avif" srcset="/r5/assets/internal/document-control-overview.avif" />
+          <source type="image/webp" srcset="/r5/assets/internal/document-control-overview.webp" />
+          <img
+            class="dc-overview"
+            src="/r5/assets/internal/document-control-overview.jpg"
+            alt="Document Control overview. Dark-mode synthetic workspace generated from the real application surface."
+            width="1440"
+            height="1067"
+            loading="eager"
+            decoding="async"
+          />
+        </picture>
+        <p class="maturity">Active development · not a production customer deployment. Synthetic / test-only.</p>
+      </div>
+    </section>
+  )}
 
   <section class="section">
     <div class="container project-detail-grid">
@@ -101,7 +131,7 @@ const coastalV2cRoute = project.featured !== false;
         <div class:list={['project-visual-grid', project.visuals.length === 1 && 'project-visual-grid--single']}>
           {project.visuals.map((visual) => (
             <figure class="project-visual">
-              <a class="project-visual__frame" href={visual.src}>
+              <a class="project-visual__frame" href={visual.src} aria-label={`Open full screenshot: ${visual.alt || visual.caption}`}>
                 <img src={visual.src} alt={visual.alt} width={visual.width} height={visual.height} loading="lazy" decoding="async" />
               </a>
               <figcaption>{visual.caption} <a href={visual.src}>Open full screenshot</a></figcaption>
