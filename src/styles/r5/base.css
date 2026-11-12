@@ -182,14 +182,14 @@ html[data-dir="l"] .cta-plate{ background: var(--plate-bg-solid); }
   html[data-dir="l"] .site-header {
     background: var(--header-bg-solid);
     background: var(--header-bg-glass);
-    backdrop-filter: var(--header-blur);
     -webkit-backdrop-filter: var(--header-blur);
+    backdrop-filter: var(--header-blur);
   }
   html[data-dir="l"] .cta-plate {
     background: var(--plate-bg-solid);
     background: var(--plate-bg-glass);
-    backdrop-filter: var(--plate-blur);
     -webkit-backdrop-filter: var(--plate-blur);
+    backdrop-filter: var(--plate-blur);
   }
 }
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
@@ -199,8 +199,8 @@ html[data-dir="l"] .cta-plate{ background: var(--plate-bg-solid); }
 
 @media (prefers-reduced-transparency: reduce) {
   html[data-dir="l"] .site-header,html[data-dir="l"] .cta-plate{
-    backdrop-filter: none;
     -webkit-backdrop-filter: none;
+    backdrop-filter: none;
     background: var(--header-bg-solid);
   }
   html[data-dir="l"] .cta-plate{ background: var(--plate-bg-solid); }

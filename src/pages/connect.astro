@@ -4,6 +4,7 @@ import contact from '../data/contact.json';
 import home from '../data/home.json';
 import Icon from '../components/Icon.astro';
 import RequestFlowSteps from '../components/RequestFlowSteps.astro';
+import TownGroups from '../components/TownGroups.astro';
 ---
 <BaseLayout title="Connect" description="Connect directly with Eddie Gugino at Lowcountry Digital Works by text, phone, email, contact card, or an optional guided project form.">
   <section class="page-hero page-hero--fit" aria-labelledby="connect-heading">
@@ -48,19 +49,7 @@ import RequestFlowSteps from '../components/RequestFlowSteps.astro';
             <h2>How a first note moves.</h2>
             <p class="lede">Text, call, email, or the optional guided form—all ordinary channels, read by a person before any scope is written.</p>
           </div>
-          <RequestFlowSteps />
-          <picture class="request-flow__diagram request-flow__diagram--connect">
-            <source media="(max-width: 899px)" srcset="/r5/assets/diagrams/how-a-request-moves-phone.svg" />
-            <img
-              class="diagram diagram--lg"
-              src="/r5/assets/diagrams/how-a-request-moves-lg.svg"
-              alt=""
-              width="680"
-              height="420"
-              loading="lazy"
-              aria-hidden="true"
-            />
-          </picture>
+          <RequestFlowSteps layout="2x2" />
         </div>
       </div>
 
@@ -73,7 +62,7 @@ import RequestFlowSteps from '../components/RequestFlowSteps.astro';
           <span class="connect-action__icon"><Icon name="phone" size={22} /></span>
           <span class="connect-action__copy"><span>Call Eddie</span><strong>{contact.phone.display}</strong><small>Talk it through</small></span>
         </a>
-        <a class="connect-action" href={`mailto:${contact.email.address}`}>
+        <a class="connect-action connect-action--email" href={`mailto:${contact.email.address}`}>
           <span class="connect-action__icon"><Icon name="mail" size={22} /></span>
           <span class="connect-action__copy"><span>Email Eddie</span><strong>{contact.email.address}</strong><small>Share a little context</small></span>
         </a>
@@ -82,23 +71,9 @@ import RequestFlowSteps from '../components/RequestFlowSteps.astro';
       <section class="connect-area" aria-labelledby="connect-area-title">
         <p class="eyebrow">Local service area</p>
         <h2 id="connect-area-title">Based in Beaufort, working across the Lowcountry.</h2>
-        <p class="connect-area__lede">Towns are listed equally, grouped by which side of the Broad River they sit on. Hilton Head by request only.</p>
-        <div class="connect-area__groups town-groups">
-          <div>
-            <h3>North of the Broad River</h3>
-            <ul class="town-list" aria-label="Towns north of the Broad River">
-              {home.serviceAreas.northCommunities.map((area) => <li>{area}</li>)}
-            </ul>
-          </div>
-          <div>
-            <h3>South of the Broad River</h3>
-            {home.serviceAreas.southOfBroad.rows.map((row) => (
-              <ul class="town-list town-list--south" aria-label="Towns south of the Broad River">
-                {row.map((area) => <li>{area}</li>)}
-              </ul>
-            ))}
-          </div>
-        </div>
+        <p class="connect-area__lede">Towns are listed equally, grouped by which side of the Broad River they sit on.</p>
+        <TownGroups id="connect-towns" north={home.serviceAreas.northCommunities} south={home.serviceAreas.southOfBroad.rows.flat()} />
+        <p class="town-note">Hilton Head by request only.</p>
       </section>
 
       <section class="connect-reassurance connect-discovery" aria-labelledby="guided-discovery-title">

@@ -140,7 +140,7 @@ test('Websites service renders exactly related client proof before FAQ while oth
   await expect(main.locator('iframe, embed')).toHaveCount(0);
 
   await page.goto('/services/business-systems-automation/');
-  await expect(page.locator('.related-work-card')).toHaveCount(2);
+  await expect(page.locator('[data-related-work]')).toHaveCount(2);
   await expect(page.getByRole('heading', { name: 'Document Control' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Secure Exchange' })).toBeVisible();
   await expect(page.locator('[data-related-client-work]')).toHaveCount(0);

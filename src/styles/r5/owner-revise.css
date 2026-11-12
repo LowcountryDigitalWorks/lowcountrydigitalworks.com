@@ -61,62 +61,6 @@ html[data-dir="l"] .request-flow__diagram--connect {
   margin-top: 1rem;
 }
 
-html[data-dir="l"] .plan-compare-grid {
-  display: grid;
-  gap: clamp(1rem, 2vw, 1.35rem);
-}
-
-@media (min-width: 900px) {
-  html[data-dir="l"] .plan-compare-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 1200px) {
-  html[data-dir="l"] .plan-compare-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-}
-
-html[data-dir="l"] .plan-compare-card {
-  padding: clamp(1.1rem, 2vw, 1.45rem);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-xl);
-  background: #fff;
-  box-shadow: var(--shadow-card, 0 8px 24px rgb(16 42 58 / 0.06));
-}
-
-html[data-dir="l"] .plan-compare-card__n {
-  display: block;
-  margin-bottom: 0.35rem;
-  font-size: 0.82rem;
-  font-weight: 800;
-  color: var(--color-interactive);
-}
-
-html[data-dir="l"] .plan-compare-card__best {
-  margin: 0.5rem 0 0.65rem;
-}
-
-html[data-dir="l"] .plan-compare-card__sub {
-  margin: 1rem 0 0.4rem;
-  font-size: 0.88rem;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: #3a4a44;
-}
-
-html[data-dir="l"] .plan-compare-card__list {
-  margin: 0 0 0.75rem;
-  padding-left: 1.15rem;
-  font-size: 0.93rem;
-}
-
-html[data-dir="l"] .plan-compare-card__list--muted {
-  color: #3a4a44;
-}
-
 html[data-dir="l"] .plan-compare-cta {
   margin-top: 1.5rem;
 }

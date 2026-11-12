@@ -95,27 +95,30 @@ test('services page presents four problem-led service families and detail routes
   await expect(page.locator('article[itemtype="https://schema.org/Service"]')).toHaveCount(1);
   await expect(page.locator('[itemtype="https://schema.org/BreadcrumbList"]')).toHaveCount(1);
   await expect(page.getByText('configure', { exact: false })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Talk through your situation' })).toHaveAttribute('href', '/connect/');
-  await expect(page.locator('.outcome-card')).toHaveCount(3);
-  await expect(page.locator('.outcome-grid--3')).toHaveCount(1);
+  // R5 interiors: one CTA per detail page (the band button, label = service.cta), no hero button.
+  await expect(page.locator('.svc-cta a.button')).toHaveAttribute('href', '/connect/');
+  await expect(page.locator('main a.button[href="/connect/"]')).toHaveCount(1);
+  await expect(page.locator('.svc-outcomes__item')).toHaveCount(3);
+  await expect(page.locator('.svc-outcomes')).toHaveCount(1);
   await expect(page.getByRole('heading', { name: 'Less repetitive manual work' })).toBeVisible();
   await expect(page.locator('.faq-item')).toHaveCount(3);
   await expect(page.getByText('Do you start by building custom software?')).toBeVisible();
   await expect(page.getByText('Will the automation become another system we have to maintain as the source of truth?')).toBeVisible();
-  await expect(page.locator('.related-work-card')).toHaveCount(2);
+  await expect(page.locator('[data-related-work]')).toHaveCount(2);
   await expect(page.getByRole('heading', { name: 'Document Control' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Secure Exchange' })).toBeVisible();
   await expect(page.getByText('Document Control and Secure Exchange show how LDW explores real workflow gaps', { exact: false })).toBeVisible();
 
   await page.goto('/services/website-care/');
-  await expect(page.locator('.outcome-card')).toHaveCount(3);
+  await expect(page.locator('.svc-outcomes__item')).toHaveCount(3);
   await expect(page.getByRole('heading', { name: 'A healthier site over time' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Read what website maintenance should actually check →' }))
     .toHaveAttribute('href', '/guides/website-maintenance-after-launch/');
   await expect(page.getByRole('link', { name: 'View Website Quality Toolkit source' })).toHaveAttribute('href', 'https://github.com/LowcountryDigitalWorks/website-quality-toolkit');
 
   await page.goto('/services/websites/');
-  await expect(page.locator('.outcome-card')).toHaveCount(4);
+  // R5 interiors: three example outcomes per page; the fourth Websites outcome is the documentation line in "What the work covers".
+  await expect(page.locator('.svc-outcomes__item')).toHaveCount(3);
   await expect(page.getByRole('heading', { name: 'A clearer first impression' })).toBeVisible();
   await expect(page.getByText('That operating discipline is evidence of the method, not a client case study.', { exact: false })).toBeVisible();
 });
@@ -131,7 +134,7 @@ test('desktop three-outcome layout and sticky-header anchors preserve their UX i
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto('/services/business-systems-automation/');
 
-  const grid = page.locator('.outcome-grid--3');
+  const grid = page.locator('.svc-outcomes');
   await expect(grid).toHaveCount(1);
   const gridState = await grid.evaluate((element) => ({
     columns: getComputedStyle(element).gridTemplateColumns.split(/\s+/).filter(Boolean).length,
@@ -550,7 +553,8 @@ test('Contact and footer iconography supplements visible labels rather than repl
   await expect(footer.getByRole('link', { name: 'LinkedIn' })).toBeVisible();
   await expect(footer.locator('.social-mark--facebook')).toHaveCSS('background-color', 'rgb(24, 119, 242)');
   await expect(footer.getByRole('link', { name: 'X', exact: true }).locator('.social-mark--x')).toHaveCSS('background-color', 'rgb(255, 255, 255)');
-  await expect(footer.locator('.ui-icon[aria-hidden="true"]')).toHaveCount(4);
+  // R5 interiors: LinkedIn is now an Icon like Facebook and X (was an <img>), so five icons.
+  await expect(footer.locator('.ui-icon[aria-hidden="true"]')).toHaveCount(5);
 });
 
 test('privacy page reflects the current no-nonessential-cookie posture without a cosmetic consent banner', async ({ page }) => {

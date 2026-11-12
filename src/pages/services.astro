@@ -2,6 +2,21 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Icon from '../components/Icon.astro';
 import services from '../data/services.json';
+
+// Plans: everything every plan shares is stated once above the cards; each card keeps only what is its own.
+const planSet = services.websitePlans;
+const sentences = planSet.quoteNote.split(/(?<=\.)\s+/);
+const sharedExclusion = /website care|care or marketing|ranking|seo|marketing|advertising/i;
+const sharedGuarantee = planSet.plans[0].notIncluded.find((item) => /guarantee/i.test(item));
+const planWide = [
+  sentences[0],
+  sentences.slice(1).join(' '),
+  planSet.ownershipNote,
+  sharedGuarantee ? `No plan includes ${sharedGuarantee.charAt(0).toLowerCase()}${sharedGuarantee.slice(1)}.` : null,
+].filter(Boolean);
+const ladder = planSet.plans.filter((plan) => plan.id !== 'custom');
+const customPlan = planSet.plans.find((plan) => plan.id === 'custom');
+const ownLimits = (plan) => plan.notIncluded.filter((item) => !sharedExclusion.test(item));
 ---
 <BaseLayout
   title="Website & Automation Services in Beaufort, SC"
@@ -14,7 +29,7 @@ import services from '../data/services.json';
         <h1 id="services-heading">{services.page.title}</h1>
         <p class="lede">{services.page.lede}</p>
         <div class="actions">
-          <a class="button" href="#start">Find your starting point</a>
+          <a class="button hero-start" href="#start">Find your starting point</a>
           <a class="text-link" href="#plans">See website plans</a>
         </div>
       </div>
@@ -44,8 +59,8 @@ import services from '../data/services.json';
             </span>
           </summary>
           <div class="router-tile__panel">
-            <p>What I would look at first: how a visitor finds a service and a next step.</p>
-            <a class="text-link" href="/services/websites/#main-content">See this path →</a>
+            <p>What LDW looks at first: how a visitor finds a service and a next step.</p>
+            <a class="text-link" href="/services/websites/">See this path →</a>
           </div>
         </details>
         <details class="router-tile">
@@ -62,8 +77,8 @@ import services from '../data/services.json';
             </span>
           </summary>
           <div class="router-tile__panel">
-            <p>What I would look at first: where information moves by hand today.</p>
-            <a class="text-link" href="/work/document-control/">See this path →</a>
+            <p>What LDW looks at first: where information moves by hand today.</p>
+            <a class="text-link" href="/services/business-systems-automation/">See this path →</a>
           </div>
         </details>
         <details class="router-tile router-tile--diagram">
@@ -76,8 +91,8 @@ import services from '../data/services.json';
             </span>
           </summary>
           <div class="router-tile__panel">
-            <p>What I would look at first: domain, DNS, hosting, email, and logins.</p>
-            <a class="text-link" href="/services/digital-ownership-platform-administration/#main-content">See this path →</a>
+            <p>What LDW looks at first: domain, DNS, hosting, email, and logins.</p>
+            <a class="text-link" href="/services/digital-ownership-platform-administration/">See this path →</a>
           </div>
         </details>
         <details class="router-tile router-tile--diagram">
@@ -90,8 +105,8 @@ import services from '../data/services.json';
             </span>
           </summary>
           <div class="router-tile__panel">
-            <p>What I would look at first: website, email, booking, payments, and files.</p>
-            <a class="text-link" href="/discovery/">See this path →</a>
+            <p>What LDW looks at first: website, email, booking, payments, and files.</p>
+            <a class="text-link" href="/services/technology-consulting/">See this path →</a>
           </div>
         </details>
       </div>
@@ -184,37 +199,64 @@ import services from '../data/services.json';
     </div>
   </section>
 
-  <section class="section section--plain" id="plans" aria-labelledby="website-plans-title">
+  <section class="section section--plain plans" id="plans" aria-labelledby="website-plans-title">
     <div class="container">
       <div class="section-heading">
-        <p class="eyebrow">{services.websitePlans.eyebrow}</p>
-        <h2 id="website-plans-title">{services.websitePlans.title}</h2>
-        <p class="lede">{services.websitePlans.intro}</p>
-        <p class="portfolio-detail-note">{services.websitePlans.quoteNote}</p>
-        <p class="portfolio-detail-note">{services.websitePlans.ownershipNote}</p>
+        <p class="eyebrow">{planSet.eyebrow}</p>
+        <h2 id="website-plans-title">{planSet.title}</h2>
+        <p class="lede">{planSet.intro}</p>
       </div>
-      <div class="plan-compare-grid">
-        {services.websitePlans.plans.map((plan, index) => (
-          <article class="plan-compare-card" aria-labelledby={`plan-${plan.id}`}>
-            <span class="plan-compare-card__n" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
-            <h3 id={`plan-${plan.id}`}>{plan.name}</h3>
-            <p class="plan-compare-card__best"><strong>Best for:</strong> {plan.bestFor}</p>
-            <p><strong>When to choose:</strong> {plan.whenToChoose}</p>
-            {plan.addsOverPrior && <p><strong>More than the prior shape:</strong> {plan.addsOverPrior}</p>}
-            <h4 class="plan-compare-card__sub">Typically includes</h4>
-            <ul class="check-list plan-compare-card__list">
-              {plan.includes.map((item) => <li>{item}</li>)}
-            </ul>
-            <h4 class="plan-compare-card__sub">Not included</h4>
-            <ul class="plan-compare-card__list plan-compare-card__list--muted">
-              {plan.notIncluded.map((item) => <li>{item}</li>)}
-            </ul>
-          </article>
+
+      <ul class="plan-strip" aria-label="True of every website plan">
+        {planWide.map((line) => <li><Icon name="check" size={18} class="plan-strip__check" /><span>{line}</span></li>)}
+      </ul>
+
+      <ol class="plan-ladder">
+        {ladder.map((plan, index) => (
+          <li class={`plan-card plan-card--${index + 1}`}>
+            <article aria-labelledby={`plan-${plan.id}`}>
+              <span class={`plan-rungs plan-rungs--${index + 1}`} aria-hidden="true"><i></i><i></i><i></i></span>
+              <h3 id={`plan-${plan.id}`}>{plan.name}</h3>
+              <p class="plan-card__best"><strong>Best for:</strong> {plan.bestFor}</p>
+              <p class="plan-card__when"><strong>Choose it when:</strong> {plan.whenToChoose}</p>
+              <p class="plan-adds"><span class="plan-adds__label">{plan.addsOverPrior ? 'What moving up here adds' : 'Where it starts'}</span>{plan.addsOverPrior ?? 'The baseline shape that Business builds on.'}</p>
+              <h4 class="plan-card__sub">Includes</h4>
+              <ul class="plan-card__list plan-card__list--in">
+                {plan.includes.map((item) => <li><Icon name="check" size={16} class="plan-check" /><span>{item}</span></li>)}
+              </ul>
+              <h4 class="plan-card__sub">Its own limit</h4>
+              <ul class="plan-card__list plan-card__list--out">
+                {ownLimits(plan).map((item) => <li>{item}</li>)}
+              </ul>
+            </article>
+          </li>
         ))}
-      </div>
+      </ol>
+
+      {customPlan && (
+        <article class="plan-custom" aria-labelledby="plan-custom">
+          <div class="plan-custom__lead">
+            <span class="pill pill--onnavy">Off the ladder</span>
+            <h3 id="plan-custom">{customPlan.name}</h3>
+            <p><strong>Best for:</strong> {customPlan.bestFor}</p>
+            <p><strong>Choose it when:</strong> {customPlan.whenToChoose}</p>
+            <p class="plan-custom__adds">{customPlan.addsOverPrior}</p>
+          </div>
+          <div class="plan-custom__body">
+            <h4 class="plan-card__sub">Includes</h4>
+            <ul class="plan-card__list plan-card__list--in">
+              {customPlan.includes.map((item) => <li><Icon name="check" size={16} class="plan-check" /><span>{item}</span></li>)}
+            </ul>
+            <h4 class="plan-card__sub">Its own limit</h4>
+            <ul class="plan-card__list plan-card__list--out">
+              {ownLimits(customPlan).map((item) => <li>{item}</li>)}
+            </ul>
+          </div>
+        </article>
+      )}
+
       <div class="plan-compare-cta actions">
-        <a class="button" href="/discovery/">Request a written scope quote</a>
-        <a class="text-link" href="/services/website-care/">Website Care is optional and separate →</a>
+        <a class="button" href="/discovery/">Describe your project</a>
       </div>
     </div>
   </section>

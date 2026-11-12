@@ -35,7 +35,6 @@ import contact from '../data/contact.json';
             <a class="button" href="/discovery/">Talk through your project</a>
             <a class="text-link hero-secondary-link" href={`sms:${contact.phone.number}`}>or text Eddie, {contact.phone.display}</a>
           </div>
-          <p class="hero-support">{home.contact.secondaryNote}</p>
           <a class="hero-work-link see-the-work-link" href="#client-work">See the work</a>
         </div>
       </div>
@@ -146,20 +145,7 @@ import contact from '../data/contact.json';
         <h2 id="request-heading">You write, Eddie reviews, then a reply.</h2>
         <p class="lede">Start with text, call, or email—or use the guided project form when you want more structure. A person reads what you sent and replies with a sensible next step.</p>
       </div>
-      <RequestFlowSteps />
-      <picture class="request-flow__diagram">
-        <source media="(max-width: 899px)" srcset="/r5/assets/diagrams/how-a-request-moves-phone.svg" />
-        <img
-          class="diagram"
-          src="/r5/assets/diagrams/how-a-request-moves.svg"
-          alt=""
-          width="960"
-          height="240"
-          loading="lazy"
-          decoding="async"
-          aria-hidden="true"
-        />
-      </picture>
+      <RequestFlowSteps variant="home" />
     </div>
   </section>
 

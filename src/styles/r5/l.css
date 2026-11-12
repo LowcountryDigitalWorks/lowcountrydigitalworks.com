@@ -468,15 +468,6 @@ html[data-dir="l"] .work-card img{
   html[data-dir="l"] .work-index{ display: grid; grid-template-columns: 1fr 1fr; gap: 1.15rem; align-items: stretch; }
 }
 
-/* Footer LinkedIn mark */
-html[data-dir="l"] .footer-socials img{
-  display: inline-block;
-  width: 22px;
-  height: 22px;
-  vertical-align: middle;
-  margin-right: 0.3rem;
-}
-
 html[data-dir="l"] .connect-split .action-grid{ margin-top: 1.25rem; }
 html[data-dir="l"] .founder-cta img{
   display: block;

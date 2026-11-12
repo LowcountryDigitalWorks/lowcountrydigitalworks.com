@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 210" role="img" aria-labelledby="handp-t handp-d">
+  <title id="handp-t">Diagram: example setup — retyped by hand versus connected</title>
+  <desc id="handp-d">Retyped by hand: Form, Person retypes, Second tool. Connected: Form, Integration, System of record.</desc>
+  <rect width="360" height="210" fill="#F7F4EC"/>
+  <text x="12" y="22" text-anchor="start" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="16" font-weight="800">Retyped by hand</text>
+  <rect x="12" y="30" width="96" height="48" rx="10" fill="#FFFFFF" stroke="#15241F" stroke-width="2"/>
+  <text x="60.0" y="59.6" text-anchor="middle" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="16" font-weight="700">Form</text>
+  <line x1="110" y1="54" x2="122" y2="54" stroke="#15241F" stroke-width="2"/>
+  <path d="M116 49 L122 54 L116 59" fill="none" stroke="#15241F" stroke-width="2"/>
+  <rect x="126" y="30" width="108" height="48" rx="10" fill="#FFFFFF" stroke="#15241F" stroke-width="2"/>
+  <text x="180.0" y="50.0" text-anchor="middle" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="16" font-weight="700">Person</text>
+  <text x="180.0" y="69.2" text-anchor="middle" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="16" font-weight="700">retypes</text>
+  <line x1="236" y1="54" x2="248" y2="54" stroke="#15241F" stroke-width="2"/>
+  <path d="M242 49 L248 54 L242 59" fill="none" stroke="#15241F" stroke-width="2"/>
+  <rect x="252" y="30" width="96" height="48" rx="10" fill="#FFFFFF" stroke="#15241F" stroke-width="2"/>
+  <text x="300.0" y="50.0" text-anchor="middle" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="16" font-weight="700">Second</text>
+  <text x="300.0" y="69.2" text-anchor="middle" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="16" font-weight="700">tool</text>
+  <text x="12" y="112" text-anchor="start" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="16" font-weight="800">Connected</text>
+  <rect x="12" y="120" width="96" height="48" rx="10" fill="#FFFFFF" stroke="#15241F" stroke-width="2"/>
+  <text x="60.0" y="149.6" text-anchor="middle" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="16" font-weight="700">Form</text>
+  <line x1="110" y1="144" x2="122" y2="144" stroke="#15241F" stroke-width="2"/>
+  <path d="M116 139 L122 144 L116 149" fill="none" stroke="#15241F" stroke-width="2"/>
+  <rect x="126" y="120" width="108" height="48" rx="10" fill="#1E6B66" stroke="#15241F" stroke-width="2"/>
+  <text x="180.0" y="149.6" text-anchor="middle" fill="#EFE9DD" font-family="Manrope, system-ui, sans-serif" font-size="16" font-weight="700">Integration</text>
+  <line x1="236" y1="144" x2="248" y2="144" stroke="#15241F" stroke-width="2"/>
+  <path d="M242 139 L248 144 L242 149" fill="none" stroke="#15241F" stroke-width="2"/>
+  <rect x="252" y="120" width="96" height="48" rx="10" fill="#FFFFFF" stroke="#15241F" stroke-width="2"/>
+  <text x="300.0" y="140.2" text-anchor="middle" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="15" font-weight="700">System</text>
+  <text x="300.0" y="158.2" text-anchor="middle" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="15" font-weight="700">of record</text>
+  <text x="12" y="198" text-anchor="start" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="16" font-weight="750">One source of truth.</text>
+</svg>

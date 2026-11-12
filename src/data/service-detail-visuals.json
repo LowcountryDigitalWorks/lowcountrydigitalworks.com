@@ -1,0 +1,145 @@
+{
+  "_note": "Presentation-only companion to service-details.json (which stays authoritative for page copy). Holds each page's hero illustration, the illustrative-situation lines and the short Not-included additions. Every illustrative line is labelled on the page as 'Illustrative situation, not a client result'.",
+  "ctaHeading": "Start with what is happening now.",
+  "ctaBody": "You do not need a technical specification or a polished scope. Start with what is happening now, what you want to work better, and any constraint that already matters.",
+  "stages": {
+    "websites": {
+      "name": "svc-site-anatomy",
+      "ar": "tall",
+      "pill": "Illustration: example site structure",
+      "caption": "An example of the structure a small-business site can follow.",
+      "w": 680,
+      "h": 420,
+      "pw": 360,
+      "ph": 240,
+      "alt": "Diagram: example setup — an example small-business site structure: header, a hero with one next step, Services, Recent work, Reviews, Service area and a contact path, with Domain, Hosting and Source code marked business-held."
+    },
+    "website-care": {
+      "name": "svc-care-loop",
+      "ar": "tall",
+      "pill": "Illustration: example check loop",
+      "caption": "Checks produce findings; a person decides what to act on.",
+      "w": 680,
+      "h": 420,
+      "pw": 360,
+      "ph": 240,
+      "alt": "Diagram: example setup — Website Care checks: Links, Accessibility, Performance, Dependencies and Content. They produce Findings; a person does Human review; the owner approves the change; a Change log records it. Scores are evidence, not guarantees."
+    },
+    "business-systems-automation": {
+      "name": "svc-handoff-before-after",
+      "ar": "mid",
+      "pill": "Illustration: example handoff",
+      "caption": "The same form, retyped by hand or connected.",
+      "w": 680,
+      "h": 420,
+      "pw": 360,
+      "ph": 210,
+      "alt": "Diagram: example setup — Retyped by hand: a Form, then a person retypes it into a second tool. Connected: a Form, then an Integration, into one System of record. One source of truth."
+    },
+    "digital-ownership-platform-administration": {
+      "name": "svc-estate-inventory",
+      "ar": "short",
+      "pill": "Illustration: example layout, not a client record",
+      "caption": "An example account inventory sheet.",
+      "w": 680,
+      "h": 420,
+      "pw": 360,
+      "ph": 190,
+      "alt": "Diagram: example setup — an example account inventory sheet. Columns: Asset, Held by, Access, Recovery. Rows: Domain, DNS, Hosting, Source code, Email. Example layout, not a client record."
+    },
+    "technology-consulting": {
+      "name": "svc-decision-matrix",
+      "ar": "mid",
+      "pill": "Illustration: example comparison",
+      "caption": "Options compared on the same criteria, ending in a written recommendation.",
+      "w": 680,
+      "h": 420,
+      "pw": 360,
+      "ph": 210,
+      "alt": "Diagram: example setup — an example decision matrix comparing Option A, Option B and Option C on Cost, Support, Security, Portability and Maintainability, ending in a written recommendation with next actions. Bars are illustrative; there are no values."
+    }
+  },
+  "pages": {
+    "websites": {
+      "whoHeading": "Start with the friction.",
+      "includedHeading": "What the work includes, and what it does not.",
+      "notIncluded": [
+        "A required CMS or website platform.",
+        "A forced full rebuild when modernizing what works is the better choice.",
+        "Website Care, unless you choose it separately.",
+        "Guaranteed traffic, rankings, or marketing outcomes."
+      ],
+      "includedLink": {
+        "href": "/services/#plans",
+        "label": "See the four website scopes"
+      },
+      "situations": [
+        "A site that still follows an inherited page structure is reorganized so a visitor can find a service and a contact path.",
+        "An owner who cannot say where the domain and hosting login live ends with a written list of owners and named access.",
+        "A site that is hard to use on a phone is built to be responsive and accessible, and is checked in the browser before launch."
+      ]
+    },
+    "website-care": {
+      "suppressRelatedWork": true,
+      "whoHeading": "Start with what keeps slipping.",
+      "includedHeading": "What care covers, and what it does not.",
+      "notIncluded": [
+        "A 24x7 support or response-time commitment, unless a separate agreement says so.",
+        "A website-project bundle. Website Care is optional and separate.",
+        "Guaranteed rankings or scores. Scanner findings are evidence for human review."
+      ],
+      "situations": [
+        "Small fixes that used to wait are handled as planned work.",
+        "The business keeps its accounts and source while LDW works through named, scoped access.",
+        "A link or accessibility scan produces findings, and a person decides which ones are worth acting on."
+      ],
+      "railHeading": "A site that stays looked after."
+    },
+    "business-systems-automation": {
+      "whoHeading": "Start with the gap.",
+      "includedHeading": "Smallest useful intervention first.",
+      "stepsLead": "The order matters: use what already works, automate the repeated step, and build custom only where a measured gap remains.",
+      "notIncluded": [
+        "Starting with custom software.",
+        "An automation that becomes a competing source of truth.",
+        "Document Control or Secure Exchange as an offered customer product. Both are synthetic, test-only LDW work."
+      ],
+      "situations": [
+        "A form submission that is retyped into another system moves through a supported integration.",
+        "A tool that nearly fits is checked for a native feature or a configuration change before anything new is built.",
+        "An automation is documented well enough that it could be changed or removed later."
+      ]
+    },
+    "digital-ownership-platform-administration": {
+      "whoHeading": "Start with who holds what.",
+      "includedHeading": "What the work covers, and what it does not.",
+      "notIncluded": [
+        "LDW holding master passwords or MFA recovery codes.",
+        "LDW becoming the permanent recovery owner.",
+        "Ongoing administration by default. It applies only where a clear recurring responsibility is agreed."
+      ],
+      "situations": [
+        "The owner can see which accounts, providers, and recovery paths exist.",
+        "A former vendor's access is documented and changed before anything is moved.",
+        "Ownership, recovery, and who administers what are written down."
+      ],
+      "railHeading": "A setup the business can recover.",
+      "proofHeading": "Who holds the keys, in a worked example."
+    },
+    "technology-consulting": {
+      "whoHeading": "Start with the decision.",
+      "includedHeading": "What the review covers, and what it does not.",
+      "notIncluded": [
+        "A predetermined product sale.",
+        "An open-ended engagement. Consulting does not always lead to a build.",
+        "Dependence on hidden provider knowledge."
+      ],
+      "situations": [
+        "Two competing platforms are compared on tradeoffs and a recommendation is written down.",
+        "Architecture and support are matched to the real need instead of a bigger program.",
+        "The finding is to leave the working system alone."
+      ],
+      "roadmapAlt": "Diagram: example setup — Current setup, then Findings, then Options and tradeoffs, then a Bounded roadmap with next actions. From Findings there is also a dashed branch: Leave it alone."
+    }
+  }
+}

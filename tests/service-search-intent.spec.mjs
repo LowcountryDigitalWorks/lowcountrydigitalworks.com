@@ -58,8 +58,9 @@ for (const service of cases) {
     await expect(page.locator('meta[name="robots"]')).toHaveCount(0);
     await expect(page.getByRole('heading', { level: 1, name: service.heading })).toBeVisible();
     await expect(page.locator('article[itemtype="https://schema.org/Service"]')).toHaveCount(1);
-    await expect(page.getByRole('link', { name: 'Talk through your situation' })).toHaveAttribute('href', '/connect/');
-    await expect(page.locator('.outcome-card').first()).toBeVisible();
+    await expect(page.locator('.svc-cta a.button')).toHaveAttribute('href', '/connect/');
+    await expect(page.locator('main a.button[href="/connect/"]')).toHaveCount(1);
+    await expect(page.locator('.svc-outcomes__item').first()).toBeVisible();
   });
 }
 
@@ -67,7 +68,7 @@ test('the existing Services hub still links to every distinct service and retain
   await page.goto('/services/');
   await expect(page).toHaveTitle('Website & Automation Services in Beaufort, SC | Lowcountry Digital Works');
   for (const service of cases) {
-    await expect(page.locator(`a[href="/services/${service.slug}/"]`).first()).toBeVisible();
+    await expect(page.locator(`a[href="/services/${service.slug}/"]:visible`).first()).toBeVisible();
   }
   await expect(page.locator('.service-family')).toHaveCount(4);
 });

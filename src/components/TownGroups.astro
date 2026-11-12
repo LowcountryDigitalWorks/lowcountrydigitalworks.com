@@ -1,0 +1,25 @@
+---
+// One component for both service-area surfaces (Home and Connect): two identical panels,
+// North then South of the Broad River, all 11 towns equal. Source: home.json serviceAreas.
+const { north, south, id = 'towns', listClass = '' } = Astro.props;
+const groups = [
+  { key: 'north', title: 'North of the Broad River', label: 'Towns north of the Broad River', towns: north },
+  { key: 'south', title: 'South of the Broad River', label: 'Towns south of the Broad River', towns: south },
+];
+---
+<div class="town-pair">
+  {groups.map((group, index) => (
+    <>
+      {index === 1 && <p class="town-river" aria-hidden="true">Broad River</p>}
+      <section class="town-group" aria-labelledby={`${id}-${group.key}`}>
+        <header class="town-group__head">
+          <h3 id={`${id}-${group.key}`}>{group.title}</h3>
+          <p class="town-group__count">{group.towns.length} towns</p>
+        </header>
+        <ul class:list={['towns', listClass]} aria-label={group.label}>
+          {group.towns.map((town) => <li>{town}</li>)}
+        </ul>
+      </section>
+    </>
+  ))}
+</div>

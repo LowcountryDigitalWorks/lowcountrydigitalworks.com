@@ -40,6 +40,6 @@ const isCurrent = (href) => href === '/' ? current === '/' : current === href ||
 .mobile-nav nav { position: absolute; right: 0; top: calc(100% + .55rem); min-width: min(82vw, 320px); padding: .5rem; display: grid; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface); box-shadow: 0 16px 32px rgb(16 42 58 / .12); }
 .mobile-nav nav a { color: var(--text); padding: .7rem .8rem; text-decoration: none; border-radius: var(--radius-sm); font-weight: 680; }
 .mobile-nav nav a:hover { background: var(--surface-warm); }
-.mobile-nav .mobile-nav__cta { margin-top: .25rem; background: var(--interactive); color: white; }
+.mobile-nav nav a.mobile-nav__cta { margin-top: .25rem; background: var(--interactive); color: white; }
 @media (max-width: 960px) { .desktop-nav { display: none; } .mobile-nav { display: block; } .brand { width: 210px; } }
 </style>

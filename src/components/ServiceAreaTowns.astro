@@ -1,4 +1,5 @@
 ---
+import TownGroups from './TownGroups.astro';
 const { serviceAreas } = Astro.props;
 ---
 <section class="section section--plain service-area" aria-labelledby="service-area-title">
@@ -8,21 +9,6 @@ const { serviceAreas } = Astro.props;
       <h2 id="service-area-title">{serviceAreas.title}</h2>
       <p class="lede">Based in Beaufort, South Carolina, LDW works with organizations across these Lowcountry communities. Towns are listed equally, grouped by which side of the Broad River they sit on. {serviceAreas.note}</p>
     </div>
-    <div class="service-area__grids town-groups">
-      <div>
-        <h3>North of the Broad River</h3>
-        <ul class="service-area__list town-list" aria-label="Towns north of the Broad River">
-          {serviceAreas.northCommunities.map((area) => <li>{area}</li>)}
-        </ul>
-      </div>
-      <div class="service-area__south">
-        <h3>South of the Broad River</h3>
-        {serviceAreas.southOfBroad.rows.map((row) => (
-          <ul class="service-area__list town-list town-list--south" aria-label="Towns south of the Broad River">
-            {row.map((area) => <li>{area}</li>)}
-          </ul>
-        ))}
-      </div>
-    </div>
+    <TownGroups id="home-towns" north={serviceAreas.northCommunities} south={serviceAreas.southOfBroad.rows.flat()} listClass="service-area__list" />
   </div>
 </section>

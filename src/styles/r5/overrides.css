@@ -214,16 +214,6 @@ html[data-dir="l"] .see-the-work-link {
   min-height: 44px;
 }
 
-html[data-dir="l"] footer .social-mark--linkedin {
-  width: 2.15rem;
-  height: 2.15rem;
-  background: #fff;
-}
-html[data-dir="l"] footer .social-mark--linkedin img {
-  width: 18px;
-  height: auto;
-}
-
 /* Navy surfaces: cream text, except oyster pills which need navy-on-oyster contrast. */
 html[data-dir="l"] .section--navy,
 html[data-dir="l"] .section--cta-band {
