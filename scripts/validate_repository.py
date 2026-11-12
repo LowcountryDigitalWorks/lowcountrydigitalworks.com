@@ -297,6 +297,10 @@ built_vcard=DIST/'eddie-gugino-lowcountry-digital-works.vcf'
 if built_vcard.is_file():
  validate_vcard_crlf_bytes(built_vcard.read_bytes(), str(built_vcard.relative_to(ROOT)))
 
+for css in DIST.rglob('*.css'):
+ if b'data:font' in css.read_bytes():
+  error(f'{css.relative_to(ROOT)}: built CSS must not inline fonts as data: URLs (font-src is self only)')
+
 robots=(ROOT/'public/robots.txt').read_text(); sitemap=(ROOT/'public/sitemap.xml').read_text()
 for icon in ['github.svg','cloudflare.svg','astro.svg','typescript.svg','python.svg']:
  if not (ROOT/'public'/'technology'/icon).read_text(errors='ignore').lstrip().startswith('<svg'): error(f'invalid technology SVG: {icon}')
