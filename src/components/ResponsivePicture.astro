@@ -1,0 +1,33 @@
+---
+const {
+  alt,
+  width,
+  height,
+  loading = 'lazy',
+  decoding = 'async',
+  class: className = '',
+  mobile = undefined,
+  desktop = undefined,
+  src,
+} = Astro.props;
+---
+<picture>
+  {mobile && (
+    <>
+      {mobile.avif && <source type="image/avif" media={`(max-width: ${mobile.maxWidth ?? 899}px)`} srcset={mobile.avif} />}
+      {mobile.webp && <source type="image/webp" media={`(max-width: ${mobile.maxWidth ?? 899}px)`} srcset={mobile.webp} />}
+      <source media={`(max-width: ${mobile.maxWidth ?? 899}px)`} srcset={mobile.src} width={mobile.width} height={mobile.height} />
+    </>
+  )}
+  {desktop?.avif && <source type="image/avif" srcset={desktop.avif} />}
+  {desktop?.webp && <source type="image/webp" srcset={desktop.webp} />}
+  <img
+    class={className || undefined}
+    src={src}
+    alt={alt}
+    width={width}
+    height={height}
+    loading={loading}
+    decoding={decoding}
+  />
+</picture>

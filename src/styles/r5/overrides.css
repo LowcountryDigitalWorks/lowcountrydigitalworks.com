@@ -1,0 +1,1025 @@
+/* R5 recovery overrides: owner fixes + test-compatible hooks. Values from mock tokens. */
+
+html[data-dir="l"] .problem-choice-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  align-items: stretch;
+}
+
+html[data-dir="l"] .problem-choice,
+html[data-dir="l"] .problem-choice--premium {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 0;
+  height: 100%;
+  min-height: 44px;
+  box-sizing: border-box;
+  overflow: hidden;
+  padding: 1.25rem 1.25rem 1.1rem;
+  background: var(--card-bg, #fff);
+  border: 1px solid var(--card-border, rgba(16, 42, 58, 0.12));
+  border-radius: var(--radius-lg, 16px);
+  box-shadow: var(--shadow-sm, 0 8px 20px rgba(21, 36, 31, 0.08));
+  color: var(--color-text, #15241F);
+  text-decoration: none;
+}
+
+html[data-dir="l"] .problem-choice__lead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin: 0 0 0.85rem;
+  min-width: 0;
+}
+
+html[data-dir="l"] .problem-choice__icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  border-radius: 12px;
+  color: #1E6B66;
+  background: color-mix(in srgb, #1E6B66 12%, #F7F4EC);
+  border: 1px solid color-mix(in srgb, #1E6B66 22%, transparent);
+}
+
+html[data-dir="l"] .problem-choice__number {
+  display: block;
+  width: auto;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #1E6B66;
+  font-size: 0.8125rem;
+  font-weight: 750;
+  letter-spacing: 0.06em;
+  line-height: 1;
+}
+
+html[data-dir="l"] .problem-choice__body {
+  display: grid;
+  gap: 0.4rem;
+  min-width: 0;
+  flex: 1;
+}
+
+html[data-dir="l"] .problem-choice__title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+html[data-dir="l"] .problem-choice__desc {
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: #3A4A44;
+}
+
+html[data-dir="l"] .problem-choice__arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  align-self: flex-end;
+  width: auto;
+  height: auto;
+  min-height: 44px;
+  margin-top: 0.85rem;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #1E6B66;
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+@media (max-width: 760px) {
+  html[data-dir="l"] .problem-choice-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+html[data-dir="l"] .towns-strip {
+  background-image: none;
+  height: auto;
+}
+html[data-dir="l"] .towns-strip img {
+  display: block;
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: inherit;
+}
+
+html[data-dir="l"] .town-groups .town-list--south {
+  grid-template-columns: 1fr 1fr;
+}
+
+html[data-dir="l"] .section--sky .founder-cta,
+html[data-dir="l"] .founder-cta.hero-owner-card {
+  display: grid;
+  gap: 1.25rem;
+  align-items: center;
+}
+@media (min-width: 800px) {
+  html[data-dir="l"] .section--sky .founder-cta,
+  html[data-dir="l"] .founder-cta.hero-owner-card {
+    grid-template-columns: 160px minmax(0, 1fr);
+  }
+}
+html[data-dir="l"] .founder-cta .hero-owner-card__portrait,
+html[data-dir="l"] .founder-cta img[data-founder-portrait] {
+  width: 160px;
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: 12px;
+}
+
+/* Visible tool/client screenshots: parent must have a used height or height:100% collapses. */
+html[data-dir="l"] .portfolio-card__visual,
+html[data-dir="l"] .work-card picture,
+html[data-dir="l"] .num-card__media,
+html[data-dir="l"] .tool-block img,
+html[data-dir="l"] .project-visual,
+html[data-dir="l"] .dc-overview,
+html[data-dir="l"] .work-band__visual,
+html[data-dir="l"] .browser-frame__screen {
+  overflow: hidden;
+  border-radius: 12px;
+}
+html[data-dir="l"] .portfolio-card__visual {
+  display: block;
+  aspect-ratio: 16 / 10;
+  background: #15241F;
+}
+html[data-dir="l"] .browser-frame__screen {
+  display: block;
+  aspect-ratio: 16 / 10;
+  background: var(--device-screen-bg, #0B1C18);
+}
+html[data-dir="l"] .portfolio-card__visual img,
+html[data-dir="l"] .project-visual img,
+html[data-dir="l"] .browser-frame__screen img,
+html[data-dir="l"] .work-band__visual img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+html[data-dir="l"] .about-lead__photo,
+html[data-dir="l"] img.about-lead__photo[data-founder-portrait] {
+  width: min(260px, 100%);
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: 16px;
+}
+
+html[data-dir="l"] .services-r5-mobile { display: none; }
+html[data-dir="l"] .services-r4a-desktop { display: block; }
+@media (max-width: 899px) {
+  html[data-dir="l"] .services-r5-mobile { display: block; }
+  html[data-dir="l"] .services-r4a-desktop { display: none; }
+}
+
+html[data-dir="l"] .plan-grid .num-card {
+  border-top: 4px solid #1E6B66;
+}
+html[data-dir="l"] .plan-grid .num-card:nth-child(2) { border-top-color: #102A3A; }
+html[data-dir="l"] .plan-grid .num-card:nth-child(3) { border-top-color: #C8A548; }
+html[data-dir="l"] .plan-grid .num-card:nth-child(4) { border-top-color: #3A4A44; }
+
+html[data-dir="l"] .hero-phone-mobile { display: none; }
+@media (max-width: 899px) {
+  html[data-dir="l"] .hero-phone-mobile { display: block; }
+  html[data-dir="l"] .proof-collage { display: none; }
+}
+
+html[data-dir="l"] .see-the-work-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+/* Navy surfaces: cream text, except oyster pills which need navy-on-oyster contrast. */
+html[data-dir="l"] .section--navy,
+html[data-dir="l"] .section--cta-band {
+  background: #102A3A;
+  color: #EFE9DD;
+}
+html[data-dir="l"] .section--navy h1,
+html[data-dir="l"] .section--navy h2,
+html[data-dir="l"] .section--navy h3,
+html[data-dir="l"] .section--navy p,
+html[data-dir="l"] .section--navy .eyebrow,
+html[data-dir="l"] .section--navy .lede,
+html[data-dir="l"] .section--navy li,
+html[data-dir="l"] .section--cta-band .eyebrow,
+html[data-dir="l"] .section--cta-band h2,
+html[data-dir="l"] .section--cta-band .lede,
+html[data-dir="l"] .section--cta-band .cta-support {
+  color: #EFE9DD;
+}
+html[data-dir="l"] .section--navy .text-link,
+html[data-dir="l"] .section--navy .text-link--light,
+html[data-dir="l"] .section--cta-band .text-link,
+html[data-dir="l"] .section--cta-band .text-link--light {
+  color: #EFE9DD;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+html[data-dir="l"] .section--navy a.button--oyster,
+html[data-dir="l"] .section--cta-band a.button--oyster,
+html[data-dir="l"] .section--navy .button--oyster,
+html[data-dir="l"] .section--cta-band .button--oyster {
+  background: #EFE9DD;
+  border-color: #EFE9DD;
+  color: #102A3A;
+}
+
+html[data-dir="l"] .connect-action,
+html[data-dir="l"] .connect-action .connect-action__copy,
+html[data-dir="l"] .connect-action .connect-action__copy span,
+html[data-dir="l"] .connect-action .connect-action__copy strong,
+html[data-dir="l"] .connect-action .connect-action__copy small {
+  color: inherit;
+}
+html[data-dir="l"] .connect-action--primary,
+html[data-dir="l"] .connect-action--primary .connect-action__copy,
+html[data-dir="l"] .connect-action--primary .connect-action__copy span,
+html[data-dir="l"] .connect-action--primary .connect-action__copy strong,
+html[data-dir="l"] .connect-action--primary .connect-action__copy small,
+html[data-dir="l"] .connect-action--primary .connect-action__icon {
+  color: #EFE9DD;
+}
+
+html[data-dir="l"] .connect-actions,
+html[data-dir="l"] .connect-action,
+html[data-dir="l"] .connect-action__copy,
+html[data-dir="l"] .connect-action__copy strong,
+html[data-dir="l"] .biz-card,
+html[data-dir="l"] .page-hero-plate,
+html[data-dir="l"] .container {
+  min-width: 0;
+  max-width: 100%;
+}
+html[data-dir="l"] .connect-action__copy strong,
+html[data-dir="l"] .connect-action__copy span,
+html[data-dir="l"] .biz-card__line,
+html[data-dir="l"] .biz-card__area {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  white-space: normal;
+}
+html[data-dir="l"] .diagram,
+html[data-dir="l"] .diagram--lg {
+  max-width: 100%;
+  height: auto;
+}
+
+html[data-dir="l"] #start {
+  background: #F3EFE6;
+}
+
+/* Desktop hero: keep navy-plate as one left column (copy + CTA). display:contents
+   previously collapsed that column and squeezed the CTA over the founder card. */
+@media (min-width: 900px) {
+  html[data-dir="l"] .hero.hero--coastal .hero-navy-plate {
+    display: block !important;
+    grid-area: plate !important;
+    max-width: 46rem;
+    background: transparent;
+  }
+  html[data-dir="l"] .hero.hero--coastal .hero-grid {
+    display: grid !important;
+    grid-template-columns: minmax(28rem, 46rem) minmax(220px, 280px) !important;
+    grid-template-areas:
+      "plate owner"
+      "stage stage" !important;
+    flex-direction: unset !important;
+    align-items: start !important;
+    column-gap: 1.5rem !important;
+    row-gap: 1.15rem !important;
+  }
+  html[data-dir="l"] .hero.hero--coastal .hero-copy { grid-area: auto !important; }
+  html[data-dir="l"] .hero.hero--coastal .cta-plate {
+    grid-area: auto !important;
+    width: 100%;
+    max-width: 36rem;
+  }
+  html[data-dir="l"] .hero.hero--coastal .hero-owner-card {
+    grid-area: owner !important;
+    align-self: start;
+  }
+  html[data-dir="l"] .hero.hero--coastal .hero-stage {
+    grid-area: stage !important;
+    width: 100%;
+  }
+  html[data-dir="l"] .hero .hero-owner-card__portrait,
+  html[data-dir="l"] .hero .hero-owner-card__portrait-shell img {
+    width: 148px;
+    height: 185px;
+    max-height: 185px;
+    object-fit: cover;
+    object-position: center top;
+  }
+  html[data-dir="l"] .hero-navy-plate .hero-support,
+  html[data-dir="l"] .cta-plate .hero-support {
+    display: block;
+    color: #15241F;
+  }
+  html[data-dir="l"] .cta-plate .text-link,
+  html[data-dir="l"] .hero-navy-plate .text-link,
+  html[data-dir="l"] .cta-plate .hero-work-link,
+  html[data-dir="l"] .hero-navy-plate .hero-work-link {
+    color: #102A3A;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+}
+
+/* Mobile navy plate: cream links; do not paint desktop cream hero with cream text. */
+@media (max-width: 760px) {
+  html[data-dir="l"] .hero-navy-plate .hero-support {
+    display: block;
+    color: #EFE9DD;
+  }
+  html[data-dir="l"] .hero-navy-plate .text-link,
+  html[data-dir="l"] .hero-navy-plate .hero-work-link,
+  html[data-dir="l"] .hero-navy-plate .see-the-work-link {
+    color: #EFE9DD;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+  html[data-dir="l"] .hero .hero-grid {
+    display: flex;
+    flex-direction: column;
+  }
+  html[data-dir="l"] .hero-navy-plate { order: 1; }
+  html[data-dir="l"] .hero-stage {
+    order: 2;
+    margin-top: 0;
+  }
+  html[data-dir="l"] .hero-owner-card { order: 3; }
+  /* Fill the first screen to the top of the Text/Call bar so later hero
+     blocks (phone, founder) start at or below the bar, not behind it. */
+  html[data-dir="l"] .hero .hero-navy-plate {
+    min-height: calc(100svh - 8.75rem);
+  }
+}
+
+/* Service area: nowrap pills, balanced groups, South 2x2. */
+html[data-dir="l"] .service-area__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+html[data-dir="l"] .service-area__grids.town-groups,
+html[data-dir="l"] .town-groups {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem 2rem;
+  align-items: start;
+}
+@media (min-width: 800px) {
+  html[data-dir="l"] .service-area__grids.town-groups,
+  html[data-dir="l"] .town-groups {
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  }
+}
+html[data-dir="l"] .service-area__list,
+html[data-dir="l"] .town-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+html[data-dir="l"] .service-area__list li,
+html[data-dir="l"] .town-list li {
+  white-space: nowrap;
+  width: auto;
+  flex: 0 0 auto;
+}
+html[data-dir="l"] .service-area__list--pair,
+html[data-dir="l"] .town-list--south {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+html[data-dir="l"] .service-area__note {
+  grid-column: 1 / -1;
+  margin: 0.25rem 0 0;
+}
+
+html[data-dir="l"] .tools-split {
+  display: grid;
+  gap: 1.5rem;
+}
+@media (min-width: 900px) {
+  html[data-dir="l"] .tools-split {
+    grid-template-columns: minmax(220px, 0.8fr) minmax(0, 1.4fr);
+    align-items: start;
+    gap: 2rem;
+  }
+}
+html[data-dir="l"] .portfolio-grid--home {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+@media (min-width: 700px) {
+  html[data-dir="l"] .portfolio-grid--home {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+html[data-dir="l"] .request-flow .diagram {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* --- Critiquito P0-1: isolate Home hero from coastal-v2c preview --- */
+html[data-dir="l"] .hero.hero--coastal::after {
+  content: none;
+  display: none;
+}
+html[data-dir="l"] .hero.hero--coastal {
+  padding: 1.25rem 0 1.6rem;
+}
+html[data-dir="l"] .hero-copy h1,
+html[data-dir="l"] .hero-copy--coastal h1 {
+  max-width: none;
+}
+html[data-dir="l"] .hero .cta-plate .actions,
+html[data-dir="l"] .hero .hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.1rem;
+}
+html[data-dir="l"] .hero .cta-plate .button,
+html[data-dir="l"] .hero .hero-actions .button {
+  width: auto;
+  max-width: none;
+  white-space: nowrap;
+}
+
+/* --- Critiquito P0-2 / P0-4: decoded bitmaps, not reserved navy/cream slabs --- */
+html[data-dir="l"] .portfolio-card__visual {
+  background: transparent;
+  aspect-ratio: 16 / 10;
+  height: auto;
+  max-height: none;
+}
+html[data-dir="l"] .portfolio-card__visual img {
+  position: static;
+  width: 100%;
+  height: auto;
+  max-height: none;
+  object-fit: cover;
+  object-position: top center;
+}
+html[data-dir="l"] .project-visual__frame {
+  display: block;
+  overflow: hidden;
+  border-radius: 12px;
+  background: transparent;
+}
+html[data-dir="l"] .project-visual__frame img,
+html[data-dir="l"] .dc-overview {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+
+/* --- Critiquito P0-3: first-screen CTAs stay visible and clear the Text/Call bar by >=24px --- */
+@media (max-width: 760px) {
+  html[data-dir="l"] .hero .hero-navy-plate {
+    min-height: calc(100svh - 3.75rem);
+  }
+  html[data-dir="l"] body.has-bar main > .hero,
+  html[data-dir="l"] body.has-bar main > .page-hero {
+    min-height: calc(100svh - 3.75rem);
+    padding-top: 0.75rem;
+    padding-bottom: calc(5.7rem + env(safe-area-inset-bottom, 0px));
+    box-sizing: border-box;
+    background-size: cover;
+    background-position: center 38%;
+  }
+  html[data-dir="l"] .about-lead {
+    display: flex;
+    flex-direction: column;
+  }
+  html[data-dir="l"] .about-lead__copy {
+    min-height: calc(100svh - 3.75rem);
+    padding: 0.7rem 0.9rem 0.75rem;
+  }
+  html[data-dir="l"] .project-hero-grid {
+    display: flex;
+    flex-direction: column;
+  }
+  html[data-dir="l"] .project-hero-grid .readable {
+    min-height: calc(100svh - 3.75rem);
+    padding-bottom: calc(5.7rem + env(safe-area-inset-bottom, 0px));
+    box-sizing: border-box;
+  }
+  html[data-dir="l"] body.has-bar .page-hero-plate {
+    padding: 0.7rem 0.9rem 0.75rem;
+  }
+  html[data-dir="l"] body.has-bar .page-hero .lede,
+  html[data-dir="l"] body.has-bar .about-lead .lede {
+    margin-bottom: 0.35rem;
+  }
+  html[data-dir="l"] body.has-bar .page-hero .actions,
+  html[data-dir="l"] body.has-bar .about-lead .actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 0.7rem;
+    margin-top: 0.35rem;
+  }
+  html[data-dir="l"] body.has-bar .page-hero .actions .button,
+  html[data-dir="l"] body.has-bar .about-lead .actions .button {
+    width: auto;
+    order: 1;
+  }
+  html[data-dir="l"] body.has-bar .page-hero .actions .text-link {
+    order: 2;
+  }
+  html[data-dir="l"] body.has-bar .page-hero .actions .button--secondary {
+    order: 3;
+    flex-basis: 100%;
+  }
+  html[data-dir="l"] body.has-bar .page-hero .chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    margin: 0.3rem 0;
+  }
+  html[data-dir="l"] body.has-bar .page-hero .chip {
+    padding: 0.18rem 0.5rem;
+    font-size: 0.8rem;
+  }
+  html[data-dir="l"] body.has-bar .about-lead__photo,
+  html[data-dir="l"] body.has-bar img.about-lead__photo[data-founder-portrait] {
+    width: min(132px, 36vw);
+    height: 132px;
+    max-height: 132px;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    object-position: center 16%;
+  }
+}
+
+@media (max-width: 760px) and (max-height: 700px) {
+  html[data-dir="l"] body.has-bar main > .page-hero {
+    padding-top: 0.5rem;
+    background-position: center 32%;
+  }
+  html[data-dir="l"] body.has-bar .page-hero-plate,
+  html[data-dir="l"] body.has-bar .about-lead__copy {
+    padding: 0.5rem 0.8rem 0.55rem;
+  }
+  html[data-dir="l"] body.has-bar .about-lead__photo,
+  html[data-dir="l"] body.has-bar img.about-lead__photo[data-founder-portrait] {
+    width: 96px;
+    height: 96px;
+    max-height: 96px;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    object-position: center 14%;
+  }
+}
+
+/* --- About 1440: large portrait + illustrated tiles --- */
+html[data-dir="l"] .about-lead {
+  display: grid;
+  gap: 1.5rem;
+  align-items: start;
+}
+@media (min-width: 900px) {
+  html[data-dir="l"] .about-lead {
+    grid-template-columns: minmax(0, 1.2fr) minmax(240px, 320px);
+  }
+  html[data-dir="l"] .about-lead__photo,
+  html[data-dir="l"] img.about-lead__photo[data-founder-portrait] {
+    width: 100%;
+    max-width: 320px;
+    height: auto;
+    aspect-ratio: 4 / 5;
+  }
+  html[data-dir="l"] .about-owner-card {
+    display: block;
+  }
+}
+html[data-dir="l"] .num-card__media {
+  margin: 0 0 0.85rem;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #F3EFE6;
+}
+html[data-dir="l"] .num-card__media img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+html[data-dir="l"] .tool-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  align-items: center;
+  padding: 0.85rem;
+}
+
+/* --- Discovery: two-column expect + warning card --- */
+@media (min-width: 900px) {
+  html[data-dir="l"] .discovery-split {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(260px, 0.85fr);
+    gap: 2rem;
+    align-items: start;
+  }
+}
+
+/* --- Discovery: R5 split H1 (single accessible heading) + #119 reassurance lines --- */
+html[data-dir="l"] .page-hero h1 .h1-sub {
+  display: block;
+  margin-top: 0.45rem;
+  font-size: clamp(1.05rem, 0.95rem + 0.6vw, 1.35rem);
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 0;
+  color: var(--color-muted);
+}
+html[data-dir="l"] .reassure-list {
+  margin: 0.85rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.3rem;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: var(--color-muted);
+}
+html[data-dir="l"] .reassure-list li {
+  position: relative;
+  padding-left: 1.05rem;
+}
+html[data-dir="l"] .reassure-list li::before {
+  content: "";
+  position: absolute;
+  left: 0.2rem;
+  top: 0.55em;
+  width: 0.35rem;
+  height: 0.35rem;
+  border-radius: 50%;
+  background: #1E6B66;
+}
+
+/* Lazy internal-tool thumbs now sit inside <picture>; give it the well's box. */
+html[data-dir="l"] .portfolio-card__visual picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* About principle 02: size the well to the 2:1 keys diagram so the card is not hollow. */
+html[data-dir="l"] .num-card__media.num-card__media--diagram {
+  align-self: stretch;
+  aspect-ratio: 2 / 1;
+  background-color: #F7F4EC;
+}
+html[data-dir="l"] .num-card__media--diagram > img {
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+/* About / Work / Services on taller phones (Critiquito P2-3): no dead cream gap under the plate.
+   About lets the founder card come up into the first screen; Work and Services pin a short
+   "next section" cue (existing section eyebrow) to the bottom of the fold-height hero. */
+.hero-next { display: none; }
+@media (max-width: 760px) {
+  html[data-dir="l"] body.has-bar main > .page-hero.page-hero--fit {
+    display: flex;
+    flex-direction: column;
+  }
+  html[data-dir="l"] body.has-bar .page-hero--fit > .container {
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  html[data-dir="l"] body.has-bar .page-hero--fit .hero-next {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    align-self: flex-start;
+    margin-top: auto;
+    margin-bottom: 0.5rem;
+    min-height: 44px;
+    padding: 0 0.95rem;
+    border-radius: 999px;
+    background: var(--plate-bg-solid);
+    border: 1px solid var(--color-border);
+    color: var(--color-ink);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+}
+@media (max-width: 760px) and (min-height: 701px) {
+  html[data-dir="l"] .page-hero--fit .about-lead__copy {
+    min-height: 0;
+  }
+}
+
+/* --- ORCH R5 review #1: Home on phones. The navy hero used to be stretched to a full
+   screen (min-height 100svh), leaving a large empty navy stretch before the East Coast Foam
+   proof. The hero now ends with its CTA plate, the proof follows in the normal page flow, and
+   the proof card is cropped so it fits above the Text/Call bar where the phone is tall enough. --- */
+@media (max-width: 760px) {
+  html[data-dir="l"] .hero .hero-navy-plate {
+    min-height: 0;
+  }
+  html[data-dir="l"] body.has-bar main > .hero {
+    min-height: 0;
+    padding-top: 0.75rem;
+    padding-bottom: 1.25rem;
+  }
+  html[data-dir="l"] .hero .hero-copy {
+    padding-bottom: 0.1rem;
+  }
+  html[data-dir="l"] .hero .hero-owner-card {
+    margin-top: 1.5rem;
+  }
+  html[data-dir="l"] .hero .lede {
+    margin-bottom: 0.6rem;
+  }
+  html[data-dir="l"] .hero-navy-plate .cta-plate {
+    padding: 0.5rem 0.7rem 0.55rem;
+  }
+  html[data-dir="l"] .hero-navy-plate .cta-plate {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: 0.9rem;
+    row-gap: 0.1rem;
+  }
+  html[data-dir="l"] .hero .cta-plate .hero-actions {
+    display: contents;
+  }
+  html[data-dir="l"] .hero-navy-plate .hero-actions .button {
+    order: 1;
+    flex: 0 1 auto;
+    margin: 0 100% 0.25rem 0;
+  }
+  html[data-dir="l"] .hero-navy-plate .hero-actions .text-link {
+    order: 2;
+    font-size: 0.9rem;
+  }
+  html[data-dir="l"] .hero-navy-plate .hero-work-link {
+    order: 3;
+    margin-top: 0;
+    font-size: 0.9rem;
+  }
+  html[data-dir="l"] .hero-navy-plate .hero-support {
+    order: 4;
+    flex: 1 0 100%;
+    margin-top: 0.1rem;
+    font-size: 0.8rem;
+    line-height: 1.3;
+  }
+  html[data-dir="l"] .hero .device-cluster__caption {
+    margin-bottom: 0.3rem;
+    padding-bottom: 0.2rem;
+  }
+  html[data-dir="l"] .device--phone-solo .device__screen {
+    aspect-ratio: 390 / 250;
+  }
+  html[data-dir="l"] .device--phone-solo .device__screen img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+  }
+}
+@media (max-width: 380px) {
+  html[data-dir="l"] .hero-navy-plate .hero-actions .text-link,
+  html[data-dir="l"] .hero-navy-plate .hero-work-link {
+    font-size: 0.82rem;
+  }
+  html[data-dir="l"] .hero .device-cluster__caption {
+    display: none;
+  }
+  html[data-dir="l"] .device--phone-solo .device__screen {
+    aspect-ratio: 390 / 215;
+  }
+}
+
+/* --- ORCH R5 review #3: Services at 1440. Eddie's R4-A pick is four equal service-choice
+   cards in rows (small proof thumbnail left, card right). The proof images used to be
+   full-width, unequal and taller than the cards, so they led the page. Phones keep the R5 stack. --- */
+@media (min-width: 900px) {
+  html[data-dir="l"] .service-choice-list--hub {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+  }
+  html[data-dir="l"] .service-hub-card.service-choice {
+    display: grid;
+    grid-template-columns: minmax(0, 21rem) minmax(0, 1fr);
+    gap: 1.75rem;
+    align-items: center;
+    min-height: 0;
+    margin: 0;
+  }
+  html[data-dir="l"] .service-hub-card .chapter__visual {
+    min-width: 0;
+  }
+  html[data-dir="l"] .service-hub-card .chapter__visual picture > img:not(.diagram) {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    height: auto;
+    object-fit: cover;
+    object-position: top left;
+    border-radius: 12px;
+    border: 1px solid var(--color-border);
+  }
+  html[data-dir="l"] .service-hub-card .chapter__visual .diagram {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 12rem;
+    object-fit: contain;
+    background: #F7F4EC;
+  }
+  html[data-dir="l"] .service-hub-card .chapter__visual .example-label,
+  html[data-dir="l"] .service-hub-card .chapter__visual .maturity,
+  html[data-dir="l"] .service-hub-card .chapter__visual .caption {
+    margin: 0.4rem 0 0;
+    font-size: 0.78rem;
+    line-height: 1.3;
+  }
+  html[data-dir="l"] .service-hub-card .chapter__visual .tool-row {
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  html[data-dir="l"] .service-hub-card .chapter__visual .tool-row img {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+/* --- ORCH R5 review #2: /connect/ biz-card, Reputation GM01 V4.2 "Tidal" look rebuilt as
+   first-party Astro + external CSS (no inline style, no inline JS, no iframe, no gradient).
+   Navy contour banner, overlapping initials tile, cream body, a real on-card Save contact
+   anchor. The 11 towns moved out of the card face into their own section below. --- */
+html[data-dir="l"] .biz-card.biz-card--tidal {
+  max-width: 28rem;
+  padding: 0;
+  height: auto;
+  align-self: start;
+  overflow: hidden;
+  background: #F3EFE6;
+  color: #102A3A;
+  border: 1px solid #D4E3D8;
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+}
+html[data-dir="l"] .biz-card--tidal .biz-card__banner {
+  position: relative;
+  min-height: 7.5rem;
+  padding: 1.15rem 1.4rem 1rem;
+  background-color: #102A3A;
+  background-image: url("/r5/assets/art/tidal-contours.svg");
+  background-size: cover;
+  background-position: right center;
+  background-repeat: no-repeat;
+}
+html[data-dir="l"] .biz-card--tidal .biz-card__logo {
+  width: min(190px, 62%);
+  margin: 0;
+}
+html[data-dir="l"] .biz-card--tidal .biz-card__tagline {
+  margin: 1.35rem 0 0;
+  text-align: right;
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: #D4EFE2;
+}
+html[data-dir="l"] .biz-card--tidal .biz-card__body {
+  padding: 0 1.4rem 1.5rem;
+}
+html[data-dir="l"] .biz-card--tidal .biz-card__avatar {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4.1rem;
+  height: 4.1rem;
+  margin-top: -2.05rem;
+  border: 5px solid #F3EFE6;
+  border-radius: 20px;
+  background: #B7E6CE;
+  color: #102A3A;
+  font-size: 1.35rem;
+  font-weight: 800;
+  box-sizing: border-box;
+}
+html[data-dir="l"] .biz-card--tidal .biz-card__name {
+  margin: 0.7rem 0 0;
+  font-size: 1.7rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  color: #102A3A;
+}
+html[data-dir="l"] .biz-card--tidal .biz-card__title {
+  margin: 0.3rem 0 0;
+  font-size: 0.95rem;
+  color: #1E6B66;
+  font-weight: 650;
+}
+html[data-dir="l"] .biz-card--tidal .biz-card__place {
+  margin: 0.2rem 0 1.1rem;
+  font-size: 0.9rem;
+  color: #3A4A44;
+}
+html[data-dir="l"] .biz-card--tidal a.biz-card__save,
+html[data-dir="l"] .biz-card--tidal a.biz-card__save:hover,
+html[data-dir="l"] .biz-card--tidal a.biz-card__save:focus-visible {
+  display: flex;
+  width: 100%;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  background: #102A3A;
+  border-color: #102A3A;
+  color: #EFE9DD;
+  border-radius: 12px;
+  font-weight: 800;
+  text-decoration: none;
+}
+html[data-dir="l"] .biz-card--tidal a.biz-card__save:focus-visible {
+  outline: 3px solid #1E6B66;
+  outline-offset: 3px;
+}
+html[data-dir="l"] .biz-card--tidal .biz-card__rule {
+  margin: 1.1rem 0 0.8rem;
+  background: #102A3A;
+  opacity: 0.14;
+}
+html[data-dir="l"] .biz-card--tidal .biz-card__line {
+  margin: 0.2rem 0;
+  font-size: 0.95rem;
+  color: #102A3A;
+}
+html[data-dir="l"] .connect-area {
+  margin: 2.25rem 0 0.5rem;
+  padding: clamp(1.4rem, 3vw, 2.2rem);
+  background: #F7F4EC;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+}
+html[data-dir="l"] .connect-area h2 {
+  margin: 0.2rem 0 0.5rem;
+}
+html[data-dir="l"] .connect-area__lede {
+  max-width: 46rem;
+  margin: 0 0 1.4rem;
+}
+html[data-dir="l"] .connect-area__groups {
+  gap: 1.6rem 3rem;
+}
+html[data-dir="l"] .connect-area__groups h3 {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+}
+html[data-dir="l"] .connect-area .town-list {
+  gap: 0.65rem 0.6rem;
+}
+html[data-dir="l"] .connect-area .town-list--south {
+  gap: 0.65rem 0.6rem;
+  margin-bottom: 0.65rem;
+}

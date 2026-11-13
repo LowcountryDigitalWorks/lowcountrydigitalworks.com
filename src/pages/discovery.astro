@@ -7,141 +7,73 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   description="Start with a quick project request so Lowcountry Digital Works can understand what you need and choose the right human follow-up."
   noindex
 >
-  <section class="page-hero page-hero--warm">
-    <div class="container discovery-hero">
-      <div class="discovery-intro">
+  <section class="page-hero" aria-labelledby="discovery-heading">
+    <div class="container">
+      <div class="page-hero-plate">
         <p class="eyebrow">A clear first step</p>
-        <h1>Tell us what you're trying to improve. Starting from scratch is fine too.</h1>
-        <p class="lede">You don't need to diagnose the problem or write out every detail. Start with a quick request so we know what you need help with and how you want us to follow up. We'll work through the rest together.</p>
-        <div class="discovery-start">
+        <h1 id="discovery-heading">Tell us what you're trying to improve. <span class="h1-sub">Starting from scratch is fine too.</span></h1>
+        <p>You don't need to diagnose the problem or write out every detail. Start with a quick request so we know what you need help with and how you want us to follow up.</p>
+        <p class="pointer-line">Please keep sensitive information out (details beside the button)</p>
+        <div class="actions">
           <a
             class="button"
             href="https://getaiform.com/r/LiY9XI9qKE"
             target="_blank"
             rel="noopener noreferrer"
             referrerpolicy="no-referrer"
-          >Start a quick project request <span aria-hidden="true">↗</span></a>
-          <p class="small">About 2 minutes. The request opens in a new tab.</p>
+          >Start a request <span aria-hidden="true">↗</span></a>
+          <a class="text-link" href="/connect/">Rather just text?</a>
         </div>
-      </div>
-      <aside class="discovery-summary" aria-labelledby="discovery-summary-title">
-        <p class="eyebrow">What to expect</p>
-        <h2 id="discovery-summary-title">A few useful details, then a human review.</h2>
-        <ul class="proof-list">
-          <li>Choose the areas you want help with instead of writing a long technical explanation.</li>
-          <li>“Not sure” is a useful answer. You don't need to know which service or solution you need.</li>
-          <li>If you're starting fresh, a domain or business-name idea is enough—we can check availability later.</li>
+        <ul class="reassure-list">
           <li>Tell us how you'd prefer to hear back. We only ask for a phone number if you choose call or text.</li>
-          <li>We'll review your answers with any relevant materials you've already shared, so you shouldn't have to send them again.</li>
+          <li>If you're starting fresh, a domain or business-name idea is enough—we can check availability later.</li>
         </ul>
-        <p>If more detail would help, we'll handle it in the conversation or use focused follow-up questions rather than asking you to complete a long intake up front.</p>
-      </aside>
-    </div>
-  </section>
-
-  <section class="section" aria-labelledby="discovery-steps-title">
-    <div class="container discovery-content">
-      <div>
-        <p class="eyebrow">After you submit</p>
-        <h2 id="discovery-steps-title">We'll help you find the right next step.</h2>
-        <p>Eddie will review the request and follow up in the way you selected. The first conversation is where we'll sort out the useful details together, including what already exists or what you're starting from scratch, what you want to change or create, and what would make the project worthwhile.</p>
-      </div>
-      <div class="discovery-details">
-        <h2>Already shared your materials?</h2>
-        <p>If Eddie already has your mission statement, photos, logo, screenshots, or other project materials, you don't need to send the same files again.</p>
-        <p>There are no public file uploads here. If we need more, we'll agree on an appropriate private way to share it.</p>
       </div>
     </div>
   </section>
 
-  <section class="section section--warm" aria-labelledby="discovery-privacy-title">
-    <div class="container discovery-privacy">
-      <div class="discovery-privacy__mark" aria-hidden="true">!</div>
-      <div>
-        <p class="eyebrow">Please keep sensitive information out</p>
-        <h2 id="discovery-privacy-title">Share the context, not the secrets.</h2>
-        <p>Do not submit passwords, MFA or recovery codes, API keys or tokens, payment-card or bank information, protected health information, CUI or government-restricted information, or confidential customer or client records. If special handling may be needed, say so without including the sensitive details and we'll discuss a suitable channel.</p>
-        <p>Read our <a href="/privacy/">Privacy Notice</a> for more about how Lowcountry Digital Works handles information.</p>
-        <div class="discovery-actions">
-          <a
-            class="button button--secondary"
-            href="https://getaiform.com/r/LiY9XI9qKE"
-            target="_blank"
-            rel="noopener noreferrer"
-            referrerpolicy="no-referrer"
-          >Start the quick request <span aria-hidden="true">↗</span></a>
+  <section class="section section--plain">
+    <div class="container">
+      <div class="section-heading">
+        <p class="eyebrow">What to expect</p>
+        <h2>A few useful details, then a human review.</h2>
+      </div>
+      <div class="discovery-split">
+        <div>
+          <div class="num-grid num-grid--3">
+            <article class="num-card"><span class="num-card__n" aria-hidden="true">01</span><h3>What you will be asked</h3><p>Choose the areas you want help with. “Not sure” is a useful answer. You do not need to know which service you need.</p></article>
+            <article class="num-card"><span class="num-card__n" aria-hidden="true">02</span><h3>A human review</h3><p>Eddie will review the request with any materials you have already shared, then follow up in the way you selected.</p></article>
+            <article class="num-card"><span class="num-card__n" aria-hidden="true">03</span><h3>The next step</h3><p>The first conversation sorts out what already exists or what you're starting from scratch, what you want to change or create, and what would make the project worthwhile.</p></article>
+          </div>
+          <picture>
+            <source media="(max-width: 899px)" srcset="/r5/assets/diagrams/how-a-request-moves-phone.svg" />
+            <img class="diagram diagram--lg" src="/r5/assets/diagrams/how-a-request-moves-lg.svg" alt="Diagram: how a request moves from you to an external Quick Project Request, then Eddie reviews and replies." width="680" height="420" loading="lazy" />
+          </picture>
+          <p class="caption">Illustration: how a first note moves</p>
         </div>
+        <aside class="discovery-split__warn" id="request">
+          <div class="warning">
+            <p class="eyebrow">Please keep sensitive information out</p>
+            <h2>Share the context, not the secrets.</h2>
+            <p>This Quick Project Request is hosted externally. Read the Privacy Notice before you start.</p>
+            <p>Do not submit passwords, MFA or recovery codes, API keys or tokens, payment-card or bank information, protected health information, CUI or government-restricted information, or confidential customer or client records. If special handling may be needed, say so without including the sensitive details and we will discuss a suitable channel.</p>
+            <p>There are no public file uploads here. If we need more, we will agree on an appropriate private way to share it. Already shared your materials? If Eddie already has your mission statement, photos, logo, screenshots, or other project materials, you don't need to send the same files again.</p>
+            <p>This is not a quote. It is a short request so Eddie can review what is going on and reply.</p>
+            <p><a href="/privacy/">Privacy Notice</a></p>
+          </div>
+          <div class="actions">
+            <a
+              class="button"
+              href="https://getaiform.com/r/LiY9XI9qKE"
+              target="_blank"
+              rel="noopener noreferrer"
+              referrerpolicy="no-referrer"
+            >Start the quick request <span aria-hidden="true">↗</span></a>
+          </div>
+          <p>About 2 minutes. The request opens in a new tab.</p>
+          <p><a class="text-link" href="/connect/">Rather just text? Connect</a></p>
+        </aside>
       </div>
     </div>
   </section>
 </BaseLayout>
-
-<style>
-.discovery-hero {
-  display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(17rem, .8fr);
-  gap: clamp(2rem, 6vw, 5rem);
-  align-items: center;
-}
-
-.discovery-intro h1 { max-width: 13ch; }
-.discovery-start { margin-top: 1.6rem; }
-.discovery-start .small { margin: .7rem 0 0; color: var(--muted); }
-.discovery-summary {
-  padding: clamp(1.4rem, 3vw, 2.2rem);
-  border-left: 4px solid var(--interactive);
-  border-radius: 0 var(--radius-md) var(--radius-md) 0;
-  background: var(--surface);
-  box-shadow: 0 16px 38px rgb(16 42 58 / .08);
-}
-.discovery-summary h2, .discovery-content h2, .discovery-privacy h2 {
-  font-size: clamp(1.4rem, 2.5vw, 1.9rem);
-  line-height: 1.2;
-}
-.discovery-summary .proof-list { margin-bottom: 1rem; }
-.discovery-summary > p:last-child { margin-bottom: 0; }
-.discovery-content {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(2rem, 6vw, 5rem);
-}
-.discovery-details {
-  padding: clamp(1.4rem, 3vw, 2rem);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  background: var(--surface);
-}
-.discovery-details h2 { margin-top: 0; }
-.discovery-details > p:last-of-type { margin-bottom: 0; }
-.discovery-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: .8rem 1rem;
-  align-items: center;
-  margin-top: .5rem;
-}
-.discovery-actions .button { margin-top: 0; }
-.discovery-privacy {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: 1.25rem;
-  align-items: start;
-}
-.discovery-privacy__mark {
-  display: grid;
-  width: 2.5rem;
-  aspect-ratio: 1;
-  place-items: center;
-  border: 2px solid var(--interactive);
-  border-radius: 50%;
-  color: var(--interactive);
-  font-weight: 800;
-}
-
-@media (max-width: 760px) {
-  .discovery-hero, .discovery-content { grid-template-columns: 1fr; }
-  .discovery-summary { border-left-width: 3px; }
-  .discovery-privacy { grid-template-columns: 1fr; gap: .75rem; }
-  .discovery-actions { align-items: flex-start; flex-direction: column; }
-}
-</style>

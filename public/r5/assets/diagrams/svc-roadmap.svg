@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 300" role="img" aria-labelledby="road-t road-d">
+  <title id="road-t">Diagram: example setup — consulting roadmap</title>
+  <desc id="road-d">Illustrative path: Current setup, Findings, Options and tradeoffs, Bounded roadmap with next actions. A dashed branch from Findings leads to Leave it alone.</desc>
+  <rect width="680" height="300" fill="#F7F4EC"/>
+  <rect x="14" y="70" width="120" height="90" rx="10" fill="#FFFFFF" stroke="#15241F" stroke-width="2"/>
+  <text x="74.0" y="110.0" text-anchor="middle" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="20" font-weight="700">Current</text>
+  <text x="74.0" y="134.0" text-anchor="middle" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="20" font-weight="700">setup</text>
+  <line x1="136" y1="115" x2="154" y2="115" stroke="#15241F" stroke-width="2"/>
+  <path d="M148 110 L154 115 L148 120" fill="none" stroke="#15241F" stroke-width="2"/>
+  <rect x="156" y="70" width="110" height="90" rx="10" fill="#FFFFFF" stroke="#15241F" stroke-width="2"/>
+  <text x="211.0" y="122.0" text-anchor="middle" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="20" font-weight="700">Findings</text>
+  <line x1="268" y1="115" x2="286" y2="115" stroke="#15241F" stroke-width="2"/>
+  <path d="M280 110 L286 115 L280 120" fill="none" stroke="#15241F" stroke-width="2"/>
+  <rect x="288" y="70" width="130" height="90" rx="10" fill="#FFFFFF" stroke="#15241F" stroke-width="2"/>
+  <text x="353.0" y="110.0" text-anchor="middle" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="20" font-weight="700">Options and</text>
+  <text x="353.0" y="134.0" text-anchor="middle" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="20" font-weight="700">tradeoffs</text>
+  <line x1="420" y1="115" x2="438" y2="115" stroke="#15241F" stroke-width="2"/>
+  <path d="M432 110 L438 115 L432 120" fill="none" stroke="#15241F" stroke-width="2"/>
+  <rect x="440" y="70" width="210" height="90" rx="10" fill="#1E6B66" stroke="#15241F" stroke-width="2"/>
+  <text x="545.0" y="110.0" text-anchor="middle" fill="#EFE9DD" font-family="Manrope, system-ui, sans-serif" font-size="20" font-weight="700">Bounded roadmap,</text>
+  <text x="545.0" y="134.0" text-anchor="middle" fill="#EFE9DD" font-family="Manrope, system-ui, sans-serif" font-size="20" font-weight="700">next actions</text>
+  <line x1="211.0" y1="160" x2="211.0" y2="210" stroke="#15241F" stroke-width="2" stroke-dasharray="5 5"/>
+  <rect x="131.0" y="210" width="160" height="64" rx="10" fill="#FFFFFF" stroke="#15241F" stroke-width="2" stroke-dasharray="6 5"/>
+  <text x="211.0" y="237.0" text-anchor="middle" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="20" font-weight="700">Leave it</text>
+  <text x="211.0" y="261.0" text-anchor="middle" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="20" font-weight="700">alone</text>
+</svg>

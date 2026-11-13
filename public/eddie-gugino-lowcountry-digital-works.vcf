@@ -1,10 +1,14 @@
 BEGIN:VCARD
 VERSION:3.0
-N:Gugino;Eddie;;;
 FN:Eddie Gugino
-ORG:Lowcountry Digital Works
+N:Gugino;Eddie;;;
+ORG:Lowcountry Digital Works LLC
 TITLE:Founder
 TEL;TYPE=WORK,VOICE:+18436333123
+TEL;TYPE=CELL,TEXT:+18436333123
 EMAIL;TYPE=WORK:eddie@lowcountrydigitalworks.com
 URL:https://lowcountrydigitalworks.com/
+URL:https://www.linkedin.com/in/edwin-gugino-3003885a
+ADR;TYPE=WORK:;;;Beaufort;SC;;United States
+NOTE:Service area: north of the Broad River — Beaufort\, Port Royal\, Habersham\, Lady's Island\, Burton\, St. Helena Island\, Fripp Island. South of the Broad River — Bluffton\, Okatie\, Ridgeland\, Hardeeville. Hilton Head by request only.
 END:VCARD

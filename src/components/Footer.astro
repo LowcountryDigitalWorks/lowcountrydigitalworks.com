@@ -36,8 +36,8 @@ const { allowSocialProfiles = true } = Astro.props;
         <p class="footer-socials">
           {contact.socials.map((social) => (
             <a class="icon-link footer-social-link" itemprop="sameAs" href={social.href} rel="me noopener">
-              <span class={`social-mark social-mark--${social.name === 'Facebook' ? 'facebook' : 'x'}`}>
-                <Icon name={social.name === 'Facebook' ? 'facebook' : 'x'} size={16} />
+              <span class={`social-mark social-mark--${social.name === 'Facebook' ? 'facebook' : social.name === 'X' ? 'x' : 'linkedin'}`}>
+                <Icon name={social.name === 'Facebook' ? 'facebook' : social.name === 'X' ? 'x' : 'linkedin'} size={20} />
               </span>
               <span>{social.name}</span>
             </a>
@@ -54,18 +54,21 @@ const { allowSocialProfiles = true } = Astro.props;
 .footer-grid { display: grid; grid-template-columns: minmax(0,1.5fr) .8fr 1.1fr; gap: 2.5rem; align-items: start; }
 .footer-logo { width: min(260px, 100%); }
 .site-footer p { max-width: 48ch; color: #d9e4e7; }
-.site-footer nav { display: grid; gap: .45rem; }
+.site-footer nav { display: grid; gap: 0; }
+/* 44px link targets at every width (was 24px on desktop). */
+.site-footer nav a { display: flex; align-items: center; min-height: 44px; }
 .site-footer a { color: white; }
 .footer-contact { min-width: 0; }
 /* Keep the email usable when text is enlarged: the flex link must stay inside
    its grid track, and the text may wrap without clipping or hiding content. */
 .footer-contact a[itemprop="email"] { max-width: 100%; }
 .footer-contact a[itemprop="email"] > span { min-width: 0; overflow-wrap: anywhere; }
-.footer-socials { display: flex; gap: 1rem; flex-wrap: wrap; }
-.footer-social-link { gap: .5rem; text-decoration-thickness: .08em; }
-.social-mark { width: 1.75rem; height: 1.75rem; display: inline-grid; place-items: center; flex: 0 0 auto; border-radius: .5rem; }
+.footer-socials { display: flex; gap: .25rem 1rem; flex-wrap: wrap; align-items: center; }
+.footer-social-link { gap: .6rem; min-height: 44px; text-decoration-thickness: .08em; }
+.social-mark { width: 2.25rem; height: 2.25rem; display: inline-grid; place-items: center; flex: 0 0 auto; border-radius: .5rem; }
 .social-mark--facebook { background: #1877f2; color: #fff; }
 .social-mark--x { background: #fff; color: #000; border: 1px solid rgb(255 255 255 / .8); }
+.social-mark--linkedin { background: #fff; color: #0a66c2; border: 1px solid rgb(255 255 255 / .8); }
 .footer-social-link:hover .social-mark { transform: translateY(-1px); }
 .small { font-size: .88rem; }
 /* The third desktop track is narrower than the contact email at tablet widths.
@@ -74,5 +77,10 @@ const { allowSocialProfiles = true } = Astro.props;
   .footer-grid { grid-template-columns: minmax(0,1.5fr) minmax(0,1fr); gap: 1.75rem; }
   .footer-contact { grid-column: 1 / -1; }
 }
-@media(max-width:760px){ .footer-grid { grid-template-columns: 1fr; gap: 1.5rem; } }
+@media(max-width:760px){
+  .footer-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+  /* Two columns of 44px targets instead of one 10-link column of 24px targets. */
+  .site-footer nav { grid-template-columns: 1fr 1fr; gap: 0 1rem; }
+  .site-footer nav a { display: flex; align-items: center; min-height: 44px; }
+}
 </style>

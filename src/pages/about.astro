@@ -3,28 +3,27 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import about from '../data/about.json';
 ---
 <BaseLayout title="About" description="About Eddie Gugino and Lowcountry Digital Works, an owner-operated technology consultancy based in Beaufort, South Carolina.">
-  <section class="page-hero page-hero--warm">
-    <div class="container about-hero-grid">
-      <div class="readable">
+  <section class="page-hero page-hero--fit" aria-labelledby="about-heading">
+    <div class="container about-lead">
+      <div class="about-lead__copy">
         <p class="eyebrow">{about.hero.eyebrow}</p>
-        <h1>{about.hero.title}</h1>
+        <h1 id="about-heading">{about.hero.title}</h1>
         <p class="lede">{about.hero.lede}</p>
         <div class="actions">
           <a class="button" href="/connect/">Talk with Eddie</a>
-          <a class="text-link" href="#how-i-work">How the work is approached ↓</a>
+          <a class="text-link" href="#credentials">How the work is approached</a>
         </div>
       </div>
-
       <aside class="about-owner-card" itemscope itemtype="https://schema.org/Person" aria-label="Eddie Gugino, founder of Lowcountry Digital Works">
         <link itemprop="sameAs" href="https://www.linkedin.com/in/edwin-gugino-3003885a" />
         <img
-          class="about-owner-card__photo"
+          class="about-lead__photo about-owner-card__photo about-owner-card__photo--square"
           data-founder-portrait
           itemprop="image"
           src="/founder/eddie-gugino-founder.webp"
           alt="Eddie Gugino, founder of Lowcountry Digital Works"
           width="480"
-          height="600"
+          height="480"
           decoding="async"
         />
         <div>
@@ -36,7 +35,7 @@ import about from '../data/about.json';
     </div>
   </section>
 
-  <section class="section" id="how-i-work">
+  <section class="section section--plain" id="credentials">
     <div class="container about-story-grid">
       <div>
         <p class="eyebrow">Why this model</p>
@@ -47,7 +46,7 @@ import about from '../data/about.json';
         <p class="eyebrow">Background & credentials</p>
         <p>{about.founder.credentials}</p>
         <p>{about.founder.healthcare}</p>
-        <a class="text-link icon-link" href="https://www.linkedin.com/in/edwin-gugino-3003885a" rel="me noopener noreferrer">
+        <a class="text-link icon-link linkedin-row" href="https://www.linkedin.com/in/edwin-gugino-3003885a" rel="me noopener noreferrer">
           <img src="/brand/social/linkedin/LI-In-Bug.png" alt="" width="28" height="24" decoding="async" />
           <span>View Eddie on LinkedIn →</span>
         </a>
@@ -55,28 +54,86 @@ import about from '../data/about.json';
     </div>
   </section>
 
-  <section class="section section--warm">
-    <div class="container editorial-list">
-      {about.principles.map((item, index) => (
-        <article class="editorial-row">
-          <p class="editorial-row__number">0{index + 1}</p>
-          <div><h2>{item.title}</h2><p>{item.description}</p></div>
-        </article>
-      ))}
+  <section class="section section--warm" aria-labelledby="about-timeline-title">
+    <div class="container">
+      <div class="section-heading">
+        <p class="eyebrow">Background</p>
+        <h2 id="about-timeline-title">The longer record, as a short timeline.</h2>
+      </div>
+      <ol class="about-timeline timeline">
+        {about.timeline.map((item) => (
+          <li class="about-timeline__item timeline__item">
+            <p class="about-timeline__period">{item.period}</p>
+            <p>{item.detail}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section--plain">
+    <div class="container">
+      <div class="section-heading">
+        <p class="eyebrow">How the work is approached</p>
+        <h2>Principles that stay in view.</h2>
+      </div>
+      <div class="num-grid num-grid--4 editorial-list">
+        {about.principles.map((item, index) => (
+          <article class="num-card principle editorial-row">
+            {index === 0 && (
+              <div class="num-card__media">
+                <img src="/r5/assets/art/towns-strip.jpg" alt="Illustration of a Lowcountry marsh" width="800" height="450" loading="lazy" decoding="async" />
+              </div>
+            )}
+            {index === 1 && (
+              <div class="num-card__media num-card__media--diagram">
+                <img src="/r5/assets/diagrams/who-holds-the-keys-thumb.svg" alt="Diagram: example setup — who holds the keys." width="200" height="100" loading="lazy" decoding="async" />
+              </div>
+            )}
+            {index === 2 && (
+              <div class="num-card__media">
+                <div class="tool-row">
+                  <img src="/technology/github.svg" alt="GitHub" width="36" height="36" />
+                  <img src="/technology/cloudflare.svg" alt="Cloudflare" width="36" height="36" />
+                  <img src="/technology/astro.svg" alt="Astro" width="36" height="36" />
+                  <img src="/technology/typescript.svg" alt="TypeScript" width="36" height="36" />
+                  <img src="/technology/python.svg" alt="Python" width="36" height="36" />
+                </div>
+              </div>
+            )}
+            {index === 3 && (
+              <div class="num-card__media">
+                <img src="/r5/assets/internal/interview-facilitator-crop.jpg" alt="Interview Facilitator prepare view. Internal development; synthetic examples." width="780" height="440" loading="lazy" decoding="async" />
+              </div>
+            )}
+            <p class="editorial-row__number num-card__n" aria-hidden="true">0{index + 1}</p>
+            <h2>{item.title}</h2>
+            <p>{item.description}</p>
+          </article>
+        ))}
+      </div>
     </div>
   </section>
 
   <section class="section section--navy">
-    <div class="container principle">
+    <div class="container about-why-small">
       <div><p class="eyebrow">{about.whySmall.eyebrow}</p><h2>{about.whySmall.title}</h2><p class="lede">{about.whySmall.body}</p></div>
       <ul class="principle__list">{about.whySmall.items.map((item) => <li>{item}</li>)}</ul>
     </div>
   </section>
 
-  <section class="section section--warm">
-    <div class="container final-cta final-cta--single">
-      <div><p class="eyebrow">{about.fit.eyebrow}</p><h2>{about.fit.title}</h2><p class="lede">{about.fit.body}</p></div>
-      <div class="actions"><a class="button" href="/connect/">Tell Eddie what is going on</a></div>
+  <section class="section section--sky">
+    <div class="container">
+      <div class="section-heading">
+        <p class="eyebrow">{about.fit.eyebrow}</p>
+        <h2>{about.fit.title}</h2>
+        <p class="lede">{about.fit.body}</p>
+      </div>
+      <div class="exit-grid">
+        <a class="exit-card" href="/work/"><div><p class="eyebrow">See the work</p><strong>Work</strong><p>Permissioned client sites and internal tools, with claim limits kept honest.</p></div><span class="text-link">See the work</span></a>
+        <a class="exit-card" href="/discovery/"><div><p class="eyebrow">Guided start</p><strong>Project discovery</strong><p>Tell us what you are trying to improve.</p></div><span class="text-link">Talk through your project</span></a>
+        <a class="exit-card" href="/connect/"><div><p class="eyebrow">Direct contact</p><strong>Connect</strong><p>Tell Eddie what is going on without a form.</p></div><span class="text-link">Tell Eddie what is going on</span></a>
+      </div>
     </div>
   </section>
 </BaseLayout>

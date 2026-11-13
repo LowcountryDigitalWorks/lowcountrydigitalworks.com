@@ -1,0 +1,108 @@
+/* ORCH09 owner-revise tranche: plans, hub cards, request flow, scroll offset */
+
+html[data-dir="l"] {
+  scroll-padding-top: 5.75rem;
+}
+
+html[data-dir="l"] main :target,
+html[data-dir="l"] [id].section,
+html[data-dir="l"] .breadcrumbs + article [id] {
+  scroll-margin-top: 5.75rem;
+}
+
+html[data-dir="l"] .request-flow-steps {
+  display: grid;
+  gap: 0.85rem;
+  margin: 1.25rem 0 1.5rem;
+}
+
+@media (min-width: 720px) {
+  html[data-dir="l"] .request-flow-steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1100px) {
+  html[data-dir="l"] .request-flow-steps {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+html[data-dir="l"] .request-flow-steps__card {
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background: #f7f4ec;
+}
+
+html[data-dir="l"] .request-flow-steps__num {
+  margin: 0 0 0.35rem;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--color-interactive);
+}
+
+html[data-dir="l"] .request-flow-steps__card h3 {
+  margin: 0 0 0.35rem;
+  font-size: 1.05rem;
+}
+
+html[data-dir="l"] .request-flow-steps__card p {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+html[data-dir="l"] .request-flow__diagram {
+  display: block;
+  margin-top: 0.5rem;
+}
+
+html[data-dir="l"] .request-flow__diagram--connect {
+  margin-top: 1rem;
+}
+
+html[data-dir="l"] .plan-compare-cta {
+  margin-top: 1.5rem;
+}
+
+html[data-dir="l"] .service-hub-card--contained .service-hub-card__body {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid color-mix(in srgb, var(--ldw-cypress-teal, #1e6b66) 22%, var(--color-border));
+  border-radius: var(--radius-card, 18px);
+  overflow: hidden;
+  background: color-mix(in srgb, #fff 92%, #f7f4ec);
+  box-shadow: var(--shadow-card, 0 8px 24px rgb(16 42 58 / 0.06));
+}
+
+html[data-dir="l"] .service-hub-card--contained .service-hub-card__surface {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+html[data-dir="l"] .service-hub-card--contained .service-hub-card__footer {
+  padding: 0.65rem 1.25rem 0.85rem;
+  border-top: 1px solid var(--color-border);
+  background: color-mix(in srgb, #f7f4ec 65%, #fff);
+}
+
+html[data-dir="l"] .service-area__grids .town-list--south {
+  margin-bottom: 0.35rem;
+}
+
+html[data-dir="l"] .service-detail-hero .page-hero-plate {
+  margin-top: 0.5rem;
+}
+
+html[data-dir="l"] .connect-actions.action-grid--under > a[href^="mailto:"] {
+  grid-column: auto;
+}
+
+/* Service detail ownership band: do not wrap navy copy in a white R5 principle card. */
+html[data-dir="l"] .section--navy .principle {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  color: inherit;
+}

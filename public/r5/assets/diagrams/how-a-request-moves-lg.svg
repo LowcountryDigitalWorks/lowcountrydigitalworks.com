@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 420" role="img" aria-labelledby="req-lg-title req-lg-desc">
+  <title id="req-lg-title">Illustration: how a first note moves</title>
+  <desc id="req-lg-desc">You send a note. An external Quick Project Request is reviewed by Eddie. Then you get a reply. No form is embedded on this page.</desc>
+  <rect width="680" height="420" fill="#F7F4EC"/>
+  <text x="28" y="42" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="22" font-weight="800">How a first note moves</text>
+  <text x="28" y="70" fill="#3A4A44" font-family="Manrope, system-ui, sans-serif" font-size="22">You write. Eddie reviews. Then a reply.</text>
+  <rect x="28" y="98" width="300" height="120" rx="14" fill="#FFFFFF" stroke="#15241F" stroke-width="1.75"/>
+  <text x="48" y="138" fill="#1E6B66" font-family="Manrope, system-ui, sans-serif" font-size="22" font-weight="800">01</text>
+  <text x="48" y="172" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="22" font-weight="750">You send a note</text>
+  <text x="48" y="200" fill="#3A4A44" font-family="Manrope, system-ui, sans-serif" font-size="22">Text, call, or email</text>
+  <rect x="352" y="98" width="300" height="120" rx="14" fill="#FFFFFF" stroke="#15241F" stroke-width="1.75"/>
+  <text x="372" y="138" fill="#1E6B66" font-family="Manrope, system-ui, sans-serif" font-size="22" font-weight="800">02</text>
+  <text x="372" y="172" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="22" font-weight="750">External request</text>
+  <text x="372" y="200" fill="#3A4A44" font-family="Manrope, system-ui, sans-serif" font-size="22">If you use Discovery</text>
+  <rect x="28" y="242" width="300" height="120" rx="14" fill="#FFFFFF" stroke="#15241F" stroke-width="1.75"/>
+  <text x="48" y="282" fill="#1E6B66" font-family="Manrope, system-ui, sans-serif" font-size="22" font-weight="800">03</text>
+  <text x="48" y="316" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="22" font-weight="750">Eddie reviews</text>
+  <text x="48" y="344" fill="#3A4A44" font-family="Manrope, system-ui, sans-serif" font-size="22">A person reads the note</text>
+  <rect x="352" y="242" width="300" height="120" rx="14" fill="#FFFFFF" stroke="#15241F" stroke-width="1.75"/>
+  <text x="372" y="282" fill="#1E6B66" font-family="Manrope, system-ui, sans-serif" font-size="22" font-weight="800">04</text>
+  <text x="372" y="316" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="22" font-weight="750">A reply</text>
+  <text x="372" y="344" fill="#3A4A44" font-family="Manrope, system-ui, sans-serif" font-size="22">By text, call, or email</text>
+  <text x="28" y="398" fill="#3A4A44" font-family="Manrope, system-ui, sans-serif" font-size="16">Illustration · original LDW diagram · no uploads on this page</text>
+</svg>

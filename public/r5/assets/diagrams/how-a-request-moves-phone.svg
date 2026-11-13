@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 430" role="img" aria-labelledby="req-title req-desc">
+  <title id="req-title">Diagram: how a request moves</title>
+  <desc id="req-desc">You send a note, an external Quick Project Request is reviewed by Eddie, then you get a reply.</desc>
+  <rect width="360" height="430" fill="#F7F4EC"/>
+  <text x="16" y="28" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="16" font-weight="800">How a request moves</text>
+  <text x="16" y="48" fill="#3A4A44" font-family="Manrope, system-ui, sans-serif" font-size="14">No form is embedded on this site.</text>
+  <rect x="16" y="66" width="328" height="68" rx="10" fill="#FFFFFF" stroke="#15241F" stroke-width="1.5"/>
+  <text x="32" y="94" fill="#1E6B66" font-family="Manrope, system-ui, sans-serif" font-size="15" font-weight="800">01</text>
+  <text x="32" y="116" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="16" font-weight="750">You send a note</text>
+  <rect x="16" y="146" width="328" height="68" rx="10" fill="#FFFFFF" stroke="#15241F" stroke-width="1.5"/>
+  <text x="32" y="174" fill="#1E6B66" font-family="Manrope, system-ui, sans-serif" font-size="15" font-weight="800">02</text>
+  <text x="32" y="196" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="16" font-weight="750">External request</text>
+  <rect x="16" y="226" width="328" height="68" rx="10" fill="#FFFFFF" stroke="#15241F" stroke-width="1.5"/>
+  <text x="32" y="254" fill="#1E6B66" font-family="Manrope, system-ui, sans-serif" font-size="15" font-weight="800">03</text>
+  <text x="32" y="276" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="16" font-weight="750">Eddie reviews</text>
+  <rect x="16" y="306" width="328" height="68" rx="10" fill="#FFFFFF" stroke="#15241F" stroke-width="1.5"/>
+  <text x="32" y="334" fill="#1E6B66" font-family="Manrope, system-ui, sans-serif" font-size="15" font-weight="800">04</text>
+  <text x="32" y="356" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="16" font-weight="750">A reply</text>
+  <text x="16" y="404" fill="#3A4A44" font-family="Manrope, system-ui, sans-serif" font-size="14">Original LDW diagram · illustrative</text>
+</svg>

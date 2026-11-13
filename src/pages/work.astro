@@ -1,10 +1,12 @@
 ---
+import InternalToolThumb from '../components/InternalToolThumb.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import work from '../data/work.json';
 ---
 <BaseLayout title="Work" description="Permissioned client work and Lowcountry Digital Works systems with plain-language context, live proof, current maturity, and explicit boundaries.">
-  <section class="page-hero page-hero--warm">
+  <section class="page-hero page-hero--fit">
     <div class="container readable">
+      <div class="page-hero-plate">
       <p class="eyebrow">{work.hero.eyebrow}</p>
       <h1>{work.hero.title}</h1>
       <p class="lede">{work.hero.lede}</p>
@@ -12,6 +14,8 @@ import work from '../data/work.json';
         <a class="button" href="#client-work">See the work</a>
         <a class="text-link" href="/connect/">Talk through a similar problem →</a>
       </div>
+      </div>
+      <a class="hero-next" href="#client-work">{work.clientWork.eyebrow} <span aria-hidden="true">↓</span></a>
     </div>
   </section>
 
@@ -68,18 +72,12 @@ import work from '../data/work.json';
         <p class="lede">{work.internalProof.lede}</p>
       </div>
 
-      <div class="portfolio-grid portfolio-grid--work">
+      <div class="portfolio-grid portfolio-grid--work portfolio-grid--work-balanced">
         {work.projects.filter((project) => project.featured !== false).map((project) => (
           <article class="portfolio-card portfolio-card--work portfolio-card--proof">
             {project.thumbnail && (
               <a class="portfolio-card__visual" href={`/work/${project.slug}/`} aria-label={`View ${project.name} project details`}>
-                <img
-                  src={project.thumbnail.src}
-                  alt=""
-                  width={project.thumbnail.width}
-                  height={project.thumbnail.height}
-                  decoding="async"
-                />
+                <InternalToolThumb thumbnail={project.thumbnail} />
               </a>
             )}
             <div class="portfolio-card__body">

@@ -1,6 +1,22 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
+/** @param {Buffer} raw */
+export function assertVcard3CrlfBytes(raw) {
+  for (let i = 0; i < raw.length; i += 1) {
+    if (raw[i] === 0x0a && (i === 0 || raw[i - 1] !== 0x0d)) {
+      throw new Error(`vCard must use CRLF line endings (bare LF at byte ${i})`);
+    }
+    if (raw[i] === 0x0d && (i + 1 >= raw.length || raw[i + 1] !== 0x0a)) {
+      throw new Error(`vCard must use CRLF line endings (bare CR at byte ${i})`);
+    }
+  }
+  const text = raw.toString('utf8');
+  expect(text).toContain('VERSION:3.0');
+  expect(text).toContain('FN:Eddie Gugino');
+  expect(text).toContain('ADR;TYPE=WORK:;;;Beaufort;SC;;United States');
+}
+
 const routes = [
   '/',
   '/accessibility/',
@@ -69,7 +85,7 @@ test('services page presents four problem-led service families and detail routes
   await expect(page.getByRole('heading', { level: 1, name: 'Start with what your business needs to work better.' })).toBeVisible();
   await expect(page.getByText('Our website feels dated, confusing, hard to maintain', { exact: false })).toBeVisible();
   await expect(page.getByText('We keep repeating the same work', { exact: false })).toBeVisible();
-  await expect(page.locator('.service-family a[href="/connect/"]')).toHaveCount(4);
+  await expect(page.locator('.service-family a[href="/connect/"]')).toHaveCount(0);
   await expect(page.getByRole('heading', { name: 'Websites & Website Care' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Business Systems & Automation' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Digital Ownership & Platform Administration' })).toBeVisible();
@@ -79,27 +95,30 @@ test('services page presents four problem-led service families and detail routes
   await expect(page.locator('article[itemtype="https://schema.org/Service"]')).toHaveCount(1);
   await expect(page.locator('[itemtype="https://schema.org/BreadcrumbList"]')).toHaveCount(1);
   await expect(page.getByText('configure', { exact: false })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Talk through your situation' })).toHaveAttribute('href', '/connect/');
-  await expect(page.locator('.outcome-card')).toHaveCount(3);
-  await expect(page.locator('.outcome-grid--3')).toHaveCount(1);
+  // R5 interiors: one CTA per detail page (the band button, label = service.cta), no hero button.
+  await expect(page.locator('.svc-cta a.button')).toHaveAttribute('href', '/connect/');
+  await expect(page.locator('main a.button[href="/connect/"]')).toHaveCount(1);
+  await expect(page.locator('.svc-outcomes__item')).toHaveCount(3);
+  await expect(page.locator('.svc-outcomes')).toHaveCount(1);
   await expect(page.getByRole('heading', { name: 'Less repetitive manual work' })).toBeVisible();
   await expect(page.locator('.faq-item')).toHaveCount(3);
   await expect(page.getByText('Do you start by building custom software?')).toBeVisible();
   await expect(page.getByText('Will the automation become another system we have to maintain as the source of truth?')).toBeVisible();
-  await expect(page.locator('.related-work-card')).toHaveCount(2);
+  await expect(page.locator('[data-related-work]')).toHaveCount(2);
   await expect(page.getByRole('heading', { name: 'Document Control' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Secure Exchange' })).toBeVisible();
   await expect(page.getByText('Document Control and Secure Exchange show how LDW explores real workflow gaps', { exact: false })).toBeVisible();
 
   await page.goto('/services/website-care/');
-  await expect(page.locator('.outcome-card')).toHaveCount(3);
+  await expect(page.locator('.svc-outcomes__item')).toHaveCount(3);
   await expect(page.getByRole('heading', { name: 'A healthier site over time' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Read what website maintenance should actually check →' }))
     .toHaveAttribute('href', '/guides/website-maintenance-after-launch/');
   await expect(page.getByRole('link', { name: 'View Website Quality Toolkit source' })).toHaveAttribute('href', 'https://github.com/LowcountryDigitalWorks/website-quality-toolkit');
 
   await page.goto('/services/websites/');
-  await expect(page.locator('.outcome-card')).toHaveCount(4);
+  // R5 interiors: three example outcomes per page; the fourth Websites outcome is the documentation line in "What the work covers".
+  await expect(page.locator('.svc-outcomes__item')).toHaveCount(3);
   await expect(page.getByRole('heading', { name: 'A clearer first impression' })).toBeVisible();
   await expect(page.getByText('That operating discipline is evidence of the method, not a client case study.', { exact: false })).toBeVisible();
 });
@@ -115,7 +134,7 @@ test('desktop three-outcome layout and sticky-header anchors preserve their UX i
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto('/services/business-systems-automation/');
 
-  const grid = page.locator('.outcome-grid--3');
+  const grid = page.locator('.svc-outcomes');
   await expect(grid).toHaveCount(1);
   const gridState = await grid.evaluate((element) => ({
     columns: getComputedStyle(element).gridTemplateColumns.split(/\s+/).filter(Boolean).length,
@@ -138,13 +157,13 @@ test('desktop three-outcome layout and sticky-header anchors preserve their UX i
   expect(anchorState.targetTop).toBeGreaterThan(anchorState.headerBottom);
 });
 
-test('homepage presents customer-first Rev3 entry paths and keeps discovery on its dedicated route', async ({ page }) => {
+test('homepage presents customer-first Coastal v2c entry paths and keeps discovery on its dedicated route', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByRole('heading', { level: 1, name: 'Your website should bring in calls, not questions.' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Talk through your project' }).first()).toHaveAttribute('href', '/discovery/');
   await expect(page.locator('.desktop-nav a[href="/discovery/"]')).toHaveText('Project discovery');
   await expect(page.getByRole('link', { name: 'See the work' })).toHaveAttribute('href', '#client-work');
-  await expect(page.locator('.hero-founder-row')).toHaveCount(1);
+  await expect(page.locator('.hero-owner-card')).toHaveCount(1);
   await expect(page.locator('.problem-choice')).toHaveCount(4);
   await expect(page.getByText('I need a better website or online presence.', { exact: true })).toBeVisible();
   await expect(page.getByText("We waste time doing things manually / our tools don't talk.", { exact: true })).toBeVisible();
@@ -400,27 +419,31 @@ test('work page separates permissioned client proof from LDW systems and preserv
 });
 
 test('founder structure uses the owner-approved portrait and approved trust facts', async ({ page }) => {
-  for (const route of ['/', '/about/']) {
+  const portraitExpectations = [
+    { route: '/', height: '600', naturalHeight: 600 },
+    { route: '/about/', height: '480', naturalHeight: 600 },
+  ];
+  for (const { route, height, naturalHeight } of portraitExpectations) {
     await page.goto(route);
     const portrait = page.locator('[data-founder-portrait]');
     await expect(portrait).toHaveCount(1);
     await expect(portrait).toHaveAttribute('src', '/founder/eddie-gugino-founder.webp');
     await expect(portrait).toHaveAttribute('alt', 'Eddie Gugino, founder of Lowcountry Digital Works');
     await expect(portrait).toHaveAttribute('width', '480');
-    await expect(portrait).toHaveAttribute('height', '600');
+    await expect(portrait).toHaveAttribute('height', height);
     await portrait.scrollIntoViewIfNeeded();
     await expect.poll(async () => portrait.evaluate((img) => ({
       complete: img.complete,
       naturalWidth: img.naturalWidth,
       naturalHeight: img.naturalHeight,
-    }))).toEqual({ complete: true, naturalWidth: 480, naturalHeight: 600 });
+    }))).toEqual({ complete: true, naturalWidth: 480, naturalHeight });
     await expect(page.locator('[data-owner-asset-pending="founder-photo"]')).toHaveCount(0);
   }
 
   await page.goto('/');
   await expect(page.locator('#main-content').getByText('Eddie Gugino', { exact: false })).toBeVisible();
-  await expect(page.locator('.hero-founder-row').getByText('15+ years across IT, systems, security, and delivery', { exact: false })).toBeVisible();
-  await expect(page.locator('.hero-founder-row').getByText('You work directly with the person doing the work.', { exact: false })).toBeVisible();
+  await expect(page.locator('.hero-owner-card').getByText('15+ years across IT, systems, security, and delivery', { exact: false })).toBeVisible();
+  await expect(page.locator('.hero-owner-card').getByText('You work directly with the person doing the work.', { exact: false })).toBeVisible();
 
   await page.goto('/about/');
   await expect(page.getByRole('heading', { level: 1, name: 'Local, practical, and accountable by design.' })).toBeVisible();
@@ -430,7 +453,7 @@ test('founder structure uses the owner-approved portrait and approved trust fact
   await expect(page.getByText('CISSP certification', { exact: false })).toBeVisible();
   await expect(page.getByText('degrees in Cybersecurity and Network Systems Management', { exact: false })).toBeVisible();
   await expect(page.getByText('Risk Management Framework (RMF) compliance and security assessment', { exact: false })).toBeVisible();
-  await expect(page.getByText('Navy Corpsman', { exact: false })).toBeVisible();
+  await expect(page.getByText('Navy Corpsman service with', { exact: false })).toBeVisible();
   await expect(page.getByText('enterprise hospital IT', { exact: false })).toBeVisible();
   const linkedIn = page.getByRole('link', { name: 'View Eddie on LinkedIn →' });
   await expect(linkedIn).toHaveAttribute('href', 'https://www.linkedin.com/in/edwin-gugino-3003885a');
@@ -461,7 +484,7 @@ test('Connect is a mobile-first stable contact destination with accessible conta
   await expect(main.locator('a[href="sms:+18436333123"]')).toBeVisible();
   await expect(main.locator('a[href="tel:+18436333123"]')).toBeVisible();
   await expect(main.locator('a[href="mailto:eddie@lowcountrydigitalworks.com"]')).toBeVisible();
-  await expect(main.locator('a[href="mailto:eddie@lowcountrydigitalworks.com"]')).toHaveCSS('grid-column', '1 / -1');
+  await expect(main.locator('a[href="mailto:eddie@lowcountrydigitalworks.com"]')).not.toHaveCSS('grid-column', '1 / -1');
   for (const width of [390, 320]) {
     await page.setViewportSize({ width, height: 844 });
     const emailWithinViewport = await main.locator('a[href="mailto:eddie@lowcountrydigitalworks.com"]').evaluate((link) => {
@@ -474,14 +497,14 @@ test('Connect is a mobile-first stable contact destination with accessible conta
   }
   await expect(main.locator('a[href="https://www.facebook.com/LowcountryDigitalWorks/"]')).toBeVisible();
   await expect(main.locator('a[href="https://x.com/LocoDW"]')).toBeVisible();
-  const contactCard = main.locator('a[href="/eddie-gugino-lowcountry-digital-works.vcf"]');
+  const contactCard = main.locator('a[href^="/eddie-gugino-lowcountry-digital-works.vcf"]');
   await expect(contactCard).toBeVisible();
-  await expect(contactCard).toContainText('Contact card');
+  await expect(contactCard).toContainText('Save contact');
   await expect(main).not.toContainText('Save vCard');
-  await expect(main.locator('.connect-actions .ui-icon')).toHaveCount(4);
-  await expect(main.locator('.connect-actions a')).toHaveCount(4);
+  await expect(main.locator('.connect-actions .ui-icon')).toHaveCount(3);
+  await expect(main.locator('.connect-actions a')).toHaveCount(3);
   await expect(main.locator('.connect-links .ui-icon')).toHaveCount(2);
-  await expect(main.locator('.ui-icon[aria-hidden="true"]')).toHaveCount(6);
+  await expect(main.locator('.ui-icon[aria-hidden="true"]')).toHaveCount(5);
 
   const discovery = main.locator('.connect-discovery');
   await expect(discovery).toHaveCount(1);
@@ -505,9 +528,14 @@ test('Connect is a mobile-first stable contact destination with accessible conta
   await expect(main.locator('a[href*="suitedash"]')).toHaveCount(0);
   await expect(main.locator('form, iframe')).toHaveCount(0);
 
+  const contactCardLink = main.locator('a.biz-card__save[href^="/eddie-gugino-lowcountry-digital-works.vcf"]');
+  await expect(contactCardLink).toHaveAttribute('download', '');
+  await contactCardLink.focus();
+  await expect(contactCardLink).toBeFocused();
+
   const vcard = await page.request.get('/eddie-gugino-lowcountry-digital-works.vcf');
   expect(vcard.ok()).toBeTruthy();
-  expect(await vcard.text()).toContain('FN:Eddie Gugino');
+  assertVcard3CrlfBytes(Buffer.from(await vcard.body()));
 });
 
 test('Contact and footer iconography supplements visible labels rather than replacing them', async ({ page }) => {
@@ -517,14 +545,16 @@ test('Contact and footer iconography supplements visible labels rather than repl
   await expect(main.getByRole('link', { name: /Call 843-633-3123/ })).toBeVisible();
   await expect(main.getByRole('link', { name: 'Facebook' })).toBeVisible();
   await expect(main.getByRole('link', { name: 'X', exact: true })).toBeVisible();
-  await expect(main.locator('.ui-icon[aria-hidden="true"]')).toHaveCount(5);
+  await expect(main.locator('.ui-icon[aria-hidden="true"]')).toHaveCount(6);
 
   const footer = page.locator('footer');
   await expect(footer.getByRole('link', { name: 'Facebook' })).toBeVisible();
   await expect(footer.getByRole('link', { name: 'X', exact: true })).toBeVisible();
+  await expect(footer.getByRole('link', { name: 'LinkedIn' })).toBeVisible();
   await expect(footer.locator('.social-mark--facebook')).toHaveCSS('background-color', 'rgb(24, 119, 242)');
-  await expect(footer.locator('.social-mark--x')).toHaveCSS('background-color', 'rgb(255, 255, 255)');
-  await expect(footer.locator('.ui-icon[aria-hidden="true"]')).toHaveCount(4);
+  await expect(footer.getByRole('link', { name: 'X', exact: true }).locator('.social-mark--x')).toHaveCSS('background-color', 'rgb(255, 255, 255)');
+  // R5 interiors: LinkedIn is now an Icon like Facebook and X (was an <img>), so five icons.
+  await expect(footer.locator('.ui-icon[aria-hidden="true"]')).toHaveCount(5);
 });
 
 test('privacy page reflects the current no-nonessential-cookie posture without a cosmetic consent banner', async ({ page }) => {
@@ -574,9 +604,10 @@ test('verified public entity links expose one Organization identity without priv
   await expect(entity.locator('[itemprop="areaServed"]')).toHaveText('South Carolina Lowcountry');
   await expect(entity.locator('a[itemprop="email"]')).toHaveAttribute('href', 'mailto:eddie@lowcountrydigitalworks.com');
   await expect(entity.locator('a[itemprop="telephone"]')).toHaveAttribute('href', 'tel:+18436333123');
-  await expect(entity.locator('a[itemprop="sameAs"]')).toHaveCount(2);
+  await expect(entity.locator('a[itemprop="sameAs"]')).toHaveCount(3);
   await expect(entity.locator('a[href="https://www.facebook.com/LowcountryDigitalWorks/"]')).toHaveCount(1);
   await expect(entity.locator('a[href="https://x.com/LocoDW"]')).toHaveCount(1);
+  await expect(entity.locator('a[href="https://www.linkedin.com/in/edwin-gugino-3003885a"]')).toHaveCount(1);
   await expect(page.locator('[itemtype="https://schema.org/ProfessionalService"]')).toHaveCount(0);
   await expect(entity.locator('[itemprop="address"]')).toHaveCount(0);
   await expect(page.locator('a[href*="linkedin.com/company"]')).toHaveCount(0);

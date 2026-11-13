@@ -1,0 +1,36 @@
+---
+/**
+ * Shared first-contact flow: one source for Connect (all four steps) and Home (three: the
+ * optional external form is disclosed on Connect and Discovery, so Home skips step 02).
+ */
+const { variant = 'connect', layout } = Astro.props;
+const allSteps = [
+  {
+    title: 'You send a note',
+    body: 'Text, call, or email—or use the guided project form if you want more structure. No passwords or sensitive secrets in ordinary channels.',
+  },
+  {
+    homeSkip: true,
+    title: 'Optional external form',
+    body: 'Discovery uses a hosted form outside this site. It is not embedded here and is not a contract or quote by itself.',
+  },
+  {
+    title: 'Eddie reviews',
+    body: 'A person reads what you sent, checks fit and constraints, and may ask a clarifying question before scoping.',
+  },
+  {
+    title: 'A reply',
+    body: 'You hear back by text, call, or email with a sensible next step—often a written scope outline when a project is in view.',
+  },
+];
+const steps = (variant === 'home' ? allSteps.filter((step) => !step.homeSkip) : allSteps).map((step, index) => ({ ...step, num: String(index + 1).padStart(2, '0') }));
+---
+<div class:list={['request-flow-steps', layout === '2x2' && 'request-flow-steps--2x2', variant === 'home' && 'request-flow-steps--3']} role="list">
+  {steps.map((step) => (
+    <div class="request-flow-steps__card" role="listitem">
+      <p class="request-flow-steps__num" aria-hidden="true">{step.num}</p>
+      <h3>{step.title}</h3>
+      <p>{step.body}</p>
+    </div>
+  ))}
+</div>
