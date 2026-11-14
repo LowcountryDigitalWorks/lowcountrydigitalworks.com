@@ -17,6 +17,10 @@ const planWide = [
 const ladder = planSet.plans.filter((plan) => plan.id !== 'custom');
 const customPlan = planSet.plans.find((plan) => plan.id === 'custom');
 const ownLimits = (plan) => plan.notIncluded.filter((item) => !sharedExclusion.test(item));
+const showPreviewCareOptions =
+process.env.WORKERS_CI === '1' &&
+process.env.WORKERS_CI_BRANCH === 'feature/web-160-coastal-v2c-preview-phaseb-20261109' &&
+process.env.CARE_OPTIONS_PREVIEW !== '0';
 ---
 <BaseLayout
   title="Website & Automation Services in Beaufort, SC"
@@ -260,4 +264,16 @@ const ownLimits = (plan) => plan.notIncluded.filter((item) => !sharedExclusion.t
       </div>
     </div>
   </section>
+  {showPreviewCareOptions && (
+  <section class="section section--warm" aria-labelledby="care-concept-bridge-heading">
+    <div class="container">
+      <div class="section-heading">
+        <p class="eyebrow">Ongoing Website Care · proposed</p>
+        <h2 id="care-concept-bridge-heading">A website build and ongoing care are different choices.</h2>
+        <p class="lede">The plans above describe one-time website project scopes. These separate, provisional Care options are for feedback only and are not currently available to purchase.</p>
+        <p><a class="text-link" href="/services/website-care/#care-options">Explore proposed ongoing Website Care options <span aria-hidden="true">→</span></a></p>
+      </div>
+    </div>
+  </section>
+)}
 </BaseLayout>

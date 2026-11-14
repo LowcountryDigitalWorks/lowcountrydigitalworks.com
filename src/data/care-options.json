@@ -1,0 +1,105 @@
+{
+  "status": "proposed-not-purchasable",
+  "statusLabel": "Proposed · not purchasable",
+  "eyebrow": "Proposed for feedback",
+  "heading": "Ongoing care options we are testing.",
+  "lede": "These are working ideas for ongoing Website Care. Every option comes with a report, and the report gets deeper as the option number goes up.",
+  "disclaimer": "Proposed Care options for feedback — terms, eligibility and rates subject to Portfolio approval; not currently available to purchase.",
+  "separationNote": "These are ongoing care options. They are separate from the Launch, Business, Growth and Custom website build scopes on the Services page.",
+  "diagram": {
+    "alt": "Diagram: example setup — the review path behind each option: Findings, then Human review, then Owner approves, then Change log.",
+    "pill": "Diagram: example setup",
+    "caption": "The same review path sits behind every option."
+  },
+  "sharedHeading": "True of every option",
+  "shared": [
+    "You keep ownership of your accounts and source. LDW generally works through named, scoped access.",
+    "No option creates a 24x7 support promise.",
+    "Each option keeps the easiest safe editing path your site's platform offers.",
+    "Findings and scores are evidence for human review, not ranking guarantees."
+  ],
+  "jumpLine": "Our working recommendation: Option 3",
+  "jumpHref": "#care-option-3",
+  "recommendedLabel": "Recommended candidate",
+  "recommendedNote": "A working concept for feedback, not a measure of popularity.",
+  "proposedLabel": "Proposed",
+  "addsLabel": "What it adds",
+  "notIncludedLabel": "Does not include",
+  "reportLabel": "Report depth",
+  "primary": [
+    {
+      "id": "t2",
+      "optionNumber": 2,
+      "job": "Handle the tiny changes for me too.",
+      "adds": [
+        "Everything in Option 1.",
+        "Small routine text and photo changes made by LDW, with a written change record."
+      ],
+      "notIncluded": [
+        "Online-store, catalog, checkout or payment changes.",
+        "New pages or features, or redesigns."
+      ],
+      "report": "Health summary plus a change record.",
+      "sheets": 2
+    },
+    {
+      "id": "t3",
+      "optionNumber": 3,
+      "recommended": true,
+      "job": "Manage the site and handle routine changes.",
+      "adds": [
+        "Everything in Option 2.",
+        "Broader handling of routine changes.",
+        "A periodic evidence summary with a short list of prioritized recommendations for you to decide on."
+      ],
+      "notIncluded": [
+        "Large or risky changes, which are scoped separately.",
+        "Any ranking, traffic or lead promise.",
+        "Work on accounts LDW does not have scoped access to."
+      ],
+      "report": "Adds evidence and recommendations.",
+      "sheets": 3
+    },
+    {
+      "id": "t4",
+      "optionNumber": 4,
+      "job": "Keep improving the site.",
+      "adds": [
+        "Everything in Option 3.",
+        "Small, clearly bounded site improvements.",
+        "A light read on how the site shows up in search (observation only)."
+      ],
+      "notIncluded": [
+        "A full ongoing search visibility or monitoring program; that needs a separate approved scope.",
+        "Reputation, review management, or Google Business Profile administration; those need a separate scope.",
+        "Any ranking, traffic or lead promise.",
+        "Larger projects, which are scoped separately."
+      ],
+      "report": "Richest report, adds the visibility observations.",
+      "sheets": 4
+    }
+  ],
+  "secondaryHeading": "A lighter option and a broader one",
+  "secondary": [
+    {
+      "id": "t1",
+      "optionNumber": 1,
+      "job": "Keep my site healthy and watched.",
+      "adds": ["Automated checks and a short health summary."],
+      "notIncluded": ["LDW-made content changes. Eligibility depends on the site and a short onboarding check."],
+      "report": "Short health summary.",
+      "sheets": 1,
+      "proposedLabel": "Proposed"
+    },
+    {
+      "id": "t5",
+      "optionNumber": 5,
+      "job": "Manage the website and its visibility together.",
+      "adds": ["Scoped individually after a conversation, with no preset allowance. Not offered as a standard option today."],
+      "notIncluded": ["Anything not written into a separate scope."],
+      "report": "Defined in that scope.",
+      "proposedLabel": "Proposed · scoped separately"
+    }
+  ],
+  "closingLine": "Questions about these options go through the one conversation button below."
+}

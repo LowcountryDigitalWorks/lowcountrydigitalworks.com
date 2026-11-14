@@ -12,6 +12,8 @@ import '../styles/r5/l.css';
 import '../styles/r5/overrides.css';
 import '../styles/r5/owner-revise.css';
 import '../styles/r5/svc.css';
+import '../styles/r5/guide.css';
+import '../styles/r5/care.css';
 const {
   title = 'Lowcountry Digital Works',
   description = 'Practical websites, business systems, automation, digital ownership, and technology consulting built for maintainability and customer ownership.',
@@ -27,7 +29,7 @@ const fullTitle = title === 'Lowcountry Digital Works' ? title : `${title} | Low
 const robotsContent = robots ?? (noindex ? 'noindex,nofollow' : undefined);
 const allowFooterSocialProfiles = Astro.url.pathname !== '/share/';
 const path = Astro.url.pathname;
-const r5Paths = new Set(['/', '/about/', '/connect/', '/discovery/', '/work/', '/services/', '/work/document-control/']);
+const r5Paths = new Set(['/', '/about/', '/connect/', '/discovery/', '/work/', '/services/', '/work/document-control/', '/guides/website-maintenance-after-launch/']);
 const isServiceDetail = /^\/services\/[^/]+\/$/.test(path);
 const isR5 = r5Paths.has(path) || isServiceDetail;
 const showMobileContactBar = !['/discovery/', '/connect/'].includes(path);

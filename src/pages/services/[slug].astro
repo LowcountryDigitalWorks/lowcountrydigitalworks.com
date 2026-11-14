@@ -6,6 +6,7 @@ import serviceDetails from '../../data/service-details.json';
 import serviceSearch from '../../data/service-search.json';
 import work from '../../data/work.json';
 import visuals from '../../data/service-detail-visuals.json';
+import careOptions from '../../data/care-options.json';
 
 export function getStaticPaths() {
   return serviceDetails.map((service) => ({
@@ -24,6 +25,15 @@ const relatedWork = suppressRelated ? [] : work.projects.filter((project) => ser
 const relatedClientWork = work.clientWork.items.filter((client) => service.relatedClientWork?.includes(client.id));
 const stage = visuals.stages[service.slug];
 const slug = service.slug;
+// Build-time only: the provisional Care tiers exist ONLY on this exact Workers Builds preview branch.
+// An arbitrary CARE_OPTIONS_PREVIEW=1 never enables them on main or any other branch.
+// CARE_OPTIONS_PREVIEW=0 can opt out locally/for QA without relaxing this allowlist.
+const careOptionsPreview =
+process.env.WORKERS_CI === '1' &&
+process.env.WORKERS_CI_BRANCH === 'feature/web-160-coastal-v2c-preview-phaseb-20261109' &&
+process.env.CARE_OPTIONS_PREVIEW !== '0';
+const showCareOptions = careOptionsPreview && slug === 'website-care';
+
 // Three example outcomes at most; the fourth Websites outcome (maintainable operating model) is already the documentation line in "work".
 const outcomes = service.outcomes.slice(0, 3);
 const outcomeRail = slug === 'website-care' || slug === 'digital-ownership-platform-administration';
@@ -180,6 +190,67 @@ const toolAssets = {
             {service.guideHref && <a class="text-link" href={service.guideHref}>{service.guideLabel} →</a>}
             {page.includedLink && <a class="text-link" href={page.includedLink.href}>{page.includedLink.label} →</a>}
           </p>
+        </div>
+      </section>
+    )}
+
+    {showCareOptions && (
+      <section class="section section--sky care-options" id="care-options" aria-labelledby="care-options-heading" data-care-options-preview>
+        <div class="container">
+          <p class="care-banner" role="note"><span class="care-banner__tag">{careOptions.statusLabel}</span><span>{careOptions.disclaimer}</span></p>
+          <div class="care-options__lead">
+            <div>
+              <p class="eyebrow">{careOptions.eyebrow}</p>
+              <h2 id="care-options-heading">{careOptions.heading}</h2>
+              <p class="lede">{careOptions.lede}</p>
+              <p class="care-separation">{careOptions.separationNote}</p>
+            </div>
+            <figure class="care-loopband">
+              <div class="care-loopband__crop">
+                <picture>
+                  <source media="(max-width: 719px)" srcset="/r5/assets/diagrams/svc-care-loop-phone.svg" width="360" height="240" />
+                  <img src="/r5/assets/diagrams/svc-care-loop.svg" alt={careOptions.diagram.alt} width="680" height="420" loading="lazy" decoding="async" />
+                </picture>
+              </div>
+              <figcaption><span class="pill pill--outline">{careOptions.diagram.pill}</span> {careOptions.diagram.caption}</figcaption>
+            </figure>
+          </div>
+          <h3 class="care-every__title">{careOptions.sharedHeading}</h3>
+          <ul class="care-every">
+            {careOptions.shared.map((line) => <li>{line}</li>)}
+          </ul>
+          <p class="care-jump"><a class="text-link" href={careOptions.jumpHref}>{careOptions.jumpLine} ↓</a></p>
+          <ol class="care-main">
+            {careOptions.primary.map((option) => (
+              <li class:list={['care-card', option.recommended ? 'care-card--rec' : option.optionNumber === 4 ? 'care-card--c' : 'care-card--a']} id={`care-option-${option.optionNumber}`} data-care-option={option.id}>
+                <div class="care-badges">
+                  <span class="care-chip">Option {option.optionNumber}</span>
+                  {option.recommended && <span class="care-badge care-badge--rec">{careOptions.recommendedLabel}</span>}
+                  <span class="care-badge care-badge--proposed">{careOptions.proposedLabel}</span>
+                </div>
+                <h3>{option.job}</h3>
+                <p class="care-depth"><span class={`care-sheets care-sheets--${option.sheets}`} aria-hidden="true"><i></i><i></i><i></i><i></i></span><span><strong>{careOptions.reportLabel}:</strong> {option.report}</span></p>
+                {option.recommended && <p class="care-caveat">{careOptions.recommendedNote}</p>}
+                <div class="care-adds"><h4>{careOptions.addsLabel}</h4><ul class="svc-list svc-list--in">{option.adds.map((item) => <li><Icon name="check" size={18} class="svc-check" /><span>{item}</span></li>)}</ul></div>
+                <div class="care-not"><h4>{careOptions.notIncludedLabel}</h4><ul class="svc-list svc-list--out">{option.notIncluded.map((item) => <li>{item}</li>)}</ul></div>
+              </li>
+            ))}
+          </ol>
+          <h3 class="care-rows__title">{careOptions.secondaryHeading}</h3>
+          <ul class="care-rows">
+            {careOptions.secondary.map((option) => (
+              <li class:list={['care-row', option.optionNumber === 1 ? 'care-row--light' : 'care-row--tailored']} data-care-option={option.id}>
+                <div><span class="care-chip">Option {option.optionNumber}</span> <span class="care-badge">{option.proposedLabel}</span><h4>{option.job}</h4></div>
+                <div class="care-row__body">
+                  {option.sheets && <p class="care-depth care-depth--row"><span class={`care-sheets care-sheets--${option.sheets}`} aria-hidden="true"><i></i><i></i><i></i><i></i></span><span><strong>{careOptions.reportLabel}:</strong> {option.report}</span></p>}
+                  {!option.sheets && <p><strong>{careOptions.reportLabel}:</strong> {option.report}</p>}
+                  <p><strong>{careOptions.addsLabel}:</strong> {option.adds.join(' ')}</p>
+                  <p><strong>{careOptions.notIncludedLabel}:</strong> {option.notIncluded.join(' ')}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+          <p class="care-closing">{careOptions.closingLine}</p>
         </div>
       </section>
     )}

@@ -1,0 +1,97 @@
+/* R5 CARE ADDENDUM: concept-only Website Care options (#care-options). All selectors are .care-*; none reuse .plan-*. */
+html[data-dir="l"] .care-options { background: var(--color-sky); }
+
+/* proposed-only banner: always visible, not a tiny pill */
+html[data-dir="l"] .care-banner {
+  display: grid; gap: 0.3rem 1rem; align-items: center; margin: 0 0 1.75rem; padding: 0.9rem 1.15rem;
+  background: #15241f; color: #efe9dd; border-left: 6px solid #c8a548; border-radius: var(--radius-lg);
+}
+@media (min-width: 720px) { html[data-dir="l"] .care-banner { grid-template-columns: auto minmax(0, 1fr); } }
+html[data-dir="l"] .care-banner__tag { font-size: 0.875rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #c8a548; }
+html[data-dir="l"] .care-banner span:last-child { font-size: 0.9375rem; }
+
+/* lead: heading left, cropped real svc-care-loop right */
+html[data-dir="l"] .care-options__lead { display: grid; gap: 1.25rem; margin: 0 0 2.25rem; }
+@media (min-width: 900px) { html[data-dir="l"] .care-options__lead { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 3rem; align-items: center; } }
+html[data-dir="l"] .care-loopband { margin: 0; background: #f7f4ec; border: 1px solid var(--color-border); border-radius: var(--radius-xl); overflow: hidden; box-shadow: var(--shadow-sm); }
+html[data-dir="l"] .care-loopband__crop { aspect-ratio: 360 / 84; overflow: hidden; }
+@media (min-width: 720px) { html[data-dir="l"] .care-loopband__crop { aspect-ratio: 680 / 108; } }
+html[data-dir="l"] .care-loopband picture { display: block; height: 100%; }
+html[data-dir="l"] .care-loopband img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 64%; }
+@media (min-width: 720px) { html[data-dir="l"] .care-loopband img { object-position: 50% 59%; } }
+html[data-dir="l"] .care-loopband figcaption { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; padding: 0.65rem 0.9rem; border-top: 1px solid var(--color-border); font-size: 0.875rem; color: var(--color-muted); }
+
+/* three main cards: T3 raised and centered on desktop; DOM order = visual order everywhere */
+html[data-dir="l"] .care-main { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.25rem; }
+@media (min-width: 720px) and (max-width: 1099px) { html[data-dir="l"] .care-main { max-width: 40rem; margin-inline: auto; } }
+@media (min-width: 1100px) { html[data-dir="l"] .care-main { grid-template-columns: minmax(0, 1fr) minmax(0, 1.14fr) minmax(0, 1fr); align-items: stretch; } }
+html[data-dir="l"] .care-card {
+  --care-fill: #1e6b66; --care-accent: #1e6b66;
+  display: flex; flex-direction: column; gap: 0.95rem; min-width: 0;
+  padding: clamp(1.15rem, 2.2vw, 1.6rem); background: #fff; color: var(--color-text);
+  border: 1px solid var(--color-border); border-top: 6px solid var(--care-accent);
+  border-radius: var(--radius-xl); box-shadow: var(--shadow-sm);
+}
+html[data-dir="l"] .care-card--c { --care-accent: #c8a548; }
+html[data-dir="l"] .care-card--rec { --care-fill: #c8a548; --care-accent: #c8a548; background: #15241f; color: #efe9dd; border-color: #15241f; box-shadow: var(--shadow); }
+@media (min-width: 1100px) { html[data-dir="l"] .care-card--rec { margin-block: -1.25rem; padding-block: calc(1.6rem + 1.25rem); position: relative; z-index: 1; } }
+html[data-dir="l"] .care-card h3 { margin: 0; font-size: 1.25rem; line-height: 1.25; font-weight: 780; color: inherit; }
+html[data-dir="l"] .care-card--rec :is(h3, h4, p, li, strong, span) { color: #efe9dd; }
+html[data-dir="l"] .care-badges { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+html[data-dir="l"] .care-badge { display: inline-flex; align-items: center; padding: 0.25rem 0.65rem; border: 1px solid var(--color-muted); border-radius: 999px; font-size: 0.875rem; font-weight: 800; letter-spacing: 0.03em; color: var(--color-text); background: transparent; }
+html[data-dir="l"] .care-card--rec .care-badge { border-color: #efe9dd; }
+html[data-dir="l"] .care-card--rec .care-badge--rec { background: #c8a548; border-color: #c8a548; color: #15241f; }
+html[data-dir="l"] .care-caveat { margin: -0.35rem 0 0; font-size: 0.9375rem; }
+
+/* report depth: 0 to 3 filled sheets, never colour alone (text beside it) */
+html[data-dir="l"] .care-depth { display: flex; align-items: center; gap: 0.85rem; margin: 0; font-size: 0.9375rem; }
+html[data-dir="l"] .care-sheets { display: inline-flex; flex: none; padding-left: 0.5rem; }
+html[data-dir="l"] .care-sheets i { display: block; width: 1.1rem; height: 1.75rem; margin-left: -0.5rem; border: 2px solid currentColor; border-radius: 4px; background: #fff; }
+html[data-dir="l"] .care-card--rec .care-sheets i { background: #15241f; }
+html[data-dir="l"] .care-sheets--1 i:nth-child(-n+1),
+html[data-dir="l"] .care-sheets--2 i:nth-child(-n+2),
+html[data-dir="l"] .care-sheets--3 i:nth-child(-n+3),
+html[data-dir="l"] .care-sheets--4 i { background: var(--care-fill); }
+
+html[data-dir="l"] .care-adds h4,
+html[data-dir="l"] .care-not h4 { margin: 0 0 0.5rem; font-size: 0.875rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: inherit; }
+html[data-dir="l"] .care-not { margin-top: auto; padding: 0.9rem 1rem; background: var(--color-surface-warm); border-radius: var(--radius-lg); }
+html[data-dir="l"] .care-card--rec .care-not { background: rgb(239 233 221 / 0.1); }
+html[data-dir="l"] .care-card--rec .svc-check { color: #c8a548; }
+html[data-dir="l"] .care-card--rec .svc-list--out li::before { background: #efe9dd; }
+html[data-dir="l"] .care-card__cta { align-self: flex-start; display: inline-flex; align-items: center; min-height: var(--tap); }
+
+/* secondary rows: flat, wide, dashed when tailored */
+html[data-dir="l"] .care-rows__title { margin: 2.5rem 0 1rem; font-size: 1.125rem; font-weight: 780; }
+html[data-dir="l"] .care-rows { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; }
+html[data-dir="l"] .care-row { display: grid; gap: 0.75rem 1.5rem; padding: 1.1rem 1.25rem; background: #fff; border: 1px solid var(--color-border); border-left: 6px solid #1e6b66; border-radius: var(--radius-lg); }
+@media (min-width: 900px) { html[data-dir="l"] .care-row { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr) auto; align-items: center; } }
+html[data-dir="l"] .care-row h4 { margin: 0.5rem 0 0; font-size: 1.125rem; font-weight: 780; }
+html[data-dir="l"] .care-row p { margin: 0 0 0.35rem; font-size: 0.9375rem; }
+html[data-dir="l"] .care-row .text-link { display: inline-flex; align-items: center; min-height: var(--tap); }
+html[data-dir="l"] .care-row { --care-fill: #1e6b66; }
+html[data-dir="l"] .care-row--tailored { background: transparent; border: 2px dashed #3a4a44; }
+
+/* option chip ("Option N") + every-option strip */
+html[data-dir="l"] .care-chip { display: inline-flex; align-items: center; padding: 0.25rem 0.65rem; border-radius: 999px; background: var(--color-surface-warm); color: var(--color-text); font-size: 0.875rem; font-weight: 800; letter-spacing: 0.03em; }
+html[data-dir="l"] .care-card--rec .care-chip { background: rgb(239 233 221 / 0.16); }
+html[data-dir="l"] .care-row .care-chip { margin-right: 0.35rem; }
+html[data-dir="l"] .care-every { list-style: none; margin: 0 0 1.75rem; padding: 1rem 1.15rem; display: grid; gap: 0.5rem 1.5rem; background: #f7f4ec; border: 1px solid var(--color-border); border-radius: var(--radius-lg); font-size: 0.9375rem; }
+@media (min-width: 720px) { html[data-dir="l"] .care-every { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1100px) { html[data-dir="l"] .care-every { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+html[data-dir="l"] .care-every li { position: relative; padding-left: 1.6rem; }
+html[data-dir="l"] .care-every li::before { content: ""; position: absolute; left: 0.3rem; top: 0.3em; width: 0.45rem; height: 0.85rem; border: solid #1e6b66; border-width: 0 2.5px 2.5px 0; transform: rotate(40deg); }
+html[data-dir="l"] .care-depth--row { margin-bottom: 0.5rem; }
+
+/* separation sentence, every-option heading, jump link and closing line (R5 care addendum, build additions) */
+html[data-dir="l"] .care-separation { margin: 0.9rem 0 0; padding: 0.7rem 0.9rem; border-left: 4px solid var(--color-interactive); background: #f7f4ec; border-radius: 0 var(--radius-md) var(--radius-md) 0; font-size: 0.9375rem; }
+html[data-dir="l"] .care-every__title { margin: 0 0 0.6rem; font-size: 0.875rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; }
+html[data-dir="l"] .care-jump { margin: 0 0 1.5rem; }
+html[data-dir="l"] .care-jump .text-link { display: inline-flex; align-items: center; min-height: var(--tap); font-weight: 750; }
+html[data-dir="l"] .care-closing { margin: 1.75rem 0 0; font-weight: 650; }
+html[data-dir="l"] .care-options { scroll-margin-top: 5rem; }
+html[data-dir="l"] .care-card { scroll-margin-top: 5.5rem; }
+
+/* Readable prototype-only labels without changing the site's global eyebrow/pill tokens. */
+html[data-dir="l"] .care-options .eyebrow,
+html[data-dir="l"] .care-options .pill--outline { font-size: 0.875rem; }
