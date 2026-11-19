@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 
 import worker, { addNonceToCsp, createNonce, validateSecureShareDestination } from '../worker.js';
+import { normalizeProspectDisplayOrigin, inspectRequestedReportEmailIntent, ProspectIntakeError } from '../src/lib/prospect-intake-contract.mjs';
 
 const BASELINE_CSP =
   "default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; img-src 'self' data:; object-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; font-src 'self'; upgrade-insecure-requests";
@@ -200,4 +201,111 @@ test('Secure Share supports HEAD and rejects unsupported methods', async () => {
   assert.equal(post.headers.get('Allow'), 'GET, HEAD');
   assert.equal(post.headers.get('Location'), null);
   assert.equal(post.headers.get('Cache-Control'), 'no-store');
+});
+
+
+test('owned prospect URL intake normalizes only displayable public-looking HTTPS homepage origins', () => {
+  const cases = [
+    ['example.org', 'https://example.org'],
+    ['www.example.org', 'https://www.example.org'],
+    [' https://EXAMPLE.ORG/ ', 'https://example.org'],
+    ['HTTPS://ExAmPlE.CoM', 'https://example.com'],
+    ['sub.site.co.uk', 'https://sub.site.co.uk'],
+  ];
+  for (const [input, expected] of cases) {
+    const result = normalizeProspectDisplayOrigin(input);
+    assert.equal(result.kind, 'ldw.prospect-display-target.v0');
+    assert.equal(result.displayOrigin, expected);
+    assert.equal(result.hostname, new URL(expected).hostname);
+    assert.equal(result.scanAuthorized, false);
+    assert.equal(result.networkAuthorized, false);
+    assert.equal(Object.isFrozen(result), true);
+  }
+});
+
+test('owned prospect URL intake rejects arbitrary fetch targets and URL parser confusion', () => {
+  const cases = [
+    '', ' ', '/example.org', '.example.org', 'localhost', 'otherhost',
+    'http://example.org', 'ftp://example.org', 'file:///etc/passwd',
+    'gopher://example.org', 'https:example.org', '//example.org',
+    'https://example.org:443', 'https://example.org:8443',
+    'https://name:pass@example.org', 'https://name@example.org',
+    'https://example.org/path', 'example.org/path', 'https://example.org//',
+    'https://example.org/?utm=1', 'https://example.org/#x',
+    'example.org?url=https://evil.org', 'example.org#frag',
+    'https://example.org\\@evil.org', 'https://example.org%2f.evil.org',
+    'https://[::1]', 'https://[fe80::1]', 'https://127.0.0.1',
+    'https://169.254.169.254', 'https://0x7f000001',
+    'https://2130706433', 'https://0177.0.0.1',
+    'https://metadata.google.internal', 'http://localhost',
+    'example.localhost', 'example.internal', 'example.local',
+    'example.invalid', 'example.test', 'example.example',
+    'example.onion', 'example.arpa', 'example.123',
+    'example..org', '-evil.example.org', 'bad_.example.org',
+    'xn--fa-hia.example.org', 'münich.example.org',
+    'example.org\nBcc: somebody@example.org',
+    'https://example.org\thttp://evil.org',
+    'https://example.org'.padEnd(400, 'x'),
+  ];
+  for (const value of cases) {
+    assert.throws(() => normalizeProspectDisplayOrigin(value), ProspectIntakeError,
+      'Expected fail-closed display-only URL syntax for ' + JSON.stringify(value));
+  }
+});
+
+test('owned prospect intake has no network or email authority in its output', () => {
+  const value = normalizeProspectDisplayOrigin('https://example.org');
+  assert.deepEqual(Object.keys(value).sort(),
+    ['displayOrigin', 'hostname', 'kind', 'networkAuthorized', 'scanAuthorized'].sort());
+  assert.equal('fetchUrl' in value, false);
+  assert.equal('permissionToCrawl' in value, false);
+  assert.equal('scanSucceeded' in value, false);
+});
+
+test('requested email-report intent is format-only, separately opts into marketing and does not retain an address', () => {
+  const email = 'Person+site.audit@Example.org';
+  const base = inspectRequestedReportEmailIntent({ email, reportRequested: true });
+  assert.deepEqual(base, {
+    kind: 'ldw.prospect-report-email-intent.v0',
+    reportRequested: true,
+    emailFormat: 'valid',
+    marketingOptIn: false,
+    emailRetained: false,
+    emailDeliveryAuthorized: false,
+  });
+  const optional = inspectRequestedReportEmailIntent({
+    email, reportRequested: true, marketingOptIn: true,
+  });
+  assert.equal(optional.marketingOptIn, true);
+  assert.equal(optional.emailDeliveryAuthorized, false);
+  assert.equal(JSON.stringify(optional).includes(email), false);
+  assert.equal(Object.isFrozen(base), true);
+});
+
+test('requested email-report intent fails closed on header injection, bad domains and unauthorized fields', () => {
+  const cases = [
+    undefined, null, [], '', 1,
+    { email: 'ok@example.org', reportRequested: false },
+    { email: 'ok@example.org', reportRequested: true, marketingOptIn: 'yes' },
+    { email: 'ok@example.org', reportRequested: true, mailingList: true },
+    { email: 'ok@example.org', reportRequested: true, marketingOptIn: null },
+    { email: 'a\nBcc:evil@example.org', reportRequested: true },
+    { email: 'a@example.org\r\nTo: evil@example.org', reportRequested: true },
+    { email: 'a@example.org@example.net', reportRequested: true },
+    { email: 'a..b@example.org', reportRequested: true },
+    { email: '.ab@example.org', reportRequested: true },
+    { email: 'ab.@example.org', reportRequested: true },
+    { email: 'ab@localhost', reportRequested: true },
+    { email: 'ab@10.0.0.1', reportRequested: true },
+    { email: 'ab@example.local', reportRequested: true },
+    { email: 'ab@example.test', reportRequested: true },
+    { email: 'ab@xn--fa-hia.org', reportRequested: true },
+    { email: 'ab@münich.org', reportRequested: true },
+    { email: 'ab@example.org'.repeat(40), reportRequested: true },
+    { email: 'a <a@example.org>', reportRequested: true },
+    { email: '"a b"@example.org', reportRequested: true },
+  ];
+  for (const input of cases) {
+    assert.throws(() => inspectRequestedReportEmailIntent(input), ProspectIntakeError);
+  }
 });
