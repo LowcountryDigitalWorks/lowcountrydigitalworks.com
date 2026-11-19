@@ -1,4 +1,5 @@
 ---
+import { ldw } from '../lib/analytics-config.mjs';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import contact from '../data/contact.json';
 import home from '../data/home.json';
@@ -31,7 +32,7 @@ import TownGroups from '../components/TownGroups.astro';
             <p class="biz-card__name">Eddie Gugino</p>
             <p class="biz-card__title">Founder · Lowcountry Digital Works LLC</p>
             <p class="biz-card__place">Beaufort, South Carolina</p>
-            <a class="button biz-card__save" href="/eddie-gugino-lowcountry-digital-works.vcf#on-card" download>Save contact</a>
+            <a class="button biz-card__save" href="/eddie-gugino-lowcountry-digital-works.vcf#on-card" download {...ldw('contact_card_download', { placement: 'connect_card' })}>Save contact</a>
             <hr class="biz-card__rule" />
             <p class="biz-card__line">{contact.phone.display}</p>
             <p class="biz-card__line">{contact.email.address}</p>
@@ -49,22 +50,22 @@ import TownGroups from '../components/TownGroups.astro';
             <h2>How a first note moves.</h2>
             <p class="lede">Text, call, email, or the optional guided form—all ordinary channels, read by a person before any scope is written.</p>
           </div>
-          <RequestFlowSteps layout="2x2" />
+          <RequestFlowSteps layout="2x2" carousel id="connect-steps" />
         </div>
       </div>
 
       <div class="connect-actions action-grid action-grid--under" aria-label="Contact options">
-        <a class="connect-action connect-action--primary" href={`sms:${contact.phone.number}`}>
+        <a class="connect-action" href={`sms:${contact.phone.number}`} {...ldw('contact_method_click', { method: 'sms', placement: 'connect_actions' })}>
           <span class="connect-action__icon"><Icon name="message" size={22} /></span>
           <span class="connect-action__copy"><span>Text Eddie</span><strong>{contact.phone.display}</strong><small>Send a short note</small></span>
         </a>
-        <a class="connect-action" href={`tel:${contact.phone.number}`}>
+        <a class="connect-action" href={`tel:${contact.phone.number}`} {...ldw('contact_method_click', { method: 'phone', placement: 'connect_actions' })}>
           <span class="connect-action__icon"><Icon name="phone" size={22} /></span>
           <span class="connect-action__copy"><span>Call Eddie</span><strong>{contact.phone.display}</strong><small>Talk it through</small></span>
         </a>
-        <a class="connect-action connect-action--email" href={`mailto:${contact.email.address}`}>
+        <a class="connect-action" href={`mailto:${contact.email.address}`} {...ldw('contact_method_click', { method: 'email', placement: 'connect_actions' })}>
           <span class="connect-action__icon"><Icon name="mail" size={22} /></span>
-          <span class="connect-action__copy"><span>Email Eddie</span><strong>{contact.email.address}</strong><small>Share a little context</small></span>
+          <span class="connect-action__copy"><span>Email Eddie</span><strong>{contact.email.address.split('@')[0]}<wbr />@{contact.email.address.split('@')[1]}</strong><small>Share a little context</small></span>
         </a>
       </div>
 
@@ -108,4 +109,5 @@ import TownGroups from '../components/TownGroups.astro';
       <p class="connect-note">For passwords, MFA or recovery codes, private keys, API tokens, payment-card information, PHI, or other sensitive secrets, do not use ordinary email or text. Use a secure method specifically provided for the engagement.</p>
     </div>
   </section>
+  <script is:inline src="/r5/site-carousel.js" defer></script>
 </BaseLayout>

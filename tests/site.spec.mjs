@@ -79,13 +79,13 @@ test('primary navigation reflects the accepted consultancy IA and keeps Secure S
 
 test('services page presents four problem-led service families and detail routes', async ({ page }) => {
   await page.goto('/services/');
-  await expect(page.locator('.service-family')).toHaveCount(4);
-  await expect(page.locator('.service-choice__prompt')).toHaveCount(4);
-  await expect(page.locator('.service-family__icon .ui-icon')).toHaveCount(4);
+  await expect(page.locator('.svc-card')).toHaveCount(4);
+  await expect(page.locator('.svc-card__prompt')).toHaveCount(4);
+  await expect(page.locator('.svc-card__icon .ui-icon')).toHaveCount(4);
   await expect(page.getByRole('heading', { level: 1, name: 'Start with what your business needs to work better.' })).toBeVisible();
   await expect(page.getByText('Our website feels dated, confusing, hard to maintain', { exact: false })).toBeVisible();
   await expect(page.getByText('We keep repeating the same work', { exact: false })).toBeVisible();
-  await expect(page.locator('.service-family a[href="/connect/"]')).toHaveCount(0);
+  await expect(page.locator('.svc-card a[href="/connect/"]')).toHaveCount(0);
   await expect(page.getByRole('heading', { name: 'Websites & Website Care' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Business Systems & Automation' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Digital Ownership & Platform Administration' })).toBeVisible();
@@ -370,7 +370,7 @@ test('work page separates permissioned client proof from LDW systems and preserv
   await expect(gasCard.locator('.portfolio-card__boundary')).toContainText('Internal infrastructure · not customer SaaS.');
   await expect(reputationCard.locator('.portfolio-card__boundary')).toContainText('Active product research · no working app or customer service.');
   await expect(internalProof).toContainText('Owner Console');
-  await expect(internalProof).toContainText('Sample information only');
+  await expect(internalProof).toContainText('No live accounts or actions');
 
   await expect(page.getByText('They are not customer case studies.', { exact: false })).toHaveCount(0);
   await expect(page.getByText('These are LDW-owned examples of method and product development. They are not presented as completed customer case studies.', { exact: true })).toHaveCount(0);
@@ -403,7 +403,7 @@ test('work page separates permissioned client proof from LDW systems and preserv
   await expect(page.getByRole('link', { name: 'View source' })).toHaveAttribute('href', 'https://github.com/LowcountryDigitalWorks/gas-engine');
   await expect(page.locator('.project-visual')).toHaveCount(1);
   await expect(page.locator('img[src="/work-assets/gas-workbench-current.png"]')).toBeVisible();
-  await expect(page.getByText('Current Workbench synthetic demo', { exact: false })).toBeVisible();
+  await expect(page.getByText('Current Workbench screen', { exact: false })).toBeVisible();
 
   await page.goto('/work/document-control/');
   await expect(page.getByText('It is not a production customer deployment', { exact: false })).toBeVisible();
@@ -415,21 +415,23 @@ test('work page separates permissioned client proof from LDW systems and preserv
   await page.goto('/work/secure-exchange/');
   await expect(page.locator('.project-visual')).toHaveCount(2);
   await expect(page.locator('img[src="/work-assets/secure-exchange-intake.jpg"]')).toBeVisible();
-  await expect(page.getByText('Synthetic staff work item demonstrating resolution', { exact: false })).toBeVisible();
+  await expect(page.getByText('Dark-mode staff work item demonstrating resolution', { exact: false })).toBeVisible();
 });
 
 test('founder structure uses the owner-approved portrait and approved trust facts', async ({ page }) => {
+  // R5 polish: the founder photo appears once per page. On Home it lives in the "Work with Eddie" band (Coordinator pick), not the hero card.
   const portraitExpectations = [
-    { route: '/', height: '600', naturalHeight: 600 },
-    { route: '/about/', height: '480', naturalHeight: 600 },
+    { route: '/', width: '320', height: '320', naturalHeight: 600 },
+    { route: '/about/', width: '480', height: '480', naturalHeight: 600 },
   ];
-  for (const { route, height, naturalHeight } of portraitExpectations) {
+  for (const { route, width, height, naturalHeight } of portraitExpectations) {
     await page.goto(route);
     const portrait = page.locator('[data-founder-portrait]');
     await expect(portrait).toHaveCount(1);
     await expect(portrait).toHaveAttribute('src', '/founder/eddie-gugino-founder.webp');
     await expect(portrait).toHaveAttribute('alt', 'Eddie Gugino, founder of Lowcountry Digital Works');
-    await expect(portrait).toHaveAttribute('width', '480');
+    await expect(portrait).toHaveAttribute('width', width);
+    await expect(page.locator('img[src="/founder/eddie-gugino-founder.webp"]')).toHaveCount(1);
     await expect(portrait).toHaveAttribute('height', height);
     await portrait.scrollIntoViewIfNeeded();
     await expect.poll(async () => portrait.evaluate((img) => ({
@@ -551,8 +553,11 @@ test('Contact and footer iconography supplements visible labels rather than repl
   await expect(footer.getByRole('link', { name: 'Facebook' })).toBeVisible();
   await expect(footer.getByRole('link', { name: 'X', exact: true })).toBeVisible();
   await expect(footer.getByRole('link', { name: 'LinkedIn' })).toBeVisible();
-  await expect(footer.locator('.social-mark--facebook')).toHaveCSS('background-color', 'rgb(24, 119, 242)');
-  await expect(footer.getByRole('link', { name: 'X', exact: true }).locator('.social-mark--x')).toHaveCSS('background-color', 'rgb(255, 255, 255)');
+  // R5 polish (owner REVISE 9): one oyster tile for all three marks; each glyph keeps its own brand colour (LinkedIn [in] unaltered).
+  for (const name of ['facebook', 'x', 'linkedin']) await expect(footer.locator(`.social-mark--${name}`)).toHaveCSS('background-color', 'rgb(239, 233, 221)');
+  await expect(footer.locator('.social-mark--facebook')).toHaveCSS('color', 'rgb(24, 119, 242)');
+  await expect(footer.locator('.social-mark--x')).toHaveCSS('color', 'rgb(0, 0, 0)');
+  await expect(footer.locator('.social-mark--linkedin')).toHaveCSS('color', 'rgb(10, 102, 194)');
   // R5 interiors: LinkedIn is now an Icon like Facebook and X (was an <img>), so five icons.
   await expect(footer.locator('.ui-icon[aria-hidden="true"]')).toHaveCount(5);
 });
@@ -560,8 +565,15 @@ test('Contact and footer iconography supplements visible labels rather than repl
 test('privacy page reflects the current no-nonessential-cookie posture without a cosmetic consent banner', async ({ page }) => {
   await page.goto('/privacy/');
   await expect(page.getByRole('heading', { name: 'Cookies, browser storage, and tracking' })).toBeVisible();
-  await expect(page.getByText('does not intentionally use advertising trackers', { exact: false })).toBeVisible();
-  await expect(page.getByText('does not display a cookie banner merely for appearance', { exact: false })).toBeVisible();
+  if (process.env.ANALYTICS_ENABLED === '1') {
+    // Analytics build: the disclosure replaces the no-analytics sentences. The banner itself is created at runtime on the production host only, so static markup still has no cookie/consent element.
+    await expect(page.getByText('uses analytics and site-experience tools', { exact: false })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Your analytics choices' })).toBeVisible();
+    await expect(page.getByText('does not intentionally use advertising trackers', { exact: false })).toHaveCount(0);
+  } else {
+    await expect(page.getByText('does not intentionally use advertising trackers', { exact: false })).toBeVisible();
+    await expect(page.getByText('does not display a cookie banner merely for appearance', { exact: false })).toBeVisible();
+  }
   await expect(page.getByRole('heading', { name: 'Do Not Track and cross-site collection' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Review, correction, and deletion requests' })).toBeVisible();
   await expect(page.getByText('Lowcountry Digital Works LLC, operating as Lowcountry Digital Works', { exact: false })).toBeVisible();
@@ -585,7 +597,9 @@ test('legal and accessibility surfaces preserve narrow public-site boundaries', 
   await expect(page.getByRole('link', { name: 'Accessibility Statement' })).toHaveAttribute('href', '/accessibility/');
 
   const footer = page.locator('footer');
-  await expect(footer.getByRole('link', { name: 'Privacy' })).toHaveAttribute('href', '/privacy/');
+  await expect(footer.getByRole('link', { name: 'Privacy', exact: true })).toHaveAttribute('href', '/privacy/');
+  // Analytics build only: the footer also carries the revoke link ("Privacy choices"); the default build must not.
+  await expect(footer.getByRole('link', { name: 'Privacy choices' })).toHaveCount(process.env.ANALYTICS_ENABLED === '1' ? 1 : 0);
   await expect(footer.getByRole('link', { name: 'Accessibility' })).toHaveAttribute('href', '/accessibility/');
   await expect(footer.getByRole('link', { name: 'Website Terms' })).toHaveAttribute('href', '/terms/');
 });

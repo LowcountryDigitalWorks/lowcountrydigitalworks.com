@@ -1,7 +1,9 @@
 ---
 import contact from '../data/contact.json';
 import Icon from './Icon.astro';
+import { analyticsEnabled, analyticsRouteAllowed, ldw } from '../lib/analytics-config.mjs';
 const { allowSocialProfiles = true } = Astro.props;
+const showPrivacyChoices = analyticsEnabled() && analyticsRouteAllowed(Astro.url.pathname);
 ---
 <footer class="site-footer">
   <div class="container footer-grid" itemscope itemtype="https://schema.org/Organization" itemid="https://lowcountrydigitalworks.com/#organization">
@@ -24,13 +26,14 @@ const { allowSocialProfiles = true } = Astro.props;
       <a href="/discovery/">Project discovery</a>
       <a href="/connect/">Connect</a>
       <a href="/privacy/">Privacy</a>
+      {showPrivacyChoices && <a href="/privacy/#privacy-choices" data-ldw-consent-open>Privacy choices</a>}
       <a href="/accessibility/">Accessibility</a>
       <a href="/terms/">Website Terms</a>
     </nav>
     <div class="footer-contact">
       <p><strong>Contact</strong><br />
-        <a class="icon-link" itemprop="email" href={`mailto:${contact.email.address}`}><Icon name="mail" size={17} /><span>{contact.email.address}</span></a><br />
-        <a class="icon-link" itemprop="telephone" href={`tel:${contact.phone.number}`}><Icon name="phone" size={17} /><span>{contact.phone.display}</span></a>
+        <a class="icon-link" itemprop="email" href={`mailto:${contact.email.address}`} {...ldw('contact_method_click', { method: 'email', placement: 'footer' })}><Icon name="mail" size={17} /><span>{contact.email.address}</span></a><br />
+        <a class="icon-link" itemprop="telephone" href={`tel:${contact.phone.number}`} {...ldw('contact_method_click', { method: 'phone', placement: 'footer' })}><Icon name="phone" size={17} /><span>{contact.phone.display}</span></a>
       </p>
       {allowSocialProfiles && (
         <p class="footer-socials">

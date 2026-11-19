@@ -1,4 +1,5 @@
 ---
+import { ldw } from '../../lib/analytics-config.mjs';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import FaqList from '../../components/FaqList.astro';
 import Icon from '../../components/Icon.astro';
@@ -7,6 +8,10 @@ import serviceSearch from '../../data/service-search.json';
 import work from '../../data/work.json';
 import visuals from '../../data/service-detail-visuals.json';
 import careOptions from '../../data/care-options.json';
+import { careOptionsPreviewEnabled } from '../../lib/care-gate.mjs';
+
+// R3c: keep hyphenated compounds (self-editing, non-ecommerce, human-approved) on one line inside the narrow tier cards.
+const careNoBreak = (text) => String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/[A-Za-z0-9]+(?:[-–/][A-Za-z0-9]+)+/g, '<span class="care-nb">$&</span>');
 
 export function getStaticPaths() {
   return serviceDetails.map((service) => ({
@@ -25,13 +30,8 @@ const relatedWork = suppressRelated ? [] : work.projects.filter((project) => ser
 const relatedClientWork = work.clientWork.items.filter((client) => service.relatedClientWork?.includes(client.id));
 const stage = visuals.stages[service.slug];
 const slug = service.slug;
-// Build-time only: the provisional Care tiers exist ONLY on this exact Workers Builds preview branch.
-// An arbitrary CARE_OPTIONS_PREVIEW=1 never enables them on main or any other branch.
-// CARE_OPTIONS_PREVIEW=0 can opt out locally/for QA without relaxing this allowlist.
-const careOptionsPreview =
-process.env.WORKERS_CI === '1' &&
-process.env.WORKERS_CI_BRANCH === 'feature/web-160-coastal-v2c-preview-phaseb-20261109' &&
-process.env.CARE_OPTIONS_PREVIEW !== '0';
+// Build-time, fail-closed AND-gate (CARE_OPTIONS_PREVIEW=1 + WORKERS_CI=1 + exact preview branch); see src/lib/care-gate.mjs.
+const careOptionsPreview = careOptionsPreviewEnabled();
 const showCareOptions = careOptionsPreview && slug === 'website-care';
 
 // Three example outcomes at most; the fourth Websites outcome (maintainable operating model) is already the documentation line in "work".
@@ -50,14 +50,14 @@ const toolAssets = {
     src: '/r5/assets/internal/document-control-workflow-crop.jpg',
     w: 780, h: 422,
     phone: { avif: '/r5/assets/internal/document-control-overview-phone.avif', webp: '/r5/assets/internal/document-control-overview-phone.webp', src: '/r5/assets/internal/document-control-overview-phone.jpg', w: 960, h: 545 },
-    alt: 'Document Control workflow screen with synthetic test data.',
+    alt: 'Document Control workflow screen.',
   },
   'gas-engine': {
     avif: '/r5/assets/internal/gas-workbench-current.avif',
     webp: '/r5/assets/internal/gas-workbench-current.webp',
     src: '/work-assets/gas-workbench-current.png',
     w: 1440, h: 900,
-    alt: 'G.A.S. Workbench synthetic demo screen showing a current-state summary with example data.',
+    alt: 'G.A.S. Workbench screen showing a current-state summary.',
   },
 };
 
@@ -98,7 +98,6 @@ const toolAssets = {
             </picture>
           </div>
           <figcaption class="svc-stage__cap">
-            <span class="pill pill--outline">{stage.pill}</span>
             <span>{stage.caption}</span>
           </figcaption>
         </figure>
@@ -156,7 +155,7 @@ const toolAssets = {
                 <source media="(max-width: 719px)" srcset="/r5/assets/diagrams/svc-roadmap-phone.svg" width="360" height="420" />
                 <img src="/r5/assets/diagrams/svc-roadmap.svg" alt={page.roadmapAlt} width="680" height="300" loading="lazy" decoding="async" />
               </picture>
-              <figcaption><span class="pill pill--outline">Diagram: example setup</span> A consulting path: findings, options, then a bounded roadmap or a decision to leave it alone.</figcaption>
+              <figcaption><span class="pill pill--outline">Diagram</span> A consulting path: findings, options, then a bounded roadmap or a decision to leave it alone.</figcaption>
             </figure>
           </div>
           <div class="svc-boundary">
@@ -195,63 +194,40 @@ const toolAssets = {
     )}
 
     {showCareOptions && (
-      <section class="section section--sky care-options" id="care-options" aria-labelledby="care-options-heading" data-care-options-preview>
-        <div class="container">
-          <p class="care-banner" role="note"><span class="care-banner__tag">{careOptions.statusLabel}</span><span>{careOptions.disclaimer}</span></p>
+      <section class="section care-options" id="care-options" aria-labelledby="care-options-heading" data-care-options-preview>
+        <div class="container care-wrap">
           <div class="care-options__lead">
             <div>
               <p class="eyebrow">{careOptions.eyebrow}</p>
               <h2 id="care-options-heading">{careOptions.heading}</h2>
               <p class="lede">{careOptions.lede}</p>
-              <p class="care-separation">{careOptions.separationNote}</p>
             </div>
-            <figure class="care-loopband">
-              <div class="care-loopband__crop">
-                <picture>
-                  <source media="(max-width: 719px)" srcset="/r5/assets/diagrams/svc-care-loop-phone.svg" width="360" height="240" />
-                  <img src="/r5/assets/diagrams/svc-care-loop.svg" alt={careOptions.diagram.alt} width="680" height="420" loading="lazy" decoding="async" />
-                </picture>
-              </div>
-              <figcaption><span class="pill pill--outline">{careOptions.diagram.pill}</span> {careOptions.diagram.caption}</figcaption>
-            </figure>
           </div>
-          <h3 class="care-every__title">{careOptions.sharedHeading}</h3>
-          <ul class="care-every">
-            {careOptions.shared.map((line) => <li>{line}</li>)}
-          </ul>
-          <p class="care-jump"><a class="text-link" href={careOptions.jumpHref}>{careOptions.jumpLine} ↓</a></p>
-          <ol class="care-main">
-            {careOptions.primary.map((option) => (
-              <li class:list={['care-card', option.recommended ? 'care-card--rec' : option.optionNumber === 4 ? 'care-card--c' : 'care-card--a']} id={`care-option-${option.optionNumber}`} data-care-option={option.id}>
-                <div class="care-badges">
-                  <span class="care-chip">Option {option.optionNumber}</span>
-                  {option.recommended && <span class="care-badge care-badge--rec">{careOptions.recommendedLabel}</span>}
-                  <span class="care-badge care-badge--proposed">{careOptions.proposedLabel}</span>
+          <div class="care-plans" role="region" aria-roledescription="carousel" aria-label={careOptions.carouselLabel} data-care-carousel>
+            <div class="care-track" role="group" aria-label={careOptions.trackLabel} tabindex="0">
+              {careOptions.tiers.map((tier) => (
+                <div class:list={['care-tier', tier.recommended && 'care-tier--rec']} role="group" aria-roledescription="slide" aria-label={`${tier.n} of ${careOptions.tiers.length}: ${tier.name}`} id={`care-option-${tier.n}`} data-care-option={tier.id}>
+                  <p class="care-tier__flag">{tier.recommended ? careOptions.recommendedLabel : ''}</p>
+                  <h3 class="care-tier__name">{tier.name}</h3>
+                  <p class="care-tier__family">{tier.family}</p>
+                  <p class="care-tier__price"><span class="care-tier__prefix">{tier.prefix}</span><span class="care-tier__amount">{tier.amount}</span><span class="care-tier__per">{tier.per}</span><span class="care-tier__note">{tier.note}</span></p>
+                  <p class="care-tier__job">{tier.job}</p>
+                  <div class="care-tier__body">
+                    {tier.lead && <p class="care-tier__lead">{tier.lead}:</p>}
+                    <ul class="care-tier__list">{tier.items.map((item) => <li set:html={careNoBreak(item)} />)}</ul>
+                    {tier.foot && <p class="care-tier__foot">{tier.foot}</p>}
+                  </div>
                 </div>
-                <h3>{option.job}</h3>
-                <p class="care-depth"><span class={`care-sheets care-sheets--${option.sheets}`} aria-hidden="true"><i></i><i></i><i></i><i></i></span><span><strong>{careOptions.reportLabel}:</strong> {option.report}</span></p>
-                {option.recommended && <p class="care-caveat">{careOptions.recommendedNote}</p>}
-                <div class="care-adds"><h4>{careOptions.addsLabel}</h4><ul class="svc-list svc-list--in">{option.adds.map((item) => <li><Icon name="check" size={18} class="svc-check" /><span>{item}</span></li>)}</ul></div>
-                <div class="care-not"><h4>{careOptions.notIncludedLabel}</h4><ul class="svc-list svc-list--out">{option.notIncluded.map((item) => <li>{item}</li>)}</ul></div>
-              </li>
-            ))}
-          </ol>
-          <h3 class="care-rows__title">{careOptions.secondaryHeading}</h3>
-          <ul class="care-rows">
-            {careOptions.secondary.map((option) => (
-              <li class:list={['care-row', option.optionNumber === 1 ? 'care-row--light' : 'care-row--tailored']} data-care-option={option.id}>
-                <div><span class="care-chip">Option {option.optionNumber}</span> <span class="care-badge">{option.proposedLabel}</span><h4>{option.job}</h4></div>
-                <div class="care-row__body">
-                  {option.sheets && <p class="care-depth care-depth--row"><span class={`care-sheets care-sheets--${option.sheets}`} aria-hidden="true"><i></i><i></i><i></i><i></i></span><span><strong>{careOptions.reportLabel}:</strong> {option.report}</span></p>}
-                  {!option.sheets && <p><strong>{careOptions.reportLabel}:</strong> {option.report}</p>}
-                  <p><strong>{careOptions.addsLabel}:</strong> {option.adds.join(' ')}</p>
-                  <p><strong>{careOptions.notIncludedLabel}:</strong> {option.notIncluded.join(' ')}</p>
-                </div>
-              </li>
-            ))}
-          </ul>
-          <p class="care-closing">{careOptions.closingLine}</p>
+              ))}
+            </div>
+            <div class="care-dots" role="group" aria-label={careOptions.dotsLabel} hidden>
+              {careOptions.tiers.map((tier) => <button type="button" class="care-dot" data-care-dot={tier.id} aria-label={`Show ${tier.n} of ${careOptions.tiers.length}: ${tier.name}`}></button>)}
+            </div>
+          </div>
+          <p class="care-exclusions">{careOptions.exclusions}</p>
+          <p class="care-talk"><a class="text-link" href={careOptions.talk.href}>{careOptions.talk.label} →</a></p>
         </div>
+        <script is:inline src="/r5/care-carousel.js" defer></script>
       </section>
     )}
 
@@ -267,7 +243,7 @@ const toolAssets = {
               <li class="svc-outcomes__item">
                 <h3>{outcome.title}</h3>
                 <p>{outcome.description}</p>
-                <p class="svc-outcomes__ex"><span class="pill pill--outline">Illustrative situation, not a client result</span><span>{page.situations[index]}</span></p>
+                <p class="svc-outcomes__ex"><span>{page.situations[index]}</span></p>
               </li>
             ))}
           </ul>
@@ -326,7 +302,7 @@ const toolAssets = {
               <div class="svc-tool" data-related-work={project.slug}>
                 <div class="work-row__meta">
                   <span class={`status-pill ${project.status === 'Live' ? 'status-pill--live' : ''}`}>{project.status}</span>
-                  <span class="pill pill--outline">Internal tool · synthetic / test-only</span>
+                  <span class="pill pill--outline">Internal LDW tool</span>
                 </div>
                 <h3>{project.name}</h3>
                 <p>{project.cardBoundary}</p>
@@ -335,7 +311,7 @@ const toolAssets = {
             ))}
           </div>
           <figure class="svc-toolframe">
-            <div class="svc-toolframe__bar" aria-hidden="true"><span class="svc-frame__dots"></span><span class="svc-frame__label">Internal LDW tool · synthetic data</span></div>
+            <div class="svc-toolframe__bar" aria-hidden="true"><span class="svc-frame__dots"></span><span class="svc-frame__label">Internal LDW tool</span></div>
             <picture>
               {toolAssets[toolProject.slug].phone && (
                 <>
@@ -363,10 +339,10 @@ const toolAssets = {
           </div>
           <figure class="svc-diagram svc-diagram--keys">
             <picture>
-              <source media="(max-width: 719px)" srcset="/r5/assets/diagrams/who-holds-the-keys-phone.svg" width="360" height="460" />
-              <img src="/r5/assets/diagrams/who-holds-the-keys.svg" alt="Diagram: example setup — who holds the keys. Domain, DNS, hosting, email and logins all point to the business owner. Illustrative, not a client system." width="960" height="280" loading="lazy" decoding="async" />
+              <source media="(max-width: 719px)" srcset="/r5/assets/diagrams/who-holds-the-keys-phone.svg" width="360" height="430" />
+              <img src="/r5/assets/diagrams/who-holds-the-keys.svg" alt="Diagram — who holds the keys. Domain, DNS, hosting, email and logins all point to the business owner." width="960" height="232" loading="lazy" decoding="async" />
             </picture>
-            <figcaption><span class="pill pill--outline">Diagram: example setup</span> An illustration of the ownership model, not a client record.</figcaption>
+            <figcaption><span class="pill pill--outline">Diagram</span> Who holds the keys: domain, DNS, hosting, email and logins.</figcaption>
           </figure>
         </div>
       </section>
@@ -400,7 +376,7 @@ const toolAssets = {
           <h2 id="svc-cta-heading">{visuals.ctaHeading}</h2>
           <p class="lede">{visuals.ctaBody}</p>
         </div>
-        <div class="actions"><a class="button button--oyster" href="/connect/">{service.cta}</a></div>
+        <div class="actions"><a class="button button--oyster" href="/connect/" {...ldw('service_cta_click', { service: service.slug === 'website-care' ? 'websites' : service.slug, placement: 'service_detail' })}>{service.cta}</a></div>
       </div>
     </section>
   </article>

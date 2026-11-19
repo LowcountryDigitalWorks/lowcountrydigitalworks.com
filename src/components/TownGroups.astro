@@ -16,7 +16,7 @@ const groups = [
           <h3 id={`${id}-${group.key}`}>{group.title}</h3>
           <p class="town-group__count">{group.towns.length} towns</p>
         </header>
-        <ul class:list={['towns', listClass]} aria-label={group.label}>
+        <ul class:list={['towns', `towns--${group.key}`, listClass]} aria-label={group.label}>
           {group.towns.map((town) => <li>{town}</li>)}
         </ul>
       </section>

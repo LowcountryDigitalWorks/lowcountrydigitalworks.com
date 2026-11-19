@@ -20,7 +20,7 @@ for (const viewport of viewports) {
     await page.evaluate(() => document.fonts.ready.then(() => true));
 
     // Explicitly check the real site section, not a synthetic isolated card.
-    const cards = page.locator('#start .problem-choice-list > a.problem-choice');
+    const cards = page.locator('#start .problem-choice-list a.problem-choice') // R5 polish: each card sits in a carousel slide;
     await expect(cards).toHaveCount(4);
 
     const layout = await cards.evaluateAll((nodes) => {

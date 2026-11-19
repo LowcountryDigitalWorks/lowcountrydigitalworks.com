@@ -2,6 +2,8 @@
 import InternalToolThumb from '../components/InternalToolThumb.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import work from '../data/work.json';
+import Icon from '../components/Icon.astro';
+const featured = work.projects.filter((project) => project.featured !== false);
 ---
 <BaseLayout title="Work" description="Permissioned client work and Lowcountry Digital Works systems with plain-language context, live proof, current maturity, and explicit boundaries.">
   <section class="page-hero page-hero--fit">
@@ -72,36 +74,47 @@ import work from '../data/work.json';
         <p class="lede">{work.internalProof.lede}</p>
       </div>
 
-      <div class="portfolio-grid portfolio-grid--work portfolio-grid--work-balanced">
-        {work.projects.filter((project) => project.featured !== false).map((project) => (
-          <article class="portfolio-card portfolio-card--work portfolio-card--proof">
-            {project.thumbnail && (
-              <a class="portfolio-card__visual" href={`/work/${project.slug}/`} aria-label={`View ${project.name} project details`}>
-                <InternalToolThumb thumbnail={project.thumbnail} />
-              </a>
-            )}
-            <div class="portfolio-card__body">
-              <div class="work-row__meta">
-                <span class={`status-pill ${project.status === 'Live' ? 'status-pill--live' : ''}`}>{project.status}</span>
-                <span>{project.type}</span>
-              </div>
-              <h3>{project.name}</h3>
-              <p class="lede lede--compact">{project.homeSummary ?? project.purpose}</p>
-              <div class="portfolio-card__context">
-                <p><strong>Why this matters</strong>{project.workWhy}</p>
-                <p class="portfolio-card__boundary"><strong>Current boundary</strong>{project.cardBoundary}</p>
-              </div>
-              <a class="text-link" href={`/work/${project.slug}/`}>See evidence, maturity & boundaries →</a>
+      <div class="carousel carousel--light carousel--grid-3 tools-car" role="region" aria-roledescription="carousel" aria-label="LDW systems and internal proof" data-carousel data-carousel-start="0">
+        <div class="carousel__track portfolio-grid--work-balanced" role="group" aria-label="LDW systems and internal proof, swipe or use arrow keys" tabindex="0" data-carousel-track>
+          {featured.map((project, index) => (
+            <div class="carousel__slide" role="group" aria-roledescription="slide" aria-label={`${index + 1} of ${featured.length}: ${project.name}`} data-carousel-slide>
+              <article class="portfolio-card portfolio-card--work portfolio-card--proof tool-card">
+                {project.thumbnail ? (
+                  <a class="portfolio-card__visual tool-card__frame" href={`/work/${project.slug}/`} aria-label={`View ${project.name} project details`}>
+                    <InternalToolThumb thumbnail={project.thumbnail} />
+                  </a>
+                ) : (
+                  <span class="tool-card__frame tool-card__frame--mark" aria-hidden="true"><Icon name="message" size={40} /></span>
+                )}
+                <div class="portfolio-card__body">
+                  <div class="work-row__meta">
+                    <span class={`status-pill ${project.status === 'Live' ? 'status-pill--live' : ''}`}>{project.status}</span>
+                    <span>{project.type}</span>
+                  </div>
+                  <h3>{project.name}</h3>
+                  <p class="lede lede--compact">{project.homeSummary ?? project.purpose}</p>
+                  <div class="portfolio-card__context">
+                    <p><strong>Why this matters</strong>{project.workWhy}</p>
+                    <p class="portfolio-card__boundary"><strong>Current boundary</strong>{project.cardBoundary}</p>
+                  </div>
+                  <a class="text-link" href={`/work/${project.slug}/`}>See evidence, maturity & boundaries →</a>
+                </div>
+              </article>
             </div>
-          </article>
-        ))}
+          ))}
+        </div>
+        <div class="carousel__dots" data-carousel-dots hidden>
+          {featured.map((project, index) => (
+            <button type="button" class="carousel__dot" data-carousel-dot aria-label={`Show ${index + 1} of ${featured.length}: ${project.name}`}></button>
+          ))}
+        </div>
       </div>
 
       <p class="portfolio-detail-note">These are LDW-owned systems and internal proof, not claims about completed client deployments.</p>
     </div>
   </section>
 
-  <section class="section section--navy">
+  <section class="section section--navy band-mesh">
     <div class="container readable">
       <p class="eyebrow">{work.principle.eyebrow}</p>
       <h2>{work.principle.title}</h2>
@@ -131,4 +144,5 @@ import work from '../data/work.json';
       <p class="trademark-note">{work.technology.trademarkNote}</p>
     </div>
   </section>
+  <script is:inline src="/r5/site-carousel.js" defer></script>
 </BaseLayout>

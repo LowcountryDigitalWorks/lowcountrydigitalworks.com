@@ -9,7 +9,7 @@ const fixture = JSON.parse(
 const pageSource = await readFile(new URL('../src/pages/website-check.astro', import.meta.url), 'utf8');
 const evidenceCardCount = [fixture.finding, fixture.residual].filter(Boolean).length;
 
-test('website check clearly identifies the precomputed LDW-owned proof', async ({ page }) => {
+test('website check clearly identifies the LDW-owned proof', async ({ page }) => {
   const externalRequests = [];
   page.on('request', (request) => {
     if (new URL(request.url()).origin !== 'http://127.0.0.1:4321') externalRequests.push(request.url());

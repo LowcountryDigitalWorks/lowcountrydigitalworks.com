@@ -2,6 +2,7 @@
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import MobileContactBar from '../components/MobileContactBar.astro';
+import { analyticsEnabled, analyticsRouteAllowed } from '../lib/analytics-config.mjs';
 import '@fontsource-variable/manrope/wght.css';
 import '../styles/global.css';
 import '../styles/coastal-v2c-preview.css';
@@ -12,8 +13,10 @@ import '../styles/r5/l.css';
 import '../styles/r5/overrides.css';
 import '../styles/r5/owner-revise.css';
 import '../styles/r5/svc.css';
+import '../styles/r5/carousel.css';
+import '../styles/r5/polish.css';
 import '../styles/r5/guide.css';
-import '../styles/r5/care.css';
+import '~care-styles';
 const {
   title = 'Lowcountry Digital Works',
   description = 'Practical websites, business systems, automation, digital ownership, and technology consulting built for maintainability and customer ownership.',
@@ -26,6 +29,7 @@ const {
 const canonical = new URL(canonicalPath ?? Astro.url.pathname, Astro.site ?? Astro.url.origin);
 const socialImage = new URL(image, Astro.site ?? Astro.url.origin);
 const fullTitle = title === 'Lowcountry Digital Works' ? title : `${title} | Lowcountry Digital Works`;
+const showAnalytics = analyticsEnabled() && analyticsRouteAllowed(Astro.url.pathname);
 const robotsContent = robots ?? (noindex ? 'noindex,nofollow' : undefined);
 const allowFooterSocialProfiles = Astro.url.pathname !== '/share/';
 const path = Astro.url.pathname;
@@ -58,6 +62,8 @@ const showMobileContactBar = !['/discovery/', '/connect/'].includes(path);
   <meta name="twitter:description" content={description} />
   <meta name="twitter:image" content={socialImage} />
   <title>{fullTitle}</title>
+  {showAnalytics && <link rel="stylesheet" href="/ldw-consent.css" />}
+  {showAnalytics && <script is:inline src="/ldw-analytics.js" defer></script>}
 </head>
 <body class:list={[coastalV2cPreview && 'site--coastal-v2c', isR5 && showMobileContactBar && 'has-bar']}>
   <a class="skip-link" href="#main-content">Skip to content</a>

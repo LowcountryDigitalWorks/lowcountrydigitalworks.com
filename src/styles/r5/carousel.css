@@ -1,0 +1,45 @@
+/* LDW shared carousel (R5). Used by: Services #start and #plans, Home #start router, and any later phone stack.
+   Markup contract: .carousel[data-carousel] > .carousel__track[data-carousel-track] > .carousel__slide[data-carousel-slide]
+   plus optional .carousel__dots[data-carousel-dots][hidden] > button.carousel__dot[data-carousel-dot].
+   Variants: --light | --dark (dot/focus colours), --grid-2 (grid from 900px), --grid-3 (3 per row from 900px, a short last row is centred), --grid-4 (grid from 1100px).
+   Hex/rgba only. The wrapper bleeds to the viewport edges by cancelling the 16px container gutter, so use it inside .container. */
+html[data-dir="l"] .carousel { --car-w: min(78vw, 21rem); --car-ink: #15241f; --car-ring: #1e6b66; position: relative; margin-inline: -16px; }
+html[data-dir="l"] .carousel--dark { --car-ink: #efe9dd; --car-ring: #c8a548; }
+@media (min-width: 720px) { html[data-dir="l"] .carousel { --car-w: 22rem; } }
+
+html[data-dir="l"] .carousel__track {
+  display: flex; gap: 0.75rem; align-items: stretch;
+  overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none;
+  padding: 1.25rem calc(50% - var(--car-w) / 2) 1rem;
+}
+html[data-dir="l"] .carousel__track::-webkit-scrollbar { display: none; }
+html[data-dir="l"] .carousel__track:focus-visible { outline: 3px solid var(--car-ring); outline-offset: -3px; }
+html[data-dir="l"] .carousel__slide { flex: 0 0 var(--car-w); min-width: 0; box-sizing: border-box; scroll-snap-align: center; scroll-snap-stop: always; }
+@media (min-width: 720px) { html[data-dir="l"] .carousel__track { gap: 1rem; } }
+
+html[data-dir="l"] .carousel__dots { display: flex; justify-content: center; margin-top: 0.25rem; }
+html[data-dir="l"] .carousel__dots[hidden] { display: none; }
+html[data-dir="l"] .carousel__dot { position: relative; width: var(--tap); height: var(--tap); padding: 0; border: 0; background: none; cursor: pointer; }
+html[data-dir="l"] .carousel__dot::before { content: ""; position: absolute; left: 50%; top: 50%; width: 0.75rem; height: 0.75rem; transform: translate(-50%, -50%); box-sizing: border-box; border: 2px solid var(--car-ink); border-radius: 999px; background: transparent; }
+html[data-dir="l"] .carousel__dot[aria-current="true"]::before { width: 1.75rem; border-color: var(--car-ring); background: var(--car-ring); }
+html[data-dir="l"] .carousel__dot:focus-visible { outline: 3px solid var(--car-ring); outline-offset: -4px; border-radius: 12px; }
+
+/* grid at desktop widths: the track stops scrolling, dots and snap go away */
+@media (min-width: 900px) {
+  html[data-dir="l"] .carousel--grid-2 { margin-inline: 0; }
+  html[data-dir="l"] .carousel--grid-2 .carousel__track { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; overflow: visible; scroll-snap-type: none; padding: 1.5rem 0 0.5rem; }
+  html[data-dir="l"] .carousel--grid-2 .carousel__slide { scroll-snap-align: none; }
+  html[data-dir="l"] .carousel--grid-2 .carousel__dots { display: none; }
+}
+@media (min-width: 900px) {
+  html[data-dir="l"] .carousel--grid-3 { margin-inline: 0; }
+  html[data-dir="l"] .carousel--grid-3 .carousel__track { flex-wrap: wrap; justify-content: center; gap: 1.25rem; overflow: visible; scroll-snap-type: none; padding: 1.5rem 0 0.5rem; }
+  html[data-dir="l"] .carousel--grid-3 .carousel__slide { flex: 0 0 calc((100% - 2.5rem) / 3); scroll-snap-align: none; }
+  html[data-dir="l"] .carousel--grid-3 .carousel__dots { display: none; }
+}
+@media (min-width: 1100px) {
+  html[data-dir="l"] .carousel--grid-4 { margin-inline: 0; }
+  html[data-dir="l"] .carousel--grid-4 .carousel__track { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; overflow: visible; scroll-snap-type: none; padding: 1.5rem 0 0.5rem; }
+  html[data-dir="l"] .carousel--grid-4 .carousel__slide { scroll-snap-align: none; }
+  html[data-dir="l"] .carousel--grid-4 .carousel__dots { display: none; }
+}

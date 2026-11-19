@@ -175,6 +175,12 @@ R5_ALLOWED_PATTERNS = {
     (_re.compile(r'^@supports \(backdrop-filter: blur\(1px\)\) \{\s*$', _re.M), 1),
     (_re.compile(r'^@supports not \(\(backdrop-filter: blur\(1px\)\) or \(-webkit-backdrop-filter: blur\(1px\)\)\) \{\s*$', _re.M), 1),
   ],
+  'src/styles/r5/care.css': [
+    # R3 Website Care plans (#care-options, flag-gated preview): glass tier cards. Exactly these declarations; Eddie/GM sign-off required before production.
+    (_re.compile(r'^\s*(?:-webkit-)?backdrop-filter:\s*blur\(16px\) saturate\(1\.25\);\s*$', _re.M), 2),
+    (_re.compile(r'^\s*(?:-webkit-)?backdrop-filter:\s*none;\s*$', _re.M), 2),
+    (_re.compile(r'^@supports not \(\(backdrop-filter: blur\(1px\)\) or \(-webkit-backdrop-filter: blur\(1px\)\)\) \{\s*$', _re.M), 1),
+  ],
 }
 def _scan_text(p):
   text = p.read_text(errors='ignore')

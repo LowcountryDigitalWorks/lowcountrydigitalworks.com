@@ -42,7 +42,7 @@ import about from '../data/about.json';
         <h2>{about.founder.title}</h2>
         <p class="lede">{about.founder.body}</p>
       </div>
-      <aside class="about-credentials">
+      <aside class="about-credentials depth-card">
         <p class="eyebrow">Background & credentials</p>
         <p>{about.founder.credentials}</p>
         <p>{about.founder.healthcare}</p>
@@ -71,51 +71,67 @@ import about from '../data/about.json';
     </div>
   </section>
 
-  <section class="section section--plain">
+  <section class="section section--plain" id="about-principles" aria-labelledby="about-principles-title">
     <div class="container">
-      <div class="section-heading">
+      <div class="section-heading section-heading--center">
         <p class="eyebrow">How the work is approached</p>
-        <h2>Principles that stay in view.</h2>
+        <h2 id="about-principles-title">Principles that stay in view.</h2>
       </div>
-      <div class="num-grid num-grid--4 editorial-list">
-        {about.principles.map((item, index) => (
-          <article class="num-card principle editorial-row">
-            {index === 0 && (
-              <div class="num-card__media">
-                <img src="/r5/assets/art/towns-strip.jpg" alt="Illustration of a Lowcountry marsh" width="800" height="450" loading="lazy" decoding="async" />
-              </div>
-            )}
-            {index === 1 && (
-              <div class="num-card__media num-card__media--diagram">
-                <img src="/r5/assets/diagrams/who-holds-the-keys-thumb.svg" alt="Diagram: example setup — who holds the keys." width="200" height="100" loading="lazy" decoding="async" />
-              </div>
-            )}
-            {index === 2 && (
-              <div class="num-card__media">
-                <div class="tool-row">
-                  <img src="/technology/github.svg" alt="GitHub" width="36" height="36" />
-                  <img src="/technology/cloudflare.svg" alt="Cloudflare" width="36" height="36" />
-                  <img src="/technology/astro.svg" alt="Astro" width="36" height="36" />
-                  <img src="/technology/typescript.svg" alt="TypeScript" width="36" height="36" />
-                  <img src="/technology/python.svg" alt="Python" width="36" height="36" />
+      <div class="carousel carousel--light carousel--grid-2 principles-car" role="region" aria-roledescription="carousel" aria-label="Principles" data-carousel data-carousel-start="0">
+        <div class="carousel__track" role="group" aria-label="Principles, swipe or use arrow keys" tabindex="0" data-carousel-track>
+          {about.principles.map((item, index) => (
+            <div class="carousel__slide" role="group" aria-roledescription="slide" aria-label={`${index + 1} of ${about.principles.length}: ${item.title}`} data-carousel-slide>
+              <article class="principle-card">
+                {index === 0 && (
+                  <div class="num-card__media">
+                    <picture>
+                      <source type="image/avif" srcset="/r5/assets/clients/east-coast-foam-thumb.avif" />
+                      <source type="image/webp" srcset="/r5/assets/clients/east-coast-foam-thumb.webp" />
+                      <img src="/r5/assets/clients/east-coast-foam-thumb.jpg" alt="East Coast Foam website, built for a Lowcountry business." width="390" height="220" loading="lazy" decoding="async" />
+                    </picture>
+                  </div>
+                )}
+                {index === 1 && (
+                  <div class="num-card__media num-card__media--diagram">
+                    <img src="/r5/assets/diagrams/who-holds-the-keys-thumb.svg" alt="Diagram — who holds the keys." width="200" height="100" loading="lazy" decoding="async" />
+                  </div>
+                )}
+                {index === 2 && (
+                  <div class="num-card__media">
+                    <div class="tool-row">
+                      <img src="/technology/github.svg" alt="GitHub" width="36" height="36" />
+                      <img src="/technology/cloudflare.svg" alt="Cloudflare" width="36" height="36" />
+                      <img src="/technology/astro.svg" alt="Astro" width="36" height="36" />
+                      <img src="/technology/typescript.svg" alt="TypeScript" width="36" height="36" />
+                      <img src="/technology/python.svg" alt="Python" width="36" height="36" />
+                    </div>
+                    <p class="caption">Marks identify tools LDW uses. They do not imply endorsement by those companies.</p>
+                  </div>
+                )}
+                {index === 3 && (
+                  <div class="num-card__media">
+                    <img src="/r5/assets/internal/interview-facilitator-crop.jpg" alt="Interview Facilitator prepare view. Internal development." width="780" height="440" loading="lazy" decoding="async" />
+                  </div>
+                )}
+                <div class="principle-card__head">
+                  <span class="principle-card__n" aria-hidden="true">0{index + 1}</span>
+                  <h3>{item.title}</h3>
                 </div>
-              </div>
-            )}
-            {index === 3 && (
-              <div class="num-card__media">
-                <img src="/r5/assets/internal/interview-facilitator-crop.jpg" alt="Interview Facilitator prepare view. Internal development; synthetic examples." width="780" height="440" loading="lazy" decoding="async" />
-              </div>
-            )}
-            <p class="editorial-row__number num-card__n" aria-hidden="true">0{index + 1}</p>
-            <h2>{item.title}</h2>
-            <p>{item.description}</p>
-          </article>
-        ))}
+                <p>{item.description}</p>
+              </article>
+            </div>
+          ))}
+        </div>
+        <div class="carousel__dots" data-carousel-dots hidden>
+          {about.principles.map((item, index) => (
+            <button type="button" class="carousel__dot" data-carousel-dot aria-label={`Show ${index + 1} of ${about.principles.length}: ${item.title}`}></button>
+          ))}
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="section section--navy">
+  <section class="section section--navy band-mesh">
     <div class="container about-why-small">
       <div><p class="eyebrow">{about.whySmall.eyebrow}</p><h2>{about.whySmall.title}</h2><p class="lede">{about.whySmall.body}</p></div>
       <ul class="principle__list">{about.whySmall.items.map((item) => <li>{item}</li>)}</ul>
@@ -136,4 +152,5 @@ import about from '../data/about.json';
       </div>
     </div>
   </section>
+  <script is:inline src="/r5/site-carousel.js" defer></script>
 </BaseLayout>

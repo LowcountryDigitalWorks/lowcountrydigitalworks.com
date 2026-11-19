@@ -143,7 +143,7 @@
         "answer": "It should not. LDW prefers automations that move or transform information around authoritative systems rather than creating a competing source of truth."
       }
     ],
-    "proofNote": "Document Control and Secure Exchange show how LDW explores real workflow gaps with synthetic/test-only evidence before claiming production maturity or provisioning customer infrastructure.",
+    "proofNote": "Document Control and Secure Exchange show how LDW explores real workflow gaps before claiming production maturity or provisioning customer infrastructure.",
     "relatedWork": [
       "document-control",
       "secure-exchange"

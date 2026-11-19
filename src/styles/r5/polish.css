@@ -1,0 +1,424 @@
+/* LDW site polish (R5): Care R3 language where it fits. Hex/rgba only (no color-mix). Radial and solid fills only, and no blur filter at all:
+   the repo validator rejects the linear (not radial) gradient function and the blur filter property everywhere under src/ except its per-file allow-list. */
+
+/* =====================  1. Services #start: ONE dark mesh band, four equal glass cards  ===================== */
+html[data-dir="l"] .svc-band,
+html[data-dir="l"] #start.svc-band {
+  color: #efe9dd;
+  background-color: #102a3a;
+  background-image:
+    radial-gradient(60% 55% at 12% 8%, rgba(30, 107, 102, 0.55) 0, rgba(30, 107, 102, 0) 62%),
+    radial-gradient(45% 45% at 88% 18%, rgba(200, 165, 72, 0.2) 0, rgba(200, 165, 72, 0) 60%),
+    radial-gradient(70% 60% at 50% 112%, rgba(47, 118, 111, 0.4) 0, rgba(47, 118, 111, 0) 66%);
+}
+html[data-dir="l"] .svc-band__head { text-align: center; max-width: 46rem; margin-inline: auto; }
+html[data-dir="l"] .svc-band h2 { color: #efe9dd; }
+html[data-dir="l"] .svc-band .eyebrow { color: #e6d08f; font-size: 0.875rem; }
+
+html[data-dir="l"] .svc-card {
+  position: relative; display: flex; flex-direction: column; gap: 0.9rem;
+  padding: 0.75rem 0.75rem 1.1rem; border-radius: var(--radius-xl); color: #efe9dd;
+  background-color: rgba(239, 233, 221, 0.07);
+  background-image: radial-gradient(90% 55% at 50% 0%, rgba(239, 233, 221, 0.13) 0, rgba(239, 233, 221, 0) 75%);
+  border: 1px solid rgba(239, 233, 221, 0.3);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 18px 40px -18px rgba(0, 0, 0, 0.6);
+}
+html[data-dir="l"] .svc-card::before {
+  content: ""; position: absolute; left: 1.25rem; right: 1.25rem; top: -1px; height: 4px; border-radius: 0 0 4px 4px;
+  background: #2f766f;
+}
+html[data-dir="l"] .svc-card:nth-child(even)::before { background: #c8a548; }
+
+html[data-dir="l"] .svc-card__visual { display: grid; gap: 0.45rem; margin: 0; }
+html[data-dir="l"] .svc-card__visual picture { display: block; aspect-ratio: 16 / 10; overflow: hidden; border-radius: 12px; border: 1px solid rgba(239, 233, 221, 0.35); background: #f7f4ec; }
+html[data-dir="l"] .svc-card__visual picture img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top left; }
+html[data-dir="l"] .svc-card__visual picture img.diagram { object-fit: contain; object-position: center; }
+html[data-dir="l"] .svc-card__visual .tool-row { display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0.5rem; background: #f7f4ec; border-radius: 12px; }
+html[data-dir="l"] .svc-card__visual .tool-row img { width: 28px; height: 28px; }
+html[data-dir="l"] .svc-card__visual .example-label,
+html[data-dir="l"] .svc-card__visual .maturity,
+html[data-dir="l"] .svc-card__visual .caption { margin: 0; padding: 0 0.25rem; font-size: 0.875rem; line-height: 1.35; color: #dde4e2; background: none; border: 0; }
+
+html[data-dir="l"] .svc-card__body { display: flex; flex-direction: column; gap: 0.5rem; flex: 1; padding: 0 0.6rem; }
+html[data-dir="l"] .svc-card__surface { display: flex; flex-direction: column; gap: 0.55rem; flex: 1; color: inherit; text-decoration: none; }
+html[data-dir="l"] .svc-card__index { display: flex; align-items: center; gap: 0.7rem; }
+html[data-dir="l"] .svc-card__icon { display: grid; place-items: center; width: 44px; height: 44px; flex: 0 0 44px; border-radius: 12px; color: #efe9dd; background: rgba(47, 118, 111, 0.55); border: 1px solid rgba(239, 233, 221, 0.35); }
+html[data-dir="l"] .svc-card__kicker { font-size: 0.875rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #e6d08f; }
+html[data-dir="l"] .svc-card__title { margin: 0; font-size: 1.3125rem; line-height: 1.25; color: #efe9dd; }
+html[data-dir="l"] .svc-card__prompt { margin: 0; font-size: 1rem; font-weight: 650; line-height: 1.45; color: #efe9dd; }
+html[data-dir="l"] .svc-card__desc { margin: 0; font-size: 0.9375rem; line-height: 1.55; color: #dde4e2; }
+html[data-dir="l"] .svc-card__cta { display: inline-flex; align-items: center; align-self: flex-start; gap: 0.4rem; min-height: var(--tap); margin-top: auto; padding: 0.4rem 1rem; border-radius: 999px; font-weight: 800; color: #15241f; background: #efe9dd; }
+html[data-dir="l"] .svc-card__also { display: inline-flex; align-items: center; gap: 0.35rem; align-self: flex-start; min-height: var(--tap); font-weight: 750; color: #efe9dd; text-decoration: underline; text-underline-offset: 0.2em; }
+html[data-dir="l"] .svc-card__surface:focus-visible,
+html[data-dir="l"] .svc-card__also:focus-visible { outline: 3px solid #c8a548; outline-offset: 3px; border-radius: 12px; }
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  html[data-dir="l"] .svc-card { transition: box-shadow 0.25s ease, border-color 0.25s ease, transform 0.25s ease; }
+  html[data-dir="l"] .svc-card:hover { transform: translateY(-3px); border-color: rgba(200, 165, 72, 0.7); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 0 0 1px rgba(200, 165, 72, 0.4), 0 24px 54px -16px rgba(200, 165, 72, 0.35); }
+}
+@media (min-width: 900px) {
+  html[data-dir="l"] .svc-card__visual picture { aspect-ratio: 16 / 9; }
+  html[data-dir="l"] .svc-card { padding: 0.9rem 0.9rem 1.3rem; }
+}
+
+/* =====================  2. Services #plans: four equal plan cards (light), phone carousel  ===================== */
+html[data-dir="l"] .plans-car__track { align-items: stretch; }
+html[data-dir="l"] .plan-slide { display: flex; }
+html[data-dir="l"] .plan-slide > article {
+  position: relative; flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.55rem;
+  padding: 1.35rem 1.15rem 1.25rem; border-radius: var(--radius-xl); color: #15241f;
+  background-color: #ffffff;
+  border: 1px solid #c9c2b2;
+  box-shadow: inset 0 1px 0 #ffffff, 0 0 0 1px rgba(47, 118, 111, 0.22), 0 18px 40px -16px rgba(21, 36, 31, 0.32);
+}
+html[data-dir="l"] .plan-slide > article::before { content: ""; position: absolute; left: 1.15rem; right: 1.15rem; top: -1px; height: 4px; border-radius: 0 0 4px 4px; background: #2f766f; }
+html[data-dir="l"] .plan-slide--custom > article {
+  color: #efe9dd; border-color: rgba(239, 233, 221, 0.3);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 18px 40px -16px rgba(16, 42, 58, 0.55);
+  background-color: #102a3a;
+  background-image: radial-gradient(70% 45% at 15% 0%, rgba(30, 107, 102, 0.55) 0, rgba(30, 107, 102, 0) 70%), radial-gradient(60% 40% at 100% 100%, rgba(200, 165, 72, 0.22) 0, rgba(200, 165, 72, 0) 70%);
+}
+html[data-dir="l"] .plan-slide--custom > article::before { background: #c8a548; }
+html[data-dir="l"] .plan-slide h3 { margin: 0.2rem 0 0; font-size: 1.5rem; line-height: 1.15; color: inherit; }
+html[data-dir="l"] .plan-slide p { margin: 0; font-size: 0.9375rem; line-height: 1.5; }
+html[data-dir="l"] .plan-slide__best,
+html[data-dir="l"] .plan-slide__when { color: inherit; }
+html[data-dir="l"] .plan-slide:not(.plan-slide--custom) .plan-slide__best,
+html[data-dir="l"] .plan-slide:not(.plan-slide--custom) .plan-slide__when { color: #3a4a44; }
+html[data-dir="l"] .plan-slide:not(.plan-slide--custom) strong { color: #15241f; }
+html[data-dir="l"] .plan-slide__adds { padding: 0.6rem 0.8rem; border-left: 4px solid #1e6b66; background: #efe9dd; border-radius: 0 10px 10px 0; color: #15241f; }
+html[data-dir="l"] .plan-slide--custom .plan-slide__adds { border-left-color: #c8a548; background: rgba(239, 233, 221, 0.12); color: #efe9dd; }
+html[data-dir="l"] .plan-slide__label { display: block; margin-bottom: 0.15rem; font-size: 0.875rem; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; }
+html[data-dir="l"] .plan-slide:not(.plan-slide--custom) .plan-slide__label { color: #1e6b66; }
+html[data-dir="l"] .plan-slide__sub { margin: 0.6rem 0 0; font-size: 0.875rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: inherit; }
+html[data-dir="l"] .plan-slide__list { display: grid; gap: 0.45rem; margin: 0; padding: 0; list-style: none; font-size: 0.9375rem; line-height: 1.45; }
+html[data-dir="l"] .plan-slide__list li { display: flex; gap: 0.5rem; align-items: flex-start; }
+html[data-dir="l"] .plan-slide__list--out li { padding-left: 0.1rem; }
+html[data-dir="l"] .plan-slide__list--out { color: #3a4a44; }
+html[data-dir="l"] .plan-slide--custom .plan-slide__list--out { color: #dde4e2; }
+html[data-dir="l"] .plan-slide .plan-check { flex: 0 0 auto; margin-top: 0.15rem; color: #1e6b66; }
+html[data-dir="l"] .plan-slide--custom .plan-check { color: #c8a548; }
+html[data-dir="l"] .plan-slide .plan-rungs { align-self: flex-start; }
+html[data-dir="l"] .plan-slide__pill { font-size: 0.875rem; }
+html[data-dir="l"] .plan-slide--custom .plan-slide__pill { align-self: flex-start; color: #efe9dd; border: 1px solid #c8a548; background: transparent; }
+html[data-dir="l"] .plan-slide:not(.plan-slide--custom) .plan-rungs i { background: #d3cdbf; }
+html[data-dir="l"] .plan-slide--1 .plan-rungs i:nth-child(1),
+html[data-dir="l"] .plan-slide--2 .plan-rungs i:nth-child(-n+2),
+html[data-dir="l"] .plan-slide--3 .plan-rungs i { background: #1e6b66; }
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  html[data-dir="l"] .plan-slide > article { transition: box-shadow 0.25s ease, transform 0.25s ease; }
+  html[data-dir="l"] .plan-slide:not(.plan-slide--custom) > article:hover { transform: translateY(-3px); box-shadow: inset 0 1px 0 #ffffff, 0 0 0 1px rgba(47, 118, 111, 0.4), 0 24px 48px -16px rgba(21, 36, 31, 0.38); }
+  html[data-dir="l"] .plan-slide--custom > article:hover { transform: translateY(-3px); }
+}
+html[data-dir="l"] .plan-compare-cta { justify-content: center; margin-top: 0.75rem; }
+
+/* =====================  3. Home #start router (ProblemChoiceList): depth cards, phone carousel  ===================== */
+html[data-dir="l"] .router-section .carousel { margin-top: 0.5rem; }
+html[data-dir="l"] .problem-choice {
+  position: relative; background: #ffffff; border: 1px solid #c9c2b2;
+  box-shadow: inset 0 1px 0 #ffffff, 0 0 0 1px rgba(47, 118, 111, 0.22), 0 18px 40px -16px rgba(21, 36, 31, 0.32);
+}
+html[data-dir="l"] .problem-choice::before { content: ""; position: absolute; left: 1.25rem; right: 1.25rem; top: -1px; height: 4px; border-radius: 0 0 4px 4px; background: #2f766f; }
+html[data-dir="l"] .carousel__slide:nth-child(even) > .problem-choice::before { background: #c8a548; }
+html[data-dir="l"] .problem-choice__lead { justify-content: flex-start; gap: 0.7rem; }
+html[data-dir="l"] .problem-choice__icon { background: #1e6b66; color: #ffffff; border-color: transparent; }
+html[data-dir="l"] .problem-choice__number { font-size: 0.875rem; color: #3a4a44; }
+html[data-dir="l"] .problem-choice__body { align-content: start; }
+html[data-dir="l"] .problem-choice__title { font-size: 1.3125rem; font-weight: 780; line-height: 1.25; }
+html[data-dir="l"] .problem-choice__arrow { align-items: center; justify-content: center; align-self: flex-end; width: 44px; height: 44px; margin-top: 0.5rem; border-radius: 999px; background: #1e6b66; color: #ffffff; }
+html[data-dir="l"] .carousel__slide > .problem-choice { height: 100%; }
+/* desktop: the 2x2 sits on a deeper plate so white cards read off the warm page (Critiquito P2-2); no mesh, no featured card */
+@media (min-width: 900px) {
+  html[data-dir="l"] .router-section .carousel--grid-2 .carousel__track { padding: 1.5rem; border-radius: var(--radius-xl); background: #e8e2d4; border: 1px solid #d8d1c1; }
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  html[data-dir="l"] .problem-choice { transition: box-shadow 0.25s ease, transform 0.25s ease; }
+  html[data-dir="l"] .problem-choice:hover { transform: translateY(-3px); box-shadow: inset 0 1px 0 #ffffff, 0 0 0 1px rgba(47, 118, 111, 0.45), 0 24px 48px -16px rgba(30, 107, 102, 0.42); }
+}
+
+/* =====================  4. Towns and footer  ===================== */
+/* owner fix #4 + Critiquito P2-3: South of the Broad is exactly 2x2 on desktop. Tiles keep North's tile width (all 11 equal) and the
+   South PANEL shrinks to that 2-column cluster, so there is no empty half-tray. 2px = the panel's two 1px borders. */
+@media (min-width: 900px) {
+  html[data-dir="l"] .town-pair { --town-pad: 1.25rem; --town-gap: 0.65rem; --town-tile: calc((100% - 2 * var(--town-pad) - 2px - 3 * var(--town-gap)) / 4); }
+  html[data-dir="l"] .town-pair > .town-group:last-child { justify-self: center; width: calc(2 * var(--town-tile) + var(--town-gap) + 2 * var(--town-pad) + 2px); }
+  html[data-dir="l"] .town-pair > .town-group:last-child ul.towns.towns--south { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+/* owner REVISE 9 + standing rule: one consistent oyster tile for the footer social trio; each glyph keeps its own brand colour */
+/* Footer is shared by every page (R5 and legacy routes), so this rule is not scoped to data-dir. */
+footer .footer-socials .social-mark { background: #efe9dd; border: 1px solid #efe9dd; border-radius: 0.5rem; }
+footer .footer-socials .social-mark--facebook { color: #1877f2; }
+footer .footer-socials .social-mark--x { color: #000000; }
+footer .footer-socials .social-mark--linkedin { color: #0a66c2; }
+
+/* =====================  5. Plans: aligned wells on desktop (subgrid)  ===================== */
+/* Nine rows per card: rungs/pill, name, best for, choose when, adds well, Includes, list, Its own limit, list. Subgrid lines the
+   "adds" wells and both list headings up across the four cards (Critiquito P2-4). Browsers without subgrid keep the flex column. */
+@media (min-width: 1100px) {
+  @supports (grid-template-rows: subgrid) {
+    html[data-dir="l"] .plans-car .carousel__track { grid-template-rows: repeat(9, auto); row-gap: 0; }
+    html[data-dir="l"] .plans-car .plan-slide { display: grid; grid-row: span 9; grid-template-rows: subgrid; }
+    html[data-dir="l"] .plans-car .plan-slide > article { display: grid; grid-row: 1 / -1; grid-template-rows: subgrid; row-gap: 0.55rem; align-content: start; }
+  }
+}
+
+/* =====================  6. Phone fit: card + dots clear the Text/Call bar by >=24px at 390, 375 and 360 (Critiquito P2-1)  ===================== */
+@media (max-width: 899px) {
+  html[data-dir="l"] .svc-band .carousel__track,
+  html[data-dir="l"] .plans-car .carousel__track { padding-top: 0.75rem; padding-bottom: 0.5rem; }
+  html[data-dir="l"] .svc-band .carousel__dots,
+  html[data-dir="l"] .plans-car .carousel__dots { margin-top: 0; }
+  html[data-dir="l"] .svc-card { gap: 0.6rem; padding: 0.6rem 0.6rem 0.85rem; }
+  html[data-dir="l"] .svc-card__visual picture { aspect-ratio: 2 / 1; }
+  /* card 4's tool-mark row and its non-endorsement caption are desktop-only; the marks stay on Work, About and the service page */
+  html[data-dir="l"] .svc-card__visual .tool-row,
+  html[data-dir="l"] .svc-card__visual .tool-row + .caption { display: none; }
+  html[data-dir="l"] .svc-card__body { gap: 0.4rem; padding: 0 0.35rem; }
+  html[data-dir="l"] .svc-card__surface { gap: 0.4rem; }
+  html[data-dir="l"] .svc-card__icon { width: 36px; height: 36px; flex-basis: 36px; border-radius: 10px; }
+  html[data-dir="l"] .svc-card__title { font-size: 1.1875rem; }
+  html[data-dir="l"] .svc-card__prompt { font-size: 0.9375rem; line-height: 1.4; }
+  html[data-dir="l"] .svc-card__desc { font-size: 0.875rem; line-height: 1.45; }
+  html[data-dir="l"] .svc-card__cta { align-self: stretch; justify-content: space-between; padding: 0.4rem 0.9rem; font-size: 0.9375rem; line-height: 1.25; }
+  html[data-dir="l"] .svc-card__also { min-height: var(--tap); font-size: 0.9375rem; }
+
+  html[data-dir="l"] .plan-slide > article { gap: 0.4rem; padding: 1rem 0.9rem 0.9rem; }
+  html[data-dir="l"] .plan-slide h3 { font-size: 1.3125rem; margin: 0; }
+  html[data-dir="l"] .plan-slide p,
+  html[data-dir="l"] .plan-slide__list { font-size: 0.875rem; line-height: 1.4; }
+  html[data-dir="l"] .plan-slide__list { gap: 0.3rem; }
+  html[data-dir="l"] .plan-slide__adds { padding: 0.45rem 0.65rem; }
+  html[data-dir="l"] .plan-slide__label { font-size: 0.875rem; }
+  html[data-dir="l"] .plan-slide__sub { margin-top: 0.35rem; }
+}
+@media (max-width: 389px) {
+  html[data-dir="l"] .svc-band .carousel,
+  html[data-dir="l"] .plans-car { --car-w: 82vw; }
+  html[data-dir="l"] .svc-band .carousel__track,
+  html[data-dir="l"] .plans-car .carousel__track { gap: 0.6rem; }
+  html[data-dir="l"] .plan-slide > article { padding: 0.85rem 0.8rem 0.8rem; gap: 0.35rem; }
+  html[data-dir="l"] .plan-slide .plan-rungs { display: none; }
+}
+
+/* =====================  7. Home hero owner card without the portrait (the founder photo lives once, in "Work with Eddie")  ===================== */
+html[data-dir="l"] .hero .hero-owner-card.hero-owner-card--text { grid-template-columns: minmax(0, 1fr); padding: 1.1rem 1.25rem; }
+html[data-dir="l"] .hero .hero-owner-card--text .hero-owner-card__content { padding: 0; }
+
+/* =====================  8. k2: About, Discovery, Connect, Work, Document Control, and .band-mesh on the existing navy strips  ===================== */
+/* .band-mesh: opt-in Care R3 mesh for the existing flat navy strips (Home "Work with Eddie", About, Work, project pages) and Discovery's one band.
+   No page gains a second dark band. Text on the mesh stays oyster/cream; eyebrows use the AA-safe gold #E6D08F. */
+html[data-dir="l"] .section--navy.band-mesh {
+  background-color: #102a3a;
+  background-image:
+    radial-gradient(60% 55% at 12% 8%, rgba(30, 107, 102, 0.55) 0, rgba(30, 107, 102, 0) 62%),
+    radial-gradient(45% 45% at 88% 18%, rgba(200, 165, 72, 0.2) 0, rgba(200, 165, 72, 0) 60%),
+    radial-gradient(70% 60% at 50% 112%, rgba(47, 118, 111, 0.4) 0, rgba(47, 118, 111, 0) 66%);
+}
+html[data-dir="l"] .section--navy.band-mesh .eyebrow { color: #e6d08f; }
+
+/* shared light depth card (Care R3 bar on light pages) */
+html[data-dir="l"] .depth-card,
+html[data-dir="l"] .principle-card,
+html[data-dir="l"] .expect-card,
+html[data-dir="l"] .flow-car .flow-card,
+html[data-dir="l"] .connect-actions .connect-action,
+html[data-dir="l"] .tools-car .tool-card,
+html[data-dir="l"] .evidence-grid article {
+  position: relative; background: #ffffff; color: #15241f; border: 1px solid #c9c2b2; border-radius: var(--radius-xl);
+  box-shadow: inset 0 1px 0 #ffffff, 0 0 0 1px rgba(47, 118, 111, 0.22), 0 18px 40px -16px rgba(21, 36, 31, 0.32);
+}
+html[data-dir="l"] .depth-card::before,
+html[data-dir="l"] .principle-card::before,
+html[data-dir="l"] .expect-card::before,
+html[data-dir="l"] .flow-car .flow-card::before,
+html[data-dir="l"] .evidence-grid article::before {
+  content: ""; position: absolute; left: 1.25rem; right: 1.25rem; top: -1px; height: 4px; border-radius: 0 0 4px 4px; background: #2f766f;
+}
+html[data-dir="l"] .carousel__slide:nth-child(even) > .principle-card::before,
+html[data-dir="l"] .carousel__slide:nth-child(even) > .expect-card::before,
+html[data-dir="l"] .carousel__slide:nth-child(even) > .flow-card::before,
+html[data-dir="l"] .evidence-grid article:nth-child(even)::before { background: #c8a548; }
+html[data-dir="l"] .carousel__slide > .principle-card,
+html[data-dir="l"] .carousel__slide > .expect-card,
+html[data-dir="l"] .carousel__slide > .flow-card,
+html[data-dir="l"] .carousel__slide > .tool-card { height: 100%; box-sizing: border-box; }
+/* number chip beside the title */
+html[data-dir="l"] .principle-card__n,
+html[data-dir="l"] .expect-card__n,
+html[data-dir="l"] .flow-car .flow-card__n,
+html[data-dir="l"] .evidence-grid article > span {
+  display: inline-grid; place-items: center; min-width: 2.5rem; height: 2.5rem; padding: 0 0.5rem; margin: 0; box-sizing: border-box;
+  border-radius: 12px; background: #1e6b66; color: #ffffff; font-size: 0.875rem; font-weight: 800; letter-spacing: 0.06em; line-height: 1;
+}
+html[data-dir="l"] .section-heading--center { text-align: center; max-width: 46rem; margin-inline: auto; }
+
+/* About: credentials card (same facts, no new claims), principles 2x2 / phone carousel with equal 16:10 media frames */
+html[data-dir="l"] .about-credentials.depth-card { padding: 1.5rem 1.35rem 1.25rem; }
+html[data-dir="l"] .principle-card { display: flex; flex-direction: column; gap: 0.85rem; padding: 0.75rem 0.75rem 1.35rem; }
+html[data-dir="l"] .principle-card .num-card__media,
+html[data-dir="l"] .principle-card .num-card__media.num-card__media--diagram {
+  display: grid; place-items: center; margin: 0; padding: 0; aspect-ratio: 16 / 10; width: 100%; height: auto; min-height: 0; overflow: hidden;
+  border-radius: 12px; border: 1px solid #d9d2c3; background: #f7f4ec; box-sizing: border-box;
+}
+html[data-dir="l"] .principle-card .num-card__media picture { display: block; width: 100%; height: 100%; }
+html[data-dir="l"] .principle-card .num-card__media img { display: block; width: 100%; height: 100%; max-height: none; object-fit: cover; object-position: top left; border: 0; border-radius: 0; }
+html[data-dir="l"] .principle-card .num-card__media--diagram > img { object-fit: contain; object-position: center; padding: 0.9rem; box-sizing: border-box; }
+html[data-dir="l"] .principle-card .num-card__media .tool-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.9rem; padding: 1rem; }
+html[data-dir="l"] .principle-card .num-card__media .tool-row img { width: 36px; height: 36px; object-fit: contain; }
+html[data-dir="l"] .principle-card__head { display: flex; align-items: center; gap: 0.7rem; padding: 0 0.5rem; }
+html[data-dir="l"] .principle-card h3 { margin: 0; font-size: 1.25rem; line-height: 1.25; }
+html[data-dir="l"] .principle-card p { margin: 0; padding: 0 0.5rem; font-size: 1rem; line-height: 1.55; color: #3a4a44; }
+
+/* Discovery: three equal light cards (phone carousel), the diagram centred, and ONE mesh band for "Share the context, not the secrets." */
+html[data-dir="l"] .expect-card { display: flex; flex-direction: column; gap: 0.6rem; padding: 1.4rem 1.2rem 1.3rem; }
+html[data-dir="l"] .expect-card h3 { margin: 0.2rem 0 0; font-size: 1.1875rem; line-height: 1.3; }
+html[data-dir="l"] .expect-card p { margin: 0; font-size: 1rem; line-height: 1.55; color: #3a4a44; }
+html[data-dir="l"] .expect-card__n { align-self: flex-start; }
+html[data-dir="l"] .expect-diagram { max-width: 680px; margin: 1.75rem auto 0; }
+html[data-dir="l"] .expect-diagram picture,
+html[data-dir="l"] .expect-diagram img { display: block; width: 100%; height: auto; }
+html[data-dir="l"] .discovery-band__grid { display: grid; gap: 1.5rem; align-items: center; }
+html[data-dir="l"] .discovery-band .warning.discovery-band__copy { margin: 0; padding: 0; border: 0; border-radius: 0; background: none; color: #efe9dd; }
+html[data-dir="l"] .discovery-band .warning.discovery-band__copy h2 { font-size: clamp(1.5rem, 3vw, 2rem); color: #efe9dd; }
+html[data-dir="l"] .discovery-band .warning.discovery-band__copy p { color: #efe9dd; }
+html[data-dir="l"] .discovery-band a:not(.button) { color: #efe9dd; text-decoration: underline; text-underline-offset: 0.2em; min-height: var(--tap); display: inline-flex; align-items: center; }
+html[data-dir="l"] .discovery-band a:not(.button):focus-visible { outline: 3px solid #e6d08f; outline-offset: 2px; border-radius: 6px; }
+html[data-dir="l"] .discovery-band__start {
+  padding: 1.5rem 1.25rem; text-align: center; border-radius: var(--radius-xl); color: #efe9dd;
+  background-color: rgba(239, 233, 221, 0.07);
+  background-image: radial-gradient(90% 55% at 50% 0%, rgba(239, 233, 221, 0.13) 0, rgba(239, 233, 221, 0) 75%);
+  border: 1px solid rgba(239, 233, 221, 0.3);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 18px 40px -18px rgba(0, 0, 0, 0.6);
+}
+html[data-dir="l"] .discovery-band__start .actions { justify-content: center; margin: 0 0 0.75rem; }
+html[data-dir="l"] .discovery-band__start p { margin: 0 0 0.35rem; color: #efe9dd; }
+@media (min-width: 900px) {
+  html[data-dir="l"] .discovery-band__grid { grid-template-columns: minmax(0, 1.55fr) minmax(260px, 0.85fr); gap: clamp(2rem, 5vw, 4rem); }
+}
+
+/* Connect: the four first-note steps (2x2 / phone carousel) and three equal contact tiles (no single dark tile) */
+html[data-dir="l"] .flow-car { margin-top: 0.25rem; }
+html[data-dir="l"] .flow-car .flow-card { display: flex; flex-direction: column; gap: 0.55rem; padding: 1.35rem 1.15rem 1.2rem; }
+html[data-dir="l"] .flow-car .flow-card h3 { margin: 0.2rem 0 0; font-size: 1.125rem; }
+html[data-dir="l"] .flow-car .flow-card p:not(.flow-card__n) { margin: 0; font-size: 0.9375rem; line-height: 1.55; color: #3a4a44; }
+html[data-dir="l"] .flow-car .flow-card__n { align-self: flex-start; }
+@media (min-width: 900px) {
+  html[data-dir="l"] .flow-car.carousel--grid-2 .carousel__track { gap: 1rem; padding-top: 1rem; }
+}
+html[data-dir="l"] .connect-actions .connect-action { padding: 1rem 1.1rem; }
+html[data-dir="l"] .connect-actions .connect-action,
+html[data-dir="l"] .connect-actions .connect-action .connect-action__copy strong { color: #15241f; }
+html[data-dir="l"] .connect-actions .connect-action .connect-action__copy > span { color: #1e6b66; font-weight: 800; }
+html[data-dir="l"] .connect-actions .connect-action .connect-action__copy small { color: #3a4a44; }
+html[data-dir="l"] .connect-actions .connect-action .connect-action__icon { display: grid; place-items: center; width: 44px; height: 44px; flex: 0 0 44px; border-radius: 12px; background: #1e6b66; color: #ffffff; }
+html[data-dir="l"] .connect-actions .connect-action:focus-visible { outline: 3px solid #1e6b66; outline-offset: 3px; }
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  html[data-dir="l"] .connect-actions .connect-action { transition: box-shadow 0.25s ease, transform 0.25s ease; }
+  html[data-dir="l"] .connect-actions .connect-action:hover { transform: translateY(-2px); box-shadow: inset 0 1px 0 #ffffff, 0 0 0 1px rgba(47, 118, 111, 0.45), 0 24px 48px -16px rgba(21, 36, 31, 0.38); }
+}
+
+/* Work: five equal tool cards, equal 16:10 rounded frames (Document Control no larger than its neighbours), phone carousel */
+html[data-dir="l"] .tools-car .tool-card { display: flex; flex-direction: column; overflow: hidden; margin: 0; }
+html[data-dir="l"] .tools-car .tool-card__frame,
+html[data-dir="l"] .site--coastal-v2c .tools-car .tool-card__frame {
+  display: block; aspect-ratio: 16 / 10; width: auto; height: auto; max-height: none; margin: 0.75rem 0.75rem 0; overflow: hidden;
+  border-radius: 12px; border: 1px solid #d9d2c3; background: #f7f4ec;
+}
+html[data-dir="l"] .tools-car .tool-card__frame picture { display: block; width: 100%; height: 100%; }
+html[data-dir="l"] .tools-car .tool-card__frame img,
+html[data-dir="l"] .site--coastal-v2c .tools-car .tool-card__frame img { display: block; width: 100%; height: 100%; max-height: none; object-fit: cover; object-position: top left; }
+html[data-dir="l"] .tools-car .tool-card__frame--mark { display: grid; place-items: center; color: #1e6b66; background: #efe9dd; }
+html[data-dir="l"] .tools-car .tool-card .portfolio-card__body { display: flex; flex-direction: column; flex: 1; }
+html[data-dir="l"] .tools-car .tool-card .portfolio-card__body > .text-link { margin-top: auto; }
+
+/* Project pages (Document Control and the other /work/ projects): capped, framed screenshots and equal evidence cards */
+html[data-dir="l"] .dc-overview-band picture { display: block; max-width: 1100px; margin-inline: auto; }
+html[data-dir="l"] .dc-overview-band .dc-overview {
+  display: block; width: 100%; height: auto; border-radius: var(--radius-xl); border: 1px solid #c9c2b2;
+  box-shadow: 0 0 0 1px rgba(47, 118, 111, 0.22), 0 24px 54px -20px rgba(21, 36, 31, 0.45);
+}
+html[data-dir="l"] .dc-overview-band .maturity { max-width: 1100px; margin-inline: auto; text-align: center; }
+html[data-dir="l"] .project-visuals .project-visual-grid { max-width: 1100px; margin-inline: auto; }
+html[data-dir="l"] .project-visuals .project-visual-grid--single { max-width: 860px; }
+html[data-dir="l"] .project-visuals .project-visual__frame {
+  border-radius: var(--radius-xl); border: 1px solid #c9c2b2;
+  box-shadow: 0 0 0 1px rgba(47, 118, 111, 0.22), 0 18px 40px -16px rgba(21, 36, 31, 0.32);
+}
+html[data-dir="l"] .evidence-grid { gap: 1rem; background: none; border: 0; }
+html[data-dir="l"] .evidence-grid article { min-height: 0; padding: 1.35rem 1.15rem 1.25rem; }
+html[data-dir="l"] .evidence-grid article p { margin: 0.85rem 0 0; color: #15241f; }
+html[data-dir="l"] .band-mesh .project-boundary--dark {
+  border-radius: var(--radius-xl); border: 1px solid rgba(239, 233, 221, 0.3); border-left: 4px solid #e6d08f;
+  background-color: rgba(239, 233, 221, 0.07);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 18px 40px -18px rgba(0, 0, 0, 0.6);
+}
+html[data-dir="l"] .band-mesh .project-boundary--dark p { color: #efe9dd; }
+html[data-dir="l"] .discovery-band .warning.discovery-band__copy .eyebrow { color: #e6d08f; }
+/* Work phone fit: the five tool cards must clear the Text/Call bar by >= 24px at 360x780 with the dots. On phones the card keeps the frame,
+   status, name, summary, current boundary and the link; "Why this matters" is shown on the project page the card links to and at >= 900px. */
+@media (max-width: 899px) {
+  html[data-dir="l"] .tools-car .tool-card__frame,
+  html[data-dir="l"] .site--coastal-v2c .tools-car .tool-card__frame { aspect-ratio: 2 / 1; margin: 0.6rem 0.6rem 0; }
+  html[data-dir="l"] .tools-car .tool-card .portfolio-card__body { padding: 0.75rem 1rem 0.6rem; gap: 0.3rem; }
+  html[data-dir="l"] .tools-car .tool-card .portfolio-card__body h3 { margin: 0.1rem 0 0; }
+  html[data-dir="l"] .tools-car .tool-card .lede--compact { font-size: 0.9375rem; line-height: 1.5; margin: 0; }
+  html[data-dir="l"] .tools-car .tool-card .portfolio-card__context { margin: 0.25rem 0 0; padding-top: 0.6rem; }
+  html[data-dir="l"] .tools-car .tool-card .portfolio-card__context > p:not(.portfolio-card__boundary) { display: none; }
+  html[data-dir="l"] .tools-car .tool-card .portfolio-card__boundary { font-size: 0.9375rem; margin: 0; }
+  html[data-dir="l"] .tools-car .tool-card .portfolio-card__body > .text-link { font-size: 0.9375rem; min-height: var(--tap); }
+}
+/* C2: three equal action tiles (the email tile no longer gets a wider 1.5fr column); the address steps down a size and, if it must wrap, wraps only at the @. */
+@media (min-width: 900px) {
+  html[data-dir="l"] .connect-actions.action-grid--under { grid-template-columns: minmax(0, 1fr); }
+}
+@media (min-width: 1100px) {
+  html[data-dir="l"] .connect-actions.action-grid--under { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+html[data-dir="l"] .connect-actions .connect-action[href^="mailto:"] .connect-action__copy strong { font-size: 0.875rem; overflow-wrap: normal; white-space: normal; }
+@media (max-width: 379px) {
+  html[data-dir="l"] .connect-actions .connect-action[href^="mailto:"] .connect-action__copy strong { font-size: 0.8125rem; }
+}
+
+/* ===================================================================================================================
+   9. k3: 44px tap targets (P2-1), Home request flow + tools on the shared components (P2-2), Services diagram plates
+   =================================================================================================================== */
+/* Standalone short links grow to a 44px hit area; negative block margins cancel the growth so nothing around them moves. */
+html[data-dir="l"] .connect-links a { display: inline-flex; align-items: center; justify-content: center; min-height: var(--tap); min-width: var(--tap); margin-block: calc((1.5rem - var(--tap)) / 2); }
+html[data-dir="l"] .connect-discovery__handoff p a,
+html[data-dir="l"] .project-visual figcaption a,
+html[data-dir="l"] .asset-gap-note a {
+  display: inline-flex; align-items: center; min-height: var(--tap); margin-block: calc((1.2rem - var(--tap)) / 2);
+}
+/* Breadcrumb: a short label ("Work") keeps its width; an invisible 44px-wide hit area is centred on it. */
+html[data-dir="l"] .breadcrumbs a { position: relative; }
+html[data-dir="l"] .breadcrumbs a::after { content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: max(100%, var(--tap)); transform: translateX(-50%); }
+
+/* Home request flow: the shared carousel + flow depth cards, three in a row from 900px. */
+html[data-dir="l"] #home-request .flow-car { margin-top: 0.25rem; }
+/* Home tools: the same equal-frame tool cards as /work/, 3 + 2 from 900px, phone carousel; the row links into /work/. */
+html[data-dir="l"] .home-tools-car.portfolio-grid--home { display: block; }
+html[data-dir="l"] .home-tools-car .tool-card .portfolio-card__body { padding: 1rem 1.1rem 0.9rem; gap: 0.45rem; }
+html[data-dir="l"] .home-tools-car .tool-card .portfolio-card__body h3 { margin: 0.1rem 0 0; font-size: 1.125rem; }
+html[data-dir="l"] .home-tools-car .tool-card .portfolio-card__body > p { margin: 0; font-size: 0.9375rem; line-height: 1.55; color: #3a4a44; }
+html[data-dir="l"] .home-tools-car .tool-card .portfolio-card__body > .text-link { display: inline-flex; align-items: center; min-height: var(--tap); }
+html[data-dir="l"] .home-tools__more { display: flex; justify-content: center; margin: 1rem 0 0; }
+html[data-dir="l"] .home-tools__more .text-link { display: inline-flex; align-items: center; min-height: var(--tap); }
+@media (max-width: 899px) {
+  html[data-dir="l"] .home-tools-car .tool-card__frame,
+  html[data-dir="l"] .site--coastal-v2c .home-tools-car .tool-card__frame { aspect-ratio: 2 / 1; margin: 0.6rem 0.6rem 0; }
+}
+
+/* Services cards 3 and 4: the diagram plates and the tool-mark row sit on the light depth-card surface instead of a flat cream field. */
+html[data-dir="l"] .svc-card__visual picture:has(img.diagram),
+html[data-dir="l"] .svc-card__visual .tool-row {
+  background: #fff; border: 1px solid #c9c2b2;
+  box-shadow: inset 0 1px 0 #fff, 0 0 0 1px rgba(47, 118, 111, 0.22), 0 12px 28px -16px rgba(5, 18, 26, 0.55);
+}
+/* The two diagram SVGs (shared with About and the service pages) now draw on white (#FFFFFF, was #F7F4EC), so plate and drawing are one surface. */
+/* About principle 03: the same non-endorsement line Services carries under the tool marks, inside the existing 16:10 frame. */
+html[data-dir="l"] .principle-card .num-card__media:has(> .tool-row) { align-content: center; gap: 0.35rem; }
+html[data-dir="l"] .principle-card .num-card__media > .tool-row + .caption { margin: 0; padding: 0 1rem; max-width: 34ch; text-align: center; font-size: 0.875rem; line-height: 1.4; color: #3a4a44; background: none; border: 0; }
+html[data-dir="l"] .principle-card .num-card__media:has(> .tool-row) > .tool-row { padding: 0.5rem 0.75rem 0; gap: 0.75rem; }
+@media (max-width: 899px) {
+  html[data-dir="l"] .principle-card .num-card__media:has(> .tool-row) > .tool-row { gap: 0.6rem; }
+  html[data-dir="l"] .principle-card .num-card__media:has(> .tool-row) > .tool-row img { width: 32px; height: 32px; }
+}

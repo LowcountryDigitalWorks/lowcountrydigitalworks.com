@@ -1,4 +1,5 @@
 ---
+import { ldw } from '../lib/analytics-config.mjs';
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
@@ -18,6 +19,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <a
             class="button"
             href="https://getaiform.com/r/LiY9XI9qKE"
+            {...ldw('discovery_handoff_click', { placement: 'discovery_hero' })}
             target="_blank"
             rel="noopener noreferrer"
             referrerpolicy="no-referrer"
@@ -32,48 +34,65 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     </div>
   </section>
 
-  <section class="section section--plain">
+  <section class="section section--plain" id="discovery-expect" aria-labelledby="discovery-expect-title">
     <div class="container">
-      <div class="section-heading">
+      <div class="section-heading section-heading--center">
         <p class="eyebrow">What to expect</p>
-        <h2>A few useful details, then a human review.</h2>
+        <h2 id="discovery-expect-title">A few useful details, then a human review.</h2>
       </div>
-      <div class="discovery-split">
-        <div>
-          <div class="num-grid num-grid--3">
-            <article class="num-card"><span class="num-card__n" aria-hidden="true">01</span><h3>What you will be asked</h3><p>Choose the areas you want help with. “Not sure” is a useful answer. You do not need to know which service you need.</p></article>
-            <article class="num-card"><span class="num-card__n" aria-hidden="true">02</span><h3>A human review</h3><p>Eddie will review the request with any materials you have already shared, then follow up in the way you selected.</p></article>
-            <article class="num-card"><span class="num-card__n" aria-hidden="true">03</span><h3>The next step</h3><p>The first conversation sorts out what already exists or what you're starting from scratch, what you want to change or create, and what would make the project worthwhile.</p></article>
+      <div class="carousel carousel--light carousel--grid-3 expect-car" role="region" aria-roledescription="carousel" aria-label="What to expect" data-carousel data-carousel-start="0">
+        <div class="carousel__track" role="group" aria-label="What to expect, swipe or use arrow keys" tabindex="0" data-carousel-track>
+          <div class="carousel__slide" role="group" aria-roledescription="slide" aria-label="1 of 3: What you will be asked" data-carousel-slide>
+            <article class="expect-card"><span class="expect-card__n" aria-hidden="true">01</span><h3>What you will be asked</h3><p>Choose the areas you want help with. “Not sure” is a useful answer. You do not need to know which service you need.</p></article>
           </div>
-          <picture>
-            <source media="(max-width: 899px)" srcset="/r5/assets/diagrams/how-a-request-moves-phone.svg" />
-            <img class="diagram diagram--lg" src="/r5/assets/diagrams/how-a-request-moves-lg.svg" alt="Diagram: how a request moves from you to an external Quick Project Request, then Eddie reviews and replies." width="680" height="420" loading="lazy" />
-          </picture>
-          <p class="caption">Illustration: how a first note moves</p>
+          <div class="carousel__slide" role="group" aria-roledescription="slide" aria-label="2 of 3: A human review" data-carousel-slide>
+            <article class="expect-card"><span class="expect-card__n" aria-hidden="true">02</span><h3>A human review</h3><p>Eddie will review the request with any materials you have already shared, then follow up in the way you selected.</p></article>
+          </div>
+          <div class="carousel__slide" role="group" aria-roledescription="slide" aria-label="3 of 3: The next step" data-carousel-slide>
+            <article class="expect-card"><span class="expect-card__n" aria-hidden="true">03</span><h3>The next step</h3><p>The first conversation sorts out what already exists or what you're starting from scratch, what you want to change or create, and what would make the project worthwhile.</p></article>
+          </div>
         </div>
-        <aside class="discovery-split__warn" id="request">
-          <div class="warning">
-            <p class="eyebrow">Please keep sensitive information out</p>
-            <h2>Share the context, not the secrets.</h2>
-            <p>This Quick Project Request is hosted externally. Read the Privacy Notice before you start.</p>
-            <p>Do not submit passwords, MFA or recovery codes, API keys or tokens, payment-card or bank information, protected health information, CUI or government-restricted information, or confidential customer or client records. If special handling may be needed, say so without including the sensitive details and we will discuss a suitable channel.</p>
-            <p>There are no public file uploads here. If we need more, we will agree on an appropriate private way to share it. Already shared your materials? If Eddie already has your mission statement, photos, logo, screenshots, or other project materials, you don't need to send the same files again.</p>
-            <p>This is not a quote. It is a short request so Eddie can review what is going on and reply.</p>
-            <p><a href="/privacy/">Privacy Notice</a></p>
-          </div>
-          <div class="actions">
-            <a
-              class="button"
-              href="https://getaiform.com/r/LiY9XI9qKE"
-              target="_blank"
-              rel="noopener noreferrer"
-              referrerpolicy="no-referrer"
-            >Start the quick request <span aria-hidden="true">↗</span></a>
-          </div>
-          <p>About 2 minutes. The request opens in a new tab.</p>
-          <p><a class="text-link" href="/connect/">Rather just text? Connect</a></p>
-        </aside>
+        <div class="carousel__dots" data-carousel-dots hidden>
+          <button type="button" class="carousel__dot" data-carousel-dot aria-label="Show 1 of 3: What you will be asked"></button>
+          <button type="button" class="carousel__dot" data-carousel-dot aria-label="Show 2 of 3: A human review"></button>
+          <button type="button" class="carousel__dot" data-carousel-dot aria-label="Show 3 of 3: The next step"></button>
+        </div>
+      </div>
+      <div class="expect-diagram">
+        <picture>
+          <source media="(max-width: 899px)" srcset="/r5/assets/diagrams/how-a-request-moves-phone.svg" />
+          <img class="diagram diagram--lg" src="/r5/assets/diagrams/how-a-request-moves-lg.svg" alt="Diagram: how a request moves from you to an external Quick Project Request, then Eddie reviews and replies." width="680" height="420" loading="lazy" />
+        </picture>
       </div>
     </div>
   </section>
+
+  <section class="section section--navy band-mesh discovery-band" id="request" aria-labelledby="discovery-band-title">
+    <div class="container discovery-band__grid">
+      <div class="warning discovery-band__copy">
+        <p class="eyebrow">Please keep sensitive information out</p>
+        <h2 id="discovery-band-title">Share the context, not the secrets.</h2>
+        <p>This Quick Project Request is hosted externally. Read the Privacy Notice before you start.</p>
+        <p>Do not submit passwords, MFA or recovery codes, API keys or tokens, payment-card or bank information, protected health information, CUI or government-restricted information, or confidential customer or client records. If special handling may be needed, say so without including the sensitive details and we will discuss a suitable channel.</p>
+        <p>There are no public file uploads here. If we need more, we will agree on an appropriate private way to share it. Already shared your materials? If Eddie already has your mission statement, photos, logo, screenshots, or other project materials, you don't need to send the same files again.</p>
+        <p>This is not a quote. It is a short request so Eddie can review what is going on and reply.</p>
+        <p><a href="/privacy/">Privacy Notice</a></p>
+      </div>
+      <aside class="discovery-band__start" aria-label="Start the quick request">
+        <div class="actions">
+          <a
+            class="button"
+            href="https://getaiform.com/r/LiY9XI9qKE"
+            {...ldw('discovery_handoff_click', { placement: 'discovery_bottom' })}
+            target="_blank"
+            rel="noopener noreferrer"
+            referrerpolicy="no-referrer"
+          >Start the quick request <span aria-hidden="true">↗</span></a>
+        </div>
+        <p>About 2 minutes. The request opens in a new tab.</p>
+        <p><a class="text-link" href="/connect/">Rather just text? Connect</a></p>
+      </aside>
+    </div>
+  </section>
+  <script is:inline src="/r5/site-carousel.js" defer></script>
 </BaseLayout>

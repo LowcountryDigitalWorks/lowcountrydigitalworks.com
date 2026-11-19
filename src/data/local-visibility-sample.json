@@ -1,7 +1,7 @@
 {
   "schema": "ldw.evidence-local-sample-presentation.v1",
-  "label": "LDW-OWNED HISTORICAL EVIDENCE / PRECOMPUTED",
-  "intent": "Was Lowcountry Digital Works returned for the exact Google Maps query 'website designer' at nine sampled points on October 21, 2026?",
+  "label": "LDW-OWNED HISTORICAL EVIDENCE",
+  "intent": "Was Lowcountry Digital Works returned for the exact Google Maps query 'website designer' at nine points on October 21, 2026?",
   "subject": "Lowcountry Digital Works (LDW-owned business)",
   "region": "Beaufort–Port Royal corridor, South Carolina",
   "source": "DataForSEO",
@@ -18,7 +18,7 @@
     "searchPlaces": false,
     "searchThisArea": true
   },
-  "geometry": "3×3 sampled coordinates, not an interpolated region",
+  "geometry": "3×3 observed coordinates, not an interpolated region",
   "resultSummary": "LDW was not found in the returned Google Maps result set at any of the nine observed points.",
   "costStatement": "Historical nine-task provider charge: $0.0054, paid from previously authorized existing account credit; no scan runs from this page.",
   "points": [

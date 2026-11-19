@@ -70,7 +70,7 @@ test('the existing Services hub still links to every distinct service and retain
   for (const service of cases) {
     await expect(page.locator(`a[href="/services/${service.slug}/"]:visible`).first()).toBeVisible();
   }
-  await expect(page.locator('.service-family')).toHaveCount(4);
+  await expect(page.locator('.svc-card')).toHaveCount(4);
 });
 
 test('Website Care remains readable on a narrow mobile viewport', async ({ page }) => {

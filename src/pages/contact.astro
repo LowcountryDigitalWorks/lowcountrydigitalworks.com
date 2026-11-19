@@ -1,4 +1,5 @@
 ---
+import { ldw } from '../lib/analytics-config.mjs';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import contact from '../data/contact.json';
 import Icon from '../components/Icon.astro';
@@ -14,9 +15,9 @@ import Icon from '../components/Icon.astro';
         <p class="eyebrow">Direct contact</p>
         <h2>{contact.founder.name} · {contact.founder.role}</h2>
         <div class="contact-actions">
-          <a class="button icon-link" href={`sms:${contact.phone.number}`}><Icon name="message" size={18} /><span>Text {contact.phone.display}</span></a>
-          <a class="button button--secondary icon-link" href={`tel:${contact.phone.number}`}><Icon name="phone" size={18} /><span>Call {contact.phone.display}</span></a>
-          <a class="text-link icon-link" href={`mailto:${contact.email.address}`}><Icon name="mail" size={18} /><span>{contact.email.address}</span></a>
+          <a class="button icon-link" href={`sms:${contact.phone.number}`} {...ldw('contact_method_click', { method: 'sms', placement: 'connect_actions' })}><Icon name="message" size={18} /><span>Text {contact.phone.display}</span></a>
+          <a class="button button--secondary icon-link" href={`tel:${contact.phone.number}`} {...ldw('contact_method_click', { method: 'phone', placement: 'connect_actions' })}><Icon name="phone" size={18} /><span>Call {contact.phone.display}</span></a>
+          <a class="text-link icon-link" href={`mailto:${contact.email.address}`} {...ldw('contact_method_click', { method: 'email', placement: 'connect_actions' })}><Icon name="mail" size={18} /><span>{contact.email.address}</span></a>
         </div>
         <div class="social-list" aria-label="Verified Lowcountry Digital Works social profiles">
           {contact.socials.map((social) => (

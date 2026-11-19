@@ -4,9 +4,14 @@ import test from 'node:test';
 
 import {
   MIN_HSTS_MAX_AGE,
+  ANALYTICS_CSP_ORIGINS,
+  assertAnalyticsCsp,
+  assertAnalyticsHtml,
+  assertAnalyticsLoader,
   assertExpectedStatus,
   formatResponseDiagnostics,
   PRODUCTION_ORIGIN,
+  assertNoCarePreview,
   assertRobots,
   assertSecurityHeaders,
   assertSitemap,
@@ -37,24 +42,24 @@ test('public policy keeps discovery as a first-party link and blocks external em
 });
 
 test('accepted production security headers pass', () => {
-  const result = assertSecurityHeaders(acceptedHeaders());
+  const result = assertSecurityHeaders(acceptedHeaders(), { analytics: false });
   assert.equal(result.maxAge, MIN_HSTS_MAX_AGE);
 });
 
 test('security headers fail closed when HSTS max-age regresses', () => {
   assert.throws(
-    () => assertSecurityHeaders(acceptedHeaders('max-age=2592000')),
+    () => assertSecurityHeaders(acceptedHeaders('max-age=2592000'), { analytics: false }),
     /HSTS max-age regressed below accepted 6-month Cloudflare baseline/,
   );
 });
 
 test('security headers fail closed if includeSubDomains or preload appears without approval', () => {
   assert.throws(
-    () => assertSecurityHeaders(acceptedHeaders('max-age=' + MIN_HSTS_MAX_AGE + '; includeSubDomains')),
+    () => assertSecurityHeaders(acceptedHeaders('max-age=' + MIN_HSTS_MAX_AGE + '; includeSubDomains'), { analytics: false }),
     /includeSubDomains must remain off/,
   );
   assert.throws(
-    () => assertSecurityHeaders(acceptedHeaders('max-age=' + MIN_HSTS_MAX_AGE + '; preload')),
+    () => assertSecurityHeaders(acceptedHeaders('max-age=' + MIN_HSTS_MAX_AGE + '; preload'), { analytics: false }),
     /HSTS preload must remain off/,
   );
 });
@@ -285,4 +290,42 @@ test('unexpected status diagnostics reject a request target outside the allowed 
     () => formatResponseDiagnostics(response, 'https://example.com/private'),
     /escaped approved origin/,
   );
+});
+
+test('production smoke rejects the Website Care preview marker, markup and loader', () => {
+  assertNoCarePreview('<html><body><section class="section"><h2>Services</h2></section></body></html>', '/services/');
+  assert.throws(() => assertNoCarePreview('<section id="care-options" data-care-options-preview>'), /preview marker/);
+  assert.throws(() => assertNoCarePreview('<script src="/r5/care-carousel.js"></script>'), /preview markup/);
+  assert.throws(() => assertNoCarePreview('<div class="care-tier care-tier--rec">'), /preview markup/);
+  assert.throws(() => assertNoCarePreview('<section aria-labelledby="care-concept-bridge-heading">'), /preview markup/);
+});
+
+test('analytics loader smoke (L3/M1): exactly the production hosts and a clean route allowlist', () => {
+  const ok = 'var HOSTS = ["lowcountrydigitalworks.com","www.lowcountrydigitalworks.com"];\n  var ROUTES = ["/","/connect/","/services/websites/"];';
+  assert.deepEqual(assertAnalyticsLoader(ok), { hosts: 2, routes: 3 });
+  assert.throws(() => assertAnalyticsLoader(ok.replace('"www.lowcountrydigitalworks.com"]', '"www.lowcountrydigitalworks.com","evil.pages.dev"]')), /exactly the production hosts/);
+  assert.throws(() => assertAnalyticsLoader(ok.replace('"www.lowcountrydigitalworks.com"]', '"www.lowcountrydigitalworks.com","127.0.0.1"]')), /exactly the production hosts/);
+  assert.throws(() => assertAnalyticsLoader(ok.replace('"lowcountrydigitalworks.com",', '')), /exactly the production hosts/);
+  assert.throws(() => assertAnalyticsLoader('var ROUTES = ["/"];'), /HOSTS list not found/);
+  assert.throws(() => assertAnalyticsLoader(ok.replace(/var ROUTES = [^;]*;/, '')), /ROUTES allowlist not found/);
+  assert.throws(() => assertAnalyticsLoader(ok.replace('["/","/connect/","/services/websites/"]', '[]')), /must list the built pages/);
+  for (const bad of ['/share/', '/other/', '/404/', '/Contact/', '/contact/foo@bar.com/']) {
+    assert.throws(() => assertAnalyticsLoader(ok.replace('"/connect/"', JSON.stringify(bad))), /private, 404 or malformed/, bad);
+  }
+});
+
+test('analytics smoke assertions: OFF forbids every analytics origin, ON requires them, neither allows unsafe-* or frame-src', () => {
+  const base = "default-src 'self'; frame-ancestors 'none'; script-src 'self'; connect-src 'self'; img-src 'self' data:";
+  const on = "default-src 'self'; frame-ancestors 'none'; script-src 'self' https://www.googletagmanager.com https://www.clarity.ms https://scripts.clarity.ms; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.clarity.ms https://c.bing.com; img-src 'self' data:";
+  assert.doesNotThrow(() => assertAnalyticsCsp(base, false));
+  assert.doesNotThrow(() => assertAnalyticsCsp(on, true));
+  assert.throws(() => assertAnalyticsCsp(on, false), /analytics OFF/);
+  assert.throws(() => assertAnalyticsCsp(base, true), /analytics ON/);
+  for (const origin of ANALYTICS_CSP_ORIGINS) assert.throws(() => assertAnalyticsCsp(base + ' ' + origin, false), /analytics OFF/);
+  assert.throws(() => assertAnalyticsCsp(on + " 'unsafe-eval'", true), /unsafe/);
+  assert.throws(() => assertAnalyticsCsp(on + ' ; frame-src https://www.googletagmanager.com', true), /frame-src/);
+  assert.doesNotThrow(() => assertAnalyticsHtml('<head></head>', false));
+  assert.doesNotThrow(() => assertAnalyticsHtml('<script src="/ldw-analytics.js" defer></script>', true));
+  assert.throws(() => assertAnalyticsHtml('<script src="/ldw-analytics.js"></script>', false));
+  assert.throws(() => assertAnalyticsHtml('<head></head>', true));
 });
