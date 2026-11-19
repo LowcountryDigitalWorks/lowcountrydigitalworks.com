@@ -1,6 +1,7 @@
 // Website Care plans preview gate: one shared fail-closed AND-gate (src/lib/care-gate.mjs) must switch the markup, the glass CSS and the
 // carousel JS (and the Services bridge link) together. Only CARE_OPTIONS_PREVIEW=1 + WORKERS_CI=1 + the exact preview branch renders anything.
-//   node --test tests/care-gate.unit.mjs        (runs 6 real `astro build`s into temp dirs; does not touch dist/)
+// The exact Cloudflare preview branch may auto-supply the first flag; explicit 0 remains OFF.
+//   node --test tests/care-gate.unit.mjs        (runs 7 real `astro build`s into temp dirs; does not touch dist/)
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import { existsSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';

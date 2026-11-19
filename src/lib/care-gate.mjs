@@ -3,6 +3,7 @@
 // Build-time only, fail-closed: ALL THREE must hold. Anything else (unset, "0", "true", wrong branch, local build) is OFF.
 //   CARE_OPTIONS_PREVIEW === '1'  AND  WORKERS_CI === '1'  AND  WORKERS_CI_BRANCH === CARE_PREVIEW_BRANCH
 // There is deliberately no import.meta.env fallback: a .env file can never switch this on.
+// astro.config.mjs supplies the missing flag only for true Workers CI on the exact preview branch; this AND-gate stays unchanged.
 export const CARE_PREVIEW_BRANCH = 'feature/web-160-coastal-v2c-preview-phaseb-20261109';
 
 const evaluate = (env) => env.CARE_OPTIONS_PREVIEW === '1' && env.WORKERS_CI === '1' && env.WORKERS_CI_BRANCH === CARE_PREVIEW_BRANCH;

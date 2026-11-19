@@ -2,11 +2,16 @@ import { defineConfig } from 'astro/config';
 import { readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { careOptionsPreviewEnabled } from './src/lib/care-gate.mjs';
+import { applyCarePreviewBuildOptIn } from './src/lib/care-preview-build-env.mjs';
 import { addOtherReferrerMeta, analyticsEnabled, analyticsHosts, analyticsRoutes, assertNoStrayTestHosts, extendHeadersFile, otherRoutePages } from './src/lib/analytics-config.mjs';
 
 // Website Care plans preview (#care-options): ONE shared fail-closed gate (src/lib/care-gate.mjs), also used by the page and the Services bridge link.
 // Gate OFF (the default and every production/main/unrelated-branch build): the glass/carousel stylesheet is replaced by an empty one,
 // public/r5/care-carousel.js is removed from dist, and the default esbuild CSS target is kept, so a production build carries none of it.
+// Cloudflare Workers Builds supplies WORKERS_CI and WORKERS_CI_BRANCH but not the
+// custom CARE_OPTIONS_PREVIEW flag. Only its exact isolated preview branch may
+// receive that default; explicit 0 always wins. Other builds remain OFF.
+applyCarePreviewBuildOptIn();
 const careOptionsPreview = careOptionsPreviewEnabled();
 const careStyles = fileURLToPath(new URL(careOptionsPreview ? './src/styles/r5/care.css' : './src/styles/r5/care.off.css', import.meta.url));
 

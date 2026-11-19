@@ -4,7 +4,9 @@ import { careOptionsPreviewEnabled } from '../src/lib/care-gate.mjs';
 
 // R5 Care/guide addendum (R3c: #care-options is the five-tier Website Care plans carousel).
 // The #care-options section is gated at BUILD TIME by ONE shared fail-closed AND-gate (src/lib/care-gate.mjs):
-//   CARE_OPTIONS_PREVIEW=1 AND WORKERS_CI=1 AND WORKERS_CI_BRANCH=<the exact preview branch>. Anything else is OFF (the default).
+//   CARE_OPTIONS_PREVIEW=1 AND WORKERS_CI=1 AND WORKERS_CI_BRANCH=<the exact preview branch>.
+//   astro.config.mjs automatically supplies the first flag ONLY on that exact Workers preview branch (unless explicitly opted out).
+//   Main, local/default and unrelated branch builds remain OFF.
 // Run these tests against a build made with the same environment:
 //   default (OFF):  npm run build && npx playwright test tests/r5-care-addendum.spec.mjs
 //   preview (ON):   export CARE_OPTIONS_PREVIEW=1 WORKERS_CI=1 WORKERS_CI_BRANCH=feature/web-160-coastal-v2c-preview-phaseb-20261109; npm run build && npx playwright test tests/r5-care-addendum.spec.mjs
