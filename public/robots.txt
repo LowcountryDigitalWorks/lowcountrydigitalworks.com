@@ -10,4 +10,9 @@ Allow: /
 User-agent: GPTBot
 Disallow: /
 
+# Microsoft's AI Training preference is distinct from ordinary Bingbot search crawling and answer-time AI grounding.
+# Microsoft begins honoring this use preference as pages are recrawled starting February 1, 2027.
+User-agent: __usage_ai-training
+Disallow: /
+
 Sitemap: https://lowcountrydigitalworks.com/sitemap.xml
