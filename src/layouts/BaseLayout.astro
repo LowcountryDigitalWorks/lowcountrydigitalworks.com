@@ -17,6 +17,7 @@ import '../styles/r5/carousel.css';
 import '../styles/r5/polish.css';
 import '../styles/r5/guide.css';
 import '~care-styles';
+import '../styles/r5/appearance.css';
 const {
   title = 'Lowcountry Digital Works',
   description = 'Practical websites, business systems, automation, digital ownership, and technology consulting built for maintainability and customer ownership.',
@@ -33,9 +34,15 @@ const showAnalytics = analyticsEnabled() && analyticsRouteAllowed(Astro.url.path
 const robotsContent = robots ?? (noindex ? 'noindex,nofollow' : undefined);
 const allowFooterSocialProfiles = Astro.url.pathname !== '/share/';
 const path = Astro.url.pathname;
-const r5Paths = new Set(['/', '/about/', '/connect/', '/discovery/', '/work/', '/services/', '/work/document-control/', '/guides/website-maintenance-after-launch/']);
+const r5Paths = new Set(['/', '/about/', '/connect/', '/discovery/', '/work/', '/services/', '/work/document-control/', '/guides/website-maintenance-after-launch/',
+  // k4b: Approach, the guides, Website Check, the Local Visibility sample and Contact join the R5 set.
+  '/approach/', '/guides/', '/guides/website-ownership-handoff/', '/website-check/', '/local-visibility-sample/', '/contact/',
+  // k4c: the legal pages, Secure Share and the 404 page (built from /404, served for every unknown path) complete the R5 set.
+  '/accessibility/', '/privacy/', '/terms/', '/share/', '/404', '/404/', '/404.html']);
 const isServiceDetail = /^\/services\/[^/]+\/$/.test(path);
-const isR5 = r5Paths.has(path) || isServiceDetail;
+// k4a: every /work/<slug>/ project page shares the R5 project template that Document Control already uses.
+const isWorkDetail = /^\/work\/[^/]+\/$/.test(path);
+const isR5 = r5Paths.has(path) || isServiceDetail || isWorkDetail;
 const showMobileContactBar = !['/discovery/', '/connect/'].includes(path);
 ---
 <!doctype html>
@@ -45,7 +52,8 @@ const showMobileContactBar = !['/discovery/', '/connect/'].includes(path);
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="description" content={description} />
   <meta name="theme-color" content="#102A3A" />
-  <meta name="color-scheme" content="light" />
+  <meta name="color-scheme" content="light dark" />
+  <script is:inline src="/r5/appearance.js"></script>
   {robotsContent && <meta name="robots" content={robotsContent} />}
   <link rel="canonical" href={canonical} />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />

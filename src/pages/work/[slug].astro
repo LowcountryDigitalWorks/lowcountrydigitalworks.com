@@ -13,6 +13,9 @@ export function getStaticPaths() {
 
 const { project } = Astro.props;
 const coastalV2cRoute = project.featured !== false;
+// k4a: the shared carousel grid variant for a row of n depth cards (2, 3 or 4 across at desktop, a phone carousel below).
+const gridFor = (n) => (n >= 4 ? 'carousel--grid-4' : n === 3 ? 'carousel--grid-3' : 'carousel--grid-2');
+const visuals = project.visuals ?? [];
 ---
 <BaseLayout title={project.name} description={project.homeSummary ?? project.purpose}>
   <nav class="breadcrumbs" aria-label="Breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
@@ -110,34 +113,65 @@ const coastalV2cRoute = project.featured !== false;
         <p class="eyebrow">How the proof is structured</p>
         <h2>Enough implementation detail to understand what is being tested.</h2>
       </div>
-      <div class="project-process">
-        {project.howItWorks.map((item, index) => (
-          <article class="project-process__step">
-            <span>{String(index + 1).padStart(2, '0')}</span>
-            <p>{item}</p>
-          </article>
-        ))}
+      <div class:list={['carousel carousel--light process-car', gridFor(project.howItWorks.length)]} role="region" aria-roledescription="carousel" aria-label="How the proof is structured" data-carousel data-carousel-start="0">
+        <div class="carousel__track" role="group" aria-label="How the proof is structured, swipe or use arrow keys" tabindex="0" data-carousel-track>
+          {project.howItWorks.map((item, index) => (
+            <div class="carousel__slide" role="group" aria-roledescription="slide" aria-label={`${index + 1} of ${project.howItWorks.length}`} data-carousel-slide>
+              <article class="project-process__step">
+                <span>{String(index + 1).padStart(2, '0')}</span>
+                <p>{item}</p>
+              </article>
+            </div>
+          ))}
+        </div>
+        <div class="carousel__dots" data-carousel-dots hidden>
+          {project.howItWorks.map((_, index) => (
+            <button type="button" class="carousel__dot" data-carousel-dot aria-label={`Show step ${index + 1} of ${project.howItWorks.length}`}></button>
+          ))}
+        </div>
       </div>
     </div>
   </section>
 
-  {project.visuals?.length > 0 && (
+  {visuals.length > 0 && (
     <section class="section project-visuals">
       <div class="container">
         <div class="section-heading">
           <p class="eyebrow">Visual evidence</p>
           <h2>See the work, not a fabricated mockup.</h2>
         </div>
-        <div class:list={['project-visual-grid', project.visuals.length === 1 && 'project-visual-grid--single']}>
-          {project.visuals.map((visual) => (
-            <figure class="project-visual">
-              <a class="project-visual__frame" href={visual.src} aria-label={`Open full screenshot: ${visual.alt || visual.caption}`}>
-                <img src={visual.src} alt={visual.alt} width={visual.width} height={visual.height} loading="lazy" decoding="async" />
-              </a>
-              <figcaption>{visual.caption} <a href={visual.src}>Open full screenshot</a></figcaption>
-            </figure>
-          ))}
-        </div>
+        {visuals.length === 1 ? (
+          <div class="project-visual-grid project-visual-grid--single">
+            {visuals.map((visual) => (
+              <figure class="project-visual">
+                <a class="project-visual__frame" href={visual.src} aria-label={`Open full screenshot: ${visual.alt || visual.caption}`}>
+                  <img src={visual.src} alt={visual.alt} width={visual.width} height={visual.height} loading="lazy" decoding="async" />
+                </a>
+                <figcaption>{visual.caption} <a href={visual.src}>Open full screenshot</a></figcaption>
+              </figure>
+            ))}
+          </div>
+        ) : (
+          <div class:list={['carousel carousel--light visual-car', gridFor(visuals.length)]} role="region" aria-roledescription="carousel" aria-label="Visual evidence" data-carousel data-carousel-start="0">
+            <div class="carousel__track" role="group" aria-label="Visual evidence, swipe or use arrow keys" tabindex="0" data-carousel-track>
+              {visuals.map((visual, index) => (
+                <div class="carousel__slide" role="group" aria-roledescription="slide" aria-label={`${index + 1} of ${visuals.length}`} data-carousel-slide>
+                  <figure class="project-visual">
+                    <a class="project-visual__frame" href={visual.src} aria-label={`Open full screenshot: ${visual.alt || visual.caption}`}>
+                      <img src={visual.src} alt={visual.alt} width={visual.width} height={visual.height} loading="lazy" decoding="async" />
+                    </a>
+                    <figcaption>{visual.caption} <a href={visual.src}>Open full screenshot</a></figcaption>
+                  </figure>
+                </div>
+              ))}
+            </div>
+            <div class="carousel__dots" data-carousel-dots hidden>
+              {visuals.map((_, index) => (
+                <button type="button" class="carousel__dot" data-carousel-dot aria-label={`Show screenshot ${index + 1} of ${visuals.length}`}></button>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </section>
   )}
@@ -148,9 +182,6 @@ const coastalV2cRoute = project.featured !== false;
       <div class="evidence-grid">
         {project.evidence.map((item, index) => <article><span>{String(index + 1).padStart(2, '0')}</span><p>{item}</p></article>)}
       </div>
-      {(!project.visuals || project.visuals.length === 0) && (
-        <p class="asset-gap-note">Public-safe screenshots or diagrams will appear here only when they come from the real project and can be shown without exposing customer or sensitive information.</p>
-      )}
     </div>
   </section>
 
@@ -185,4 +216,5 @@ const coastalV2cRoute = project.featured !== false;
       <div class="actions"><a class="button" href="/connect/">Connect with Eddie</a></div>
     </div>
   </section>
+  <script is:inline src="/r5/site-carousel.js" defer></script>
 </BaseLayout>

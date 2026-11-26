@@ -6,7 +6,7 @@
 }
 @media (max-width: 760px) {
   html[data-dir="l"] .hero{
-    background-color: #EFE9DD;
+    background-color: #EFE9DD; background-color: light-dark(#EFE9DD, #13242F);
     background-image: none;
   }
   html[data-dir="l"] .hero::before{ display: none; }
@@ -25,7 +25,7 @@
   }
   html[data-dir="l"] .hero-navy-plate .cta-plate{
     background: #163544;
-    background: color-mix(in srgb, #102A3A 88%, #EFE9DD);
+    background: color-mix(in srgb, #102A3A 88%, #EFE9DD); background: color-mix(in srgb, #102A3A 88%, light-dark(#EFE9DD, #13242F));
     border: 1px solid #2C4E60;
     box-shadow: none;
   }
@@ -104,7 +104,7 @@ html[data-dir="l"] .browser-frame__bar{
   gap: 0.5rem;
   min-height: 32px;
   padding: 0.35rem 0.7rem;
-  background: #F3EEE3;
+  background: #F3EEE3; background: light-dark(#F3EEE3, #13242F);
   border-bottom: 1px solid var(--card-border);
 }
 html[data-dir="l"] .browser-dots{
@@ -116,23 +116,23 @@ html[data-dir="l"] .browser-dots i{
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #C9C0B0;
+  background: #C9C0B0; background: light-dark(#C9C0B0, #13242F);
 }
 html[data-dir="l"] .browser-frame__url{
   flex: 1;
   min-width: 0;
   padding: 0.15rem 0.55rem;
   border-radius: 999px;
-  background: #FFFFFF;
+  background: #FFFFFF; background: light-dark(#FFFFFF, #152A36);
   font-size: 0.72rem;
-  color: #3A4A44;
+  color: #3A4A44; color: light-dark(#3A4A44, #B4C3C8);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 html[data-dir="l"] .browser-frame__screen{
   display: block;
-  background: #F7F4EC;
+  background: #F7F4EC; background: light-dark(#F7F4EC, #152A36);
 }
 html[data-dir="l"] .browser-frame__screen img{
   display: block;
@@ -176,7 +176,7 @@ html[data-dir="l"] .num-card__n{
   font-size: 0.8125rem;
   font-weight: 750;
   letter-spacing: 0.06em;
-  color: #1E6B66;
+  color: #1E6B66; color: light-dark(#1E6B66, #8FD3C1);
   line-height: 1;
 }
 html[data-dir="l"] .num-card h3,html[data-dir="l"] .num-card__title{
@@ -191,7 +191,7 @@ html[data-dir="l"] .num-card p{
   flex: 1;
   font-size: 0.9375rem;
   line-height: 1.5;
-  color: #3A4A44;
+  color: #3A4A44; color: light-dark(#3A4A44, #B4C3C8);
 }
 html[data-dir="l"] .num-card .example-label,html[data-dir="l"] .num-card .caption,html[data-dir="l"] .num-card .maturity{ margin-top: 0.65rem; }
 html[data-dir="l"] .num-card__media{
@@ -199,7 +199,7 @@ html[data-dir="l"] .num-card__media{
   aspect-ratio: 16 / 9;
   margin: 0 0 0.85rem;
   overflow: hidden;
-  background-color: #F7F4EC;
+  background-color: #F7F4EC; background-color: light-dark(#F7F4EC, #152A36);
   border-radius: 10px;
 }
 html[data-dir="l"] .num-card__media > img,html[data-dir="l"] .num-card__media picture,html[data-dir="l"] .num-card__media picture img{
@@ -263,7 +263,7 @@ html[data-dir="l"] .router-tile__visual{ height: 112px; }
 html[data-dir="l"] .router-tile__panel{
   padding: 0 0.7rem 0.75rem;
   font-size: 0.875rem;
-  color: #3A4A44;
+  color: #3A4A44; color: light-dark(#3A4A44, #B4C3C8);
 }
 html[data-dir="l"] .router-tile__panel .text-link{ display: inline-flex; min-height: 44px; align-items: center; }
 @media (min-width: 900px) {
@@ -289,7 +289,7 @@ html[data-dir="l"] .tool-block img{
   display: block;
   width: 100%;
   height: auto;
-  background: #F7F4EC;
+  background: #F7F4EC; background: light-dark(#F7F4EC, #152A36);
   border-radius: var(--radius-lg);
 }
 
@@ -462,7 +462,7 @@ html[data-dir="l"] .work-card img{
   height: auto;
   display: block;
   border-radius: 10px;
-  background: #F7F4EC;
+  background: #F7F4EC; background: light-dark(#F7F4EC, #152A36);
 }
 @media (min-width: 900px) {
   html[data-dir="l"] .work-index{ display: grid; grid-template-columns: 1fr 1fr; gap: 1.15rem; align-items: stretch; }
@@ -610,7 +610,7 @@ html[data-dir="l"] .chip{
 html[data-dir="l"] .diagram--lg{
   width: 100%;
   height: auto;
-  background: #F7F4EC;
+  background: #F7F4EC; background: light-dark(#F7F4EC, #152A36);
 }
 html[data-dir="l"] .connect-split{ align-items: stretch; }
 html[data-dir="l"] .connect-split > div{ min-width: 0; }
@@ -646,15 +646,15 @@ html[data-dir="l"] .action-grid--under{ margin-top: 1.35rem; }
 @media (min-width: 761px) {
   html[data-dir="l"] .hero .eyebrow{
     display: inline-block;
-    background: #F7F4EC;
-    color: #102A3A;
+    background: #F7F4EC; background: light-dark(#F7F4EC, #152A36);
+    color: #102A3A; color: light-dark(#102A3A, #E6EEF0);
     padding: 0.28rem 0.75rem;
     border-radius: 999px;
   }
 }
 html[data-dir="l"] .towns-strip{
   background-image: none;
-  background-color: #DED6C4;
+  background-color: #DED6C4; background-color: light-dark(#DED6C4, #13242F);
   overflow: hidden;
 }
 html[data-dir="l"] .towns-strip picture,html[data-dir="l"] .towns-strip img{

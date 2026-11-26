@@ -12,7 +12,7 @@ const ENUM = {
   events: ['service_cta_click', 'contact_method_click', 'contact_card_download', 'discovery_handoff_click'],
   placements: ['connect_card', 'connect_actions', 'service_detail', 'mobile_bar', 'footer', 'discovery_hero', 'discovery_bottom', 'home_hero', 'home_cta_band', 'services_hub'],
   methods: { phone: 'tel:', sms: 'sms:', email: 'mailto:' },
-  services: ['websites', 'business-systems-automation', 'digital-ownership-platform-administration', 'technology-consulting'],
+  services: ['websites', 'website-care', 'business-systems-automation', 'digital-ownership-platform-administration', 'technology-consulting'],
 };
 
 // Event matrix: route -> expected data-ldw anchors (event | method/service | placement), counted from the built HTML.
@@ -24,7 +24,8 @@ const MATRIX = {
     'contact_method_click|email|footer', 'contact_method_click|phone|footer', 'contact_method_click|sms|mobile_bar', 'contact_method_click|phone|mobile_bar',
   ],
   '/services/websites/': ['service_cta_click|websites|service_detail', 'contact_method_click|email|footer', 'contact_method_click|phone|footer', 'contact_method_click|sms|mobile_bar', 'contact_method_click|phone|mobile_bar'],
-  '/services/website-care/': ['service_cta_click|websites|service_detail', 'contact_method_click|email|footer', 'contact_method_click|phone|footer', 'contact_method_click|sms|mobile_bar', 'contact_method_click|phone|mobile_bar'],
+  // DEV04 F1: the Website Care page reports its own service id (it reported websites before).
+  '/services/website-care/': ['service_cta_click|website-care|service_detail', 'contact_method_click|email|footer', 'contact_method_click|phone|footer', 'contact_method_click|sms|mobile_bar', 'contact_method_click|phone|mobile_bar'],
   '/services/business-systems-automation/': ['service_cta_click|business-systems-automation|service_detail', 'contact_method_click|email|footer', 'contact_method_click|phone|footer', 'contact_method_click|sms|mobile_bar', 'contact_method_click|phone|mobile_bar'],
   '/services/digital-ownership-platform-administration/': ['service_cta_click|digital-ownership-platform-administration|service_detail', 'contact_method_click|email|footer', 'contact_method_click|phone|footer', 'contact_method_click|sms|mobile_bar', 'contact_method_click|phone|mobile_bar'],
   '/services/technology-consulting/': ['service_cta_click|technology-consulting|service_detail', 'contact_method_click|email|footer', 'contact_method_click|phone|footer', 'contact_method_click|sms|mobile_bar', 'contact_method_click|phone|mobile_bar'],

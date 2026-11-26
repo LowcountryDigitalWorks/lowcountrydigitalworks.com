@@ -17,7 +17,7 @@
   position: relative;
   overflow: hidden;
   padding: clamp(3rem, 6.5vw, 5.25rem) 0;
-  background: color-mix(in srgb, var(--ldw-warm-oyster) 48%, var(--ldw-soft-white));
+  background: color-mix(in srgb, var(--ldw-warm-oyster) 48%, var(--ldw-soft-white)); background: light-dark(color-mix(in srgb, var(--ldw-warm-oyster) 48%, var(--ldw-soft-white)), #152A36);
   border-bottom: 1px solid var(--border);
 }
 
@@ -43,7 +43,7 @@
   padding: clamp(1.15rem, 2.5vw, 1.65rem);
   border: 1px solid color-mix(in srgb, var(--ldw-cypress-teal) 18%, var(--border));
   border-radius: var(--radius-card);
-  background: color-mix(in srgb, var(--ldw-white) 88%, var(--ldw-warm-oyster));
+  background: color-mix(in srgb, var(--ldw-white) 88%, var(--ldw-warm-oyster)); background: light-dark(color-mix(in srgb, var(--ldw-white) 88%, var(--ldw-warm-oyster)), #152A36);
   box-shadow: var(--shadow-card);
 }
 
@@ -57,7 +57,7 @@
   padding: 1.35rem 1.4rem;
   border-radius: 20px;
   border-color: color-mix(in srgb, var(--ldw-cypress-teal) 22%, var(--border));
-  background: color-mix(in srgb, var(--ldw-white) 92%, var(--ldw-warm-oyster));
+  background: color-mix(in srgb, var(--ldw-white) 92%, var(--ldw-warm-oyster)); background: light-dark(color-mix(in srgb, var(--ldw-white) 92%, var(--ldw-warm-oyster)), #152A36);
   box-shadow: var(--shadow-card);
 }
 
@@ -75,7 +75,7 @@
   height: 2.75rem;
   border-radius: 14px;
   color: var(--ldw-cypress-teal);
-  background: color-mix(in srgb, var(--ldw-cypress-teal) 12%, var(--ldw-soft-white));
+  background: color-mix(in srgb, var(--ldw-cypress-teal) 12%, var(--ldw-soft-white)); background: light-dark(color-mix(in srgb, var(--ldw-cypress-teal) 12%, var(--ldw-soft-white)), #152A36);
   border: 1px solid color-mix(in srgb, var(--ldw-cypress-teal) 22%, transparent);
 }
 
@@ -159,7 +159,7 @@
 
 .site--coastal-v2c .discovery-summary {
   border-radius: var(--radius-card);
-  background: color-mix(in srgb, var(--ldw-white) 90%, var(--ldw-warm-oyster));
+  background: color-mix(in srgb, var(--ldw-white) 90%, var(--ldw-warm-oyster)); background: light-dark(color-mix(in srgb, var(--ldw-white) 90%, var(--ldw-warm-oyster)), #152A36);
   box-shadow: var(--shadow-card);
 }
 
@@ -191,7 +191,7 @@
   padding: clamp(1.2rem, 2vw, 1.7rem);
   border-color: color-mix(in srgb, var(--ldw-cypress-teal) 24%, var(--border));
   border-radius: 22px;
-  background: color-mix(in srgb, var(--ldw-white) 93%, var(--ldw-warm-oyster));
+  background: color-mix(in srgb, var(--ldw-white) 93%, var(--ldw-warm-oyster)); background: light-dark(color-mix(in srgb, var(--ldw-white) 93%, var(--ldw-warm-oyster)), #152A36);
   box-shadow: 0 12px 30px rgb(16 42 58 / 0.07);
 }
 
@@ -205,8 +205,8 @@
   padding: 0.25rem;
   border: 1px solid color-mix(in srgb, var(--ldw-cypress-teal) 32%, transparent);
   border-radius: 0.8rem;
-  background: color-mix(in srgb, var(--ldw-cypress-teal) 12%, var(--ldw-white));
-  color: var(--ldw-estuary-navy);
+  background: color-mix(in srgb, var(--ldw-cypress-teal) 12%, var(--ldw-white)); background: light-dark(color-mix(in srgb, var(--ldw-cypress-teal) 12%, var(--ldw-white)), #152A36);
+  color: var(--ldw-estuary-navy); color: light-dark(var(--ldw-estuary-navy), #E6EEF0);
   font-size: 0.85rem;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.015em;
@@ -294,7 +294,7 @@
   padding: clamp(1.15rem, 2vw, 1.5rem);
   border: 1px solid color-mix(in srgb, var(--ldw-cypress-teal) 22%, var(--border));
   border-radius: var(--radius-card);
-  background: color-mix(in srgb, var(--ldw-white) 92%, var(--ldw-warm-oyster));
+  background: color-mix(in srgb, var(--ldw-white) 92%, var(--ldw-warm-oyster)); background: light-dark(color-mix(in srgb, var(--ldw-white) 92%, var(--ldw-warm-oyster)), #152A36);
   box-shadow: var(--shadow-card);
   color: inherit;
   text-decoration: none;
@@ -324,7 +324,7 @@
   height: 2.75rem;
   border-radius: 14px;
   border: 1px solid color-mix(in srgb, var(--ldw-cypress-teal) 22%, transparent);
-  background: color-mix(in srgb, var(--ldw-cypress-teal) 10%, var(--ldw-white));
+  background: color-mix(in srgb, var(--ldw-cypress-teal) 10%, var(--ldw-white)); background: light-dark(color-mix(in srgb, var(--ldw-cypress-teal) 10%, var(--ldw-white)), #152A36);
   color: var(--ldw-cypress-teal);
 }
 

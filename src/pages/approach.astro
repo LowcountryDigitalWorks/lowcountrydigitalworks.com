@@ -3,14 +3,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import approach from '../data/approach.json';
 ---
 <BaseLayout title="Approach" description="A practical Assess, Improve or Build, Handoff or Care approach focused on understanding the problem, using proportionate technology, clear ownership, and clean handoff.">
-  <section class="page-hero page-hero--warm">
-    <div class="container readable">
+  <section class="page-hero page-hero--warm page-hero--snug">
+    <div class="container">
+      <div class="page-hero-plate readable">
       <p class="eyebrow">{approach.hero.eyebrow}</p>
       <h1>{approach.hero.title}</h1>
       <p class="lede">{approach.hero.lede}</p>
       <div class="actions">
         <a class="button" href="/connect/">Tell Eddie what is not working</a>
         <a class="text-link" href="#stages">See the three stages ↓</a>
+      </div>
       </div>
     </div>
   </section>
@@ -21,8 +23,17 @@ import approach from '../data/approach.json';
         <p class="eyebrow">From first conversation to finish</p>
         <h2>Three stages, with the problem—not the platform—driving the work.</h2>
       </div>
-      <div class="flow approach-flow">
-        {approach.steps.map((step) => <article class="flow__step"><h3>{step.title}</h3><p>{step.description}</p></article>)}
+      <div class="carousel carousel--light carousel--grid-3 approach-car" role="region" aria-roledescription="carousel" aria-label="Three stages" data-carousel data-carousel-start="0">
+        <div class="carousel__track approach-flow" role="group" aria-label="Three stages, swipe or use arrow keys" tabindex="0" data-carousel-track>
+          {approach.steps.map((step, index) => (
+            <div class="carousel__slide" role="group" aria-roledescription="slide" aria-label={`${index + 1} of ${approach.steps.length}: ${step.title}`} data-carousel-slide>
+              <article class="flow__step depth-card"><span class="depth-card__n" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span><h3>{step.title}</h3><p>{step.description}</p></article>
+            </div>
+          ))}
+        </div>
+        <div class="carousel__dots" data-carousel-dots hidden>
+          {approach.steps.map((step, index) => <button type="button" class="carousel__dot" data-carousel-dot aria-label={`Show ${index + 1} of ${approach.steps.length}: ${step.title}`}></button>)}
+        </div>
       </div>
     </div>
   </section>
@@ -33,8 +44,17 @@ import approach from '../data/approach.json';
         <p class="eyebrow">{approach.expect.eyebrow}</p>
         <h2>{approach.expect.title}</h2>
       </div>
-      <div class="grid grid--2 approach-expectations">
-        {approach.expect.items.map((item) => <article class="card"><h3>{item.title}</h3><p>{item.description}</p></article>)}
+      <div class="carousel carousel--light carousel--grid-2 approach-expect-car" role="region" aria-roledescription="carousel" aria-label={approach.expect.eyebrow} data-carousel data-carousel-start="0">
+        <div class="carousel__track approach-expectations" role="group" aria-label={`${approach.expect.eyebrow}, swipe or use arrow keys`} tabindex="0" data-carousel-track>
+          {approach.expect.items.map((item, index) => (
+            <div class="carousel__slide" role="group" aria-roledescription="slide" aria-label={`${index + 1} of ${approach.expect.items.length}: ${item.title}`} data-carousel-slide>
+              <article class="card depth-card"><h3>{item.title}</h3><p>{item.description}</p></article>
+            </div>
+          ))}
+        </div>
+        <div class="carousel__dots" data-carousel-dots hidden>
+          {approach.expect.items.map((item, index) => <button type="button" class="carousel__dot" data-carousel-dot aria-label={`Show ${index + 1} of ${approach.expect.items.length}: ${item.title}`}></button>)}
+        </div>
       </div>
     </div>
   </section>
@@ -56,7 +76,7 @@ import approach from '../data/approach.json';
     </div>
   </section>
 
-  <section class="section section--navy">
+  <section class="section section--navy band-mesh">
     <div class="container principle">
       <div><p class="eyebrow">{approach.principles.eyebrow}</p><h2>{approach.principles.title}</h2></div>
       <ul class="principle__list">{approach.principles.items.map((item) => <li>{item}</li>)}</ul>
@@ -81,4 +101,5 @@ import approach from '../data/approach.json';
       </div>
     </div>
   </section>
+  <script is:inline src="/r5/site-carousel.js" defer></script>
 </BaseLayout>

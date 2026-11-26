@@ -1,7 +1,7 @@
 // Website Care plans preview gate: one shared fail-closed AND-gate (src/lib/care-gate.mjs) must switch the markup, the glass CSS and the
 // carousel JS (and the Services bridge link) together. Only CARE_OPTIONS_PREVIEW=1 + WORKERS_CI=1 + the exact preview branch renders anything.
 // The exact Cloudflare preview branch may auto-supply the first flag; explicit 0 remains OFF.
-//   node --test tests/care-gate.unit.mjs        (runs 7 real `astro build`s into temp dirs; does not touch dist/)
+//   node --test tests/care-gate.unit.mjs        (runs 8 real `astro build`s into temp dirs; does not touch dist/)
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import { existsSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
@@ -63,7 +63,10 @@ const contexts = [
   ['flag only (CARE_OPTIONS_PREVIEW=1)', { CARE_OPTIONS_PREVIEW: '1' }, ALL_OFF],
   ['flag + CI (no branch)', { CARE_OPTIONS_PREVIEW: '1', WORKERS_CI: '1' }, ALL_OFF],
   ['flag + CI + unrelated branch (main)', { CARE_OPTIONS_PREVIEW: '1', WORKERS_CI: '1', WORKERS_CI_BRANCH: 'main' }, ALL_OFF],
-  ['CI + branch without the flag', { WORKERS_CI: '1', WORKERS_CI_BRANCH: BRANCH }, ALL_OFF],
+  // The exact Workers preview branch auto-supplies the missing flag (astro.config.mjs applyCarePreviewBuildOptIn), so this build is ON;
+  // an explicit CARE_OPTIONS_PREVIEW=0 on the same branch still wins and stays OFF.
+  ['CI + branch without the flag (Workers preview auto opt-in)', { WORKERS_CI: '1', WORKERS_CI_BRANCH: BRANCH }, ALL_ON],
+  ['explicit opt-out CARE_OPTIONS_PREVIEW=0 + CI + exact preview branch', { CARE_OPTIONS_PREVIEW: '0', WORKERS_CI: '1', WORKERS_CI_BRANCH: BRANCH }, ALL_OFF],
   ['flag + CI + exact preview branch', { CARE_OPTIONS_PREVIEW: '1', WORKERS_CI: '1', WORKERS_CI_BRANCH: BRANCH }, ALL_ON],
 ];
 

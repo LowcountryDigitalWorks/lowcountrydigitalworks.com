@@ -49,6 +49,12 @@ const showPrivacyChoices = analyticsEnabled() && analyticsRouteAllowed(Astro.url
       )}
       <p class="small"><span itemprop="areaServed">South Carolina Lowcountry</span> · remote work where the fit is right</p>
       <p class="small">© {new Date().getFullYear()} Lowcountry Digital Works.</p>
+      <fieldset class="appearance-control" data-appearance-control>
+        <legend class="appearance-control__legend">Appearance</legend>
+        <label class="appearance-control__opt appearance-control__opt--light" title="Light"><input type="radio" name="ldw-appearance" value="light" aria-label="Light" /><Icon name="sun" size={20} /></label>
+        <label class="appearance-control__opt appearance-control__opt--dark" title="Dark"><input type="radio" name="ldw-appearance" value="dark" aria-label="Dark" /><Icon name="moon" size={20} /></label>
+        <label class="appearance-control__opt appearance-control__opt--system" title="System"><input type="radio" name="ldw-appearance" value="system" aria-label="System" checked /><Icon name="monitor" size={20} /></label>
+      </fieldset>
     </div>
   </div>
 </footer>

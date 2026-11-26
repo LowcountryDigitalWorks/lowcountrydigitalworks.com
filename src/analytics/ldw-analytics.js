@@ -9,7 +9,8 @@
    - URLs sent to GA4 carry no visitor-supplied text: page_location, page_path and a same-origin page_referrer use a route from the build's own
      route allowlist (ROUTES, generated from the emitted pages) or "/other/" for anything else (404s, typed or crafted paths). Query strings and
      fragments are always dropped. A cross-site referrer is reduced to its origin plus "/", never its path.
-   - Session replay (Clarity) only starts on an allowlisted route, after query/fragment text has been removed from the address bar.
+   - Session replay (Clarity) only starts on an allowlisted route, after query/fragment text has been removed from the address bar (verified;
+     it does not start if that fails) and only when document.referrer is empty, a bare origin or a clean same-origin allowlisted route.
    - Exactly one page_view: gtag config sends none (send_page_view:false) and this file sends one sanitized page_view per page load.
    - Events come only from inert data-ldw-* attributes on real anchors (the links work with JavaScript off). Allowlisted low-cardinality values only:
      no hrefs, phone numbers, emails, link text, query strings, fragments or form contents are ever sent.
@@ -28,7 +29,7 @@
 
   var EVENTS = { service_cta_click: 1, contact_method_click: 1, contact_card_download: 1, discovery_handoff_click: 1 };
   var PLACEMENTS = ['connect_card', 'connect_actions', 'service_detail', 'mobile_bar', 'footer', 'discovery_hero', 'discovery_bottom', 'home_hero', 'home_cta_band', 'services_hub'];
-  var SERVICES = ['websites', 'business-systems-automation', 'digital-ownership-platform-administration', 'technology-consulting'];
+  var SERVICES = ['websites', 'website-care', 'business-systems-automation', 'digital-ownership-platform-administration', 'technology-consulting'];
   var METHODS = { phone: 'tel:', sms: 'sms:', email: 'mailto:' };
 
   var host = String(location.hostname).toLowerCase();
@@ -103,17 +104,38 @@
 
   // Clarity records the live URL itself and has no URL override, so (L1): it never starts on a non-allowlisted path, and before it starts any
   // query string is removed from the address bar, as is any fragment that is not a plain in-page anchor id. Nothing on this site uses queries.
+  // DEV04 F2: returns true only when the address bar is verified clean afterwards. If the History API is missing, throws, or leaves the
+  // query/fragment in place, it returns false and Clarity does not start (fail closed).
   function cleanAddressForReplay() {
     var keepHash = /^#[a-z][a-z0-9-]{0,63}$/.test(location.hash) && document.getElementById(location.hash.slice(1)) ? location.hash : '';
-    if (!location.search && location.hash === keepHash) return;
-    try { window.history.replaceState(window.history.state, '', location.pathname + keepHash); } catch (e) { /* leave URL as is */ }
+    if (!location.search && location.hash === keepHash) return true;
+    try {
+      if (!window.history || typeof window.history.replaceState !== 'function') return false;
+      window.history.replaceState(window.history.state, '', location.pathname + keepHash);
+    } catch (e) { return false; }
+    return location.search === '' && location.hash === keepHash && safePath(location.pathname) === routePath;
   }
 
+  // DEV04 F3: Clarity reads document.referrer itself, and its URL masking does not cover referrers. Replay starts only when the referrer is
+  // empty, a bare origin, or a same-origin allowlisted route with no query or fragment. Anything else skips replay for this page load
+  // (analytics, which only ever sends safeReferrer(), is unaffected).
+  function referrerSafeForReplay() {
+    var raw = String(document.referrer || '');
+    if (!raw) return true;
+    var r;
+    try { r = new URL(raw); } catch (e) { return false; }
+    if (r.protocol !== 'https:' && r.protocol !== 'http:') return false;
+    if (r.username || r.password || r.search || r.hash) return false;
+    if (r.origin === location.origin) return raw === r.origin + r.pathname && ROUTES.indexOf(r.pathname) !== -1;
+    return raw === r.origin + '/';
+  }
+
+  var clarityBlocked = false;
   function loadClarity() {
-    if (loaded.clarity) return;
+    if (loaded.clarity || clarityBlocked) return;
     if (routePath === OTHER) return;
+    if (!referrerSafeForReplay() || !cleanAddressForReplay()) { clarityBlocked = true; return; }
     loaded.clarity = true;
-    cleanAddressForReplay();
     var mask = document.querySelectorAll('form, input, textarea, select, a[href^="tel:"], a[href^="sms:"], a[href^="mailto:"]');
     for (var i = 0; i < mask.length; i++) mask[i].setAttribute('data-clarity-mask', 'True');
     window.clarity = window.clarity || function () { (window.clarity.q = window.clarity.q || []).push(arguments); };

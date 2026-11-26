@@ -36,7 +36,6 @@ const showCareOptions = careOptionsPreview && slug === 'website-care';
 
 // Three example outcomes at most; the fourth Websites outcome (maintainable operating model) is already the documentation line in "work".
 const outcomes = service.outcomes.slice(0, 3);
-const outcomeRail = slug === 'website-care' || slug === 'digital-ownership-platform-administration';
 const notIncluded = page.notIncluded;
 const [toolProject] = relatedWork;
 const clientAssets = {
@@ -238,21 +237,31 @@ const toolAssets = {
             <p class="eyebrow">What a good engagement should leave behind</p>
             <h2 id="outcomes-heading">Useful outcomes, not a bigger technology footprint.</h2>
           </div>
-          <ul class:list={['svc-outcomes', outcomeRail && 'svc-outcomes--rail']}>
-            {outcomes.map((outcome, index) => (
-              <li class="svc-outcomes__item">
-                <h3>{outcome.title}</h3>
-                <p>{outcome.description}</p>
-                <p class="svc-outcomes__ex"><span>{page.situations[index]}</span></p>
-              </li>
-            ))}
-          </ul>
+          <div class="carousel carousel--light outcomes-car" role="region" aria-roledescription="carousel" aria-label="Useful outcomes" data-carousel data-carousel-start="0">
+            <div class="carousel__track svc-outcomes" role="group" aria-label="Useful outcomes, swipe or use arrow keys" tabindex="0" data-carousel-track>
+              {outcomes.map((outcome, index) => (
+                <div class="carousel__slide" role="group" aria-roledescription="slide" aria-label={`${index + 1} of ${outcomes.length}: ${outcome.title}`} data-carousel-slide>
+                  <div class="svc-outcomes__item">
+                    <span class="svc-outcomes__n" aria-hidden="true"><Icon name="check" size={24} /></span>
+                    <h3>{outcome.title}</h3>
+                    <p>{outcome.description}</p>
+                    <p class="svc-outcomes__ex"><span>{page.situations[index]}</span></p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div class="carousel__dots" data-carousel-dots hidden>
+              {outcomes.map((outcome, index) => (
+                <button type="button" class="carousel__dot" data-carousel-dot aria-label={`Show ${index + 1} of ${outcomes.length}: ${outcome.title}`}></button>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
     )}
 
     {relatedClientWork.length > 0 && (
-      <section class="section section--navy svc-proof" data-related-client-work aria-labelledby="client-proof-heading">
+      <section class="section section--navy band-mesh svc-proof" data-related-client-work aria-labelledby="client-proof-heading">
         <div class="container">
           <div class="section-heading">
             <p class="eyebrow">Client work</p>
@@ -330,7 +339,7 @@ const toolAssets = {
     )}
 
     {slug === 'digital-ownership-platform-administration' && (
-      <section class="section section--navy svc-proof" aria-labelledby="keys-heading">
+      <section class="section section--navy band-mesh svc-proof" aria-labelledby="keys-heading">
         <div class="container">
           <div class="section-heading">
             <p class="eyebrow">How LDW applies this</p>
@@ -369,15 +378,16 @@ const toolAssets = {
       </div>
     </section>
 
-    <section class="section section--navy section--cta-band svc-cta" aria-labelledby="svc-cta-heading">
+    <section class="section section--navy band-mesh section--cta-band svc-cta" aria-labelledby="svc-cta-heading">
       <div class="container svc-cta__inner">
         <div>
           <p class="eyebrow">Next step</p>
           <h2 id="svc-cta-heading">{visuals.ctaHeading}</h2>
           <p class="lede">{visuals.ctaBody}</p>
         </div>
-        <div class="actions"><a class="button button--oyster" href="/connect/" {...ldw('service_cta_click', { service: service.slug === 'website-care' ? 'websites' : service.slug, placement: 'service_detail' })}>{service.cta}</a></div>
+        <div class="actions"><a class="button button--oyster" href="/connect/" {...ldw('service_cta_click', { service: service.slug, placement: 'service_detail' })}>{service.cta}</a></div>
       </div>
     </section>
   </article>
+  <script is:inline src="/r5/site-carousel.js" defer></script>
 </BaseLayout>

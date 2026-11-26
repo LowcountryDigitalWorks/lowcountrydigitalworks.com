@@ -503,8 +503,10 @@ test('Connect is a mobile-first stable contact destination with accessible conta
   await expect(contactCard).toBeVisible();
   await expect(contactCard).toContainText('Save contact');
   await expect(main).not.toContainText('Save vCard');
-  await expect(main.locator('.connect-actions .ui-icon')).toHaveCount(3);
-  await expect(main.locator('.connect-actions a')).toHaveCount(3);
+  // k5d: Text, Call and Email live on the contact card itself (the separate action tiles are gone).
+  await expect(main.locator('.biz-card .biz-card__actions .ui-icon')).toHaveCount(3);
+  await expect(main.locator('.biz-card .biz-card__actions a')).toHaveCount(3);
+  await expect(main.locator('.connect-actions')).toHaveCount(0);
   await expect(main.locator('.connect-links .ui-icon')).toHaveCount(2);
   await expect(main.locator('.ui-icon[aria-hidden="true"]')).toHaveCount(5);
 
@@ -559,7 +561,10 @@ test('Contact and footer iconography supplements visible labels rather than repl
   await expect(footer.locator('.social-mark--x')).toHaveCSS('color', 'rgb(0, 0, 0)');
   await expect(footer.locator('.social-mark--linkedin')).toHaveCSS('color', 'rgb(10, 102, 194)');
   // R5 interiors: LinkedIn is now an Icon like Facebook and X (was an <img>), so five icons.
-  await expect(footer.locator('.ui-icon[aria-hidden="true"]')).toHaveCount(5);
+  // k5f: the footer Appearance control adds three icon-only radios (sun, moon, monitor) with their own accessible names; the five
+  // label-supplementing icons are counted outside it.
+  await expect(footer.locator('.ui-icon[aria-hidden="true"]:not([data-appearance-control] .ui-icon)')).toHaveCount(5);
+  await expect(footer.locator('[data-appearance-control] .ui-icon[aria-hidden="true"]')).toHaveCount(3);
 });
 
 test('privacy page reflects the current no-nonessential-cookie posture without a cosmetic consent banner', async ({ page }) => {

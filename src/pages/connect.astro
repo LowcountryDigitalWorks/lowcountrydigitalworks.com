@@ -6,6 +6,16 @@ import home from '../data/home.json';
 import Icon from '../components/Icon.astro';
 import RequestFlowSteps from '../components/RequestFlowSteps.astro';
 import TownGroups from '../components/TownGroups.astro';
+
+// k5e: the card's QR is the owner-supplied first-party asset (qr-kit 5038c628…, 41x41 modules incl. a 4-module white quiet zone) and
+// encodes only the canonical /connect/ URL, no vCard content and no tracking parameter.
+const qr = {
+  src: '/r5/assets/qr/ldw-connect-qr.svg',
+  url: 'https://lowcountrydigitalworks.com/connect/',
+  host: 'lowcountrydigitalworks.com',
+  path: '/connect/',
+  alt: 'QR code for lowcountrydigitalworks.com/connect/',
+};
 ---
 <BaseLayout title="Connect" description="Connect directly with Eddie Gugino at Lowcountry Digital Works by text, phone, email, contact card, or an optional guided project form.">
   <section class="page-hero page-hero--fit" aria-labelledby="connect-heading">
@@ -28,14 +38,29 @@ import TownGroups from '../components/TownGroups.astro';
             <p class="biz-card__tagline">Let’s connect.</p>
           </div>
           <div class="biz-card__body">
-            <span class="biz-card__avatar" aria-hidden="true">EG</span>
-            <p class="biz-card__name">Eddie Gugino</p>
-            <p class="biz-card__title">Founder · Lowcountry Digital Works LLC</p>
+            <p class="biz-card__name">{contact.founder.name}</p>
+            <p class="biz-card__title">{contact.founder.role} · Lowcountry Digital Works LLC</p>
             <p class="biz-card__place">Beaufort, South Carolina</p>
             <a class="button biz-card__save" href="/eddie-gugino-lowcountry-digital-works.vcf#on-card" download {...ldw('contact_card_download', { placement: 'connect_card' })}>Save contact</a>
+            <nav class="biz-card__actions" aria-label="Contact options">
+              <a class="biz-card__action" href={`sms:${contact.phone.number}`} {...ldw('contact_method_click', { method: 'sms', placement: 'connect_actions' })}><Icon name="message" size={20} /><span>Text Eddie</span></a>
+              <a class="biz-card__action" href={`tel:${contact.phone.number}`} {...ldw('contact_method_click', { method: 'phone', placement: 'connect_actions' })}><Icon name="phone" size={20} /><span>Call Eddie</span></a>
+              <a class="biz-card__action" href={`mailto:${contact.email.address}`} {...ldw('contact_method_click', { method: 'email', placement: 'connect_actions' })}><Icon name="mail" size={20} /><span>Email Eddie</span></a>
+            </nav>
+            <div class="biz-card__qr biz-card__qr--wide">
+              <span class="biz-card__qr-plate"><img src={qr.src} alt={qr.alt} width="176" height="176" decoding="async" /></span>
+              <p class="biz-card__qr-copy"><strong>Scan with your phone</strong><a href={qr.url}>{qr.host}<wbr />{qr.path}</a></p>
+            </div>
+            <details class="biz-card__qr-narrow">
+              <summary>Show QR</summary>
+              <div class="biz-card__qr">
+                <span class="biz-card__qr-plate"><img src={qr.src} alt={qr.alt} width="176" height="176" loading="lazy" decoding="async" /></span>
+                <p class="biz-card__qr-copy"><strong>Scan with your phone</strong><a href={qr.url}>{qr.host}<wbr />{qr.path}</a></p>
+              </div>
+            </details>
             <hr class="biz-card__rule" />
             <p class="biz-card__line">{contact.phone.display}</p>
-            <p class="biz-card__line">{contact.email.address}</p>
+            <p class="biz-card__line">{contact.email.address.split('@')[0]}<wbr />@{contact.email.address.split('@')[1]}</p>
             <p class="biz-card__line">lowcountrydigitalworks.com</p>
           </div>
         </article>
@@ -52,21 +77,6 @@ import TownGroups from '../components/TownGroups.astro';
           </div>
           <RequestFlowSteps layout="2x2" carousel id="connect-steps" />
         </div>
-      </div>
-
-      <div class="connect-actions action-grid action-grid--under" aria-label="Contact options">
-        <a class="connect-action" href={`sms:${contact.phone.number}`} {...ldw('contact_method_click', { method: 'sms', placement: 'connect_actions' })}>
-          <span class="connect-action__icon"><Icon name="message" size={22} /></span>
-          <span class="connect-action__copy"><span>Text Eddie</span><strong>{contact.phone.display}</strong><small>Send a short note</small></span>
-        </a>
-        <a class="connect-action" href={`tel:${contact.phone.number}`} {...ldw('contact_method_click', { method: 'phone', placement: 'connect_actions' })}>
-          <span class="connect-action__icon"><Icon name="phone" size={22} /></span>
-          <span class="connect-action__copy"><span>Call Eddie</span><strong>{contact.phone.display}</strong><small>Talk it through</small></span>
-        </a>
-        <a class="connect-action" href={`mailto:${contact.email.address}`} {...ldw('contact_method_click', { method: 'email', placement: 'connect_actions' })}>
-          <span class="connect-action__icon"><Icon name="mail" size={22} /></span>
-          <span class="connect-action__copy"><span>Email Eddie</span><strong>{contact.email.address.split('@')[0]}<wbr />@{contact.email.address.split('@')[1]}</strong><small>Share a little context</small></span>
-        </a>
       </div>
 
       <section class="connect-area" aria-labelledby="connect-area-title">

@@ -13,6 +13,7 @@ const isCurrent = (href) => href === '/' ? current === '/' : current === href ||
   <div class="container header-row">
     <a class="brand" href="/" aria-label="Lowcountry Digital Works home">
       <img src="/brand/logo/lowcountry-digital-works-logo-horizontal.svg" alt="Lowcountry Digital Works" width="312" height="88" />
+      <img class="brand-logo-on-dark" src="/brand/logo/lowcountry-digital-works-logo-horizontal-white.svg" alt="" width="312" height="88" />
     </a>
     <nav class="desktop-nav" aria-label="Primary">
       {links.map(([label,href]) => <a href={href} aria-current={isCurrent(href) ? 'page' : undefined}>{label}</a>)}
@@ -28,7 +29,7 @@ const isCurrent = (href) => href === '/' ? current === '/' : current === href ||
   </div>
 </header>
 <style>
-.site-header { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--ldw-soft-white) 95%, white); border-bottom: 1px solid var(--border); padding-top: env(safe-area-inset-top, 0px); }
+.site-header { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--ldw-soft-white) 95%, white); background: light-dark(color-mix(in srgb, var(--ldw-soft-white) 95%, white), #152A36); border-bottom: 1px solid var(--border); padding-top: env(safe-area-inset-top, 0px); }
 .header-row { min-height: 70px; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
 .brand { display: inline-flex; width: clamp(180px, 22vw, 250px); line-height: 0; }
 .desktop-nav { display: flex; align-items: center; gap: clamp(.5rem, 1.2vw, 1rem); }

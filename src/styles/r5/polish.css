@@ -30,10 +30,10 @@ html[data-dir="l"] .svc-card::before {
 html[data-dir="l"] .svc-card:nth-child(even)::before { background: #c8a548; }
 
 html[data-dir="l"] .svc-card__visual { display: grid; gap: 0.45rem; margin: 0; }
-html[data-dir="l"] .svc-card__visual picture { display: block; aspect-ratio: 16 / 10; overflow: hidden; border-radius: 12px; border: 1px solid rgba(239, 233, 221, 0.35); background: #f7f4ec; }
+html[data-dir="l"] .svc-card__visual picture { display: block; aspect-ratio: 16 / 10; overflow: hidden; border-radius: 12px; border: 1px solid rgba(239, 233, 221, 0.35); background: #f7f4ec; background: light-dark(#f7f4ec, #152A36); }
 html[data-dir="l"] .svc-card__visual picture img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top left; }
 html[data-dir="l"] .svc-card__visual picture img.diagram { object-fit: contain; object-position: center; }
-html[data-dir="l"] .svc-card__visual .tool-row { display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0.5rem; background: #f7f4ec; border-radius: 12px; }
+html[data-dir="l"] .svc-card__visual .tool-row { display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0.5rem; background: #f7f4ec; background: light-dark(#f7f4ec, #152A36); border-radius: 12px; }
 html[data-dir="l"] .svc-card__visual .tool-row img { width: 28px; height: 28px; }
 html[data-dir="l"] .svc-card__visual .example-label,
 html[data-dir="l"] .svc-card__visual .maturity,
@@ -47,7 +47,7 @@ html[data-dir="l"] .svc-card__kicker { font-size: 0.875rem; font-weight: 800; le
 html[data-dir="l"] .svc-card__title { margin: 0; font-size: 1.3125rem; line-height: 1.25; color: #efe9dd; }
 html[data-dir="l"] .svc-card__prompt { margin: 0; font-size: 1rem; font-weight: 650; line-height: 1.45; color: #efe9dd; }
 html[data-dir="l"] .svc-card__desc { margin: 0; font-size: 0.9375rem; line-height: 1.55; color: #dde4e2; }
-html[data-dir="l"] .svc-card__cta { display: inline-flex; align-items: center; align-self: flex-start; gap: 0.4rem; min-height: var(--tap); margin-top: auto; padding: 0.4rem 1rem; border-radius: 999px; font-weight: 800; color: #15241f; background: #efe9dd; }
+html[data-dir="l"] .svc-card__cta { display: inline-flex; align-items: center; align-self: flex-start; gap: 0.4rem; min-height: var(--tap); margin-top: auto; padding: 0.4rem 1rem; border-radius: 999px; font-weight: 800; color: #15241f; color: light-dark(#15241f, #E6EEF0); background: #efe9dd; background: light-dark(#efe9dd, #13242F); }
 html[data-dir="l"] .svc-card__also { display: inline-flex; align-items: center; gap: 0.35rem; align-self: flex-start; min-height: var(--tap); font-weight: 750; color: #efe9dd; text-decoration: underline; text-underline-offset: 0.2em; }
 html[data-dir="l"] .svc-card__surface:focus-visible,
 html[data-dir="l"] .svc-card__also:focus-visible { outline: 3px solid #c8a548; outline-offset: 3px; border-radius: 12px; }
@@ -65,10 +65,10 @@ html[data-dir="l"] .plans-car__track { align-items: stretch; }
 html[data-dir="l"] .plan-slide { display: flex; }
 html[data-dir="l"] .plan-slide > article {
   position: relative; flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.55rem;
-  padding: 1.35rem 1.15rem 1.25rem; border-radius: var(--radius-xl); color: #15241f;
-  background-color: #ffffff;
-  border: 1px solid #c9c2b2;
-  box-shadow: inset 0 1px 0 #ffffff, 0 0 0 1px rgba(47, 118, 111, 0.22), 0 18px 40px -16px rgba(21, 36, 31, 0.32);
+  padding: 1.35rem 1.15rem 1.25rem; border-radius: var(--radius-xl); color: #15241f; color: light-dark(#15241f, #E6EEF0);
+  background-color: #ffffff; background-color: light-dark(#ffffff, #152A36);
+  border: 1px solid #c9c2b2; border: 1px solid light-dark(#c9c2b2, #3B5664);
+  box-shadow: inset 0 1px 0 #ffffff, 0 0 0 1px rgba(47, 118, 111, 0.22), 0 18px 40px -16px rgba(21, 36, 31, 0.32); box-shadow: inset 0 1px 0 light-dark(#ffffff, #3B5664), 0 0 0 1px rgba(47, 118, 111, 0.22), 0 18px 40px -16px rgba(21, 36, 31, 0.32);
 }
 html[data-dir="l"] .plan-slide > article::before { content: ""; position: absolute; left: 1.15rem; right: 1.15rem; top: -1px; height: 4px; border-radius: 0 0 4px 4px; background: #2f766f; }
 html[data-dir="l"] .plan-slide--custom > article {
@@ -83,30 +83,30 @@ html[data-dir="l"] .plan-slide p { margin: 0; font-size: 0.9375rem; line-height:
 html[data-dir="l"] .plan-slide__best,
 html[data-dir="l"] .plan-slide__when { color: inherit; }
 html[data-dir="l"] .plan-slide:not(.plan-slide--custom) .plan-slide__best,
-html[data-dir="l"] .plan-slide:not(.plan-slide--custom) .plan-slide__when { color: #3a4a44; }
-html[data-dir="l"] .plan-slide:not(.plan-slide--custom) strong { color: #15241f; }
-html[data-dir="l"] .plan-slide__adds { padding: 0.6rem 0.8rem; border-left: 4px solid #1e6b66; background: #efe9dd; border-radius: 0 10px 10px 0; color: #15241f; }
+html[data-dir="l"] .plan-slide:not(.plan-slide--custom) .plan-slide__when { color: #3a4a44; color: light-dark(#3a4a44, #B4C3C8); }
+html[data-dir="l"] .plan-slide:not(.plan-slide--custom) strong { color: #15241f; color: light-dark(#15241f, #E6EEF0); }
+html[data-dir="l"] .plan-slide__adds { padding: 0.6rem 0.8rem; border-left: 4px solid #1e6b66; background: #efe9dd; background: light-dark(#efe9dd, #13242F); border-radius: 0 10px 10px 0; color: #15241f; color: light-dark(#15241f, #E6EEF0); }
 html[data-dir="l"] .plan-slide--custom .plan-slide__adds { border-left-color: #c8a548; background: rgba(239, 233, 221, 0.12); color: #efe9dd; }
 html[data-dir="l"] .plan-slide__label { display: block; margin-bottom: 0.15rem; font-size: 0.875rem; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; }
-html[data-dir="l"] .plan-slide:not(.plan-slide--custom) .plan-slide__label { color: #1e6b66; }
+html[data-dir="l"] .plan-slide:not(.plan-slide--custom) .plan-slide__label { color: #1e6b66; color: light-dark(#1e6b66, #8FD3C1); }
 html[data-dir="l"] .plan-slide__sub { margin: 0.6rem 0 0; font-size: 0.875rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: inherit; }
 html[data-dir="l"] .plan-slide__list { display: grid; gap: 0.45rem; margin: 0; padding: 0; list-style: none; font-size: 0.9375rem; line-height: 1.45; }
 html[data-dir="l"] .plan-slide__list li { display: flex; gap: 0.5rem; align-items: flex-start; }
 html[data-dir="l"] .plan-slide__list--out li { padding-left: 0.1rem; }
-html[data-dir="l"] .plan-slide__list--out { color: #3a4a44; }
+html[data-dir="l"] .plan-slide__list--out { color: #3a4a44; color: light-dark(#3a4a44, #B4C3C8); }
 html[data-dir="l"] .plan-slide--custom .plan-slide__list--out { color: #dde4e2; }
-html[data-dir="l"] .plan-slide .plan-check { flex: 0 0 auto; margin-top: 0.15rem; color: #1e6b66; }
+html[data-dir="l"] .plan-slide .plan-check { flex: 0 0 auto; margin-top: 0.15rem; color: #1e6b66; color: light-dark(#1e6b66, #8FD3C1); }
 html[data-dir="l"] .plan-slide--custom .plan-check { color: #c8a548; }
 html[data-dir="l"] .plan-slide .plan-rungs { align-self: flex-start; }
 html[data-dir="l"] .plan-slide__pill { font-size: 0.875rem; }
 html[data-dir="l"] .plan-slide--custom .plan-slide__pill { align-self: flex-start; color: #efe9dd; border: 1px solid #c8a548; background: transparent; }
-html[data-dir="l"] .plan-slide:not(.plan-slide--custom) .plan-rungs i { background: #d3cdbf; }
+html[data-dir="l"] .plan-slide:not(.plan-slide--custom) .plan-rungs i { background: #d3cdbf; background: light-dark(#d3cdbf, #13242F); }
 html[data-dir="l"] .plan-slide--1 .plan-rungs i:nth-child(1),
 html[data-dir="l"] .plan-slide--2 .plan-rungs i:nth-child(-n+2),
 html[data-dir="l"] .plan-slide--3 .plan-rungs i { background: #1e6b66; }
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
   html[data-dir="l"] .plan-slide > article { transition: box-shadow 0.25s ease, transform 0.25s ease; }
-  html[data-dir="l"] .plan-slide:not(.plan-slide--custom) > article:hover { transform: translateY(-3px); box-shadow: inset 0 1px 0 #ffffff, 0 0 0 1px rgba(47, 118, 111, 0.4), 0 24px 48px -16px rgba(21, 36, 31, 0.38); }
+  html[data-dir="l"] .plan-slide:not(.plan-slide--custom) > article:hover { transform: translateY(-3px); box-shadow: inset 0 1px 0 #ffffff, 0 0 0 1px rgba(47, 118, 111, 0.4), 0 24px 48px -16px rgba(21, 36, 31, 0.38); box-shadow: inset 0 1px 0 light-dark(#ffffff, #3B5664), 0 0 0 1px rgba(47, 118, 111, 0.4), 0 24px 48px -16px rgba(21, 36, 31, 0.38); }
   html[data-dir="l"] .plan-slide--custom > article:hover { transform: translateY(-3px); }
 }
 html[data-dir="l"] .plan-compare-cta { justify-content: center; margin-top: 0.75rem; }
@@ -114,25 +114,25 @@ html[data-dir="l"] .plan-compare-cta { justify-content: center; margin-top: 0.75
 /* =====================  3. Home #start router (ProblemChoiceList): depth cards, phone carousel  ===================== */
 html[data-dir="l"] .router-section .carousel { margin-top: 0.5rem; }
 html[data-dir="l"] .problem-choice {
-  position: relative; background: #ffffff; border: 1px solid #c9c2b2;
-  box-shadow: inset 0 1px 0 #ffffff, 0 0 0 1px rgba(47, 118, 111, 0.22), 0 18px 40px -16px rgba(21, 36, 31, 0.32);
+  position: relative; background: #ffffff; background: light-dark(#ffffff, #152A36); border: 1px solid #c9c2b2; border: 1px solid light-dark(#c9c2b2, #3B5664);
+  box-shadow: inset 0 1px 0 #ffffff, 0 0 0 1px rgba(47, 118, 111, 0.22), 0 18px 40px -16px rgba(21, 36, 31, 0.32); box-shadow: inset 0 1px 0 light-dark(#ffffff, #3B5664), 0 0 0 1px rgba(47, 118, 111, 0.22), 0 18px 40px -16px rgba(21, 36, 31, 0.32);
 }
 html[data-dir="l"] .problem-choice::before { content: ""; position: absolute; left: 1.25rem; right: 1.25rem; top: -1px; height: 4px; border-radius: 0 0 4px 4px; background: #2f766f; }
 html[data-dir="l"] .carousel__slide:nth-child(even) > .problem-choice::before { background: #c8a548; }
 html[data-dir="l"] .problem-choice__lead { justify-content: flex-start; gap: 0.7rem; }
 html[data-dir="l"] .problem-choice__icon { background: #1e6b66; color: #ffffff; border-color: transparent; }
-html[data-dir="l"] .problem-choice__number { font-size: 0.875rem; color: #3a4a44; }
+html[data-dir="l"] .problem-choice__number { font-size: 0.875rem; color: #3a4a44; color: light-dark(#3a4a44, #B4C3C8); }
 html[data-dir="l"] .problem-choice__body { align-content: start; }
 html[data-dir="l"] .problem-choice__title { font-size: 1.3125rem; font-weight: 780; line-height: 1.25; }
 html[data-dir="l"] .problem-choice__arrow { align-items: center; justify-content: center; align-self: flex-end; width: 44px; height: 44px; margin-top: 0.5rem; border-radius: 999px; background: #1e6b66; color: #ffffff; }
 html[data-dir="l"] .carousel__slide > .problem-choice { height: 100%; }
 /* desktop: the 2x2 sits on a deeper plate so white cards read off the warm page (Critiquito P2-2); no mesh, no featured card */
 @media (min-width: 900px) {
-  html[data-dir="l"] .router-section .carousel--grid-2 .carousel__track { padding: 1.5rem; border-radius: var(--radius-xl); background: #e8e2d4; border: 1px solid #d8d1c1; }
+  html[data-dir="l"] .router-section .carousel--grid-2 .carousel__track { padding: 1.5rem; border-radius: var(--radius-xl); background: #e8e2d4; background: light-dark(#e8e2d4, #13242F); border: 1px solid #d8d1c1; border: 1px solid light-dark(#d8d1c1, #3B5664); }
 }
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
   html[data-dir="l"] .problem-choice { transition: box-shadow 0.25s ease, transform 0.25s ease; }
-  html[data-dir="l"] .problem-choice:hover { transform: translateY(-3px); box-shadow: inset 0 1px 0 #ffffff, 0 0 0 1px rgba(47, 118, 111, 0.45), 0 24px 48px -16px rgba(30, 107, 102, 0.42); }
+  html[data-dir="l"] .problem-choice:hover { transform: translateY(-3px); box-shadow: inset 0 1px 0 #ffffff, 0 0 0 1px rgba(47, 118, 111, 0.45), 0 24px 48px -16px rgba(30, 107, 102, 0.42); box-shadow: inset 0 1px 0 light-dark(#ffffff, #3B5664), 0 0 0 1px rgba(47, 118, 111, 0.45), 0 24px 48px -16px rgba(30, 107, 102, 0.42); }
 }
 
 /* =====================  4. Towns and footer  ===================== */
@@ -222,29 +222,42 @@ html[data-dir="l"] .expect-card,
 html[data-dir="l"] .flow-car .flow-card,
 html[data-dir="l"] .connect-actions .connect-action,
 html[data-dir="l"] .tools-car .tool-card,
+html[data-dir="l"] .outcomes-car .svc-outcomes__item,
+html[data-dir="l"] .process-car .project-process__step,
 html[data-dir="l"] .evidence-grid article {
-  position: relative; background: #ffffff; color: #15241f; border: 1px solid #c9c2b2; border-radius: var(--radius-xl);
-  box-shadow: inset 0 1px 0 #ffffff, 0 0 0 1px rgba(47, 118, 111, 0.22), 0 18px 40px -16px rgba(21, 36, 31, 0.32);
+  position: relative; background: #ffffff; background: light-dark(#ffffff, #152A36); color: #15241f; color: light-dark(#15241f, #E6EEF0); border: 1px solid #c9c2b2; border: 1px solid light-dark(#c9c2b2, #3B5664); border-radius: var(--radius-xl);
+  box-shadow: inset 0 1px 0 #ffffff, 0 0 0 1px rgba(47, 118, 111, 0.22), 0 18px 40px -16px rgba(21, 36, 31, 0.32); box-shadow: inset 0 1px 0 light-dark(#ffffff, #3B5664), 0 0 0 1px rgba(47, 118, 111, 0.22), 0 18px 40px -16px rgba(21, 36, 31, 0.32);
 }
 html[data-dir="l"] .depth-card::before,
 html[data-dir="l"] .principle-card::before,
 html[data-dir="l"] .expect-card::before,
 html[data-dir="l"] .flow-car .flow-card::before,
+html[data-dir="l"] .outcomes-car .svc-outcomes__item::before,
+html[data-dir="l"] .process-car .project-process__step::before,
 html[data-dir="l"] .evidence-grid article::before {
   content: ""; position: absolute; left: 1.25rem; right: 1.25rem; top: -1px; height: 4px; border-radius: 0 0 4px 4px; background: #2f766f;
 }
 html[data-dir="l"] .carousel__slide:nth-child(even) > .principle-card::before,
 html[data-dir="l"] .carousel__slide:nth-child(even) > .expect-card::before,
 html[data-dir="l"] .carousel__slide:nth-child(even) > .flow-card::before,
+html[data-dir="l"] .carousel__slide:nth-child(even) > .svc-outcomes__item::before,
+html[data-dir="l"] .carousel__slide:nth-child(even) > .project-process__step::before,
 html[data-dir="l"] .evidence-grid article:nth-child(even)::before { background: #c8a548; }
 html[data-dir="l"] .carousel__slide > .principle-card,
 html[data-dir="l"] .carousel__slide > .expect-card,
 html[data-dir="l"] .carousel__slide > .flow-card,
+html[data-dir="l"] .carousel__slide > .depth-card,
+html[data-dir="l"] .carousel__slide > .svc-outcomes__item,
+html[data-dir="l"] .carousel__slide > .project-process__step,
+html[data-dir="l"] .carousel__slide > .project-visual,
 html[data-dir="l"] .carousel__slide > .tool-card { height: 100%; box-sizing: border-box; }
 /* number chip beside the title */
 html[data-dir="l"] .principle-card__n,
 html[data-dir="l"] .expect-card__n,
 html[data-dir="l"] .flow-car .flow-card__n,
+html[data-dir="l"] .depth-card__n,
+html[data-dir="l"] .outcomes-car .svc-outcomes__n,
+html[data-dir="l"] .process-car .project-process__step > span,
 html[data-dir="l"] .evidence-grid article > span {
   display: inline-grid; place-items: center; min-width: 2.5rem; height: 2.5rem; padding: 0 0.5rem; margin: 0; box-sizing: border-box;
   border-radius: 12px; background: #1e6b66; color: #ffffff; font-size: 0.875rem; font-weight: 800; letter-spacing: 0.06em; line-height: 1;
@@ -257,7 +270,7 @@ html[data-dir="l"] .principle-card { display: flex; flex-direction: column; gap:
 html[data-dir="l"] .principle-card .num-card__media,
 html[data-dir="l"] .principle-card .num-card__media.num-card__media--diagram {
   display: grid; place-items: center; margin: 0; padding: 0; aspect-ratio: 16 / 10; width: 100%; height: auto; min-height: 0; overflow: hidden;
-  border-radius: 12px; border: 1px solid #d9d2c3; background: #f7f4ec; box-sizing: border-box;
+  border-radius: 12px; border: 1px solid #d9d2c3; border: 1px solid light-dark(#d9d2c3, #3B5664); background: #f7f4ec; background: light-dark(#f7f4ec, #152A36); box-sizing: border-box;
 }
 html[data-dir="l"] .principle-card .num-card__media picture { display: block; width: 100%; height: 100%; }
 html[data-dir="l"] .principle-card .num-card__media img { display: block; width: 100%; height: 100%; max-height: none; object-fit: cover; object-position: top left; border: 0; border-radius: 0; }
@@ -266,12 +279,12 @@ html[data-dir="l"] .principle-card .num-card__media .tool-row { display: flex; f
 html[data-dir="l"] .principle-card .num-card__media .tool-row img { width: 36px; height: 36px; object-fit: contain; }
 html[data-dir="l"] .principle-card__head { display: flex; align-items: center; gap: 0.7rem; padding: 0 0.5rem; }
 html[data-dir="l"] .principle-card h3 { margin: 0; font-size: 1.25rem; line-height: 1.25; }
-html[data-dir="l"] .principle-card p { margin: 0; padding: 0 0.5rem; font-size: 1rem; line-height: 1.55; color: #3a4a44; }
+html[data-dir="l"] .principle-card p { margin: 0; padding: 0 0.5rem; font-size: 1rem; line-height: 1.55; color: #3a4a44; color: light-dark(#3a4a44, #B4C3C8); }
 
 /* Discovery: three equal light cards (phone carousel), the diagram centred, and ONE mesh band for "Share the context, not the secrets." */
 html[data-dir="l"] .expect-card { display: flex; flex-direction: column; gap: 0.6rem; padding: 1.4rem 1.2rem 1.3rem; }
 html[data-dir="l"] .expect-card h3 { margin: 0.2rem 0 0; font-size: 1.1875rem; line-height: 1.3; }
-html[data-dir="l"] .expect-card p { margin: 0; font-size: 1rem; line-height: 1.55; color: #3a4a44; }
+html[data-dir="l"] .expect-card p { margin: 0; font-size: 1rem; line-height: 1.55; color: #3a4a44; color: light-dark(#3a4a44, #B4C3C8); }
 html[data-dir="l"] .expect-card__n { align-self: flex-start; }
 html[data-dir="l"] .expect-diagram { max-width: 680px; margin: 1.75rem auto 0; }
 html[data-dir="l"] .expect-diagram picture,
@@ -281,7 +294,7 @@ html[data-dir="l"] .discovery-band .warning.discovery-band__copy { margin: 0; pa
 html[data-dir="l"] .discovery-band .warning.discovery-band__copy h2 { font-size: clamp(1.5rem, 3vw, 2rem); color: #efe9dd; }
 html[data-dir="l"] .discovery-band .warning.discovery-band__copy p { color: #efe9dd; }
 html[data-dir="l"] .discovery-band a:not(.button) { color: #efe9dd; text-decoration: underline; text-underline-offset: 0.2em; min-height: var(--tap); display: inline-flex; align-items: center; }
-html[data-dir="l"] .discovery-band a:not(.button):focus-visible { outline: 3px solid #e6d08f; outline-offset: 2px; border-radius: 6px; }
+html[data-dir="l"] .discovery-band a:not(.button):focus-visible { outline: 3px solid #e6d08f; outline: 3px solid light-dark(#e6d08f, #3B5664); outline-offset: 2px; border-radius: 6px; }
 html[data-dir="l"] .discovery-band__start {
   padding: 1.5rem 1.25rem; text-align: center; border-radius: var(--radius-xl); color: #efe9dd;
   background-color: rgba(239, 233, 221, 0.07);
@@ -299,21 +312,21 @@ html[data-dir="l"] .discovery-band__start p { margin: 0 0 0.35rem; color: #efe9d
 html[data-dir="l"] .flow-car { margin-top: 0.25rem; }
 html[data-dir="l"] .flow-car .flow-card { display: flex; flex-direction: column; gap: 0.55rem; padding: 1.35rem 1.15rem 1.2rem; }
 html[data-dir="l"] .flow-car .flow-card h3 { margin: 0.2rem 0 0; font-size: 1.125rem; }
-html[data-dir="l"] .flow-car .flow-card p:not(.flow-card__n) { margin: 0; font-size: 0.9375rem; line-height: 1.55; color: #3a4a44; }
+html[data-dir="l"] .flow-car .flow-card p:not(.flow-card__n) { margin: 0; font-size: 0.9375rem; line-height: 1.55; color: #3a4a44; color: light-dark(#3a4a44, #B4C3C8); }
 html[data-dir="l"] .flow-car .flow-card__n { align-self: flex-start; }
 @media (min-width: 900px) {
   html[data-dir="l"] .flow-car.carousel--grid-2 .carousel__track { gap: 1rem; padding-top: 1rem; }
 }
 html[data-dir="l"] .connect-actions .connect-action { padding: 1rem 1.1rem; }
 html[data-dir="l"] .connect-actions .connect-action,
-html[data-dir="l"] .connect-actions .connect-action .connect-action__copy strong { color: #15241f; }
-html[data-dir="l"] .connect-actions .connect-action .connect-action__copy > span { color: #1e6b66; font-weight: 800; }
-html[data-dir="l"] .connect-actions .connect-action .connect-action__copy small { color: #3a4a44; }
+html[data-dir="l"] .connect-actions .connect-action .connect-action__copy strong { color: #15241f; color: light-dark(#15241f, #E6EEF0); }
+html[data-dir="l"] .connect-actions .connect-action .connect-action__copy > span { color: #1e6b66; color: light-dark(#1e6b66, #8FD3C1); font-weight: 800; }
+html[data-dir="l"] .connect-actions .connect-action .connect-action__copy small { color: #3a4a44; color: light-dark(#3a4a44, #B4C3C8); }
 html[data-dir="l"] .connect-actions .connect-action .connect-action__icon { display: grid; place-items: center; width: 44px; height: 44px; flex: 0 0 44px; border-radius: 12px; background: #1e6b66; color: #ffffff; }
 html[data-dir="l"] .connect-actions .connect-action:focus-visible { outline: 3px solid #1e6b66; outline-offset: 3px; }
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
   html[data-dir="l"] .connect-actions .connect-action { transition: box-shadow 0.25s ease, transform 0.25s ease; }
-  html[data-dir="l"] .connect-actions .connect-action:hover { transform: translateY(-2px); box-shadow: inset 0 1px 0 #ffffff, 0 0 0 1px rgba(47, 118, 111, 0.45), 0 24px 48px -16px rgba(21, 36, 31, 0.38); }
+  html[data-dir="l"] .connect-actions .connect-action:hover { transform: translateY(-2px); box-shadow: inset 0 1px 0 #ffffff, 0 0 0 1px rgba(47, 118, 111, 0.45), 0 24px 48px -16px rgba(21, 36, 31, 0.38); box-shadow: inset 0 1px 0 light-dark(#ffffff, #3B5664), 0 0 0 1px rgba(47, 118, 111, 0.45), 0 24px 48px -16px rgba(21, 36, 31, 0.38); }
 }
 
 /* Work: five equal tool cards, equal 16:10 rounded frames (Document Control no larger than its neighbours), phone carousel */
@@ -321,33 +334,33 @@ html[data-dir="l"] .tools-car .tool-card { display: flex; flex-direction: column
 html[data-dir="l"] .tools-car .tool-card__frame,
 html[data-dir="l"] .site--coastal-v2c .tools-car .tool-card__frame {
   display: block; aspect-ratio: 16 / 10; width: auto; height: auto; max-height: none; margin: 0.75rem 0.75rem 0; overflow: hidden;
-  border-radius: 12px; border: 1px solid #d9d2c3; background: #f7f4ec;
+  border-radius: 12px; border: 1px solid #d9d2c3; border: 1px solid light-dark(#d9d2c3, #3B5664); background: #f7f4ec; background: light-dark(#f7f4ec, #152A36);
 }
 html[data-dir="l"] .tools-car .tool-card__frame picture { display: block; width: 100%; height: 100%; }
 html[data-dir="l"] .tools-car .tool-card__frame img,
 html[data-dir="l"] .site--coastal-v2c .tools-car .tool-card__frame img { display: block; width: 100%; height: 100%; max-height: none; object-fit: cover; object-position: top left; }
-html[data-dir="l"] .tools-car .tool-card__frame--mark { display: grid; place-items: center; color: #1e6b66; background: #efe9dd; }
+html[data-dir="l"] .tools-car .tool-card__frame--mark { display: grid; place-items: center; color: #1e6b66; color: light-dark(#1e6b66, #8FD3C1); background: #efe9dd; background: light-dark(#efe9dd, #13242F); }
 html[data-dir="l"] .tools-car .tool-card .portfolio-card__body { display: flex; flex-direction: column; flex: 1; }
 html[data-dir="l"] .tools-car .tool-card .portfolio-card__body > .text-link { margin-top: auto; }
 
 /* Project pages (Document Control and the other /work/ projects): capped, framed screenshots and equal evidence cards */
 html[data-dir="l"] .dc-overview-band picture { display: block; max-width: 1100px; margin-inline: auto; }
 html[data-dir="l"] .dc-overview-band .dc-overview {
-  display: block; width: 100%; height: auto; border-radius: var(--radius-xl); border: 1px solid #c9c2b2;
+  display: block; width: 100%; height: auto; border-radius: var(--radius-xl); border: 1px solid #c9c2b2; border: 1px solid light-dark(#c9c2b2, #3B5664);
   box-shadow: 0 0 0 1px rgba(47, 118, 111, 0.22), 0 24px 54px -20px rgba(21, 36, 31, 0.45);
 }
 html[data-dir="l"] .dc-overview-band .maturity { max-width: 1100px; margin-inline: auto; text-align: center; }
 html[data-dir="l"] .project-visuals .project-visual-grid { max-width: 1100px; margin-inline: auto; }
 html[data-dir="l"] .project-visuals .project-visual-grid--single { max-width: 860px; }
 html[data-dir="l"] .project-visuals .project-visual__frame {
-  border-radius: var(--radius-xl); border: 1px solid #c9c2b2;
+  border-radius: var(--radius-xl); border: 1px solid #c9c2b2; border: 1px solid light-dark(#c9c2b2, #3B5664);
   box-shadow: 0 0 0 1px rgba(47, 118, 111, 0.22), 0 18px 40px -16px rgba(21, 36, 31, 0.32);
 }
 html[data-dir="l"] .evidence-grid { gap: 1rem; background: none; border: 0; }
 html[data-dir="l"] .evidence-grid article { min-height: 0; padding: 1.35rem 1.15rem 1.25rem; }
-html[data-dir="l"] .evidence-grid article p { margin: 0.85rem 0 0; color: #15241f; }
+html[data-dir="l"] .evidence-grid article p { margin: 0.85rem 0 0; color: #15241f; color: light-dark(#15241f, #E6EEF0); }
 html[data-dir="l"] .band-mesh .project-boundary--dark {
-  border-radius: var(--radius-xl); border: 1px solid rgba(239, 233, 221, 0.3); border-left: 4px solid #e6d08f;
+  border-radius: var(--radius-xl); border: 1px solid rgba(239, 233, 221, 0.3); border-left: 4px solid #e6d08f; border-left: 4px solid light-dark(#e6d08f, #3B5664);
   background-color: rgba(239, 233, 221, 0.07);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 18px 40px -18px rgba(0, 0, 0, 0.6);
 }
@@ -398,7 +411,7 @@ html[data-dir="l"] #home-request .flow-car { margin-top: 0.25rem; }
 html[data-dir="l"] .home-tools-car.portfolio-grid--home { display: block; }
 html[data-dir="l"] .home-tools-car .tool-card .portfolio-card__body { padding: 1rem 1.1rem 0.9rem; gap: 0.45rem; }
 html[data-dir="l"] .home-tools-car .tool-card .portfolio-card__body h3 { margin: 0.1rem 0 0; font-size: 1.125rem; }
-html[data-dir="l"] .home-tools-car .tool-card .portfolio-card__body > p { margin: 0; font-size: 0.9375rem; line-height: 1.55; color: #3a4a44; }
+html[data-dir="l"] .home-tools-car .tool-card .portfolio-card__body > p { margin: 0; font-size: 0.9375rem; line-height: 1.55; color: #3a4a44; color: light-dark(#3a4a44, #B4C3C8); }
 html[data-dir="l"] .home-tools-car .tool-card .portfolio-card__body > .text-link { display: inline-flex; align-items: center; min-height: var(--tap); }
 html[data-dir="l"] .home-tools__more { display: flex; justify-content: center; margin: 1rem 0 0; }
 html[data-dir="l"] .home-tools__more .text-link { display: inline-flex; align-items: center; min-height: var(--tap); }
@@ -410,15 +423,257 @@ html[data-dir="l"] .home-tools__more .text-link { display: inline-flex; align-it
 /* Services cards 3 and 4: the diagram plates and the tool-mark row sit on the light depth-card surface instead of a flat cream field. */
 html[data-dir="l"] .svc-card__visual picture:has(img.diagram),
 html[data-dir="l"] .svc-card__visual .tool-row {
-  background: #fff; border: 1px solid #c9c2b2;
-  box-shadow: inset 0 1px 0 #fff, 0 0 0 1px rgba(47, 118, 111, 0.22), 0 12px 28px -16px rgba(5, 18, 26, 0.55);
+  background: #fff; background: light-dark(#fff, #152A36); border: 1px solid #c9c2b2; border: 1px solid light-dark(#c9c2b2, #3B5664);
+  box-shadow: inset 0 1px 0 #fff, 0 0 0 1px rgba(47, 118, 111, 0.22), 0 12px 28px -16px rgba(5, 18, 26, 0.55); box-shadow: inset 0 1px 0 light-dark(#fff, #3B5664), 0 0 0 1px rgba(47, 118, 111, 0.22), 0 12px 28px -16px rgba(5, 18, 26, 0.55);
 }
 /* The two diagram SVGs (shared with About and the service pages) now draw on white (#FFFFFF, was #F7F4EC), so plate and drawing are one surface. */
 /* About principle 03: the same non-endorsement line Services carries under the tool marks, inside the existing 16:10 frame. */
 html[data-dir="l"] .principle-card .num-card__media:has(> .tool-row) { align-content: center; gap: 0.35rem; }
-html[data-dir="l"] .principle-card .num-card__media > .tool-row + .caption { margin: 0; padding: 0 1rem; max-width: 34ch; text-align: center; font-size: 0.875rem; line-height: 1.4; color: #3a4a44; background: none; border: 0; }
+html[data-dir="l"] .principle-card .num-card__media > .tool-row + .caption { margin: 0; padding: 0 1rem; max-width: 34ch; text-align: center; font-size: 0.875rem; line-height: 1.4; color: #3a4a44; color: light-dark(#3a4a44, #B4C3C8); background: none; border: 0; }
 html[data-dir="l"] .principle-card .num-card__media:has(> .tool-row) > .tool-row { padding: 0.5rem 0.75rem 0; gap: 0.75rem; }
 @media (max-width: 899px) {
   html[data-dir="l"] .principle-card .num-card__media:has(> .tool-row) > .tool-row { gap: 0.6rem; }
   html[data-dir="l"] .principle-card .num-card__media:has(> .tool-row) > .tool-row img { width: 32px; height: 32px; }
+}
+
+/* 10. k4a: every /work/<slug>/ project page (Document Control included) on the shared R5 project template, and the service detail pages. */
+/* "How the proof is structured": numbered depth cards in the shared carousel (2, 3 or 4 across at desktop, phone carousel). */
+html[data-dir="l"] .process-car .project-process__step { display: flex; flex-direction: column; gap: 0.85rem; min-height: 0; padding: 1.35rem 1.15rem 1.25rem; }
+html[data-dir="l"] .process-car .project-process__step > span { align-self: flex-start; }
+html[data-dir="l"] .process-car .project-process__step p { margin: 0; color: #15241f; color: light-dark(#15241f, #E6EEF0); font-weight: 600; line-height: 1.5; }
+/* Two or more screenshots: the same framed figures in the shared carousel; one screenshot stays a single centred figure. */
+html[data-dir="l"] .visual-car .project-visual { display: flex; flex-direction: column; }
+html[data-dir="l"] .visual-car .project-visual figcaption { flex: 1; }
+@media (min-width: 900px) { html[data-dir="l"] .project-visuals .visual-car { max-width: 1100px; margin-inline: auto; } }
+/* Evidence cards fill the row when a project has two or three items (four keeps the existing 4-up row). */
+@media (min-width: 1001px) {
+  html[data-dir="l"] .evidence-grid:has(> article:nth-child(3):last-child) { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  html[data-dir="l"] .evidence-grid:has(> article:nth-child(2):last-child) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+/* Service detail pages: the three outcomes are numbered depth cards (3 across from 900px, phone carousel); "Provided by" reaches 44px in place. */
+html[data-dir="l"] .outcomes-car .svc-outcomes__item { display: flex; flex-direction: column; gap: 0.6rem; padding: 1.35rem 1.15rem 1.25rem; }
+html[data-dir="l"] .outcomes-car .svc-outcomes__n { align-self: flex-start; }
+html[data-dir="l"] .outcomes-car .svc-outcomes__item h3 { margin: 0.25rem 0 0; }
+html[data-dir="l"] .outcomes-car .svc-outcomes__item p { margin: 0; color: #15241f; color: light-dark(#15241f, #E6EEF0); }
+html[data-dir="l"] .outcomes-car .svc-outcomes__item .svc-outcomes__ex { margin-top: auto; padding-top: 0.75rem; border-top: 1px solid #d9d2c3; border-top: 1px solid light-dark(#d9d2c3, #3B5664); color: #3a4a44; color: light-dark(#3a4a44, #B4C3C8); }
+@media (min-width: 900px) {
+  html[data-dir="l"] .outcomes-car { margin-inline: 0; }
+  html[data-dir="l"] .outcomes-car .carousel__track { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; overflow: visible; scroll-snap-type: none; padding: 1.5rem 0 0.5rem; }
+  html[data-dir="l"] .outcomes-car .carousel__slide { scroll-snap-align: none; }
+  html[data-dir="l"] .outcomes-car .carousel__dots { display: none; }
+}
+html[data-dir="l"] .service-provider a { display: inline-flex; align-items: center; min-height: var(--tap); margin-block: calc((1.2rem - var(--tap)) / 2); }
+/* Project hero copy sits on the same solid plate as the Services and Work heroes where the marsh band shows behind it (>= 761px), so the
+   boundary line and the View source link keep >= 4.5:1 over the photo (Document Control measured 3.18 before). Phones already use a solid field. */
+@media (min-width: 761px) {
+  html[data-dir="l"] .project-hero-grid > .readable {
+    background: var(--plate-bg-solid); padding: 1.15rem 1.25rem 1.25rem; border-radius: var(--radius-xl);
+    border: 1px solid var(--color-border); box-shadow: var(--shadow-sm);
+  }
+  html[data-dir="l"] .project-hero-grid > .project-summary-card { background: var(--plate-bg-solid); }
+}
+/* Screenshot captions: the darker muted ink used on the other light cards (#3A4A44), so the caption clears 4.5:1 next to the frame shadow. */
+html[data-dir="l"] .project-visual figcaption { color: #3a4a44; color: light-dark(#3a4a44, #B4C3C8); }
+
+/* 11. k4b: Approach, the guides, Website Check, the Local Visibility sample and Contact on the R5 set, using the same depth cards, carousel,
+   hero plate and mesh band. Copy, numbers, legal wording and link targets are unchanged. */
+html[data-dir="l"] .approach-car .flow__step,
+html[data-dir="l"] .approach-expect-car .depth-card { display: flex; flex-direction: column; gap: 0.6rem; padding: 1.35rem 1.15rem 1.25rem; }
+html[data-dir="l"] .approach-car .flow__step h3,
+html[data-dir="l"] .approach-expect-car .depth-card h3 { margin: 0.2rem 0 0; }
+html[data-dir="l"] .approach-car .flow__step p,
+html[data-dir="l"] .approach-expect-car .depth-card p { margin: 0; color: #15241f; color: light-dark(#15241f, #E6EEF0); }
+html[data-dir="l"] .depth-card__n { align-self: flex-start; }
+html[data-dir="l"] .guide-index-grid .guide-card.depth-card,
+html[data-dir="l"] .guide-index-note.depth-card { padding: 1.5rem 1.35rem 1.35rem; }
+html[data-dir="l"] .guide-index-note.depth-card { background: #ffffff; background: light-dark(#ffffff, #152A36); }
+html[data-dir="l"] .contact-safety.depth-card { padding: 1.5rem 1.35rem 1.35rem; }
+/* Contact: the three social links reach 44px in place (as on Connect). */
+html[data-dir="l"] .social-list { row-gap: 0; }
+html[data-dir="l"] .social-list a { display: inline-flex; align-items: center; gap: 0.4rem; min-height: var(--tap); min-width: var(--tap); margin-block: calc((1.5rem - var(--tap)) / 2); }
+/* Guide source notes: each source link keeps its place in the sentence; an invisible centred ::after gives it a 44px-tall hit area
+   inside the row's own padding (rows are 0.8rem padded and separated by a rule, so hit areas never overlap another link). */
+html[data-dir="l"] .guide-source-list a { position: relative; }
+html[data-dir="l"] .guide-source-list a::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: max(100%, var(--tap)); transform: translateY(-50%); }
+/* Website Check and the Local Visibility sample: 44px disclosure summaries; the closing "next step" and the evidence tiles sit on light depth cards. */
+html[data-dir="l"] .audit-demo__details > summary,
+html[data-dir="l"] .local-proof__detail > summary { min-height: var(--tap); box-sizing: border-box; display: list-item; padding-block: 0.65rem; }
+html[data-dir="l"] .audit-demo__next,
+html[data-dir="l"] .local-proof__next {
+  margin-block: clamp(2rem, 5vw, 3rem); padding: clamp(1.35rem, 3vw, 2rem); background: #ffffff; background: light-dark(#ffffff, #152A36); border: 1px solid #c9c2b2; border: 1px solid light-dark(#c9c2b2, #3B5664); border-radius: var(--radius-xl);
+  box-shadow: inset 0 1px 0 #ffffff, 0 0 0 1px rgba(47, 118, 111, 0.22), 0 18px 40px -16px rgba(21, 36, 31, 0.32); box-shadow: inset 0 1px 0 light-dark(#ffffff, #3B5664), 0 0 0 1px rgba(47, 118, 111, 0.22), 0 18px 40px -16px rgba(21, 36, 31, 0.32);
+}
+html[data-dir="l"] .local-proof__limits li { border-color: #c9c2b2; border-color: light-dark(#c9c2b2, #3B5664); box-shadow: 0 0 0 1px rgba(47, 118, 111, 0.12), 0 12px 28px -18px rgba(21, 36, 31, 0.3); }
+
+
+/* 12. k4b P2-1: project hero on phones (every /work/<slug>/ page). Below the 761px plate breakpoint the hero copy no longer stretches to a full
+   screen, so the "Why it matters" plate sits directly under the CTAs instead of after an empty cream field. The CTAs move up, not down,
+   so they clear the MobileContactBar by more than before. The marsh stays the shared hero band only. */
+@media (max-width: 760px) {
+  html[data-dir="l"] body.has-bar main > .page-hero:has(> .project-hero-grid) { min-height: 0; padding-bottom: 2rem; }
+  html[data-dir="l"] .project-hero-grid > .readable { min-height: 0; padding-bottom: 0; }
+}
+/* The same on the k4b page heroes that carry only a plate (Approach, Guides, the ownership guide, Contact): the plate is top-aligned, so
+   dropping the full-screen stretch keeps the CTAs where they are and brings the next section up instead of leaving empty cream. */
+@media (max-width: 760px) {
+  html[data-dir="l"] body.has-bar main > .page-hero.page-hero--snug,
+  html[data-dir="l"] body.has-bar main .guide-article > .page-hero.page-hero--snug { min-height: 0; padding-bottom: 2rem; }
+}
+
+/* 13. k4c: Accessibility, Privacy, Terms, Secure Share and the 404 page on the R5 set. Wording is untouched: the legal text sits on a light
+   depth-card sheet, the heroes on the plate, Secure Share's two cards on depth cards with the mesh on its existing navy band, and the 404
+   message on a depth card. No marsh art outside the shared hero. */
+html[data-dir="l"] .legal-sheet { padding: clamp(1.35rem, 3.5vw, 2.25rem) clamp(1.15rem, 3.5vw, 2.5rem); }
+html[data-dir="l"] .legal-sheet > h2 { margin-top: 2rem; }
+html[data-dir="l"] .legal-sheet > h2:first-child { margin-top: 0; }
+html[data-dir="l"] .legal-sheet > :last-child { margin-bottom: 0; }
+/* In-text links reach a 44px hit height without moving the text (centred invisible ::after, as on the guide source links). Where two links
+   sit on stacked lines (Accessibility: email <br> phone) each line grows to 44px instead, so the two hit areas never overlap. */
+html[data-dir="l"] .legal-sheet p a { position: relative; }
+html[data-dir="l"] .legal-sheet p a::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: max(100%, var(--tap)); transform: translateY(-50%); }
+html[data-dir="l"] .legal-sheet p:has(> br) a { display: inline-flex; align-items: center; min-height: var(--tap); vertical-align: middle; }
+html[data-dir="l"] .legal-sheet p:has(> br) a::after { content: none; }
+html[data-dir="l"] .notfound-card { padding: clamp(1.5rem, 4vw, 2.5rem); }
+html[data-dir="l"] .notfound-card .actions { margin-bottom: 0; }
+html[data-dir="l"] .grid--2 > .card.depth-card { padding: 1.5rem 1.35rem 1.35rem; }
+
+/* 14. k4c, Critiquito k4b review. P2-1 remainder: with the MobileContactBar on screen, focus and in-page scrolling leave the bar's height plus 24px
+   free at the bottom, so a short scroll rests the whole "Why it matters" plate above the bar. At 390px and below the plate's padding tightens
+   (type sizes unchanged) so its top edge and heading sit higher on the first screen. The 32px stack under the CTAs and min-height: 0 stay. */
+html[data-dir="l"] {
+  --ldw-bar-h: calc(1.1rem + 49px + env(safe-area-inset-bottom, 0px)); /* bar: 0.55rem padding x2, 48px buttons, 1px rule, safe area */
+  scroll-padding-bottom: calc(var(--ldw-bar-h) + 24px);
+}
+@media (max-width: 390px) {
+  html[data-dir="l"] .project-hero-grid > .project-summary-card { padding: 0.85rem 1rem 0.95rem; }
+  html[data-dir="l"] .project-hero-grid > .project-summary-card .eyebrow { margin-bottom: 0.4rem; }
+}
+/* P2-2: the outcome check fills the 40px chip as a 24px mark (8px well), as the numerals did. */
+html[data-dir="l"] .outcomes-car .svc-outcomes__n > svg { width: 24px; height: 24px; }
+
+
+/* 15. k4d: Document Control is the only project hero with a chip row. On phones its two chips share one row (each keeps the 44px tap height
+   and the R5 chip type size; the longer label wraps inside its chip), so the "Why it matters" plate top and heading clear the real
+   MobileContactBar by >= 24px at 375x667 too. Layout only: labels, links and order are unchanged; desktop is untouched. */
+@media (max-width: 760px) {
+  html[data-dir="l"] body.has-bar .project-hero-grid .chip-row { flex-wrap: nowrap; align-items: stretch; }
+  html[data-dir="l"] body.has-bar .project-hero-grid .chip-row > .chip { flex: 1 1 auto; min-width: 0; border-radius: 14px; line-height: 1.3; padding-block: 0.3rem; }
+  html[data-dir="l"] body.has-bar .project-hero-grid .chip-row > .chip:last-child { flex: 0 0 auto; white-space: nowrap; }
+}
+
+/* 16. k5b: About hero founder card label ("Meet Eddie"). From 761px the card is translucent over the marsh photo and the label measured
+   3.32-3.51:1 on its glyphs; it gets its own solid plate backing (the hero plate colour). Label colour and copy, and the rest of the card,
+   are unchanged; phones already sit on a solid card (5.86:1). */
+@media (min-width: 761px) {
+  html[data-dir="l"] .about-owner-card .eyebrow { display: inline-block; background: var(--plate-bg-solid); padding: 0.15rem 0.55rem; border-radius: 999px; }
+}
+
+/* 17. k5c: About hero founder card location line ("Beaufort, South Carolina · Owner-operated"). Same case as §16: from 761px it sat on the
+   translucent card over the marsh at 3.23-3.47:1 on its glyphs, so it gets the same solid plate backing. Its colour (--muted), size and copy,
+   and the rest of the card, are unchanged; phones already sit on a solid card. */
+@media (min-width: 761px) {
+  html[data-dir="l"] .about-owner-card > div > p:last-child { display: inline-block; background: var(--plate-bg-solid); padding: 0.15rem 0.55rem; border-radius: 999px; }
+}
+
+/* 19. k5c (P2-1): short phones (375x667 class). The dots sat 64px under the card (1rem track padding + 0.25rem + the 44px dot row), so on
+   Home "LDW systems and internal proof" and About "Principles" they cleared the Text/Call bar by only 7.5-16.4px with the card parked under
+   the header. On short phones only, the dot row moves up 20px into the track's bottom padding; dots keep their 44px taps, cards are unchanged. */
+@media (max-width: 760px) and (max-height: 700px) {
+  html[data-dir="l"] .carousel__track { padding-bottom: 0.5rem; }
+  html[data-dir="l"] .carousel__dots { margin-top: -0.5rem; }
+}
+
+/* 20. k5c (P2-3): Connect service-area town chips at phone widths. At 360 the chips' text box (86.4px) was narrower than the longest town
+   name (88.6px), so "Habersham" and "Hardeeville" broke mid-word. Same 11 equal tiles, same 2 columns, same type; the panel and chip
+   inline padding tighten a little so every name fits whole (only whole words wrap). Home is unchanged. */
+@media (max-width: 400px) {
+  html[data-dir="l"] .connect-area .town-group { padding-inline: 1rem; }
+  html[data-dir="l"] .connect-area .town-group ul.towns li { padding-inline: 0.55rem; }
+}
+
+/* 21. k5d: /connect/ contact card (adapted from the R5 contact-card reference; the accepted tidal card, logo and copy stay). Save contact
+   is the primary action at >= 52px; Text, Call and Email move onto the card as three equal >= 44px actions under it (the separate
+   action tiles below the split are gone: the card now carries the same three links with the same ldw() events). */
+html[data-dir="l"] .biz-card--tidal a.biz-card__save,
+html[data-dir="l"] .biz-card--tidal a.biz-card__save:hover,
+html[data-dir="l"] .biz-card--tidal a.biz-card__save:focus-visible { min-height: 52px; }
+html[data-dir="l"] .biz-card--tidal .biz-card__actions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.5rem; margin-top: 0.65rem; }
+html[data-dir="l"] .biz-card--tidal a.biz-card__action {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.25rem 0.4rem; min-width: 0; min-height: var(--tap);
+  padding: 0.45rem 0.4rem; box-sizing: border-box; border: 1px solid #a9bfb5; border-radius: 12px; background: #ffffff;
+  color: #1e6b66; font-weight: 750; font-size: 0.9375rem; line-height: 1.2; text-align: center; text-decoration: none;
+}
+html[data-dir="l"] .biz-card--tidal a.biz-card__action:hover { border-color: #1e6b66; color: #102a3a; }
+html[data-dir="l"] .biz-card--tidal a.biz-card__action:focus-visible { outline: 3px solid #1e6b66; outline-offset: 2px; }
+html[data-dir="l"] .biz-card--tidal a.biz-card__action .ui-icon { flex: 0 0 auto; }
+html[data-dir="l"] .biz-card--tidal a.biz-card__action span { overflow-wrap: normal; }
+/* the card's email line may wrap only at the @ (it broke as "...works.co / m" at 320) */
+html[data-dir="l"] .biz-card--tidal .biz-card__line { overflow-wrap: normal; }
+
+/* 22. k5e: /connect/ card to the owner's frozen spec (PR #140 c7179098374 > c7178946132 > c7178729248 > c7178558027).
+   Company first: the official white horizontal logo (the one the Footer uses) leads on a navy/teal header; Eddie Gugino, Founder and
+   Beaufort come second; the "EG" initials tile is gone (no avatar, no invented asset). Light page => white card with a #52796D edge
+   and a restrained shadow, no glass. The values are card tokens so a dark host mode can swap them (owner: mint #E1F0E9 body and
+   #91D5BF perimeter on dark surfaces); k5f swaps them in resolved dark mode (r5/appearance.css); light mode uses this set.
+   Token map (R5 theme.css d1 values in brackets): ink #102A3A [--color-ink/--color-navy d1], founder label #24635C [--color-interactive d1],
+   surface #FFFFFF [--color-surface], place #3A4A44 [--color-muted d2]; header #103C42, edge #52796D and Save #07564E are owner values
+   with no existing R5 token. */
+html[data-dir="l"] .biz-card.biz-card--tidal {
+  --card-surface: var(--color-surface, #FFFFFF);
+  --card-edge: #52796D;
+  --card-header: #103C42;
+  --card-ink: #102A3A;
+  --card-label: #24635C;
+  --card-muted: #3A4A44;
+  --card-save: #07564E;
+  --card-save-hover: #054640;
+  --card-on-save: #FFFFFF;
+  --card-qr-plate: #FFFFFF;
+  background: var(--card-surface);
+  color: var(--card-ink);
+  border: 2px solid var(--card-edge);
+  box-shadow: 0 10px 28px rgba(16, 42, 58, 0.12);
+}
+html[data-dir="l"] .biz-card--tidal .biz-card__banner { background-color: var(--card-header); min-height: 0; padding: 1.25rem 1.4rem 1rem; }
+html[data-dir="l"] .biz-card--tidal .biz-card__logo { display: block; width: min(250px, 80%); height: auto; }
+html[data-dir="l"] .biz-card--tidal .biz-card__tagline { margin-top: 0.6rem; }
+html[data-dir="l"] .biz-card--tidal .biz-card__body { padding-top: 1.15rem; }
+html[data-dir="l"] .biz-card--tidal .biz-card__name { margin-top: 0; color: var(--card-ink); }
+html[data-dir="l"] .biz-card--tidal .biz-card__title { color: var(--card-label); }
+html[data-dir="l"] .biz-card--tidal .biz-card__place { color: var(--card-muted); }
+html[data-dir="l"] .biz-card--tidal a.biz-card__save,
+html[data-dir="l"] .biz-card--tidal a.biz-card__save:focus-visible { background: var(--card-save); border-color: var(--card-save); color: var(--card-on-save); }
+html[data-dir="l"] .biz-card--tidal a.biz-card__save:hover { background: var(--card-save-hover); border-color: var(--card-save-hover); color: var(--card-on-save); }
+html[data-dir="l"] .biz-card--tidal a.biz-card__save:focus-visible { outline-color: var(--card-save); }
+html[data-dir="l"] .biz-card--tidal a.biz-card__action { border-color: var(--card-edge); color: var(--card-save); background: var(--card-surface); }
+html[data-dir="l"] .biz-card--tidal a.biz-card__action:hover { border-color: var(--card-save); color: var(--card-ink); }
+html[data-dir="l"] .biz-card--tidal a.biz-card__action:focus-visible { outline-color: var(--card-save); }
+html[data-dir="l"] .biz-card--tidal .biz-card__line { color: var(--card-ink); }
+html[data-dir="l"] .biz-card--tidal .biz-card__rule { background: var(--card-ink); }
+
+/* QR: the canonical /connect/ URL on its own white plate (the SVG already carries a 4-module white quiet zone; the plate adds more),
+   never scaled under 176px, never cropped, inverted or filtered. Wide layouts (>= 900px, where Connect goes two-column) show it under the
+   actions; narrower layouts hide it and offer a native, closed <details> "Show QR" instead, so Save/Text/Call/Email come first. CSS width
+   only, no script. */
+html[data-dir="l"] .biz-card--tidal .biz-card__qr { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1rem; margin-top: 1rem; }
+html[data-dir="l"] .biz-card--tidal .biz-card__qr-plate {
+  flex: 0 0 auto; display: block; padding: 8px; background: var(--card-qr-plate); border: 1px solid var(--card-edge); border-radius: 12px; line-height: 0;
+}
+html[data-dir="l"] .biz-card--tidal .biz-card__qr-plate img { display: block; width: 176px; height: 176px; max-width: none; filter: none; object-fit: contain; }
+html[data-dir="l"] .biz-card--tidal .biz-card__qr-copy { flex: 1 1 0; min-width: min-content; margin: 0; display: grid; gap: 0.2rem; font-size: 0.95rem; color: var(--card-ink); }
+html[data-dir="l"] .biz-card--tidal .biz-card__qr-copy a {
+  display: inline-flex; align-items: center; min-height: var(--tap); color: var(--card-save); font-weight: 700; overflow-wrap: normal;
+  text-decoration: underline; text-underline-offset: 0.15em;
+}
+html[data-dir="l"] .biz-card--tidal .biz-card__qr-copy a:focus-visible { outline: 3px solid var(--card-save); outline-offset: 2px; }
+html[data-dir="l"] .biz-card--tidal .biz-card__qr-narrow { display: none; }
+@media (max-width: 899.98px) {
+  html[data-dir="l"] .biz-card--tidal .biz-card__qr--wide { display: none; }
+  html[data-dir="l"] .biz-card--tidal .biz-card__qr-narrow { display: block; margin-top: 0.65rem; }
+  html[data-dir="l"] .biz-card--tidal .biz-card__qr-narrow > summary {
+    display: flex; align-items: center; justify-content: center; gap: 0.4rem; min-height: var(--tap); padding: 0.45rem 0.75rem;
+    border: 1px solid var(--card-edge); border-radius: 12px; background: var(--card-surface); color: var(--card-save); font-weight: 750; cursor: pointer;
+  }
+  html[data-dir="l"] .biz-card--tidal .biz-card__qr-narrow > summary:focus-visible { outline: 3px solid var(--card-save); outline-offset: 2px; }
+  html[data-dir="l"] .biz-card--tidal .biz-card__qr-narrow .biz-card__qr { justify-content: center; }
 }

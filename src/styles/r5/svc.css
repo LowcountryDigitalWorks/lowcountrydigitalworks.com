@@ -65,7 +65,7 @@ html[data-dir="l"] .svc-stage {
   margin: 0;
   display: flex;
   flex-direction: column;
-  background: #f7f4ec;
+  background: #f7f4ec; background: light-dark(#f7f4ec, #152A36);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-sm);
@@ -129,7 +129,7 @@ html[data-dir="l"] .svc-compare {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);
   overflow: hidden;
-  background: #fff;
+  background: #fff; background: light-dark(#fff, #152A36);
 }
 @media (min-width: 720px) {
   html[data-dir="l"] .svc-compare { grid-template-columns: 1fr 1fr; }
@@ -167,7 +167,7 @@ html[data-dir="l"] .svc-boundary {
   background: var(--color-surface-warm);
   border: 1px solid var(--color-border);
 }
-html[data-dir="l"] .section--warm .svc-boundary { background: #fff; }
+html[data-dir="l"] .section--warm .svc-boundary { background: #fff; background: light-dark(#fff, #152A36); }
 
 html[data-dir="l"] .svc-ownership {
   margin: 1.1rem 0 0;
@@ -239,7 +239,7 @@ html[data-dir="l"] .svc-outcomes--rail .svc-outcomes__item::before {
 /* ---------- diagrams ---------- */
 html[data-dir="l"] .svc-diagram {
   margin: 0;
-  background: #f7f4ec;
+  background: #f7f4ec; background: light-dark(#f7f4ec, #152A36);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);
   padding: clamp(0.75rem, 2vw, 1.5rem);
@@ -291,8 +291,8 @@ html[data-dir="l"] .svc-frame__dots {
   height: 8px;
   margin-right: 28px;
   border-radius: 50%;
-  background: rgb(239 233 221 / 0.6);
-  box-shadow: 14px 0 0 rgb(239 233 221 / 0.6), 28px 0 0 rgb(239 233 221 / 0.6);
+  background: rgb(239 233 221 / 0.6); background: light-dark(rgb(239 233 221 / 0.6), rgba(19, 36, 47, 0.6));
+  box-shadow: 14px 0 0 rgb(239 233 221 / 0.6), 28px 0 0 rgb(239 233 221 / 0.6); box-shadow: 14px 0 0 light-dark(rgb(239 233 221 / 0.6), rgba(59, 86, 100, 0.6)), 28px 0 0 light-dark(rgb(239 233 221 / 0.6), rgba(59, 86, 100, 0.6));
 }
 html[data-dir="l"] .svc-frame picture,
 html[data-dir="l"] .svc-toolframe picture { display: block; }
@@ -301,7 +301,7 @@ html[data-dir="l"] .svc-toolframe img { display: block; width: 100%; height: aut
 html[data-dir="l"] .svc-frame img { aspect-ratio: 16 / 10; object-fit: cover; object-position: top; }
 html[data-dir="l"] .svc-toolframe__shot { aspect-ratio: 16 / 10; object-fit: cover; object-position: top left; }
 html[data-dir="l"] .svc-proof__note { margin: 1.5rem 0 0; max-width: 60ch; color: #efe9dd; }
-html[data-dir="l"] .svc-tool { margin-top: 1.25rem; padding: 1rem 1.15rem; border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: #fff; }
+html[data-dir="l"] .svc-tool { margin-top: 1.25rem; padding: 1rem 1.15rem; border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: #fff; background: light-dark(#fff, #152A36); }
 html[data-dir="l"] .svc-tool h3 { margin: 0.5rem 0 0.4rem; font-size: 1.2rem; }
 html[data-dir="l"] .svc-tool p { margin: 0 0 0.5rem; }
 html[data-dir="l"] .svc-tool .text-link { display: inline-flex; align-items: center; min-height: var(--tap); }
@@ -347,7 +347,7 @@ html[data-dir="l"] .plan-card { display: flex; }
 html[data-dir="l"] .plan-card article {
   width: 100%;
   padding: clamp(1.1rem, 2vw, 1.5rem);
-  background: #fff;
+  background: #fff; background: light-dark(#fff, #152A36);
   border: 1px solid var(--color-border);
   border-top-width: 6px;
   border-radius: var(--radius-xl);
@@ -359,7 +359,7 @@ html[data-dir="l"] .plan-card--3 article { border-top-color: #c8a548; }
 html[data-dir="l"] .plan-card h3 { margin: 0.4rem 0 0.6rem; font-size: 1.5rem; }
 html[data-dir="l"] .plan-card article p { margin: 0 0 0.6rem; }
 html[data-dir="l"] .plan-rungs { display: inline-flex; align-items: flex-end; gap: 4px; height: 20px; }
-html[data-dir="l"] .plan-rungs i { display: block; width: 8px; border-radius: 2px; background: #d3cdbf; }
+html[data-dir="l"] .plan-rungs i { display: block; width: 8px; border-radius: 2px; background: #d3cdbf; background: light-dark(#d3cdbf, #13242F); }
 html[data-dir="l"] .plan-rungs i:nth-child(1) { height: 6px; }
 html[data-dir="l"] .plan-rungs i:nth-child(2) { height: 12px; }
 html[data-dir="l"] .plan-rungs i:nth-child(3) { height: 18px; }
@@ -393,7 +393,7 @@ html[data-dir="l"] .plan-custom p,
 html[data-dir="l"] .plan-custom .plan-card__sub,
 html[data-dir="l"] .plan-custom li { color: #efe9dd; }
 html[data-dir="l"] .plan-custom .plan-check { color: #efe9dd; }
-html[data-dir="l"] .plan-custom .plan-card__list--out li::before { background: #efe9dd; }
+html[data-dir="l"] .plan-custom .plan-card__list--out li::before { background: #efe9dd; background: light-dark(#efe9dd, #13242F); }
 html[data-dir="l"] .plan-custom .pill--onnavy { background: transparent; color: #efe9dd; border: 1px solid #c8a548; font-size: 0.78rem; }
 html[data-dir="l"] .plan-custom__adds { font-style: italic; }
 html[data-dir="l"] .plan-compare-cta { margin-top: 1.75rem; }
@@ -434,7 +434,7 @@ html[data-dir="l"] .connect-action--email .connect-action__copy strong {
 /* ---------- service-area towns (Home + Connect): two identical panels ---------- */
 html[data-dir="l"] .town-pair { display: grid; grid-template-columns: 1fr; gap: 0; }
 html[data-dir="l"] .town-group {
-  background: #fff;
+  background: #fff; background: light-dark(#fff, #152A36);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);
   padding: 1.1rem 1.25rem 1.25rem;

@@ -90,7 +90,7 @@ html[data-dir="l"] .linkedin-row{
   gap: 0.55rem;
   min-height: var(--tap);
   padding: 0.35rem 0.7rem 0.35rem 0.35rem;
-  background: #FFFFFF;
+  background: #FFFFFF; background: light-dark(#FFFFFF, #152A36);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   color: var(--color-text);
@@ -619,11 +619,11 @@ html[data-dir="l"] .principle-jump a:hover{ color: var(--color-text); }
 @media (max-width: 899px) {
   html[data-dir="l"] [data-dir="a"] .hero,html[data-dir="l"] .page-hero{
     background-image: none;
-    background-color: #EFE9DD;
+    background-color: #EFE9DD; background-color: light-dark(#EFE9DD, #13242F);
   }
   html[data-dir="l"] [data-dir="a"] .hero::before,html[data-dir="l"] .page-hero::before{ display: none; }
   html[data-dir="l"] [data-dir="a"] .hero-copy,html[data-dir="l"] [data-dir="a"] .cta-plate,html[data-dir="l"] .page-hero-plate,html[data-dir="l"] .about-lead__copy{
-    background: #EFE9DD;
+    background: #EFE9DD; background: light-dark(#EFE9DD, #13242F);
   }
   html[data-dir="l"] [data-dir="a"] .cta-plate{
     box-shadow: none;
@@ -670,7 +670,7 @@ html[data-dir="l"] .diagram{ width: 100%; height: auto; }
 }
 @media (max-width: 760px) {
   html[data-dir="l"] [data-dir="a"] .hero{
-    background-color: #EFE9DD;
+    background-color: #EFE9DD; background-color: light-dark(#EFE9DD, #13242F);
     background-image: none;
   }
   html[data-dir="l"] [data-dir="a"] .hero::before{ display: none; }
@@ -689,7 +689,7 @@ html[data-dir="l"] .diagram{ width: 100%; height: auto; }
   }
   html[data-dir="l"] [data-dir="a"] .hero-navy-plate .cta-plate{
     background: #163544;
-    background: color-mix(in srgb, #102A3A 88%, #EFE9DD);
+    background: color-mix(in srgb, #102A3A 88%, #EFE9DD); background: color-mix(in srgb, #102A3A 88%, light-dark(#EFE9DD, #13242F));
     border: 1px solid #2C4E60;
     box-shadow: none;
   }
@@ -723,5 +723,5 @@ html[data-dir="l"] .diagram{ width: 100%; height: auto; }
 html[data-dir="l"] .router-tile--diagram .router-tile__visual img{
   object-fit: contain;
   object-position: center;
-  background: #F7F4EC;
+  background: #F7F4EC; background: light-dark(#F7F4EC, #152A36);
 }
