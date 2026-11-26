@@ -4,11 +4,12 @@
 //   node --test tests/care-gate.unit.mjs        (runs 8 real `astro build`s into temp dirs; does not touch dist/)
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { existsSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdtempSync, readFileSync, readdirSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { test } from 'node:test';
 import { fileURLToPath } from 'node:url';
+import { withExclusiveEnvFile } from './exclusive-env-fixture.mjs';
 import { CARE_PREVIEW_BRANCH, careOptionsPreviewEnabled } from '../src/lib/care-gate.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -79,8 +80,8 @@ for (const [name, env, expected] of contexts) {
 
 test('a .env file with CARE_OPTIONS_PREVIEW=1 cannot switch anything on (no import.meta.env fallback)', () => {
   const envFile = path.join(root, '.env');
-  assert.equal(existsSync(envFile), false, 'refusing to overwrite an existing .env');
-  writeFileSync(envFile, 'CARE_OPTIONS_PREVIEW=1\nWORKERS_CI=1\nWORKERS_CI_BRANCH=' + BRANCH + '\n');
-  let dir;
-  try { dir = build({}); assert.deepEqual(inspect(dir), ALL_OFF); } finally { rmSync(envFile, { force: true }); if (dir) rmSync(dir, { recursive: true, force: true }); }
+  withExclusiveEnvFile(envFile, 'CARE_OPTIONS_PREVIEW=1\nWORKERS_CI=1\nWORKERS_CI_BRANCH=' + BRANCH + '\n', () => {
+    let dir;
+    try { dir = build({}); assert.deepEqual(inspect(dir), ALL_OFF); } finally { if (dir) rmSync(dir, { recursive: true, force: true }); }
+  });
 });

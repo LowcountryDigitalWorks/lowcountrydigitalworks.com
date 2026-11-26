@@ -2,12 +2,13 @@
 //   node --test tests/analytics.unit.mjs   (runs 8 real `astro build`s into temp dirs; does not touch dist/; never touches the network)
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { existsSync, mkdtempSync, readFileSync, readdirSync, writeFileSync, unlinkSync } from 'node:fs';
+import { existsSync, mkdtempSync, readFileSync, readdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { test } from 'node:test';
 import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
+import { withExclusiveEnvFile } from './exclusive-env-fixture.mjs';
 import { ANALYTICS_EXCLUDED_PREFIXES, ANALYTICS_HOSTS, CSP_ADDITIONS, OTHER_ROUTE, analyticsEnabled, analyticsHosts, analyticsRouteAllowed, analyticsRoutes, assertNoStrayTestHosts, extendCsp, OTHER_REFERRER_META, addOtherReferrerMeta, otherRoutePages } from '../src/lib/analytics-config.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -156,9 +157,9 @@ test('real builds (L3): a stray ANALYTICS_TEST_EXTRA_HOSTS fails the build, OFF 
 
 test('real build: a .env file alone cannot half-enable (config and pages read one pinned gate)', () => {
   const envFile = path.join(root, '.env');
-  assert.equal(existsSync(envFile), false, 'refusing to overwrite an existing .env');
-  writeFileSync(envFile, 'ANALYTICS_ENABLED=1\nANALYTICS_TEST_EXTRA_HOSTS=127.0.0.1\n');
-  try { assertOff(build({}), '.env only'); } finally { unlinkSync(envFile); }
+  withExclusiveEnvFile(envFile, 'ANALYTICS_ENABLED=1\nANALYTICS_TEST_EXTRA_HOSTS=127.0.0.1\n', () => {
+    assertOff(build({}), '.env only');
+  });
 });
 
 test('real builds: ANALYTICS_ENABLED=1 is ON with only the production hosts; test hosts are baked only when requested', () => {
