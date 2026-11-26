@@ -19,6 +19,7 @@ EXPECTED_VALIDATE_RUN_STEPS = (
     ("Install Chromium", "npx playwright install --with-deps chromium"),
     ("Browser and accessibility tests", "npm run test:e2e"),
     ("Care ON browser and contrast preview proof", "npm run test:care-preview:ci"),
+    ("Analytics consent browser proof (local stub vendors)", "node --test tests/ci-analytics-consent.unit.mjs && node scripts/ci-analytics-consent.mjs"),
     ("Dependency audits (runtime + full tree)", "node scripts/dependency-audit-policy.mjs"),
 )
 

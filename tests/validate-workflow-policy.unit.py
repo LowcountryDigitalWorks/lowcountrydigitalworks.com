@@ -501,6 +501,19 @@ class WorkflowInstallPolicyTests(unittest.TestCase):
         self.assertIn(care, CURRENT)
         self.assert_blocked(CURRENT.replace(care, "", 1))
 
+    def test_removing_analytics_consent_browser_proof_is_blocked(self) -> None:
+        consent = (
+            "      - name: Analytics consent browser proof (local stub vendors)\n"
+            "        run: node --test tests/ci-analytics-consent.unit.mjs && node scripts/ci-analytics-consent.mjs\n\n"
+        )
+        self.assertIn(consent, CURRENT)
+        self.assert_blocked(CURRENT.replace(consent, "", 1))
+
+    def test_bypassing_analytics_consent_browser_execution_is_blocked(self) -> None:
+        command = "node scripts/ci-analytics-consent.mjs"
+        self.assertIn(command, CURRENT)
+        self.assert_blocked(CURRENT.replace(command, "true", 1))
+
     def test_removing_privacy_negative_check_is_blocked(self) -> None:
         privacy = (
             "      - name: Privacy-negative source and built-asset contract\n"

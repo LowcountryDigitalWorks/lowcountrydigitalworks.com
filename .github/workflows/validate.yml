@@ -75,6 +75,9 @@ jobs:
       - name: Care ON browser and contrast preview proof
         run: npm run test:care-preview:ci
 
+      - name: Analytics consent browser proof (local stub vendors)
+        run: node --test tests/ci-analytics-consent.unit.mjs && node scripts/ci-analytics-consent.mjs
+
       - name: Dependency audits (runtime + full tree)
         run: node scripts/dependency-audit-policy.mjs
 
