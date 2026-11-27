@@ -140,3 +140,10 @@ export function ldw(event, { method, service, placement }) {
   attrs['data-ldw-placement'] = placement;
   return attrs;
 }
+
+// Independent inert placement hook for same-site navigation. No attributes in OFF builds or on excluded routes.
+export function ldwNav(placement, pathname) {
+  if (!analyticsEnabled() || !analyticsRouteAllowed(pathname)) return {};
+  if (!['header', 'mobile_nav', 'footer', 'home_choice', 'service_card', 'work_card', 'content', 'primary_cta'].includes(placement)) return {};
+  return { 'data-ldw-nav-placement': placement };
+}

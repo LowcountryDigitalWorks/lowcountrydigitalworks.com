@@ -1,14 +1,14 @@
 ---
 import contact from '../data/contact.json';
 import Icon from './Icon.astro';
-import { analyticsEnabled, analyticsRouteAllowed, ldw } from '../lib/analytics-config.mjs';
+import { analyticsEnabled, analyticsRouteAllowed, ldw, ldwNav } from '../lib/analytics-config.mjs';
 const { allowSocialProfiles = true } = Astro.props;
 const showPrivacyChoices = analyticsEnabled() && analyticsRouteAllowed(Astro.url.pathname);
 ---
 <footer class="site-footer">
   <div class="container footer-grid" itemscope itemtype="https://schema.org/Organization" itemid="https://lowcountrydigitalworks.com/#organization">
     <div>
-      <a href="/" itemprop="url" aria-label="Lowcountry Digital Works home">
+      <a href="/" {...ldwNav('footer', Astro.url.pathname)} itemprop="url" aria-label="Lowcountry Digital Works home">
         <img class="footer-logo" itemprop="logo" src="/brand/logo/lowcountry-digital-works-logo-horizontal-white.svg" alt="Lowcountry Digital Works" width="312" height="88" />
       </a>
       <meta itemprop="legalName" content="Lowcountry Digital Works LLC" />
@@ -18,17 +18,17 @@ const showPrivacyChoices = analyticsEnabled() && analyticsRouteAllowed(Astro.url
       </p>
     </div>
     <nav aria-label="Footer">
-      <a href="/services/">Services</a>
-      <a href="/work/">Work</a>
-      <a href="/approach/">Approach</a>
-      <a href="/guides/">Guides</a>
-      <a href="/about/">About</a>
-      <a href="/discovery/">Project discovery</a>
-      <a href="/connect/">Connect</a>
-      <a href="/privacy/">Privacy</a>
+      <a href="/services/" {...ldwNav('footer', Astro.url.pathname)}>Services</a>
+      <a href="/work/" {...ldwNav('footer', Astro.url.pathname)}>Work</a>
+      <a href="/approach/" {...ldwNav('footer', Astro.url.pathname)}>Approach</a>
+      <a href="/guides/" {...ldwNav('footer', Astro.url.pathname)}>Guides</a>
+      <a href="/about/" {...ldwNav('footer', Astro.url.pathname)}>About</a>
+      <a href="/discovery/" {...ldwNav('footer', Astro.url.pathname)}>Project discovery</a>
+      <a href="/connect/" {...ldwNav('footer', Astro.url.pathname)}>Connect</a>
+      <a href="/privacy/" {...ldwNav('footer', Astro.url.pathname)}>Privacy</a>
       {showPrivacyChoices && <a href="/privacy/#privacy-choices" data-ldw-consent-open>Privacy choices</a>}
-      <a href="/accessibility/">Accessibility</a>
-      <a href="/terms/">Website Terms</a>
+      <a href="/accessibility/" {...ldwNav('footer', Astro.url.pathname)}>Accessibility</a>
+      <a href="/terms/" {...ldwNav('footer', Astro.url.pathname)}>Website Terms</a>
     </nav>
     <div class="footer-contact">
       <p><strong>Contact</strong><br />

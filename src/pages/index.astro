@@ -1,5 +1,5 @@
 ---
-import { ldw } from '../lib/analytics-config.mjs';
+import { ldw, ldwNav } from '../lib/analytics-config.mjs';
 import InternalToolThumb from '../components/InternalToolThumb.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import FaqList from '../components/FaqList.astro';
@@ -35,7 +35,7 @@ const homeTools = work.projects.filter((project) => project.featured !== false);
         </div>
         <div class="cta-plate">
           <div class="actions hero-actions">
-            <a class="button" href="/discovery/">Talk through your project</a>
+            <a class="button" href="/discovery/" {...ldwNav('primary_cta', Astro.url.pathname)}>Talk through your project</a>
             <a class="text-link hero-secondary-link" href={`sms:${contact.phone.number}`} {...ldw('contact_method_click', { method: 'sms', placement: 'home_hero' })}>or text Eddie, {contact.phone.display}</a>
           </div>
           <a class="hero-work-link see-the-work-link" href="#client-work">See the work</a>
@@ -81,7 +81,7 @@ const homeTools = work.projects.filter((project) => project.featured !== false);
       <ProblemChoiceList items={home.startingPoints} />
       <p class="portfolio-detail-note" data-home-website-care>
         Already have a website that needs regular attention?
-        <a class="text-link" href="/services/website-care/">Explore Website Care →</a>
+        <a class="text-link" href="/services/website-care/" {...ldwNav('content', Astro.url.pathname)}>Explore Website Care →</a>
       </p>
     </div>
   </section>
@@ -111,7 +111,7 @@ const homeTools = work.projects.filter((project) => project.featured !== false);
             <div class="carousel__slide" role="group" aria-roledescription="slide" aria-label={`${index + 1} of ${homeTools.length}: ${project.name}`} data-carousel-slide>
               <article class="portfolio-card tool-card">
                 {project.thumbnail ? (
-                  <a class="portfolio-card__visual tool-card__frame" href={`/work/${project.slug}/`} aria-label={`View ${project.name} project details`}>
+                  <a class="portfolio-card__visual tool-card__frame" href={`/work/${project.slug}/`} {...ldwNav('work_card', Astro.url.pathname)} aria-label={`View ${project.name} project details`}>
                     <InternalToolThumb thumbnail={project.thumbnail} lazy />
                   </a>
                 ) : (
@@ -124,7 +124,7 @@ const homeTools = work.projects.filter((project) => project.featured !== false);
                   </div>
                   <h3>{project.name}</h3>
                   <p>{project.homeSummary ?? project.purpose}</p>
-                  <a class="text-link" href={`/work/${project.slug}/`} aria-label={`Explore the work — ${project.name}`}>Explore the work →</a>
+                  <a class="text-link" href={`/work/${project.slug}/`} {...ldwNav('work_card', Astro.url.pathname)} aria-label={`Explore the work — ${project.name}`}>Explore the work →</a>
                 </div>
               </article>
             </div>
@@ -136,7 +136,7 @@ const homeTools = work.projects.filter((project) => project.featured !== false);
           ))}
         </div>
       </div>
-      <p class="home-tools__more"><a class="text-link" href="/work/#internal-proof">{work.internalProof.eyebrow} →</a></p>
+      <p class="home-tools__more"><a class="text-link" href="/work/#internal-proof" {...ldwNav('content', Astro.url.pathname)}>{work.internalProof.eyebrow} →</a></p>
     </div>
   </section>
 

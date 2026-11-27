@@ -1,4 +1,5 @@
 ---
+import { ldwNav } from '../lib/analytics-config.mjs';
 const links = [
   ['Services','/services/'],
   ['Work','/work/'],
@@ -11,19 +12,19 @@ const isCurrent = (href) => href === '/' ? current === '/' : current === href ||
 ---
 <header class="site-header">
   <div class="container header-row">
-    <a class="brand" href="/" aria-label="Lowcountry Digital Works home">
+    <a class="brand" href="/" {...ldwNav('header', current)} aria-label="Lowcountry Digital Works home">
       <img src="/brand/logo/lowcountry-digital-works-logo-horizontal.svg" alt="Lowcountry Digital Works" width="312" height="88" />
       <img class="brand-logo-on-dark" src="/brand/logo/lowcountry-digital-works-logo-horizontal-white.svg" alt="" width="312" height="88" />
     </a>
     <nav class="desktop-nav" aria-label="Primary">
-      {links.map(([label,href]) => <a href={href} aria-current={isCurrent(href) ? 'page' : undefined}>{label}</a>)}
-      <a class="nav-cta" href="/discovery/">Project discovery</a>
+      {links.map(([label,href]) => <a href={href} {...ldwNav('header', current)} aria-current={isCurrent(href) ? 'page' : undefined}>{label}</a>)}
+      <a class="nav-cta" href="/discovery/" {...ldwNav('header', current)}>Project discovery</a>
     </nav>
     <details class="mobile-nav">
       <summary>Menu</summary>
       <nav aria-label="Mobile primary">
-        {links.map(([label,href]) => <a href={href} aria-current={isCurrent(href) ? 'page' : undefined}>{label}</a>)}
-        <a class="mobile-nav__cta" href="/discovery/">Project discovery</a>
+        {links.map(([label,href]) => <a href={href} {...ldwNav('mobile_nav', current)} aria-current={isCurrent(href) ? 'page' : undefined}>{label}</a>)}
+        <a class="mobile-nav__cta" href="/discovery/" {...ldwNav('mobile_nav', current)}>Project discovery</a>
       </nav>
     </details>
   </div>

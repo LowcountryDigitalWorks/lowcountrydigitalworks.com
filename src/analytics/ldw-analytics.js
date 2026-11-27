@@ -196,14 +196,41 @@
     return null;
   }
 
+  // BEGIN navigationParams (pure; tested directly from this shipped template)
+  function navigationParams(href, placement, currentHref, routes) {
+    var placements = ['header', 'mobile_nav', 'footer', 'home_choice', 'service_card', 'work_card', 'content', 'primary_cta'];
+    if (placements.indexOf(placement) === -1 || typeof href !== 'string' || !href.trim()) return null;
+    function knownPath(path) {
+      if (path.charAt(path.length - 1) !== '/') path += '/';
+      if (!/^\/(?:[a-z0-9-]+\/)*$/.test(path) || /^\/(?:share|admin|api)\//.test(path)) return null;
+      return routes.indexOf(path) === -1 ? null : path;
+    }
+    try {
+      var from = new URL(currentHref), to = new URL(href, from);
+      if (!/^https?:$/.test(from.protocol) || to.origin !== from.origin || to.username || to.password || from.username || from.password) return null;
+      var source = knownPath(from.pathname), destination = knownPath(to.pathname);
+      if (!source || !destination || source === destination) return null;
+      return { source_route: source, destination_route: destination, placement: placement };
+    } catch (e) { return null; }
+  }
+  // END navigationParams
+
   document.addEventListener('click', function (e) {
     if (!loaded.analytics || !window.gtag) return;
-    var node = e.target && e.target.closest ? e.target.closest('a[data-ldw-event]') : null;
+    var node = e.target && e.target.closest ? e.target.closest('a[data-ldw-event], a[data-ldw-nav-placement]') : null;
     if (!node) return;
     var ev = eventFor(node);
-    if (!ev) return;
-    ev.params.transport_type = 'beacon';
-    window.gtag('event', ev.name, ev.params);
+    if (ev) {
+      ev.params.transport_type = 'beacon';
+      window.gtag('event', ev.name, ev.params);
+    }
+    // Separate navigation intent from service/contact intent; never delay or cancel navigation.
+    if (node.hasAttribute('download') || node.hasAttribute('data-ldw-consent-open')) return;
+    var nav = navigationParams(node.getAttribute('href'), node.getAttribute('data-ldw-nav-placement'), location.href, ROUTES);
+    if (nav) {
+      nav.transport_type = 'beacon';
+      window.gtag('event', 'internal_navigation_click', nav);
+    }
   }, true);
 
   // ---- consent banner (first-party DOM only; opens from the footer "Privacy choices" link) ----

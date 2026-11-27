@@ -15,7 +15,7 @@
     "test:dependency-policy": "node --test tests/dependency-audit-policy.unit.mjs",
     "test:e2e": "playwright test",
     "validate": "npm run test:worker && npm run build && npm run test:clarity-privacy && npm run test:smoke && npm run test:care-gate && python scripts/validate_repository.py && python tests/test_inline_style_guard.py && python scripts/validate_inline_style_attrs.py",
-    "test:clarity-privacy": "node --test tests/clarity-no-tracking.unit.mjs tests/analytics.unit.mjs",
+    "test:clarity-privacy": "node --test tests/clarity-no-tracking.unit.mjs tests/analytics.unit.mjs tests/internal-navigation.unit.mjs",
     "test:care-gate": "node --test tests/care-gate.unit.mjs tests/exclusive-env-fixture.unit.mjs",
     "test:care-preview:ci": "node scripts/ci-care-preview.mjs"
   },

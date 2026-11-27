@@ -268,6 +268,45 @@ test.describe('events and PII', () => {
     });
   }
 
+  test('desktop header keyboard click: distinct sanitized navigation event, one per click', async ({ browser }) => {
+    const { context, page, log } = await setup(browser);
+    try {
+      await ACCEPT(page, log, '/');
+      const link = page.locator('.desktop-nav a[href="/services/"]');
+      await expect(link).toHaveAttribute('data-ldw-nav-placement', 'header');
+      await link.evaluate(a => { a.href = '/services/?marker=fictional%40example.test#private-fragment'; a.addEventListener('click', e => e.preventDefault()); });
+      await link.focus();
+      await link.press('Enter');
+      await expect.poll(() => events(log, 'internal_navigation_click').length).toBe(1);
+      const sent = events(log, 'internal_navigation_click')[0];
+      expect(sent).toMatchObject({'ep.source_route':'/', 'ep.destination_route':'/services/', 'ep.placement':'header', 'ep.transport_type':'beacon'});
+      expect(JSON.stringify(sent)).not.toMatch(/fictional|private-fragment/);
+    } finally { await context.close(); }
+  });
+
+  test('service card retains service intent and records one separate navigation intent', async ({ browser }) => {
+    const { context, page, log } = await setup(browser);
+    try {
+      await ACCEPT(page, log, '/services/');
+      await page.locator('a.svc-card__surface[data-ldw-service="websites"]').first().click();
+      await expect.poll(() => events(log, 'service_cta_click').length).toBe(1);
+      await expect.poll(() => events(log, 'internal_navigation_click').length).toBe(1);
+      expect(events(log, 'internal_navigation_click')[0]).toMatchObject({'ep.source_route':'/services/', 'ep.destination_route':'/services/websites/', 'ep.placement':'service_card'});
+    } finally { await context.close(); }
+  });
+
+  test('mobile menu before consent navigates without vendor traffic', async ({ browser }) => {
+    const { context, page, log } = await setup(browser, {viewport:{width:390,height:844}});
+    try {
+      await page.goto('/');
+      await page.locator('.mobile-nav summary').click();
+      const link = page.locator('.mobile-nav a[href="/services/"]');
+      await expect(link).toHaveAttribute('data-ldw-nav-placement', 'mobile_nav');
+      await Promise.all([page.waitForURL('**/services/'), link.click()]);
+      expect(vendorRequests(log)).toEqual([]);
+    } finally { await context.close(); }
+  });
+
   test('mobile bar clicks send placement mobile_bar (mobile viewport)', async ({ browser }) => {
     const { context, page, log } = await setup(browser, { viewport: { width: 390, height: 844 } });
     await ACCEPT(page, log, '/');

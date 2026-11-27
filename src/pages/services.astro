@@ -1,5 +1,5 @@
 ---
-import { ldw } from '../lib/analytics-config.mjs';
+import { ldw, ldwNav } from '../lib/analytics-config.mjs';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Icon from '../components/Icon.astro';
 import services from '../data/services.json';
@@ -104,7 +104,7 @@ const showPreviewCareOptions = careOptionsPreviewEnabled();
               )}
             </div>
               <div class="svc-card__body">
-                <a class="svc-card__surface" href={family.primaryHref} {...ldw('service_cta_click', { service: family.primaryHref.split('/').filter(Boolean).pop(), placement: 'services_hub' })}>
+                <a class="svc-card__surface" href={family.primaryHref} {...ldwNav('service_card', Astro.url.pathname)} {...ldw('service_cta_click', { service: family.primaryHref.split('/').filter(Boolean).pop(), placement: 'services_hub' })}>
                   <span class="svc-card__index" aria-hidden="true">
                     <span class="svc-card__icon"><Icon name={family.icon} size={24} /></span>
                     <span class="svc-card__kicker">{family.number} · {family.kicker}</span>
@@ -115,7 +115,7 @@ const showPreviewCareOptions = careOptionsPreviewEnabled();
                   <span class="svc-card__cta">{family.primaryLabel} <span aria-hidden="true">→</span></span>
                 </a>
                 {family.secondaryHref && (
-                  <a class="svc-card__also" href={family.secondaryHref}>Also: {family.secondaryLabel} <span aria-hidden="true">→</span></a>
+                  <a class="svc-card__also" href={family.secondaryHref} {...ldwNav('service_card', Astro.url.pathname)}>Also: {family.secondaryLabel} <span aria-hidden="true">→</span></a>
                 )}
               </div>
             </div>
@@ -191,7 +191,7 @@ const showPreviewCareOptions = careOptionsPreviewEnabled();
       </div>
 
       <div class="plan-compare-cta actions">
-        <a class="button" href="/discovery/">Describe your project</a>
+        <a class="button" href="/discovery/" {...ldwNav('primary_cta', Astro.url.pathname)}>Describe your project</a>
       </div>
     </div>
   </section>
@@ -202,7 +202,7 @@ const showPreviewCareOptions = careOptionsPreviewEnabled();
         <p class="eyebrow">Ongoing Website Care</p>
         <h2 id="care-concept-bridge-heading">A website build and ongoing care are different choices.</h2>
         <p class="lede">The plans above describe one-time website project scopes. Ongoing care is a separate choice, with its own five plans.</p>
-        <p><a class="text-link" href="/services/website-care/#care-options">Compare the five Website Care plans <span aria-hidden="true">→</span></a></p>
+        <p><a class="text-link" href="/services/website-care/#care-options" {...ldwNav('content', Astro.url.pathname)}>Compare the five Website Care plans <span aria-hidden="true">→</span></a></p>
       </div>
     </div>
   </section>
