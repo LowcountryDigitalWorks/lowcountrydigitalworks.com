@@ -124,12 +124,12 @@ test('local map remains page-overflow-free at 320px mobile width', async ({ page
 });
 
 
-test('sample-point table is keyboard-scrollable and understandable on narrow viewports', async ({ page }) => {
+test('point table is keyboard-scrollable and understandable on narrow viewports', async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 900 });
   await page.goto('/local-visibility-sample/');
   await expect(page.locator('[data-point="BPR-NW"]').getByText('Northwest')).toBeVisible();
   await page.getByText('View every exact point and its evidence state in a table').click();
-  const scrollRegion = page.getByRole('region', { name: 'Sample point evidence table, scrolls horizontally' });
+  const scrollRegion = page.getByRole('region', { name: 'Point evidence table, scrolls horizontally' });
   await expect(scrollRegion).toBeVisible();
   await expect(scrollRegion).toHaveAttribute('tabindex', '0');
   const widths = await scrollRegion.evaluate((element) => ({

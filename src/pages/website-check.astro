@@ -10,7 +10,7 @@ const evidenceCardCount = [sample.finding, sample.residual].filter(Boolean).leng
 
 <BaseLayout
   title="Website Check — LDW-owned evidence proof"
-  description="A precomputed LDW-owned example showing how Lowcountry Digital Works can explain one accepted technical finding, its recheck, and a provider-controlled residual limitation. This page does not scan websites."
+  description="An LDW-owned view of how Lowcountry Digital Works can explain one accepted technical finding, its recheck, and a provider-controlled residual limitation. This page does not scan websites."
   noindex
 >
   <div class="audit-demo">
@@ -21,7 +21,7 @@ const evidenceCardCount = [sample.finding, sample.residual].filter(Boolean).leng
         <p class="audit-demo__lede">This proof uses one accepted LDW-owned technical evidence cycle to show the before observation, bounded action, same-source recheck, and what remained outside LDW control.</p>
         <p class="audit-demo__intent"><strong>Question answered:</strong> {sample.checkIntent}</p>
         <p class="audit-demo__notice">
-          <strong>This page does not scan a website.</strong> It displays precomputed evidence from an already accepted LDW-owned cycle. No domain is requested, no provider is contacted, and no live check runs from this page.
+          <strong>This page does not scan a website.</strong> It displays evidence from an already accepted LDW-owned cycle. No domain is requested, no provider is contacted, and no live check runs from this page.
         </p>
       </div>
     </section>
@@ -35,7 +35,7 @@ const evidenceCardCount = [sample.finding, sample.residual].filter(Boolean).leng
         <p class="audit-demo__state">{sample.fixtureState}</p>
       </div>
 
-      <p class="audit-demo__state-copy">The browser experience is rendering a saved, publication-safe evidence fixture. It has no live progress, provider request, current-domain result, or automatic recheck.</p>
+      <p class="audit-demo__state-copy">This page shows saved evidence. It has no live progress, provider request, current-domain result, or automatic recheck.</p>
 
       <dl class="audit-demo__summary" aria-label="Evidence coverage summary">
         <div><dt>Evidence records</dt><dd>{evidenceCardCount}</dd></div>

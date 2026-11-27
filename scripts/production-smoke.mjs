@@ -50,15 +50,55 @@ export function assertExpectedStatus(response, expectedStatuses, requestUrl, mes
 }
 const USER_AGENT = 'LDW-Production-Smoke/1.0 (+https://lowcountrydigitalworks.com/)';
 
+// Analytics (GA4 + GTM + Clarity) is OFF unless a release is built with ANALYTICS_ENABLED=1. After such a release, run the smoke with
+// PRODUCTION_ANALYTICS_EXPECTED=1 so it asserts the ON state (analytics disclosure, extended CSP, loader tag) instead of the OFF state.
+export const PRIVACY_MARKER_OFF = 'does not intentionally use advertising trackers, behavioral analytics, nonessential cookies';
+export const PRIVACY_MARKER_ON = 'uses analytics and site-experience tools';
+export const ANALYTICS_CSP_ORIGINS = ['googletagmanager.com', 'google-analytics.com', 'analytics.google.com', 'clarity.ms', 'c.bing.com'];
+const analyticsExpected = process.env.PRODUCTION_ANALYTICS_EXPECTED === '1';
+
+export function assertAnalyticsCsp(csp, expected) {
+  const has = (origin) => csp.includes(origin);
+  if (!expected) {
+    for (const origin of ANALYTICS_CSP_ORIGINS) assert.ok(!has(origin), 'analytics OFF: CSP must not allow ' + origin);
+  } else {
+    for (const origin of ANALYTICS_CSP_ORIGINS) assert.ok(has(origin), 'analytics ON: CSP must allow ' + origin);
+    assert.match(csp, /script-src\s+'self'[^;]*https:\/\/www\.googletagmanager\.com/i, 'analytics ON: script-src must allow GTM/gtag');
+  }
+  assert.doesNotMatch(csp, /unsafe-eval|unsafe-inline/i, 'CSP must never allow unsafe-eval or unsafe-inline');
+  assert.doesNotMatch(csp, /frame-src/i, 'CSP must not add frame-src (no GTM noscript iframe)');
+}
+
+export function assertAnalyticsHtml(html, expected) {
+  const tags = html.match(/<script\b[^>]*\bsrc="\/ldw-analytics\.js"[^>]*>/g) ?? [];
+  assert.equal(tags.length, expected ? 1 : 0, 'analytics loader tag count (expected ' + (expected ? 1 : 0) + ')');
+}
+
+// L3: the live loader must carry exactly the two production hosts (a stray test-only host override would add more) and a non-empty
+// route allowlist with no private route, 404 page or /other/ entry (M1).
+export const PRODUCTION_ANALYTICS_HOSTS = ['lowcountrydigitalworks.com', 'www.lowcountrydigitalworks.com'];
+export function assertAnalyticsLoader(js) {
+  const hosts = js.match(/var HOSTS = (\[[^\]]*\]);/);
+  assert.ok(hosts, 'analytics loader: HOSTS list not found');
+  assert.deepEqual(JSON.parse(hosts[1]), PRODUCTION_ANALYTICS_HOSTS, 'analytics loader: HOSTS must be exactly the production hosts');
+  const routes = js.match(/var ROUTES = (\[[^\]]*\]);/);
+  assert.ok(routes, 'analytics loader: ROUTES allowlist not found');
+  const list = JSON.parse(routes[1]);
+  assert.ok(list.includes('/') && list.length > 1, 'analytics loader: ROUTES allowlist must list the built pages');
+  assert.ok(list.every((r) => /^\/(?:[a-z0-9-]+\/)*$/.test(r) && r !== '/other/' && !/^\/(share|admin|api)(\/|$)|404/.test(r)), 'analytics loader: ROUTES has a private, 404 or malformed entry');
+  return { hosts: PRODUCTION_ANALYTICS_HOSTS.length, routes: list.length };
+}
+
 const routeChecks = [
   ['/', 'Your website should bring in calls, not questions.'],
   ['/services/', 'Start with what your business needs to work better.'],
   ['/services/business-systems-automation/', null],
+  ['/services/website-care/', null],
   ['/work/', 'See the problem, the proof, and the boundary.'],
   ['/work/gas-engine/', 'Internal evidence infrastructure'],
   ['/about/', 'Local, practical, and accountable by design.'],
   ['/connect/', 'Tell me what is getting in the way.'],
-  ['/privacy/', 'does not intentionally use advertising trackers, behavioral analytics, nonessential cookies'],
+  ['/privacy/', analyticsExpected ? PRIVACY_MARKER_ON : PRIVACY_MARKER_OFF],
 ];
 
 function fail(message) {
@@ -77,6 +117,12 @@ function getCanonicalHref(html) {
   return match?.[1] ?? null;
 }
 
+// The Website Care plans preview (#care-options) must never reach the live site: no preview marker, plans markup, price cards or loader.
+export function assertNoCarePreview(html, label = 'page') {
+  assert.ok(!html.includes('data-care-options-preview'), label + ' must not contain the Website Care preview marker [data-care-options-preview]');
+  assert.doesNotMatch(html, /id="care-options"|care-carousel|class="care-tier|care-concept-bridge/, label + ' must not contain Website Care plans preview markup');
+}
+
 export function assertHtmlPage(html, canonicalUrl, marker = null) {
   assert.match(html, /<h1\b/i, 'HTML page must contain an h1');
   assert.equal(getCanonicalHref(html), canonicalUrl, 'canonical URL must match accepted production identity');
@@ -90,9 +136,10 @@ export function parseHstsMaxAge(value) {
   return match ? Number(match[1]) : null;
 }
 
-export function assertSecurityHeaders(headers) {
+export function assertSecurityHeaders(headers, { analytics = analyticsExpected } = {}) {
   const csp = headers.get('content-security-policy') ?? '';
   assert.ok(csp, 'Content-Security-Policy header must be present');
+  assertAnalyticsCsp(csp, analytics);
   assert.match(csp, /default-src\s+'self'/i, 'CSP must retain default-src self');
   assert.match(csp, /frame-ancestors\s+'none'/i, 'CSP must retain frame-ancestors none');
 
@@ -307,8 +354,22 @@ export async function runProductionSmoke() {
     assertContentType(response, 'text/html');
     const body = await response.text();
     assertHtmlPage(body, new URL(path, configured).href, marker);
+    assertNoCarePreview(body, path);
+    assertAnalyticsHtml(body, analyticsExpected);
+    if (path === '/privacy/') {
+      if (analyticsExpected) assert.ok(!body.includes(PRIVACY_MARKER_OFF), 'analytics ON: privacy page must not keep the no-analytics sentence');
+      else assert.ok(!body.includes(PRIVACY_MARKER_ON), 'analytics OFF: privacy page must not claim analytics');
+    }
     routeResponses.set(path, { response, body });
     results.push({ name: path, detail: 'HTTP 200 + canonical/structure' });
+  }
+
+  if (analyticsExpected) {
+    const loaderUrl = new URL('/ldw-analytics.js', configured);
+    const loader = await fetchWithRetry(loaderUrl);
+    assertExpectedStatus(loader, 200, loaderUrl, '/ldw-analytics.js must return HTTP 200 when analytics is expected');
+    const counts = assertAnalyticsLoader(await loader.text());
+    results.push({ name: '/ldw-analytics.js', detail: `HOSTS = ${counts.hosts} production hosts, ROUTES = ${counts.routes}` });
   }
 
   const home = routeResponses.get('/');

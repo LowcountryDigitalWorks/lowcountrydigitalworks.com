@@ -1,71 +1,211 @@
 ---
+import { ldw, ldwNav } from '../lib/analytics-config.mjs';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Icon from '../components/Icon.astro';
 import services from '../data/services.json';
+import { careOptionsPreviewEnabled } from '../lib/care-gate.mjs';
+
+// Plans: everything every plan shares is stated once above the cards; each card keeps only what is its own.
+const planSet = services.websitePlans;
+const sentences = planSet.quoteNote.split(/(?<=\.)\s+/);
+const sharedExclusion = /website care|care or marketing|ranking|seo|marketing|advertising/i;
+const sharedGuarantee = planSet.plans[0].notIncluded.find((item) => /guarantee/i.test(item));
+const planWide = [
+  sentences[0],
+  sentences.slice(1).join(' '),
+  planSet.ownershipNote,
+  sharedGuarantee ? `No plan includes ${sharedGuarantee.charAt(0).toLowerCase()}${sharedGuarantee.slice(1)}.` : null,
+].filter(Boolean);
+const ladder = planSet.plans.filter((plan) => plan.id !== 'custom');
+const customPlan = planSet.plans.find((plan) => plan.id === 'custom');
+const ownLimits = (plan) => plan.notIncluded.filter((item) => !sharedExclusion.test(item));
+const showPreviewCareOptions = careOptionsPreviewEnabled();
 ---
 <BaseLayout
   title="Website & Automation Services in Beaufort, SC"
   description="Website projects and care, business systems and automation, digital ownership and platform administration, and technology consulting from Lowcountry Digital Works."
 >
-  <section class="page-hero page-hero--warm">
-    <div class="container readable">
-      <p class="eyebrow">{services.page.eyebrow}</p>
-      <h1>{services.page.title}</h1>
-      <p class="lede">{services.page.lede}</p>
+  <section class="page-hero page-hero--fit" aria-labelledby="services-heading">
+    <div class="container">
+      <div class="page-hero-plate">
+        <p class="eyebrow">Services and Plans</p>
+        <h1 id="services-heading">{services.page.title}</h1>
+        <p class="lede">{services.page.lede}</p>
+        <div class="actions">
+          <a class="button hero-start" href="#start">Find your starting point</a>
+          <a class="text-link" href="#plans">See website plans</a>
+        </div>
+      </div>
+      <a class="hero-next" href="#start">Start from the problem <span aria-hidden="true">↓</span></a>
     </div>
   </section>
 
-  <section class="section">
+  <section class="section svc-band" id="start" aria-labelledby="svc-band-title">
+    <div class="container">
+      <div class="section-heading svc-band__head">
+        <p class="eyebrow">Four services</p>
+        <h2 id="svc-band-title">Each service, shown with the work it produces.</h2>
+      </div>
+      <div class="carousel carousel--dark carousel--grid-2" role="region" aria-roledescription="carousel" aria-label="The four LDW services" data-carousel data-carousel-start="0">
+        <div class="carousel__track svc-band__grid" role="group" aria-label="Services, swipe or use arrow keys" tabindex="0" data-carousel-track>
+          {services.families.map((family, index) => (
+            <div class="carousel__slide svc-card" role="group" aria-roledescription="slide" aria-label={`${index + 1} of ${services.families.length}: ${family.name}`} data-carousel-slide>
+              <div class="svc-card__visual">
+              {index === 0 && (
+                <>
+                  <picture>
+                    <source type="image/avif" media="(max-width: 899px)" srcset="/r5/assets/clients/east-coast-foam-390.avif" />
+                    <source type="image/webp" media="(max-width: 899px)" srcset="/r5/assets/clients/east-coast-foam-390.webp" />
+                    <source media="(max-width: 899px)" srcset="/r5/assets/clients/east-coast-foam-390.jpg" />
+                    <source type="image/avif" srcset="/r5/assets/clients/east-coast-foam-1280.avif" />
+                    <source type="image/webp" srcset="/r5/assets/clients/east-coast-foam-1280.webp" />
+                    <img src="/r5/assets/clients/east-coast-foam-1280.jpg" alt="East Coast Foam public website." width="1280" height="800" loading="lazy" />
+                  </picture>
+                  <p class="example-label">East Coast Foam</p>
+                </>
+              )}
+              {index === 1 && (
+                <>
+                  <picture>
+                    <source type="image/avif" media="(max-width: 899px)" srcset="/r5/assets/internal/document-control-workflow-crop.avif" />
+                    <source type="image/webp" media="(max-width: 899px)" srcset="/r5/assets/internal/document-control-workflow-crop.webp" />
+                    <source media="(max-width: 899px)" srcset="/r5/assets/internal/document-control-workflow-crop.jpg" />
+                    <source type="image/avif" srcset="/r5/assets/internal/document-control-workflow.avif" />
+                    <source type="image/webp" srcset="/r5/assets/internal/document-control-workflow.webp" />
+                    <img src="/r5/assets/internal/document-control-workflow.jpg" alt="Document Control workflow screen." width="1440" height="900" loading="lazy" />
+                  </picture>
+                  <p class="maturity">Active development · not a production customer deployment</p>
+                </>
+              )}
+              {index === 2 && (
+                <>
+                  <picture>
+                    <source media="(max-width: 899px)" srcset="/r5/assets/diagrams/who-holds-the-keys-phone.svg" />
+                    <img class="diagram" src="/r5/assets/diagrams/who-holds-the-keys.svg" alt="Diagram — who holds the keys." width="960" height="232" loading="lazy" />
+                  </picture>
+                  <p class="caption">Diagram</p>
+                </>
+              )}
+              {index === 3 && (
+                <>
+                  <picture>
+                    <source media="(max-width: 899px)" srcset="/r5/assets/diagrams/current-setup-map-phone.svg" />
+                    <img class="diagram" src="/r5/assets/diagrams/current-setup-map.svg" alt="Diagram: how a small business’s website, email, booking, payments and files connect." width="960" height="280" loading="lazy" />
+                  </picture>
+                  <div class="tool-row">
+                    <img src="/technology/github.svg" alt="GitHub" width="36" height="36" />
+                    <img src="/technology/cloudflare.svg" alt="Cloudflare" width="36" height="36" />
+                    <img src="/technology/astro.svg" alt="Astro" width="36" height="36" />
+                    <img src="/technology/typescript.svg" alt="TypeScript" width="36" height="36" />
+                    <img src="/technology/python.svg" alt="Python" width="36" height="36" />
+                  </div>
+                  <p class="caption">Marks identify tools LDW uses. They do not imply endorsement by those companies.</p>
+                </>
+              )}
+            </div>
+              <div class="svc-card__body">
+                <a class="svc-card__surface" href={family.primaryHref} {...ldwNav('service_card', Astro.url.pathname)} {...ldw('service_cta_click', { service: family.primaryHref.split('/').filter(Boolean).pop(), placement: 'services_hub' })}>
+                  <span class="svc-card__index" aria-hidden="true">
+                    <span class="svc-card__icon"><Icon name={family.icon} size={24} /></span>
+                    <span class="svc-card__kicker">{family.number} · {family.kicker}</span>
+                  </span>
+                  <h3 class="svc-card__title">{family.name}</h3>
+                  <p class="svc-card__prompt">{family.prompt}</p>
+                  <p class="svc-card__desc">{family.description}</p>
+                  <span class="svc-card__cta">{family.primaryLabel} <span aria-hidden="true">→</span></span>
+                </a>
+                {family.secondaryHref && (
+                  <a class="svc-card__also" href={family.secondaryHref} {...ldwNav('service_card', Astro.url.pathname)}>Also: {family.secondaryLabel} <span aria-hidden="true">→</span></a>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+        <div class="carousel__dots" data-carousel-dots hidden>
+          {services.families.map((family, index) => (
+            <button type="button" class="carousel__dot" data-carousel-dot aria-label={`Show service ${index + 1} of ${services.families.length}: ${family.name}`}></button>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--plain plans" id="plans" aria-labelledby="website-plans-title">
     <div class="container">
       <div class="section-heading">
-        <p class="eyebrow">Find your starting point</p>
-        <h2>Which of these sounds most like what is happening now?</h2>
+        <p class="eyebrow">{planSet.eyebrow}</p>
+        <h2 id="website-plans-title">{planSet.title}</h2>
+        <p class="lede">{planSet.intro}</p>
       </div>
 
-      <div class="service-family-list service-choice-list">
-        {services.families.map((family) => (
-          <article class="service-family service-choice">
-            <div class="service-family__index">
-              <span>{family.number}</span>
-              <span class="service-family__icon"><Icon name={family.icon} size={28} /></span>
-              <p class="card__kicker">{family.kicker}</p>
+      <ul class="plan-strip" aria-label="True of every website plan">
+        {planWide.map((line) => <li><Icon name="check" size={18} class="plan-strip__check" /><span>{line}</span></li>)}
+      </ul>
+
+      <div class="carousel carousel--light carousel--grid-4 plans-car" role="region" aria-roledescription="carousel" aria-label="Website plans" data-carousel data-carousel-start="0">
+        <div class="carousel__track plans-car__track" role="group" aria-label="Website plans, swipe or use arrow keys" tabindex="0" data-carousel-track>
+          {ladder.map((plan, index) => (
+            <div class={`carousel__slide plan-slide plan-slide--${index + 1}`} role="group" aria-roledescription="slide" aria-label={`${index + 1} of 4: ${plan.name}`} data-carousel-slide>
+              <article aria-labelledby={`plan-${plan.id}`}>
+                <span class={`plan-rungs plan-rungs--${index + 1}`} aria-hidden="true"><i></i><i></i><i></i></span>
+                <h3 id={`plan-${plan.id}`}>{plan.name}</h3>
+                <p class="plan-slide__best"><strong>Best for:</strong> {plan.bestFor}</p>
+                <p class="plan-slide__when"><strong>Choose it when:</strong> {plan.whenToChoose}</p>
+                <p class="plan-slide__adds"><span class="plan-slide__label">{plan.addsOverPrior ? 'What moving up here adds' : 'Where it starts'}</span>{plan.addsOverPrior ?? 'The baseline shape that Business builds on.'}</p>
+                <h4 class="plan-slide__sub">Includes</h4>
+                <ul class="plan-slide__list plan-slide__list--in">
+                  {plan.includes.map((item) => <li><Icon name="check" size={16} class="plan-check" /><span>{item}</span></li>)}
+                </ul>
+                <h4 class="plan-slide__sub">Its own limit</h4>
+                <ul class="plan-slide__list plan-slide__list--out">
+                  {ownLimits(plan).map((item) => <li>{item}</li>)}
+                </ul>
+              </article>
             </div>
-            <div class="service-family__body">
-              <p class="service-choice__prompt">{family.prompt}</p>
-              <h2>{family.name}</h2>
-              <p>{family.description}</p>
+          ))}
+          {customPlan && (
+            <div class="carousel__slide plan-slide plan-slide--custom" role="group" aria-roledescription="slide" aria-label={`4 of 4: ${customPlan.name}`} data-carousel-slide>
+              <article aria-labelledby="plan-custom">
+                <span class="pill plan-slide__pill">Off the ladder</span>
+                <h3 id="plan-custom">{customPlan.name}</h3>
+                <p class="plan-slide__best"><strong>Best for:</strong> {customPlan.bestFor}</p>
+                <p class="plan-slide__when"><strong>Choose it when:</strong> {customPlan.whenToChoose}</p>
+                <p class="plan-slide__adds">{customPlan.addsOverPrior}</p>
+                <h4 class="plan-slide__sub">Includes</h4>
+                <ul class="plan-slide__list plan-slide__list--in">
+                  {customPlan.includes.map((item) => <li><Icon name="check" size={16} class="plan-check" /><span>{item}</span></li>)}
+                </ul>
+                <h4 class="plan-slide__sub">Its own limit</h4>
+                <ul class="plan-slide__list plan-slide__list--out">
+                  {ownLimits(customPlan).map((item) => <li>{item}</li>)}
+                </ul>
+              </article>
             </div>
-            <div class="service-family__links">
-              <a class="service-choice__primary" href={family.primaryHref}>{family.primaryLabel} →</a>
-              {family.secondaryHref && <a href={family.secondaryHref}>{family.secondaryLabel} →</a>}
-              <a href="/connect/">Talk it through →</a>
-            </div>
-          </article>
-        ))}
+          )}
+        </div>
+        <div class="carousel__dots" data-carousel-dots hidden>
+          {[...ladder, customPlan].filter(Boolean).map((plan, index) => (
+            <button type="button" class="carousel__dot" data-carousel-dot aria-label={`Show plan ${index + 1} of 4: ${plan.name}`}></button>
+          ))}
+        </div>
+      </div>
+
+      <div class="plan-compare-cta actions">
+        <a class="button" href="/discovery/" {...ldwNav('primary_cta', Astro.url.pathname)}>Describe your project</a>
       </div>
     </div>
   </section>
-
-  <section class="section section--navy">
+  {showPreviewCareOptions && (
+  <section class="section section--warm" aria-labelledby="care-concept-bridge-heading">
     <div class="container">
       <div class="section-heading">
-        <p class="eyebrow">How LDW chooses the solution</p>
-        <h2>Use the smallest change that solves the real problem.</h2>
-      </div>
-      <div class="editorial-list editorial-list--dark">
-        {services.startingPoints.map((item) => <article class="editorial-row"><h3>{item.title}</h3><p>{item.description}</p></article>)}
+        <p class="eyebrow">Ongoing Website Care</p>
+        <h2 id="care-concept-bridge-heading">A website build and ongoing care are different choices.</h2>
+        <p class="lede">The plans above describe one-time website project scopes. Ongoing care is a separate choice, with its own five plans.</p>
+        <p><a class="text-link" href="/services/website-care/#care-options" {...ldwNav('content', Astro.url.pathname)}>Compare the five Website Care plans <span aria-hidden="true">→</span></a></p>
       </div>
     </div>
   </section>
-
-  <section class="section section--warm">
-    <div class="container final-cta final-cta--single">
-      <div>
-        <p class="eyebrow">Not sure which path fits?</p>
-        <h2>{services.platformNote.title}</h2>
-        <p class="lede">{services.platformNote.body}</p>
-      </div>
-      <div class="actions"><a class="button" href="/connect/">Tell Eddie what is getting in the way</a></div>
-    </div>
-  </section>
+)}
+  <script is:inline src="/r5/site-carousel.js" defer></script>
 </BaseLayout>

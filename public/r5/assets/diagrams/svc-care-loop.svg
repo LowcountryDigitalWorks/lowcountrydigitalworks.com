@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 420" role="img" aria-labelledby="care-t care-d">
+  <title id="care-t">Diagram: example setup — Website Care check loop</title>
+  <desc id="care-d">Illustrative checks: Links, Accessibility, Performance, Dependencies and Content produce Findings; a person reviews; the owner approves; a change log records it.</desc>
+  <rect width="680" height="420" fill="#F7F4EC"/>
+  <rect x="24" y="24" width="208" height="56" rx="10" fill="#FFFFFF" stroke="#15241F" stroke-width="2"/>
+  <text x="128.0" y="59.7" text-anchor="middle" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="22" font-weight="700">Links</text>
+  <rect x="242" y="24" width="208" height="56" rx="10" fill="#FFFFFF" stroke="#15241F" stroke-width="2"/>
+  <text x="346.0" y="59.7" text-anchor="middle" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="22" font-weight="700">Accessibility</text>
+  <rect x="460" y="24" width="208" height="56" rx="10" fill="#FFFFFF" stroke="#15241F" stroke-width="2"/>
+  <text x="564.0" y="59.7" text-anchor="middle" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="22" font-weight="700">Performance</text>
+  <rect x="133" y="94" width="208" height="56" rx="10" fill="#FFFFFF" stroke="#15241F" stroke-width="2"/>
+  <text x="237.0" y="129.7" text-anchor="middle" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="22" font-weight="700">Dependencies</text>
+  <rect x="351" y="94" width="208" height="56" rx="10" fill="#FFFFFF" stroke="#15241F" stroke-width="2"/>
+  <text x="455.0" y="129.7" text-anchor="middle" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="22" font-weight="700">Content</text>
+  <line x1="340" y1="156" x2="340" y2="184" stroke="#15241F" stroke-width="2"/>
+  <path d="M335 178 L340 184 L345 178" fill="none" stroke="#15241F" stroke-width="2"/>
+  <rect x="24" y="196" width="142" height="84" rx="10" fill="#FFFFFF" stroke="#15241F" stroke-width="2"/>
+  <text x="95.0" y="245.7" text-anchor="middle" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="22" font-weight="700">Findings</text>
+  <line x1="168" y1="238" x2="188" y2="238" stroke="#15241F" stroke-width="2"/>
+  <path d="M182 233 L188 238 L182 243" fill="none" stroke="#15241F" stroke-width="2"/>
+  <rect x="190" y="196" width="142" height="84" rx="10" fill="#1E6B66" stroke="#15241F" stroke-width="2"/>
+  <text x="261.0" y="232.5" text-anchor="middle" fill="#EFE9DD" font-family="Manrope, system-ui, sans-serif" font-size="22" font-weight="700">Human</text>
+  <text x="261.0" y="258.9" text-anchor="middle" fill="#EFE9DD" font-family="Manrope, system-ui, sans-serif" font-size="22" font-weight="700">review</text>
+  <line x1="334" y1="238" x2="354" y2="238" stroke="#15241F" stroke-width="2"/>
+  <path d="M348 233 L354 238 L348 243" fill="none" stroke="#15241F" stroke-width="2"/>
+  <rect x="356" y="196" width="142" height="84" rx="10" fill="#FFFFFF" stroke="#15241F" stroke-width="2"/>
+  <text x="427.0" y="232.5" text-anchor="middle" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="22" font-weight="700">Owner</text>
+  <text x="427.0" y="258.9" text-anchor="middle" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="22" font-weight="700">approves</text>
+  <line x1="500" y1="238" x2="520" y2="238" stroke="#15241F" stroke-width="2"/>
+  <path d="M514 233 L520 238 L514 243" fill="none" stroke="#15241F" stroke-width="2"/>
+  <rect x="522" y="196" width="142" height="84" rx="10" fill="#FFFFFF" stroke="#15241F" stroke-width="2"/>
+  <text x="593.0" y="232.5" text-anchor="middle" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="22" font-weight="700">Change</text>
+  <text x="593.0" y="258.9" text-anchor="middle" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="22" font-weight="700">log</text>
+  <rect x="24" y="312" width="632" height="76" rx="12" fill="#FFFFFF" stroke="#15241F" stroke-width="2" stroke-dasharray="6 5"/>
+  <text x="340" y="358" text-anchor="middle" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="22" font-weight="750">Scores are evidence, not guarantees.</text>
+</svg>

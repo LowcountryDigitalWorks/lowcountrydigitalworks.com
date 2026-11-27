@@ -15,8 +15,11 @@ EXPECTED_VALIDATE_RUN_STEPS = (
     ("Reject CSP-blocked inline style attributes in built pages", "python scripts/validate_inline_style_attrs.py"),
     ("Production smoke unit tests", "npm run test:smoke"),
     ("Dependency policy unit tests", "npm run test:dependency-policy"),
+    ("Care preview gate and build isolation", "npm run test:care-gate"),
     ("Install Chromium", "npx playwright install --with-deps chromium"),
     ("Browser and accessibility tests", "npm run test:e2e"),
+    ("Care ON browser and contrast preview proof", "npm run test:care-preview:ci"),
+    ("Analytics consent browser proof (local stub vendors)", "node --test tests/ci-analytics-consent.unit.mjs && node scripts/ci-analytics-consent.mjs"),
     ("Dependency audits (runtime + full tree)", "node scripts/dependency-audit-policy.mjs"),
 )
 

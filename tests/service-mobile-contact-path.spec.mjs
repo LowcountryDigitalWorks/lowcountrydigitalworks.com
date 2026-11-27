@@ -60,7 +60,8 @@ test('Connect keeps its own call action without a duplicate mobile quick-contact
   const response = await page.goto('/connect/');
   expect(response?.ok()).toBeTruthy();
   await expect(page.getByRole('navigation', { name: 'Quick contact' })).toHaveCount(0);
-  await expect(page.locator('#main-content a.connect-action[href^="tel:"]')).toHaveAttribute(
+  // k5d: Connect's own call action is on the contact card.
+  await expect(page.locator('#main-content .biz-card a.biz-card__action[href^="tel:"]')).toHaveAttribute(
     'href',
     `tel:${contact.phone.number}`,
   );

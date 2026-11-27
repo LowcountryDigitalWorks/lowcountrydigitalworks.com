@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100" role="img" aria-hidden="true">
+  <rect width="200" height="100" fill="#F7F4EC"/>
+  <text x="10" y="20" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="18" font-weight="800">Current setup map</text>
+  <rect x="8" y="28" width="184" height="20" rx="6" fill="#15241F"/>
+  <text x="100" y="43" text-anchor="middle" fill="#EFE9DD" font-family="Manrope, system-ui, sans-serif" font-size="18" font-weight="750">Website</text>
+  <rect x="8" y="52" width="88" height="20" rx="6" fill="#FFFFFF" stroke="#15241F"/>
+  <text x="52" y="67" text-anchor="middle" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="18" font-weight="750">Email</text>
+  <rect x="104" y="52" width="88" height="20" rx="6" fill="#FFFFFF" stroke="#15241F"/>
+  <text x="148" y="67" text-anchor="middle" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="18" font-weight="750">Booking</text>
+  <rect x="8" y="76" width="88" height="20" rx="6" fill="#FFFFFF" stroke="#15241F"/>
+  <text x="52" y="91" text-anchor="middle" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="18" font-weight="750">Payments</text>
+  <rect x="104" y="76" width="88" height="20" rx="6" fill="#FFFFFF" stroke="#15241F"/>
+  <text x="148" y="91" text-anchor="middle" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="18" font-weight="750">Files</text>
+</svg>

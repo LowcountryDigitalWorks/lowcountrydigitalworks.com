@@ -1,12 +1,14 @@
 ---
 import contact from '../data/contact.json';
 import Icon from './Icon.astro';
+import { analyticsEnabled, analyticsRouteAllowed, ldw, ldwNav } from '../lib/analytics-config.mjs';
 const { allowSocialProfiles = true } = Astro.props;
+const showPrivacyChoices = analyticsEnabled() && analyticsRouteAllowed(Astro.url.pathname);
 ---
 <footer class="site-footer">
   <div class="container footer-grid" itemscope itemtype="https://schema.org/Organization" itemid="https://lowcountrydigitalworks.com/#organization">
     <div>
-      <a href="/" itemprop="url" aria-label="Lowcountry Digital Works home">
+      <a href="/" {...ldwNav('footer', Astro.url.pathname)} itemprop="url" aria-label="Lowcountry Digital Works home">
         <img class="footer-logo" itemprop="logo" src="/brand/logo/lowcountry-digital-works-logo-horizontal-white.svg" alt="Lowcountry Digital Works" width="312" height="88" />
       </a>
       <meta itemprop="legalName" content="Lowcountry Digital Works LLC" />
@@ -16,28 +18,29 @@ const { allowSocialProfiles = true } = Astro.props;
       </p>
     </div>
     <nav aria-label="Footer">
-      <a href="/services/">Services</a>
-      <a href="/work/">Work</a>
-      <a href="/approach/">Approach</a>
-      <a href="/guides/">Guides</a>
-      <a href="/about/">About</a>
-      <a href="/discovery/">Project discovery</a>
-      <a href="/connect/">Connect</a>
-      <a href="/privacy/">Privacy</a>
-      <a href="/accessibility/">Accessibility</a>
-      <a href="/terms/">Website Terms</a>
+      <a href="/services/" {...ldwNav('footer', Astro.url.pathname)}>Services</a>
+      <a href="/work/" {...ldwNav('footer', Astro.url.pathname)}>Work</a>
+      <a href="/approach/" {...ldwNav('footer', Astro.url.pathname)}>Approach</a>
+      <a href="/guides/" {...ldwNav('footer', Astro.url.pathname)}>Guides</a>
+      <a href="/about/" {...ldwNav('footer', Astro.url.pathname)}>About</a>
+      <a href="/discovery/" {...ldwNav('footer', Astro.url.pathname)}>Project discovery</a>
+      <a href="/connect/" {...ldwNav('footer', Astro.url.pathname)}>Connect</a>
+      <a href="/privacy/" {...ldwNav('footer', Astro.url.pathname)}>Privacy</a>
+      {showPrivacyChoices && <a href="/privacy/#privacy-choices" data-ldw-consent-open>Privacy choices</a>}
+      <a href="/accessibility/" {...ldwNav('footer', Astro.url.pathname)}>Accessibility</a>
+      <a href="/terms/" {...ldwNav('footer', Astro.url.pathname)}>Website Terms</a>
     </nav>
     <div class="footer-contact">
       <p><strong>Contact</strong><br />
-        <a class="icon-link" itemprop="email" href={`mailto:${contact.email.address}`}><Icon name="mail" size={17} /><span>{contact.email.address}</span></a><br />
-        <a class="icon-link" itemprop="telephone" href={`tel:${contact.phone.number}`}><Icon name="phone" size={17} /><span>{contact.phone.display}</span></a>
+        <a class="icon-link" itemprop="email" href={`mailto:${contact.email.address}`} {...ldw('contact_method_click', { method: 'email', placement: 'footer' })}><Icon name="mail" size={17} /><span>{contact.email.address}</span></a><br />
+        <a class="icon-link" itemprop="telephone" href={`tel:${contact.phone.number}`} {...ldw('contact_method_click', { method: 'phone', placement: 'footer' })}><Icon name="phone" size={17} /><span>{contact.phone.display}</span></a>
       </p>
       {allowSocialProfiles && (
         <p class="footer-socials">
           {contact.socials.map((social) => (
             <a class="icon-link footer-social-link" itemprop="sameAs" href={social.href} rel="me noopener">
-              <span class={`social-mark social-mark--${social.name === 'Facebook' ? 'facebook' : 'x'}`}>
-                <Icon name={social.name === 'Facebook' ? 'facebook' : 'x'} size={16} />
+              <span class={`social-mark social-mark--${social.name === 'Facebook' ? 'facebook' : social.name === 'X' ? 'x' : 'linkedin'}`}>
+                <Icon name={social.name === 'Facebook' ? 'facebook' : social.name === 'X' ? 'x' : 'linkedin'} size={20} />
               </span>
               <span>{social.name}</span>
             </a>
@@ -46,6 +49,12 @@ const { allowSocialProfiles = true } = Astro.props;
       )}
       <p class="small"><span itemprop="areaServed">South Carolina Lowcountry</span> · remote work where the fit is right</p>
       <p class="small">© {new Date().getFullYear()} Lowcountry Digital Works.</p>
+      <fieldset class="appearance-control" data-appearance-control>
+        <legend class="appearance-control__legend">Appearance</legend>
+        <label class="appearance-control__opt appearance-control__opt--light" title="Light"><input type="radio" name="ldw-appearance" value="light" aria-label="Light" /><Icon name="sun" size={20} /></label>
+        <label class="appearance-control__opt appearance-control__opt--dark" title="Dark"><input type="radio" name="ldw-appearance" value="dark" aria-label="Dark" /><Icon name="moon" size={20} /></label>
+        <label class="appearance-control__opt appearance-control__opt--system" title="System"><input type="radio" name="ldw-appearance" value="system" aria-label="System" checked /><Icon name="monitor" size={20} /></label>
+      </fieldset>
     </div>
   </div>
 </footer>
@@ -54,18 +63,21 @@ const { allowSocialProfiles = true } = Astro.props;
 .footer-grid { display: grid; grid-template-columns: minmax(0,1.5fr) .8fr 1.1fr; gap: 2.5rem; align-items: start; }
 .footer-logo { width: min(260px, 100%); }
 .site-footer p { max-width: 48ch; color: #d9e4e7; }
-.site-footer nav { display: grid; gap: .45rem; }
+.site-footer nav { display: grid; gap: 0; }
+/* 44px link targets at every width (was 24px on desktop). */
+.site-footer nav a { display: flex; align-items: center; min-height: 44px; }
 .site-footer a { color: white; }
 .footer-contact { min-width: 0; }
 /* Keep the email usable when text is enlarged: the flex link must stay inside
    its grid track, and the text may wrap without clipping or hiding content. */
 .footer-contact a[itemprop="email"] { max-width: 100%; }
 .footer-contact a[itemprop="email"] > span { min-width: 0; overflow-wrap: anywhere; }
-.footer-socials { display: flex; gap: 1rem; flex-wrap: wrap; }
-.footer-social-link { gap: .5rem; text-decoration-thickness: .08em; }
-.social-mark { width: 1.75rem; height: 1.75rem; display: inline-grid; place-items: center; flex: 0 0 auto; border-radius: .5rem; }
+.footer-socials { display: flex; gap: .25rem 1rem; flex-wrap: wrap; align-items: center; }
+.footer-social-link { gap: .6rem; min-height: 44px; text-decoration-thickness: .08em; }
+.social-mark { width: 2.25rem; height: 2.25rem; display: inline-grid; place-items: center; flex: 0 0 auto; border-radius: .5rem; }
 .social-mark--facebook { background: #1877f2; color: #fff; }
 .social-mark--x { background: #fff; color: #000; border: 1px solid rgb(255 255 255 / .8); }
+.social-mark--linkedin { background: #fff; color: #0a66c2; border: 1px solid rgb(255 255 255 / .8); }
 .footer-social-link:hover .social-mark { transform: translateY(-1px); }
 .small { font-size: .88rem; }
 /* The third desktop track is narrower than the contact email at tablet widths.
@@ -74,5 +86,10 @@ const { allowSocialProfiles = true } = Astro.props;
   .footer-grid { grid-template-columns: minmax(0,1.5fr) minmax(0,1fr); gap: 1.75rem; }
   .footer-contact { grid-column: 1 / -1; }
 }
-@media(max-width:760px){ .footer-grid { grid-template-columns: 1fr; gap: 1.5rem; } }
+@media(max-width:760px){
+  .footer-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+  /* Two columns of 44px targets instead of one 10-link column of 24px targets. */
+  .site-footer nav { grid-template-columns: 1fr 1fr; gap: 0 1rem; }
+  .site-footer nav a { display: flex; align-items: center; min-height: 44px; }
+}
 </style>

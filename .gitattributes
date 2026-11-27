@@ -1,0 +1,2 @@
+# vCard 3.0 requires CRLF in the published artifact; treat as binary so Git never normalizes LF.
+public/eddie-gugino-lowcountry-digital-works.vcf -text

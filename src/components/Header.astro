@@ -1,4 +1,5 @@
 ---
+import { ldwNav } from '../lib/analytics-config.mjs';
 const links = [
   ['Services','/services/'],
   ['Work','/work/'],
@@ -11,24 +12,25 @@ const isCurrent = (href) => href === '/' ? current === '/' : current === href ||
 ---
 <header class="site-header">
   <div class="container header-row">
-    <a class="brand" href="/" aria-label="Lowcountry Digital Works home">
+    <a class="brand" href="/" {...ldwNav('header', current)} aria-label="Lowcountry Digital Works home">
       <img src="/brand/logo/lowcountry-digital-works-logo-horizontal.svg" alt="Lowcountry Digital Works" width="312" height="88" />
+      <img class="brand-logo-on-dark" src="/brand/logo/lowcountry-digital-works-logo-horizontal-white.svg" alt="" width="312" height="88" />
     </a>
     <nav class="desktop-nav" aria-label="Primary">
-      {links.map(([label,href]) => <a href={href} aria-current={isCurrent(href) ? 'page' : undefined}>{label}</a>)}
-      <a class="nav-cta" href="/discovery/">Project discovery</a>
+      {links.map(([label,href]) => <a href={href} {...ldwNav('header', current)} aria-current={isCurrent(href) ? 'page' : undefined}>{label}</a>)}
+      <a class="nav-cta" href="/discovery/" {...ldwNav('header', current)}>Project discovery</a>
     </nav>
     <details class="mobile-nav">
       <summary>Menu</summary>
       <nav aria-label="Mobile primary">
-        {links.map(([label,href]) => <a href={href} aria-current={isCurrent(href) ? 'page' : undefined}>{label}</a>)}
-        <a class="mobile-nav__cta" href="/discovery/">Project discovery</a>
+        {links.map(([label,href]) => <a href={href} {...ldwNav('mobile_nav', current)} aria-current={isCurrent(href) ? 'page' : undefined}>{label}</a>)}
+        <a class="mobile-nav__cta" href="/discovery/" {...ldwNav('mobile_nav', current)}>Project discovery</a>
       </nav>
     </details>
   </div>
 </header>
 <style>
-.site-header { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--ldw-soft-white) 95%, white); border-bottom: 1px solid var(--border); padding-top: env(safe-area-inset-top, 0px); }
+.site-header { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--ldw-soft-white) 95%, white); background: light-dark(color-mix(in srgb, var(--ldw-soft-white) 95%, white), #152A36); border-bottom: 1px solid var(--border); padding-top: env(safe-area-inset-top, 0px); }
 .header-row { min-height: 70px; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
 .brand { display: inline-flex; width: clamp(180px, 22vw, 250px); line-height: 0; }
 .desktop-nav { display: flex; align-items: center; gap: clamp(.5rem, 1.2vw, 1rem); }
@@ -40,6 +42,6 @@ const isCurrent = (href) => href === '/' ? current === '/' : current === href ||
 .mobile-nav nav { position: absolute; right: 0; top: calc(100% + .55rem); min-width: min(82vw, 320px); padding: .5rem; display: grid; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface); box-shadow: 0 16px 32px rgb(16 42 58 / .12); }
 .mobile-nav nav a { color: var(--text); padding: .7rem .8rem; text-decoration: none; border-radius: var(--radius-sm); font-weight: 680; }
 .mobile-nav nav a:hover { background: var(--surface-warm); }
-.mobile-nav .mobile-nav__cta { margin-top: .25rem; background: var(--interactive); color: white; }
+.mobile-nav nav a.mobile-nav__cta { margin-top: .25rem; background: var(--interactive); color: white; }
 @media (max-width: 960px) { .desktop-nav { display: none; } .mobile-nav { display: block; } .brand { width: 210px; } }
 </style>

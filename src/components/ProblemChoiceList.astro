@@ -1,0 +1,29 @@
+---
+import Icon from './Icon.astro';
+import { ldwNav } from '../lib/analytics-config.mjs';
+const { items, label = 'Starting points' } = Astro.props;
+---
+<div class="carousel carousel--light carousel--grid-2" role="region" aria-roledescription="carousel" aria-label={label} data-carousel data-carousel-start="0">
+  <div class="carousel__track problem-choice-list" role="group" aria-label={`${label}, swipe or use arrow keys`} tabindex="0" data-carousel-track>
+    {items.map((point, index) => (
+      <div class="carousel__slide" role="group" aria-roledescription="slide" aria-label={`${index + 1} of ${items.length}: ${point.title}`} data-carousel-slide>
+        <a class="problem-choice" href={point.serviceHref} {...ldwNav('home_choice', Astro.url.pathname)}>
+          <span class="problem-choice__lead" aria-hidden="true">
+            <span class="problem-choice__icon"><Icon name={point.icon} size={22} /></span>
+            <span class="problem-choice__number">{point.number}</span>
+          </span>
+          <span class="problem-choice__body">
+            <span class="problem-choice__title">{point.title}</span>
+            <span class="problem-choice__desc">{point.description}</span>
+          </span>
+          <span class="problem-choice__arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    ))}
+  </div>
+  <div class="carousel__dots" data-carousel-dots hidden>
+    {items.map((point, index) => (
+      <button type="button" class="carousel__dot" data-carousel-dot aria-label={`Show ${index + 1} of ${items.length}: ${point.title}`}></button>
+    ))}
+  </div>
+</div>

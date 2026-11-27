@@ -1,0 +1,17 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import vm from 'node:vm';
+import { readFileSync } from 'node:fs';
+const source = readFileSync(new URL('../src/analytics/ldw-analytics.js', import.meta.url), 'utf8');
+const extracted = source.match(/\/\/ BEGIN navigationParams[^\n]*\n([\s\S]*?)\n  \/\/ END navigationParams/);
+assert.ok(extracted, 'shipped loader navigation function must exist');
+const fn = vm.runInNewContext(extracted[1]+'\nnavigationParams', {URL});
+const base='https://example.test/';
+const routes=['/','/services/','/work/','/share/','/admin/x/','/api/','/services/websites/'];
+const measure=(href,placement='header',source=base)=>JSON.parse(JSON.stringify(fn(href,placement,source,routes)));
+for (const href of ['/services/','/services','services/','https://example.test/services/?x=fictional#fragment','/services/?email=fictional%40example.test','/services/#section','//example.test/services/']) test('accepted '+href,()=>assert.deepEqual(measure(href),{source_route:'/',destination_route:'/services/',placement:'header'}));
+for (const href of ['', ' ', '#foo','/?x=y','/','/unknown/','/Services/','/%73ervices/','https://other.test/services/','//other.test/services/','https://user@example.test/services/','mailto:fake@example.test','javascript:void(0)','/share/','/admin/x/','/api/','https://[invalid','http://example.test/services/']) test('rejected '+href,()=>assert.equal(measure(href),null));
+for(const placement of ['header','mobile_nav','footer','home_choice','service_card','work_card','content','primary_cta']) test('placement '+placement,()=>assert.equal(measure('/work/',placement).placement,placement));
+for(const source of ['https://example.test/share/','https://example.test/unknown/','https://example.test/admin/x/']) test('source excluded '+source,()=>assert.equal(measure('/services/','header',source),null));
+test('unknown placement',()=>assert.equal(measure('/work/','unapproved'),null));
+test('relative nested path',()=>assert.equal(measure('websites/','service_card',base+'services/').destination_route,'/services/websites/'));

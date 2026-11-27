@@ -12,10 +12,10 @@ test('Services hub presents factual local service metadata without changing cano
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://lowcountrydigitalworks.com/services/');
   await expect(page.locator('meta[name="robots"]')).toHaveCount(0);
   await expect(page.getByRole('heading', { level: 1, name: 'Start with what your business needs to work better.' })).toBeVisible();
-  await expect(page.locator('.service-family')).toHaveCount(4);
-  await expect(page.locator('.service-family a[href="/services/websites/"]')).toHaveCount(1);
-  await expect(page.locator('.service-family a[href="/services/website-care/"]')).toHaveCount(1);
-  await expect(page.locator('.service-family a[href="/connect/"]')).toHaveCount(4);
+  await expect(page.locator('.svc-card')).toHaveCount(4);
+  await expect(page.locator('.svc-card a[href="/services/websites/"]')).toHaveCount(1);
+  await expect(page.locator('.svc-card a[href="/services/website-care/"]')).toHaveCount(1);
+  await expect(page.locator('.svc-card a[href="/connect/"]')).toHaveCount(0);
 });
 
 test('Services metadata change does not overwrite accepted homepage search title', async ({ page }) => {
@@ -27,7 +27,7 @@ test('Services metadata change does not overwrite accepted homepage search title
 test('Services retains four navigable choices at narrow mobile widths', async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 800 });
   await page.goto('/services/');
-  await expect(page.locator('.service-family')).toHaveCount(4);
+  await expect(page.locator('.svc-card')).toHaveCount(4);
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
   const widths = await page.evaluate(() => ({
     viewport: document.documentElement.clientWidth,

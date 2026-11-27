@@ -1,9 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { analyticsEnabled } from '../lib/analytics-config.mjs';
+const analytics = analyticsEnabled();
 ---
 <BaseLayout title="Privacy Notice" description="Privacy information for the Lowcountry Digital Works public website and approved business-contact channels.">
-<section class="page-hero"><div class="container readable"><p class="eyebrow">Privacy</p><h1>Privacy Notice</h1><p class="lede">Lowcountry Digital Works keeps this public website deliberately simple and minimizes data collection, tracking, and browser storage.</p></div></section>
-<section class="section"><div class="container readable">
+<section class="page-hero page-hero--snug"><div class="container"><div class="page-hero-plate readable"><p class="eyebrow">Privacy</p><h1>Privacy Notice</h1><p class="lede">Lowcountry Digital Works keeps this public website deliberately simple and minimizes data collection, tracking, and browser storage.</p></div></div></section>
+<section class="section legal-section"><div class="container readable"><div class="depth-card legal-sheet">
 <h2>Who this notice covers</h2>
 <p>This notice describes how Lowcountry Digital Works LLC, operating as Lowcountry Digital Works ("LDW," "we," "us"), handles information associated with lowcountrydigitalworks.com and approved business-contact or project-discovery channels linked from this website.</p>
 
@@ -15,8 +17,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 <p>Infrastructure used to deliver and protect the website may process limited request and security information such as IP address, browser or device information, requested pages, timestamps, and security-related signals. LDW uses Cloudflare for website delivery and security.</p>
 
 <h2>Cookies, browser storage, and tracking</h2>
+{analytics ? (
+<>
+<p>This website uses analytics and site-experience tools to understand how the site is used and to improve it, but only if you choose to allow them. The tools are Google Analytics and Google Tag Manager (Google) and Microsoft Clarity (Microsoft). Until you choose, none of them loads and nothing is sent to Google or Microsoft. If you allow them, they may set cookies or similar identifiers and may collect page views, approximate location, device and browser information, and which pages, contact buttons and links are used. Microsoft Clarity may record how pages are scrolled and clicked, and forms and contact details are masked. LDW does not use Google advertising features with these tools. They load only on lowcountrydigitalworks.com, never on secure-share pages.</p>
+<h3 id="privacy-choices">Your analytics choices</h3>
+<p>You can accept, reject or change your choices at any time using "Privacy choices" in the footer of any page. If you turn a tool off after allowing it, the page reloads without it and its cookies on this site are cleared. The site remembers your choice using local storage in your browser, not a cookie, and the choice is not sent to LDW. If your browser sends a Global Privacy Control signal, the tools stay off until you choose otherwise. If JavaScript is off, no optional tool loads at all.</p>
+</>
+) : (
+<>
 <p>The repository-controlled public site does not intentionally use advertising trackers, behavioral analytics, nonessential cookies, or local/session browser storage for tracking or advertising. Strictly necessary security technologies may be used by website infrastructure when needed to deliver or protect the service.</p>
 <p>Because the site currently has no nonessential cookie purpose to consent to, LDW does not display a cookie banner merely for appearance. If a future feature introduces nonessential cookies, browser storage, advertising technology, behavioral tracking, or another consent-triggering purpose, LDW will review the data flow and applicable consent requirements before deployment.</p>
+</>
+)}
 
 <h2>How we use information</h2>
 <p>LDW may use information you provide to respond to your request, understand or scope potential work, administer an existing business relationship, maintain necessary business records, protect systems and users, and meet applicable legal, accounting, or contractual obligations.</p>
@@ -50,5 +62,5 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 <p>Questions about this notice may be sent to <a href="mailto:eddie@lowcountrydigitalworks.com">eddie@lowcountrydigitalworks.com</a>.</p>
 
 <p><em>Effective date: October 1, 2026. Last updated: October 1, 2026.</em></p>
-</div></section>
+</div></div></section>
 </BaseLayout>

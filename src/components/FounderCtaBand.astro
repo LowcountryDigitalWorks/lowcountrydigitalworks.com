@@ -1,0 +1,28 @@
+---
+import { ldw } from '../lib/analytics-config.mjs';
+const { eyebrow, title, lede, note, href, cta, phoneHref, phoneDisplay } = Astro.props;
+---
+<section class="section section--navy section--cta-band section--founder-cta band-mesh">
+  <div class="container founder-cta-band">
+    <img
+      class="founder-cta-band__portrait"
+      data-founder-portrait
+      src="/founder/eddie-gugino-founder.webp"
+      alt="Eddie Gugino, founder of Lowcountry Digital Works"
+      width="320"
+      height="320"
+      decoding="async"
+      loading="lazy"
+    />
+    <div class="founder-cta-band__copy">
+      {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+      <h2>{title}</h2>
+      <p class="lede">{lede}</p>
+      {note && <p class="cta-support">{note}</p>}
+      <div class="actions cta-band-actions">
+        <a class="button button--oyster" href={href}>{cta}</a>
+        <a class="text-link text-link--light" href={phoneHref} {...ldw('contact_method_click', { method: 'sms', placement: 'home_cta_band' })}>or text Eddie, {phoneDisplay}</a>
+      </div>
+    </div>
+  </div>
+</section>

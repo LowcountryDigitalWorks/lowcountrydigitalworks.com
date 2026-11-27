@@ -1,0 +1,238 @@
+/* Theme tokens only. Layout lives in base.css. D1 = Evolved Tidal. D2 = Pluff & Spartina. */
+
+
+
+html[data-dir="l"]{
+  --h1-size: clamp(2.8rem, 4.8vw, 4.3125rem); /* 44.8px floor, ~69px at 1440 */
+  --h1-weight: 800;
+  --h1-tracking: -0.03em;
+  --h1-leading: 1.08;
+  --h2-size: clamp(1.55rem, 3.1vw, 2.15rem);
+  --h2-weight: 780;
+  --h3-size: 1.15rem;
+  --lede-size: clamp(0.98rem, 1.5vw, 1.12rem);
+  --lede-weight: 500;
+  --body-size: 1rem;
+  --small-size: 0.875rem;
+  --eyebrow-size: 0.72rem;
+  --eyebrow-tracking: 0.12em;
+  --shadow-sm: 0 8px 20px rgba(21, 36, 31, 0.08);
+  --shadow: 0 14px 34px rgba(21, 36, 31, 0.12);
+  --motion-duration: 180ms;
+  --motion-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-lift: -1px;
+  --header-height: 68px;
+  --mobile-bar-min-height: 48px;
+  --tap: 44px;
+}
+
+@media (max-width: 759px) {
+  html[data-dir="l"]{ --h1-size: 2.05rem; --h1-leading: 1.14; } /* 32.8px — cap phone H1s at 3 lines */
+}
+@media (max-width: 370px) {
+  html[data-dir="l"]{ --h1-size: 1.9rem; --h1-leading: 1.14; } /* 30.4px */
+}
+
+/* Direction 1 — Evolved Tidal Framework */
+html[data-dir="l"][data-theme="d1"]{
+  --font-sans: "Manrope Variable", "Manrope", system-ui, sans-serif;
+  --color-navy: #102A3A;
+  --color-teal: #2F766F;
+  --color-oyster: #F3EFE6;
+  --color-soft-white: #F7F8F6;
+  --color-white: #FFFFFF;
+  --color-ink: #102A3A;
+  --color-tide: #2F766F;
+  --color-spartina: #2F766F;
+  --color-sky: #F7F8F6;
+  --color-shell: #F3EFE6;
+  --color-muted: #3D4C52;
+  --color-border: #D6DEDA;
+  --color-bg: #F7F8F6;
+  --color-surface: #FFFFFF;
+  --color-surface-warm: #F3EFE6;
+  --color-text: #102A3A;
+  --color-interactive: #24635C;
+  --color-interactive-hover: #1B4C47;
+  --color-on-interactive: #FFFFFF;
+  --color-focus: #235D8C;
+  --color-link-underline: #24635C;
+  --color-cta-secondary: #102A3A;
+  --color-on-navy: #F3EFE6;
+  --color-on-navy-muted: #D6E3E0;
+  --color-on-navy-link: #F3EFE6;
+  --footer-bg: #102A3A;
+  --footer-fg: #F3EFE6;
+  --footer-muted: #D6E3E0;
+  --bar-bg: #102A3A;
+  --bar-fg: #F3EFE6;
+  --bar-border: #2A4552;
+  --pill-bg: #24635C;
+  --pill-fg: #FFFFFF;
+  --pill-border: #24635C;
+  --card-bg: #FFFFFF;
+  --card-border: #D6DEDA;
+  --header-bg-solid: #F3EFE6;
+  --header-bg-glass: rgba(243, 239, 230, 0.86);
+  --header-blur: blur(14px);
+  --plate-bg-solid: #F3EFE6;
+  --plate-bg-glass: rgba(243, 239, 230, 0.82);
+  --plate-blur: blur(16px);
+  --hero-art: none;
+  --hero-veil: none;
+  --hero-position: center;
+  --page-hero-art: none;
+  --marsh-color: rgba(47, 118, 111, 0.55);
+  --device-bezel: #102A3A;
+  --device-screen-bg: #0B1C26;
+  --button-alt-bg: #F3EFE6;
+  --button-alt-fg: #102A3A;
+  --warn-bg: #F3EFE6;
+  --warn-border: #102A3A;
+  --accent-fill: #24635C;
+  --num-color: #24635C;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 24px;
+  --radius-xl: 24px;
+  --radius-pill: 999px;
+  --radius-button: 999px;
+  --radius-avatar: 50%;
+  --radius-device: 18px;
+  --radius-phone: 22px;
+  --lede-weight: 500;
+}
+
+@supports (color: color-mix(in srgb, red, blue)) {
+  html[data-dir="l"][data-theme="d1"]{
+    --header-bg-glass: color-mix(in srgb, #F3EFE6 86%, transparent);
+    --plate-bg-glass: color-mix(in srgb, #F3EFE6 82%, transparent);
+    --marsh-color: color-mix(in srgb, #2F766F 55%, transparent);
+  }
+}
+
+/* Direction 2 — Pluff & Spartina (chosen) */
+html[data-dir="l"][data-theme="d2"]{
+  --font-sans: "Manrope Variable", "Manrope", system-ui, sans-serif;
+  --color-navy: #15241F;
+  --color-teal: #1E6B66;
+  --color-oyster: #EFE9DD;
+  --color-soft-white: #F7F4EC;
+  --color-white: #FFFFFF;
+  --color-ink: #15241F;
+  --color-tide: #1E6B66;
+  --color-spartina: #C8A548;
+  --color-sky: #DCE8EC;
+  --color-shell: #EFE9DD;
+  --color-muted: #3A4A44;
+  --color-border: #D3CDBF;
+  --color-bg: #F7F4EC;
+  --color-surface: #FFFFFF;
+  --color-surface-warm: #EFE9DD;
+  --color-text: #15241F;
+  --color-interactive: #1E6B66;
+  --color-interactive-hover: #15534F;
+  --color-on-interactive: #FFFFFF;
+  --color-focus: #235D8C;
+  --color-link-underline: #1E6B66;
+  --color-cta-secondary: #15241F;
+  --color-on-navy: #EFE9DD;
+  --color-on-navy-muted: #DCE8EC;
+  --color-on-navy-link: #EFE9DD;
+  --footer-bg: #15241F;
+  --footer-fg: #EFE9DD;
+  --footer-muted: #DCE8EC;
+  --bar-bg: #15241F;
+  --bar-fg: #EFE9DD;
+  --bar-border: #2A3D36;
+  --pill-bg: #1E6B66;
+  --pill-fg: #FFFFFF;
+  --pill-border: #1E6B66;
+  --card-bg: #FFFFFF;
+  --card-border: #D3CDBF;
+  --header-bg-solid: #EFE9DD;
+  --header-bg-glass: rgba(239, 233, 221, 0.86);
+  --header-blur: blur(14px);
+  --plate-bg-solid: #EFE9DD;
+  --plate-bg-glass: rgba(239, 233, 221, 0.84);
+  --plate-blur: blur(16px);
+  --hero-art: url("/r5/assets/art/marsh-low-tide-hero-1600.jpg");
+  --hero-art: image-set(
+    url("/r5/assets/art/marsh-low-tide-hero-1600.avif") type("image/avif"),
+    url("/r5/assets/art/marsh-low-tide-hero-1600.webp") type("image/webp"),
+    url("/r5/assets/art/marsh-low-tide-hero-1600.jpg") type("image/jpeg")
+  );
+  --hero-veil: linear-gradient(180deg, #F7F4ECF2 0%, #EFE9DDE6 42%, #EFE9DDC7 100%);
+  --hero-position: center 42%;
+  --page-hero-art: url("/r5/assets/art/spartina-creek-band-1600.jpg");
+  --page-hero-art: image-set(
+    url("/r5/assets/art/spartina-creek-band-1600.avif") type("image/avif"),
+    url("/r5/assets/art/spartina-creek-band-1600.webp") type("image/webp"),
+    url("/r5/assets/art/spartina-creek-band-1600.jpg") type("image/jpeg")
+  );
+  --marsh-art: url("/r5/assets/art/marsh-low-tide-hero-800.jpg");
+  --marsh-art: image-set(
+    url("/r5/assets/art/marsh-low-tide-hero-800.avif") type("image/avif"),
+    url("/r5/assets/art/marsh-low-tide-hero-800.webp") type("image/webp"),
+    url("/r5/assets/art/marsh-low-tide-hero-800.jpg") type("image/jpeg")
+  );
+  --marsh-color: rgba(21, 36, 31, 0.45);
+  --device-bezel: #15241F;
+  --device-screen-bg: #0B1C18;
+  --button-alt-bg: #EFE9DD;
+  --button-alt-fg: #15241F;
+  --warn-bg: #F7F4EC;
+  --warn-border: #15241F;
+  --accent-fill: #C8A548;
+  --num-color: #15241F;
+  --radius-sm: 10px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-pill: 999px;
+  --radius-button: 999px;
+  --radius-avatar: 50%;
+  --radius-device: 16px;
+  --radius-phone: 22px;
+  --lede-weight: 300;
+  --h1-tracking: -0.03em;
+}
+
+@supports (color: color-mix(in srgb, red, blue)) {
+  html[data-dir="l"][data-theme="d2"]{
+    --header-bg-glass: color-mix(in srgb, #EFE9DD 86%, transparent);
+    --plate-bg-glass: color-mix(in srgb, #EFE9DD 84%, transparent);
+    --hero-veil: linear-gradient(180deg, color-mix(in srgb, #F7F4EC 95%, transparent) 0%, color-mix(in srgb, #EFE9DD 90%, transparent) 46%, color-mix(in srgb, #EFE9DD 78%, transparent) 100%);
+    --marsh-color: color-mix(in srgb, #15241F 45%, transparent);
+  }
+}
+
+@media (min-width: 900px) {
+  html[data-dir="l"][data-theme="d2"]{
+    --hero-veil: linear-gradient(90deg, #F7F4ECF5 0%, #EFE9DDEB 46%, #EFE9DD66 68%, transparent 86%);
+  }
+}
+@supports (color: color-mix(in srgb, red, blue)) {
+  @media (min-width: 900px) {
+    html[data-dir="l"][data-theme="d2"]{
+      --hero-veil: linear-gradient(90deg, color-mix(in srgb, #F7F4EC 96%, transparent) 0%, color-mix(in srgb, #EFE9DD 92%, transparent) 46%, color-mix(in srgb, #EFE9DD 40%, transparent) 68%, transparent 86%);
+    }
+  }
+}
+
+@media (min-width: 1800px) {
+  html[data-dir="l"][data-theme="d2"]{
+    --hero-art: url("/r5/assets/art/marsh-low-tide-hero-2400.jpg");
+    --hero-art: image-set(
+      url("/r5/assets/art/marsh-low-tide-hero-2400.avif") type("image/avif"),
+      url("/r5/assets/art/marsh-low-tide-hero-2400.webp") type("image/webp"),
+      url("/r5/assets/art/marsh-low-tide-hero-2400.jpg") type("image/jpeg")
+    );
+    --page-hero-art: url("/r5/assets/art/spartina-creek-band-2400.jpg");
+    --page-hero-art: image-set(
+      url("/r5/assets/art/spartina-creek-band-2400.avif") type("image/avif"),
+      url("/r5/assets/art/spartina-creek-band-2400.webp") type("image/webp"),
+      url("/r5/assets/art/spartina-creek-band-2400.jpg") type("image/jpeg")
+    );
+  }
+}

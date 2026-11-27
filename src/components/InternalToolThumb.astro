@@ -1,0 +1,36 @@
+---
+// Internal-tool thumbnail (lazy on Home, base default on Work). AVIF/WebP come from public/r5/assets/internal/.
+// Density descriptors keep each source's density-corrected natural size equal to
+// the work.json thumbnail dimensions locked by site.spec / web-trust.spec.
+const { thumbnail, lazy = false } = Astro.props;
+const modern = {
+  '/work-assets/gas-workbench-current-thumb.png': {
+    avif: '/r5/assets/internal/gas-workbench-current.avif 2x',
+    webp: '/r5/assets/internal/gas-workbench-current.webp 2x',
+  },
+  '/work-assets/document-control-overview-thumb.jpg': {
+    avif: '/r5/assets/internal/document-control-overview-thumb.avif',
+    webp: '/r5/assets/internal/document-control-overview-thumb.webp',
+  },
+  '/work-assets/owner-console-light-desktop.png': {
+    avif: '/r5/assets/internal/owner-console-light-desktop.avif',
+    webp: '/r5/assets/internal/owner-console-light-desktop.webp',
+  },
+  '/work-assets/interview-facilitator-prepare.png': {
+    avif: '/r5/assets/internal/interview-facilitator-prepare.avif',
+    webp: '/r5/assets/internal/interview-facilitator-prepare.webp',
+  },
+}[thumbnail.src];
+---
+<picture>
+  {modern && <source type="image/avif" srcset={modern.avif} />}
+  {modern && <source type="image/webp" srcset={modern.webp} />}
+  <img
+    src={thumbnail.src}
+    alt=""
+    width={thumbnail.width}
+    height={thumbnail.height}
+    loading={lazy ? 'lazy' : undefined}
+    decoding="async"
+  />
+</picture>

@@ -1,0 +1,14 @@
+---
+import TownGroups from './TownGroups.astro';
+const { serviceAreas } = Astro.props;
+---
+<section class="section section--plain service-area" aria-labelledby="service-area-title">
+  <div class="container service-area__inner">
+    <div class="section-heading">
+      <p class="eyebrow">{serviceAreas.eyebrow}</p>
+      <h2 id="service-area-title">{serviceAreas.title}</h2>
+      <p class="lede">Based in Beaufort, South Carolina, LDW works with organizations across these Lowcountry communities. Towns are listed equally, grouped by which side of the Broad River they sit on. {serviceAreas.note}</p>
+    </div>
+    <TownGroups id="home-towns" north={serviceAreas.northCommunities} south={serviceAreas.southOfBroad.rows.flat()} listClass="service-area__list" />
+  </div>
+</section>

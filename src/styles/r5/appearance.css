@@ -1,0 +1,201 @@
+/* k5f: site-wide Light / Dark / System appearance. Separate from the R5 design directions (data-theme d1/d2 are two LIGHT palettes and
+   stay as they are); this axis is data-color-mode on <html>, written before first paint by /r5/appearance.js.
+   - JS: data-color-pref = system|light|dark (the choice), data-color-mode = light|dark (what it resolves to).
+   - No JS: no data-color-mode, so the dark tokens follow prefers-color-scheme (the media block below).
+   - Component colours that are not tokens use light-dark(), which follows color-scheme: "light dark" by default (System),
+     forced to one scheme when the control picks Light or Dark. The light value of every light-dark() is the existing light colour. */
+html[data-dir="l"] { color-scheme: light dark; }
+html[data-dir="l"][data-color-mode="light"] { color-scheme: light; }
+html[data-dir="l"][data-color-mode="dark"] { color-scheme: dark; }
+
+/* Dark token map (same values for d1 and d2). The block is written twice: forced Dark, and System/no-JS with a dark OS. */
+html[data-dir="l"][data-color-mode="dark"] {
+  --ldw-estuary-navy: #06131B;
+  --bg: #0D1B25;
+  --surface: #152A36;
+  --surface-warm: #13242F;
+  --text: #E6EEF0;
+  --muted: #B4C3C8;
+  --border: #3B5664;
+  --interactive: #8FD3C1;
+  --interactive-hover: #B5E4D8;
+  --focus: #9CCBFF;
+  --color-navy: #06131B;
+  --color-teal: #8FD3C1;
+  --color-oyster: #13242F;
+  --color-soft-white: #0D1B25;
+  --color-white: #152A36;
+  --color-ink: #E6EEF0;
+  --color-tide: #8FD3C1;
+  --color-sky: #102230;
+  --color-shell: #13242F;
+  --color-muted: #B4C3C8;
+  --color-border: #3B5664;
+  --color-bg: #0D1B25;
+  --color-surface: #152A36;
+  --color-surface-warm: #13242F;
+  --color-text: #E6EEF0;
+  --color-interactive: #8FD3C1;
+  --color-interactive-hover: #B5E4D8;
+  --color-on-interactive: #0D1B25;
+  --color-focus: #9CCBFF;
+  --color-link-underline: #8FD3C1;
+  --color-cta-secondary: #E6EEF0;
+  --color-on-navy: #E6EEF0;
+  --color-on-navy-muted: #C5D3D8;
+  --color-on-navy-link: #E6EEF0;
+  --footer-bg: #06131B;
+  --footer-fg: #E6EEF0;
+  --footer-muted: #C5D3D8;
+  --bar-bg: #06131B;
+  --bar-fg: #E6EEF0;
+  --bar-border: #3B5664;
+  --pill-bg: #8FD3C1;
+  --pill-fg: #0D1B25;
+  --pill-border: #8FD3C1;
+  --card-bg: #152A36;
+  --card-border: #3B5664;
+  --header-bg-solid: #0D1B25;
+  --header-bg-glass: rgba(13, 27, 37, 0.9);
+  --plate-bg-solid: #13242F;
+  --plate-bg-glass: rgba(13, 27, 37, 0.88);
+  --hero-veil: rgba(13, 27, 37, 0.86); /* solid (the repository validator allows no new gradients); worst case over a white photo: #2F3B44, #E6EEF0 text 9.9:1, #B4C3C8 6.4:1 */
+  --marsh-color: rgba(6, 19, 27, 0.6);
+  --button-alt-bg: #E6EEF0;
+  --button-alt-fg: #102A3A;
+  --warn-bg: #13242F;
+  --warn-border: #E6EEF0;
+  --num-color: #E6EEF0;
+  --shadow-sm: 0 8px 20px rgba(0, 0, 0, 0.35);
+  --shadow: 0 14px 34px rgba(0, 0, 0, 0.45);
+}
+@media (prefers-color-scheme: dark) {
+  html[data-dir="l"]:not([data-color-mode]) {
+  --ldw-estuary-navy: #06131B;
+  --bg: #0D1B25;
+  --surface: #152A36;
+  --surface-warm: #13242F;
+  --text: #E6EEF0;
+  --muted: #B4C3C8;
+  --border: #3B5664;
+  --interactive: #8FD3C1;
+  --interactive-hover: #B5E4D8;
+  --focus: #9CCBFF;
+  --color-navy: #06131B;
+  --color-teal: #8FD3C1;
+  --color-oyster: #13242F;
+  --color-soft-white: #0D1B25;
+  --color-white: #152A36;
+  --color-ink: #E6EEF0;
+  --color-tide: #8FD3C1;
+  --color-sky: #102230;
+  --color-shell: #13242F;
+  --color-muted: #B4C3C8;
+  --color-border: #3B5664;
+  --color-bg: #0D1B25;
+  --color-surface: #152A36;
+  --color-surface-warm: #13242F;
+  --color-text: #E6EEF0;
+  --color-interactive: #8FD3C1;
+  --color-interactive-hover: #B5E4D8;
+  --color-on-interactive: #0D1B25;
+  --color-focus: #9CCBFF;
+  --color-link-underline: #8FD3C1;
+  --color-cta-secondary: #E6EEF0;
+  --color-on-navy: #E6EEF0;
+  --color-on-navy-muted: #C5D3D8;
+  --color-on-navy-link: #E6EEF0;
+  --footer-bg: #06131B;
+  --footer-fg: #E6EEF0;
+  --footer-muted: #C5D3D8;
+  --bar-bg: #06131B;
+  --bar-fg: #E6EEF0;
+  --bar-border: #3B5664;
+  --pill-bg: #8FD3C1;
+  --pill-fg: #0D1B25;
+  --pill-border: #8FD3C1;
+  --card-bg: #152A36;
+  --card-border: #3B5664;
+  --header-bg-solid: #0D1B25;
+  --header-bg-glass: rgba(13, 27, 37, 0.9);
+  --plate-bg-solid: #13242F;
+  --plate-bg-glass: rgba(13, 27, 37, 0.88);
+  --hero-veil: rgba(13, 27, 37, 0.86); /* solid (the repository validator allows no new gradients); worst case over a white photo: #2F3B44, #E6EEF0 text 9.9:1, #B4C3C8 6.4:1 */
+  --marsh-color: rgba(6, 19, 27, 0.6);
+  --button-alt-bg: #E6EEF0;
+  --button-alt-fg: #102A3A;
+  --warn-bg: #13242F;
+  --warn-border: #E6EEF0;
+  --num-color: #E6EEF0;
+  --shadow-sm: 0 8px 20px rgba(0, 0, 0, 0.35);
+  --shadow: 0 14px 34px rgba(0, 0, 0, 0.45);
+  }
+}
+
+/* Header logo: the official white horizontal logo (the Footer's) replaces the dark one on the dark header; no new asset. */
+html[data-dir="l"] .site-header .brand-logo-on-dark { display: none; }
+html[data-dir="l"][data-color-mode="dark"] .site-header .brand > img:first-child { display: none; }
+html[data-dir="l"][data-color-mode="dark"] .site-header .brand-logo-on-dark { display: block; }
+@media (prefers-color-scheme: dark) {
+  html[data-dir="l"]:not([data-color-mode]) .site-header .brand > img:first-child { display: none; }
+  html[data-dir="l"]:not([data-color-mode]) .site-header .brand-logo-on-dark { display: block; }
+}
+
+/* The control: three icon-only native radios in the footer (always navy), shown only when the script runs. */
+html[data-dir="l"] .appearance-control { display: none; }
+html[data-dir="l"][data-appearance="js"] .appearance-control {
+  display: inline-flex; gap: 0.35rem; margin: 0.75rem 0 0; padding: 0.25rem; border: 1px solid rgba(230, 238, 240, 0.45); border-radius: 999px; min-width: 0;
+}
+html[data-dir="l"] .appearance-control__legend {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+html[data-dir="l"] .appearance-control__opt {
+  position: relative; display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: 999px; color: #E6EEF0; cursor: pointer;
+  border: 2px solid transparent; box-sizing: border-box;
+}
+html[data-dir="l"] .appearance-control__opt input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+html[data-dir="l"] .appearance-control__opt .ui-icon { pointer-events: none; }
+/* selected: filled pill + check-like inner ring (not colour alone: the fill changes shape contrast and weight) */
+html[data-dir="l"] .appearance-control__opt:has(input:checked) { background: #E6EEF0; color: #06131B; border-color: #E6EEF0; }
+html[data-dir="l"] .appearance-control__opt:has(input:focus-visible) { outline: 3px solid #9CCBFF; outline-offset: 2px; }
+/* System selected: the icon it resolves to gets a dashed ring, distinct from the solid selected pill. */
+html[data-dir="l"][data-color-pref="system"][data-color-mode="light"] .appearance-control__opt--light,
+html[data-dir="l"][data-color-pref="system"][data-color-mode="dark"] .appearance-control__opt--dark { border: 2px dashed rgba(230, 238, 240, 0.85); }
+
+/* Component colours that are keywords or color-mix() (k5f-darkify only rewrites literal colours). light-dark() keeps the
+   existing light value; the @supports guard keeps older browsers on the light rules. */
+@supports (color: light-dark(#000, #fff)) {
+  html[data-dir="l"] .site-header .desktop-nav a.nav-cta,
+  html[data-dir="l"] .site-header .mobile-nav a.mobile-nav__cta { color: light-dark(#FFFFFF, #0D1B25); }
+}
+
+/* /connect/ card in resolved dark mode: the owner's bright mint focal surface on the deep page (PR #140 c7178946132): body #E1F0E9,
+   header #103C42, perimeter #91D5BF, ink #102A3A, founder label #24635C, Save #07564E with white text; action tiles #F7FAF8 with a
+   #52796D edge (owner kit brand.tile / k5e edge); place line keeps k5e's #3A4A44; the QR plate stays white. These are plain token
+   swaps on the mode attribute (and on the OS preference without JS), so they do not depend on light-dark() support.
+   Light mode keeps k5e's white card with the #52796D edge (polish.css). */
+html[data-dir="l"] {
+  --card-dark-surface: #E1F0E9; --card-dark-header: #103C42; --card-dark-edge: #91D5BF; --card-dark-ink: #102A3A;
+  --card-dark-label: #24635C; --card-dark-muted: #3A4A44; --card-dark-save: #07564E; --card-dark-save-hover: #054640;
+  --card-dark-on-save: #FFFFFF; --card-dark-tile: #F7FAF8; --card-dark-tile-edge: #52796D; --card-dark-qr-plate: #FFFFFF;
+}
+html[data-dir="l"][data-color-mode="dark"] .biz-card.biz-card--tidal {
+  --card-surface: var(--card-dark-surface); --card-header: var(--card-dark-header); --card-edge: var(--card-dark-edge);
+  --card-ink: var(--card-dark-ink); --card-label: var(--card-dark-label); --card-muted: var(--card-dark-muted);
+  --card-save: var(--card-dark-save); --card-save-hover: var(--card-dark-save-hover); --card-on-save: var(--card-dark-on-save);
+  --card-qr-plate: var(--card-dark-qr-plate);
+}
+html[data-dir="l"][data-color-mode="dark"] .biz-card--tidal a.biz-card__action,
+html[data-dir="l"][data-color-mode="dark"] .biz-card--tidal .biz-card__qr-narrow > summary { background: var(--card-dark-tile); border-color: var(--card-dark-tile-edge); }
+html[data-dir="l"][data-color-mode="dark"] .biz-card--tidal .biz-card__qr-plate { border-color: var(--card-dark-tile-edge); }
+@media (prefers-color-scheme: dark) {
+  html[data-dir="l"]:not([data-color-mode]) .biz-card.biz-card--tidal {
+    --card-surface: var(--card-dark-surface); --card-header: var(--card-dark-header); --card-edge: var(--card-dark-edge);
+    --card-ink: var(--card-dark-ink); --card-label: var(--card-dark-label); --card-muted: var(--card-dark-muted);
+    --card-save: var(--card-dark-save); --card-save-hover: var(--card-dark-save-hover); --card-on-save: var(--card-dark-on-save);
+    --card-qr-plate: var(--card-dark-qr-plate);
+  }
+  html[data-dir="l"]:not([data-color-mode]) .biz-card--tidal a.biz-card__action,
+  html[data-dir="l"]:not([data-color-mode]) .biz-card--tidal .biz-card__qr-narrow > summary { background: var(--card-dark-tile); border-color: var(--card-dark-tile-edge); }
+  html[data-dir="l"]:not([data-color-mode]) .biz-card--tidal .biz-card__qr-plate { border-color: var(--card-dark-tile-edge); }
+}

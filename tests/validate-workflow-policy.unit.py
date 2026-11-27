@@ -485,6 +485,35 @@ class WorkflowInstallPolicyTests(unittest.TestCase):
         self.assertIn(build + privacy + validate, CURRENT)
         self.assert_blocked(CURRENT.replace(build + privacy + validate, build + validate + privacy, 1))
 
+    def test_removing_care_preview_check_is_blocked(self) -> None:
+        care = (
+            "      - name: Care preview gate and build isolation\n"
+            "        run: npm run test:care-gate\n\n"
+        )
+        self.assertIn(care, CURRENT)
+        self.assert_blocked(CURRENT.replace(care, "", 1))
+
+    def test_removing_care_on_browser_check_is_blocked(self) -> None:
+        care = (
+            "      - name: Care ON browser and contrast preview proof\n"
+            "        run: npm run test:care-preview:ci\n\n"
+        )
+        self.assertIn(care, CURRENT)
+        self.assert_blocked(CURRENT.replace(care, "", 1))
+
+    def test_removing_analytics_consent_browser_proof_is_blocked(self) -> None:
+        consent = (
+            "      - name: Analytics consent browser proof (local stub vendors)\n"
+            "        run: node --test tests/ci-analytics-consent.unit.mjs && node scripts/ci-analytics-consent.mjs\n\n"
+        )
+        self.assertIn(consent, CURRENT)
+        self.assert_blocked(CURRENT.replace(consent, "", 1))
+
+    def test_bypassing_analytics_consent_browser_execution_is_blocked(self) -> None:
+        command = "node scripts/ci-analytics-consent.mjs"
+        self.assertIn(command, CURRENT)
+        self.assert_blocked(CURRENT.replace(command, "true", 1))
+
     def test_removing_privacy_negative_check_is_blocked(self) -> None:
         privacy = (
             "      - name: Privacy-negative source and built-asset contract\n"

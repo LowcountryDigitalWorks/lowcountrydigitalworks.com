@@ -1,0 +1,35 @@
+/* Consent banner for the LDW analytics adapter. External stylesheet (CSP style-src 'self'); emitted to dist/ldw-consent.css only when ANALYTICS_ENABLED=1.
+   Fixed to the bottom, above the mobile contact bar when that bar is shown; the page gets matching bottom padding while it is open so nothing is trapped behind it. */
+.ldw-consent { position: fixed; z-index: 60; left: .75rem; right: .75rem; bottom: .75rem; max-height: calc(100dvh - 5.5rem); overflow-y: auto; box-sizing: border-box; padding: 1rem 1.1rem; border: 1px solid #b9c4c0; border-radius: 14px; background: #f3efe6; color: #12263a; box-shadow: 0 8px 30px rgb(18 38 58 / .22); font-size: .95rem; line-height: 1.45; }
+.ldw-consent[hidden], .ldw-consent__prefs[hidden] { display: none; }
+.ldw-consent:focus { outline: 3px solid #235d8c; outline-offset: 2px; }
+.ldw-consent__title { margin: 0 0 .35rem; font-size: 1.1rem; line-height: 1.25; }
+.ldw-consent__text { margin: 0 0 .5rem; }
+.ldw-consent__text--small { font-size: .85rem; }
+.ldw-consent__link { color: #12263a; text-decoration: underline; text-underline-offset: 2px; }
+.ldw-consent__link:focus-visible, .ldw-consent__btn:focus-visible, .ldw-consent input:focus-visible { outline: 3px solid #235d8c; outline-offset: 3px; }
+.ldw-consent__actions { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; margin-top: .6rem; }
+.ldw-consent__btn { min-height: 44px; padding: .55rem .9rem; border: 2px solid #12263a; border-radius: 10px; font: inherit; font-weight: 700; cursor: pointer; }
+.ldw-consent__btn--choice, .ldw-consent__btn--save { background: #12263a; color: #f3efe6; }
+.ldw-consent__btn--quiet { grid-column: 1 / -1; background: transparent; color: #12263a; }
+.ldw-consent__btn--save { margin-top: .4rem; width: 100%; }
+.ldw-consent__prefs { margin-top: .75rem; padding-top: .6rem; border-top: 1px solid #b9c4c0; }
+.ldw-consent__fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
+.ldw-consent__legend { padding: 0; margin-bottom: .35rem; font-weight: 700; }
+.ldw-consent__opt { display: grid; grid-template-columns: auto 1fr; gap: .6rem; align-items: start; margin-bottom: .55rem; }
+.ldw-consent__opt input { width: 1.4rem; height: 1.4rem; margin: .1rem 0 0; accent-color: #12263a; }
+.ldw-consent__opt label { display: block; }
+.ldw-consent__detail { display: block; font-size: .85rem; }
+.ldw-consent__sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+html body.ldw-consent-open { padding-bottom: calc(var(--ldw-consent-h, 0px) + 1rem) !important; }
+@media (max-width: 760px) and (min-height: 560px) {
+  body:has(.mobile-contact-bar) .ldw-consent { bottom: calc(5rem + env(safe-area-inset-bottom, 0px) + .5rem); max-height: calc(100dvh - 11rem); }
+  html body.ldw-consent-open:has(.mobile-contact-bar) { padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px) + var(--ldw-consent-h, 0px) + 1.5rem) !important; }
+}
+@media (min-width: 761px) {
+  .ldw-consent { right: auto; width: 25rem; left: 1rem; bottom: 1rem; }
+  .ldw-consent__actions { grid-template-columns: 1fr 1fr 1fr; }
+  .ldw-consent__btn--quiet { grid-column: auto; }
+}
+@media (prefers-reduced-motion: no-preference) { .ldw-consent:not([hidden]) { animation: ldw-consent-in .18s ease-out; } }
+@keyframes ldw-consent-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }

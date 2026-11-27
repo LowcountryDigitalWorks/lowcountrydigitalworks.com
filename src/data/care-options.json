@@ -1,0 +1,29 @@
+{
+  "eyebrow": "Website Care plans",
+  "heading": "Pick the level of ongoing care that fits your site.",
+  "lede": "Five plans, from Site Watch to Full Local Presence. Each one includes everything in the plan before it.",
+  "carouselLabel": "Website Care plans",
+  "trackLabel": "Use the left and right arrow keys to move between the five plans.",
+  "dotsLabel": "Choose a plan",
+  "recommendedLabel": "Recommended choice",
+  "exclusions": "Ecommerce/catalog/checkout changes, redesigns, migrations, custom apps, large integrations, after-hours emergencies and anything requiring its own scope of work are scoped separately. No ranking, traffic, lead or revenue guarantees. You keep ownership of your accounts.",
+  "talk": { "label": "Talk about Website Care", "href": "/connect/" },
+  "tiers": [
+    { "id": "t1", "n": 1, "name": "Site Watch", "family": "Website Care", "amount": "$35", "per": "/mo", "job": "Keep my site healthy and watched",
+      "lead": null,
+      "items": ["Automated health, uptime and security checks", "Software and plugin updates where the platform needs them", "The easiest safe self-editing path for your platform", "A monthly health report"],
+      "foot": "No LDW edit labor." },
+    { "id": "t2", "n": 2, "name": "Site Care", "family": "Website Care", "amount": "$59", "per": "/mo", "job": "Handle the tiny changes for me too",
+      "lead": "Everything in Site Watch, plus",
+      "items": ["Small text and photo updates done by LDW each month (non-ecommerce)", "A change log"], "foot": null },
+    { "id": "t3", "n": 3, "name": "Site Care Plus", "family": "Website Care", "amount": "$99", "per": "/mo", "job": "Manage the site and handle routine changes", "recommended": true,
+      "lead": "Everything in Site Care, plus",
+      "items": ["More routine updates each month", "A view-only GSC Search Performance snapshot with 1–3 prioritized recommendations, only where actually available", "Periodic website health and visibility evidence in the report"], "foot": null },
+    { "id": "t4", "n": 4, "name": "Local Visibility", "family": "Growth & Visibility", "amount": "$229", "per": "/mo", "job": "Keep improving my site and local visibility",
+      "lead": "Everything in Site Care Plus, plus",
+      "items": ["A monthly Visibility Pulse (search, AI and local visibility monitoring)", "Bounded remediation of the top 1–3 safe/approved recommendations", "Reputation Lite (review management: requests where provider/data boundaries allow, alerts, a review link and QR code, and reporting)", "A richer monthly report"], "foot": null },
+    { "id": "t5", "n": 5, "name": "Full Local Presence", "family": "Growth & Visibility", "prefix": "Starting at", "amount": "$499", "per": "/mo", "note": "Custom plan", "job": "Manage the website, visibility and reputation as one system",
+      "lead": "Everything in Local Visibility, plus",
+      "items": ["LDW manages the ongoing visibility and reputation loop: broader monitoring and trends, fuller fixes with your approval on bigger changes, human-approved review responses, priority scheduling, richer reporting"], "foot": null }
+  ]
+}

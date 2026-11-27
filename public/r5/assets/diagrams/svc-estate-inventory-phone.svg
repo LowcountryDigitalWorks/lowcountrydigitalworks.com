@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 190" role="img" aria-labelledby="estp-t estp-d">
+  <title id="estp-t">Diagram: example setup — example account inventory sheet</title>
+  <desc id="estp-d">Illustrative inventory sheet. Columns: Asset, Held by, Recovery. Rows: Domain, DNS, Hosting, Source code.</desc>
+  <rect width="360" height="190" fill="#F7F4EC"/>
+  <rect x="12" y="8" width="336" height="34" rx="8" fill="#1E6B66" stroke="#15241F" stroke-width="2"/>
+  <text x="24" y="31" text-anchor="start" fill="#EFE9DD" font-family="Manrope, system-ui, sans-serif" font-size="16" font-weight="800">Asset</text>
+  <text x="128" y="31" text-anchor="start" fill="#EFE9DD" font-family="Manrope, system-ui, sans-serif" font-size="16" font-weight="800">Held by</text>
+  <text x="232" y="31" text-anchor="start" fill="#EFE9DD" font-family="Manrope, system-ui, sans-serif" font-size="16" font-weight="800">Recovery</text>
+  <rect x="12" y="48" width="336" height="30" rx="8" fill="#FFFFFF" stroke="#15241F" stroke-width="1.5"/>
+  <text x="24" y="69" text-anchor="start" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="16" font-weight="700">Domain</text>
+  <text x="128" y="69" text-anchor="start" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="16" font-weight="600">Business</text>
+  <text x="232" y="69" text-anchor="start" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="15" font-weight="600">Documented</text>
+  <rect x="12" y="82" width="336" height="30" rx="8" fill="#FFFFFF" stroke="#15241F" stroke-width="1.5"/>
+  <text x="24" y="103" text-anchor="start" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="16" font-weight="700">DNS</text>
+  <text x="128" y="103" text-anchor="start" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="16" font-weight="600">Business</text>
+  <text x="232" y="103" text-anchor="start" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="15" font-weight="600">Documented</text>
+  <rect x="12" y="116" width="336" height="30" rx="8" fill="#FFFFFF" stroke="#15241F" stroke-width="1.5"/>
+  <text x="24" y="137" text-anchor="start" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="16" font-weight="700">Hosting</text>
+  <text x="128" y="137" text-anchor="start" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="16" font-weight="600">Business</text>
+  <text x="232" y="137" text-anchor="start" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="15" font-weight="600">Documented</text>
+  <rect x="12" y="150" width="336" height="30" rx="8" fill="#FFFFFF" stroke="#15241F" stroke-width="1.5"/>
+  <text x="24" y="171" text-anchor="start" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="16" font-weight="700">Source code</text>
+  <text x="128" y="171" text-anchor="start" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="16" font-weight="600">Business</text>
+  <text x="232" y="171" text-anchor="start" fill="#15241F" font-family="Manrope, system-ui, sans-serif" font-size="15" font-weight="600">Documented</text>
+</svg>

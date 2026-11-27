@@ -20,7 +20,7 @@ for (const viewport of viewports) {
     await page.evaluate(() => document.fonts.ready.then(() => true));
 
     // Explicitly check the real site section, not a synthetic isolated card.
-    const cards = page.locator('#start .problem-choice-list > a.problem-choice');
+    const cards = page.locator('#start .problem-choice-list a.problem-choice') // R5 polish: each card sits in a carousel slide;
     await expect(cards).toHaveCount(4);
 
     const layout = await cards.evaluateAll((nodes) => {
@@ -71,7 +71,7 @@ for (const viewport of viewports) {
     for (const card of layout) {
       const label = `${viewport.name}: card ${card.index}`;
       expect(card.missingNodes, `${label} expected the card's real content and controls`).toBeFalsy();
-      expect(card.display, `${label} browser stylesheet must be loaded`).toBe('grid');
+      expect(card.display, `${label} browser stylesheet must be loaded`).toMatch(/^(grid|flex)$/);
       expect(card.cardWidth, `${label} must be rendered`).toBeGreaterThan(0);
       expect(card.leadTextOverlap, `${label} number/icon overlaps the copy`).toBeLessThan(1);
       expect(card.arrowBodyOverlap, `${label} arrow overlaps the copy`).toBeLessThan(1);
